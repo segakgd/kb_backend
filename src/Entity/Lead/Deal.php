@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use OpenApi\Attributes as OAT;
 
 #[ORM\Entity(repositoryClass: DealEntityRepository::class)]
 class Deal
@@ -27,6 +28,7 @@ class Deal
 
     #[Groups(['administrator'])]
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[OAT\Property(type: 'jsonType')]
     private ?DealOrder $order = null;
 
     #[ORM\Column]

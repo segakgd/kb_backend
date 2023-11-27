@@ -3,6 +3,7 @@
 namespace App\Controller\Admin\Deal;
 
 use App\Dto\Ecommerce\DealDto;
+use App\Entity\Lead\Deal;
 use App\Entity\User\Project;
 use App\Service\Admin\Ecommerce\Deal\DealManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,6 +15,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use OpenApi\Attributes as OA;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use Nelmio\ApiDocBundle\Annotation\Model;
 
 class CreateController extends AbstractController
 {
@@ -24,7 +27,29 @@ class CreateController extends AbstractController
     ) {
     }
 
+    #[OA\Response(
+        response: 200,
+        description: 'Returns the rewards of an user',
+        content: new Model(
+            properties: [],
+            type: Deal::class,
+            groups: ['administrator']
+        )
+    )]
+    #[OA\Parameter(
+        name: 'order',
+        description: "The field used to order rewards",
+        in: 'query',
+        schema: new OA\Schema(type: 'string')
+    )]
+    #[OA\Parameter(
+        name: 'order',
+        description: "The field used to order rewards",
+        in: 'query',
+        schema: new OA\Schema(type: 'string')
+    )]
     #[OA\Tag(name: 'Deal')]
+    #[Security(name: 'Bearer')]
     #[Route('/api/admin/project/{project}/deal/', name: 'admin_deal_create', methods: ['POST'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project): JsonResponse
