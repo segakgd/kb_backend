@@ -11,8 +11,8 @@ use Throwable;
 class PromotionManager implements PromotionManagerInterface
 {
     public function __construct(
-        private PromotionEntityRepository $promotionEntityRepository,
-        private LoggerInterface $logger,
+        private readonly PromotionEntityRepository $promotionEntityRepository,
+        private readonly LoggerInterface $logger,
     ) {
     }
 

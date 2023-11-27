@@ -13,11 +13,11 @@ use Throwable;
 class DealManager implements DealManagerInterface
 {
     public function __construct(
-        private DealEntityRepository $dealEntityRepository,
-        private ContactManager $contactService,
-        private FieldManager $fieldService,
-        private OrderManager $orderService,
-        private LoggerInterface $logger,
+        private readonly DealEntityRepository $dealEntityRepository,
+        private readonly ContactManager $contactService,
+        private readonly FieldManager $fieldService,
+        private readonly OrderManager $orderService,
+        private readonly LoggerInterface $logger,
     ) {
     }
 

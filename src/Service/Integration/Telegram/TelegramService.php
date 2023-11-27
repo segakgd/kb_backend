@@ -12,7 +12,7 @@ use App\Service\System\HttpClient\Request\Request;
 class TelegramService implements TelegramServiceInterface
 {
     public function __construct(
-        private HttpClientInterface $httpClient,
+        private readonly HttpClientInterface $httpClient,
     ) {
     }
 

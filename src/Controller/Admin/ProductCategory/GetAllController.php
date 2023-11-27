@@ -13,8 +13,8 @@ use Symfony\Component\Serializer\SerializerInterface;
 class GetAllController extends AbstractController
 {
     public function __construct(
-        private ProductCategoryManagerInterface $productCategoryService,
-        private SerializerInterface $serializer,
+        private readonly ProductCategoryManagerInterface $productCategoryService,
+        private readonly SerializerInterface $serializer,
     ) {}
 
     #[Route('/api/admin/project/{project}/productCategory/', name: 'admin_product_category_get_all', methods: ['GET'])]

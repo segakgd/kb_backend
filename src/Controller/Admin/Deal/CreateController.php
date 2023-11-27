@@ -18,9 +18,9 @@ use OpenApi\Attributes as OA;
 class CreateController extends AbstractController
 {
     public function __construct(
-        private DealManagerInterface $dealService,
-        private ValidatorInterface $validator,
-        private SerializerInterface $serializer
+        private readonly DealManagerInterface $dealService,
+        private readonly ValidatorInterface $validator,
+        private readonly SerializerInterface $serializer
     ) {
     }
 

@@ -11,8 +11,8 @@ use Throwable;
 class ShippingManager implements ShippingManagerInterface
 {
     public function __construct(
-        private ShippingEntityRepository $shippingEntityRepository,
-        private LoggerInterface $logger,
+        private readonly ShippingEntityRepository $shippingEntityRepository,
+        private readonly LoggerInterface $logger,
     ) {
     }
 

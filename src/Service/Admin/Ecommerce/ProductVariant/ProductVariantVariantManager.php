@@ -9,7 +9,7 @@ use App\Repository\Ecommerce\ProductVariantRepository;
 class ProductVariantVariantManager implements ProductVariantManagerInterface
 {
     public function __construct(
-        private ProductVariantRepository $productVariantRepository
+        private readonly ProductVariantRepository $productVariantRepository
     ) {
     }
 

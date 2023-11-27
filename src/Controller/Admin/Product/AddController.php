@@ -14,8 +14,8 @@ use Symfony\Component\Serializer\SerializerInterface;
 class AddController extends AbstractController
 {
     public function __construct(
-        private ProductVariantManagerInterface $productService,
-        private SerializerInterface $serializer
+        private readonly ProductVariantManagerInterface $productService,
+        private readonly SerializerInterface $serializer
     ) {
     }
 

@@ -13,8 +13,8 @@ use Symfony\Component\Serializer\SerializerInterface;
 class GetOneController extends AbstractController
 {
     public function __construct(
-        private PromotionManagerInterface $promotionService,
-        private SerializerInterface $serializer,
+        private readonly PromotionManagerInterface $promotionService,
+        private readonly SerializerInterface $serializer,
     ) {}
 
     #[Route('/api/admin/project/{project}/promotion/{promotionId}/', name: 'admin_promotion_get_one', methods: ['GET'])]

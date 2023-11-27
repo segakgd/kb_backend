@@ -15,11 +15,11 @@ use Exception;
 class VisitorEventService
 {
     public function __construct(
-        private VisitorEventRepository $chatEventRepository,
-        private VisitorSessionRepository $chatSessionRepository,
-        private BehaviorScenarioService $behaviorScenarioService,
-        private ActionAfterHandler $actionAfterHandler,
-        private ActionBeforeHandler $actionBeforeHandler,
+        private readonly VisitorEventRepository $chatEventRepository,
+        private readonly VisitorSessionRepository $chatSessionRepository,
+        private readonly BehaviorScenarioService $behaviorScenarioService,
+        private readonly ActionAfterHandler $actionAfterHandler,
+        private readonly ActionBeforeHandler $actionBeforeHandler,
     ) {
     }
 

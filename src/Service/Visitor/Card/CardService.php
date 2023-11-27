@@ -9,7 +9,7 @@ use App\Service\Admin\Ecommerce\Product\ProductManagerInterface;
 class CardService implements CardServiceInterface
 {
     public function __construct(
-        private ProductManagerInterface $productService,
+        private readonly ProductManagerInterface $productService,
         // private PromotionServiceInterface $promotionService, todo нужно будет учитывать
         // private ShippingServiceInterface $service, todo нужно будет учитывать
     ) {

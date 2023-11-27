@@ -22,13 +22,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class CartController extends AbstractController
 {
     public function __construct(
-        private DealManagerInterface $dealService,
-        private ProductManagerInterface $productService,
-        private CartRepository $cartRepository,
-        private PromotionRepository $promotionRepository,
-        private ProjectServiceInterface $projectService,
-        private ValidatorInterface $validator,
-        private SerializerInterface $serializer
+        private readonly DealManagerInterface $dealService,
+        private readonly ProductManagerInterface $productService,
+        private readonly CartRepository $cartRepository,
+        private readonly PromotionRepository $promotionRepository,
+        private readonly ProjectServiceInterface $projectService,
+        private readonly ValidatorInterface $validator,
+        private readonly SerializerInterface $serializer
     ) {
     }
 

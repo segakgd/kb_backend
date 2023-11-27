@@ -13,7 +13,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class RemoveController extends AbstractController
 {
     public function __construct(
-        private ShippingManagerInterface $shippingService,
+        private readonly ShippingManagerInterface $shippingService,
     ) {}
 
     #[Route('/api/admin/project/{project}/shipping/{shippingId}/', name: 'admin_shipping_remove', methods: ['DELETE'])]

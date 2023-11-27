@@ -10,7 +10,7 @@ use DateTimeImmutable;
 class ContactManager implements ContactManagerInterface
 {
     public function __construct(
-        private ContactsEntityRepository $contactsEntityRepository,
+        private readonly ContactsEntityRepository $contactsEntityRepository,
     ) {
     }
 

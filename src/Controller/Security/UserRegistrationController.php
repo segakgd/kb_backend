@@ -18,9 +18,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class UserRegistrationController extends AbstractController
 {
     public function __construct(
-        private SerializerInterface $serializer,
-        private ValidatorInterface $validator,
-        private SecurityService $securityService,
+        private readonly SerializerInterface $serializer,
+        private readonly ValidatorInterface $validator,
+        private readonly SecurityService $securityService,
     ) {
     }
 

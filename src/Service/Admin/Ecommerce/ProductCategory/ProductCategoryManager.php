@@ -11,8 +11,8 @@ use Throwable;
 class ProductCategoryManager implements ProductCategoryManagerInterface
 {
     public function __construct(
-        private ProductCategoryEntityRepository $productCategoryEntityRepository,
-        private LoggerInterface $logger,
+        private readonly ProductCategoryEntityRepository $productCategoryEntityRepository,
+        private readonly LoggerInterface $logger,
     ) {
     }
 

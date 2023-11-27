@@ -14,8 +14,8 @@ use OpenApi\Attributes as OA;
 class GetOneController extends AbstractController
 {
     public function __construct(
-        private DealManagerInterface $dealService,
-        private SerializerInterface $serializer,
+        private readonly DealManagerInterface $dealService,
+        private readonly SerializerInterface $serializer,
     ) {}
 
     #[OA\Tag(name: 'Deal')]

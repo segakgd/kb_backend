@@ -17,7 +17,7 @@ class OrderManager implements OrderManagerInterface
     // если передан, то просто подтягиваем
 
     public function __construct(
-        private OrderEntityRepository $orderEntityRepository,
+        private readonly OrderEntityRepository $orderEntityRepository,
     ){
     }
 

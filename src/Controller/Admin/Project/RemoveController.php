@@ -13,7 +13,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class RemoveController extends AbstractController
 {
     public function __construct(
-        private ProjectServiceInterface $projectService,
+        private readonly ProjectServiceInterface $projectService,
     ) {}
 
     #[Route('/api/admin/projects/{project}/', name: 'admin_project_remove', methods: ['DELETE'])]

@@ -14,7 +14,7 @@ use OpenApi\Attributes as OA;
 class RemoveController extends AbstractController
 {
     public function __construct(
-        private DealManagerInterface $dealService,
+        private readonly DealManagerInterface $dealService,
     ) {}
 
     #[OA\Tag(name: 'Deal')]

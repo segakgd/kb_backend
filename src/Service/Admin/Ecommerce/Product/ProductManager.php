@@ -15,11 +15,11 @@ use Throwable;
 class ProductManager implements ProductManagerInterface
 {
     public function __construct(
-        private ProductEntityRepository $productEntityRepository,
-        private ProductCategoryEntityRepository $productCategoryEntityRepository,
-        private ProductCategoryManager $productCategoryService,
-        private ProductVariantManagerInterface $productVariantService,
-        private LoggerInterface $logger,
+        private readonly ProductEntityRepository $productEntityRepository,
+        private readonly ProductCategoryEntityRepository $productCategoryEntityRepository,
+        private readonly ProductCategoryManager $productCategoryService,
+        private readonly ProductVariantManagerInterface $productVariantService,
+        private readonly LoggerInterface $logger,
     ) {
     }
 

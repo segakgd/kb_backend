@@ -16,9 +16,9 @@ use Symfony\Component\Serializer\SerializerInterface;
 class MainWebhookController extends AbstractController
 {
     public function __construct(
-        private SerializerInterface $serializer,
-        private VisitorSessionService $chatSessionService,
-        private VisitorEventService $chatEventService,
+        private readonly SerializerInterface $serializer,
+        private readonly VisitorSessionService $chatSessionService,
+        private readonly VisitorEventService $chatEventService,
     ) {
     }
 

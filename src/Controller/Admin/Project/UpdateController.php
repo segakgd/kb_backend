@@ -17,9 +17,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class UpdateController extends AbstractController
 {
     public function __construct(
-        private ProjectServiceInterface $projectService,
-        private ValidatorInterface $validator,
-        private SerializerInterface $serializer
+        private readonly ProjectServiceInterface $projectService,
+        private readonly ValidatorInterface $validator,
+        private readonly SerializerInterface $serializer
     ) {
     }
 
