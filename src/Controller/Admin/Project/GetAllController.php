@@ -12,8 +12,8 @@ use Symfony\Component\Serializer\SerializerInterface;
 class GetAllController extends AbstractController
 {
     public function __construct(
-        private ProjectServiceInterface $projectService,
-        private SerializerInterface $serializer,
+        private readonly ProjectServiceInterface $projectService,
+        private readonly SerializerInterface $serializer,
     ) {}
 
     #[Route('/api/admin/projects/', name: 'admin_project_get_all', methods: ['GET'])]

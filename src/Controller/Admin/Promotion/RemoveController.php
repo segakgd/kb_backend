@@ -13,7 +13,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class RemoveController extends AbstractController
 {
     public function __construct(
-        private PromotionManagerInterface $promotionService,
+        private readonly PromotionManagerInterface $promotionService,
     ) {}
 
     #[Route('/api/admin/project/{project}/promotion/{promotionId}/', name: 'admin_promotion_remove', methods: ['DELETE'])]

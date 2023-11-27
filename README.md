@@ -75,3 +75,10 @@ bin/phpunit tests/Unit/
 Запуск Functionsl тестов:
 bin/phpunit tests/Functionsl/
 ~~~
+
+~~~
+Документация расположена по адресу:
+
+/api/doc - ui
+/api/doc.json - json
+~~~

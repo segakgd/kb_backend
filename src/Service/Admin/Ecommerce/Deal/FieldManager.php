@@ -10,7 +10,7 @@ class FieldManager implements FieldManagerInterface
 {
 
     public function __construct(
-        private FieldEntityRepository $fieldEntityRepository,
+        private readonly FieldEntityRepository $fieldEntityRepository,
     ) {
     }
 
