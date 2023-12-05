@@ -2,7 +2,7 @@
 
 namespace App\Tests\Functional\Cart;
 
-use App\Dto\Ecommerce\PriceDto;
+use App\Dto\deprecated\Ecommerce\PriceDto;
 use App\Service\Mapper\Ecommerce\PriceMapper;
 use App\Service\Mapper\Ecommerce\ProductMapper;
 use App\Tests\Functional\ApiTestCase;

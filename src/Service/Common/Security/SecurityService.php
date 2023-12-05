@@ -2,7 +2,7 @@
 
 namespace App\Service\Common\Security;
 
-use App\Dto\Security\UserDto;
+use App\Dto\deprecated\Security\UserDto;
 use App\Entity\User\User;
 use App\Exception\Security\UserExistException;
 use App\Repository\User\UserRepository;

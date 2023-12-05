@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Project;
 
-use App\Dto\Project\ProjectDto;
+use App\Dto\deprecated\Project\ProjectDto;
 use App\Entity\User\Project;
 use App\Service\Common\Project\ProjectServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,8 +23,8 @@ class UpdateController extends AbstractController
     ) {
     }
 
-    #[Route('/api/admin/projects/{project}/', name: 'admin_project_update', methods: ['PUT'])]
-    #[IsGranted('existUser', 'project')]
+//    #[Route('/api/admin/projects/{project}/', name: 'admin_project_update', methods: ['PUT'])]
+//    #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project): JsonResponse
     {
         $content = $request->getContent();

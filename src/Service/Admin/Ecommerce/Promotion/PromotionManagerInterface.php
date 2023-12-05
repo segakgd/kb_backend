@@ -2,7 +2,7 @@
 
 namespace App\Service\Admin\Ecommerce\Promotion;
 
-use App\Dto\Ecommerce\PromotionDto;
+use App\Dto\deprecated\Ecommerce\PromotionDto;
 use App\Entity\Ecommerce\Promotion;
 
 interface PromotionManagerInterface

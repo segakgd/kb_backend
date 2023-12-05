@@ -2,7 +2,7 @@
 
 namespace App\Service\Admin\Ecommerce\Shipping;
 
-use App\Dto\Ecommerce\ShippingDto;
+use App\Dto\deprecated\Ecommerce\ShippingDto;
 use App\Entity\Ecommerce\Shipping;
 use App\Repository\Ecommerce\ShippingEntityRepository;
 use Psr\Log\LoggerInterface;

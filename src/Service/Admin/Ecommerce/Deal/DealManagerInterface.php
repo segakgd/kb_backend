@@ -2,7 +2,7 @@
 
 namespace App\Service\Admin\Ecommerce\Deal;
 
-use App\Dto\Ecommerce\DealDto;
+use App\Dto\deprecated\Ecommerce\DealDto;
 use App\Entity\Lead\Deal;
 
 interface DealManagerInterface

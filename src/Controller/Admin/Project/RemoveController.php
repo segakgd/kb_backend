@@ -16,7 +16,7 @@ class RemoveController extends AbstractController
         private readonly ProjectServiceInterface $projectService,
     ) {}
 
-    #[Route('/api/admin/projects/{project}/', name: 'admin_project_remove', methods: ['DELETE'])]
+//    #[Route('/api/admin/projects/{project}/', name: 'admin_project_remove', methods: ['DELETE'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project): JsonResponse
     {

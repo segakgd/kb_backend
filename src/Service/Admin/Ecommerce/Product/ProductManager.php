@@ -2,7 +2,7 @@
 
 namespace App\Service\Admin\Ecommerce\Product;
 
-use App\Dto\Ecommerce\ProductDto;
+use App\Dto\deprecated\Ecommerce\ProductDto;
 use App\Entity\Ecommerce\Product;
 use App\Entity\Ecommerce\ProductCategory;
 use App\Repository\Ecommerce\ProductCategoryEntityRepository;
