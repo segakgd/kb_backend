@@ -2,7 +2,8 @@
 
 namespace App\Controller\Admin\Project;
 
-use App\Dto\Admin\Project\ProjectDto;
+use App\Dto\Admin\Project\TariffSettingDto;
+use App\Entity\User\Project;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,24 +15,26 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[OA\Tag(name: 'Project')]
 #[OA\Response(
     response: Response::HTTP_OK,
-    description: 'Возвращает коллекцию проектов',
+    description: 'Возвращает коллекцию доступных тарифов',
     content: new OA\JsonContent(
         type: 'array',
         items: new OA\Items(
             ref: new Model(
-                type: ProjectDto::class
+                type: TariffSettingDto::class
             )
         )
     ),
 )]
-class GetAllController extends AbstractController
+class GetAllTariffController extends AbstractController
 {
-    #[Route('/api/admin/projects/', name: 'admin_project_get_all', methods: ['GET'])]
+    #[Route('/api/admin/projects/{project}/setting/tariff', name: 'admin_project_list_tariff', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(): JsonResponse
+    public function execute(Project $project): JsonResponse
     {
         return new JsonResponse(
-            new ProjectDto()
+            [
+                new TariffSettingDto()
+            ]
         );
     }
 }
