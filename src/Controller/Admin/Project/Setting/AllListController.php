@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controller\Admin\Project\Tariff;
+namespace App\Controller\Admin\Project\Setting;
 
-use App\Dto\Admin\Project\Response\TariffSettingRespDto;
+use App\Dto\Admin\Project\Response\Setting\ProjectSettingRespDto;
 use App\Entity\User\Project;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -15,26 +15,19 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[OA\Tag(name: 'Project')]
 #[OA\Response(
     response: Response::HTTP_OK,
-    description: 'Возвращает коллекцию доступных тарифов',
-    content: new OA\JsonContent(
-        type: 'array',
-        items: new OA\Items(
-            ref: new Model(
-                type: TariffSettingRespDto::class
-            )
-        )
-    ),
+    description: 'Возвращает нестройки',
+    content: new Model(
+        type: ProjectSettingRespDto::class,
+    )
 )]
 class AllListController extends AbstractController
 {
-    #[Route('/api/admin/projects/{project}/setting/tariff', name: 'admin_project_list_tariff', methods: ['GET'])]
+    #[Route('/api/admin/projects/{project}/setting', name: 'admin_list_project_setting', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project): JsonResponse
     {
         return new JsonResponse(
-            [
-                new TariffSettingRespDto()
-            ]
+            new ProjectSettingRespDto()
         );
     }
 }

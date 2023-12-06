@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Dto\Admin\Project;
+namespace App\Dto\Admin\Project\Response;
 
+use App\Dto\Admin\Project\Response\Statistic\ProjectStatisticsRespDto;
 use DateTimeImmutable;
 use Symfony\Component\Validator\Constraints as Assert;
 

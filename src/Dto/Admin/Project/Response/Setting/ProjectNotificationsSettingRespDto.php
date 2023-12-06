@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dto\Admin\Project\Response;
+namespace App\Dto\Admin\Project\Response\Setting;
 
 class ProjectNotificationsSettingRespDto
 {

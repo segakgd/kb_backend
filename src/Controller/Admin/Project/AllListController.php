@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Project;
 
-use App\Dto\Admin\Project\ProjectRespDto;
+use App\Dto\Admin\Project\Response\ProjectRespDto;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dto\Admin\Project;
+namespace App\Dto\Admin\Project\Response;
 
 class TariffSettingRespDto
 {

@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Dto\Admin\Project\Response;
+namespace App\Dto\Admin\Project\Response\Setting;
+
+use App\Dto\Admin\Project\Response\ProjectTariffSettingRespDto;
 
 class ProjectMainSettingRespDto
 {

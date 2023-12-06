@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Dto\Admin\Project\Request;
+namespace App\Dto\Admin\Project\Request\Setting\Main;
 
-class ProjectMainSettingUpdateReqDto
+class ProjectMainSettingReqDto
 {
     private ?string $name;
 

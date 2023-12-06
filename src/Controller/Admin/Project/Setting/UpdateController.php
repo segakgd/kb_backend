@@ -2,8 +2,8 @@
 
 namespace App\Controller\Admin\Project\Setting;
 
-use App\Dto\Admin\Project\Request\ProjectSettingUpdateReqDto;
-use App\Dto\Admin\Project\Response\ProjectSettingRespDto;
+use App\Dto\Admin\Project\Request\ProjectSettingReqDto;
+use App\Dto\Admin\Project\Response\Setting\ProjectSettingRespDto;
 use App\Entity\User\Project;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -16,7 +16,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[OA\Tag(name: 'Project')]
 #[OA\RequestBody(
     content: new Model(
-        type: ProjectSettingUpdateReqDto::class,
+        type: ProjectSettingReqDto::class,
     )
 )]
 #[OA\Response(

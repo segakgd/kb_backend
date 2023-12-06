@@ -2,13 +2,13 @@
 
 namespace App\Controller\Admin\Project;
 
-use App\Dto\Admin\Project\ProjectCreateReqDto;
+use App\Dto\Admin\Project\Request\ProjectCreateReqDto;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[OA\Tag(name: 'Project')]
