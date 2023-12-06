@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Dto\Admin\Project\Request;
+namespace App\Dto\Admin\Project\Response;
 
-class ProjectMainSettingUpdateDto
+class ProjectMainSettingRespDto
 {
     private ?string $name;
 
@@ -13,6 +13,8 @@ class ProjectMainSettingUpdateDto
     private ?string $language;
 
     private ?string $currency;
+
+    private ProjectTariffSettingRespDto $tariff;
 
     public function getName(): ?string
     {
@@ -62,5 +64,15 @@ class ProjectMainSettingUpdateDto
     public function setCurrency(?string $currency): void
     {
         $this->currency = $currency;
+    }
+
+    public function getTariff(): ProjectTariffSettingRespDto
+    {
+        return $this->tariff;
+    }
+
+    public function setTariff(ProjectTariffSettingRespDto $tariff): void
+    {
+        $this->tariff = $tariff;
     }
 }

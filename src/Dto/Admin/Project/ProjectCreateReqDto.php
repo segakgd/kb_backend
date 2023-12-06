@@ -4,7 +4,7 @@ namespace App\Dto\Admin\Project;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class ProjectCreateDto
+class ProjectCreateReqDto
 {
     private string $name;
 

@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Project;
 
-use App\Dto\Admin\Project\ProjectCreateDto;
+use App\Dto\Admin\Project\ProjectCreateReqDto;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,7 +14,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[OA\Tag(name: 'Project')]
 #[OA\RequestBody(
     content: new Model(
-        type: ProjectCreateDto::class,
+        type: ProjectCreateReqDto::class,
     )
 )]
 #[OA\Response(

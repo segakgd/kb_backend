@@ -2,7 +2,7 @@
 
 namespace App\Dto\Admin\Project;
 
-class TariffSettingDto
+class TariffSettingRespDto
 {
     private string $name;
 

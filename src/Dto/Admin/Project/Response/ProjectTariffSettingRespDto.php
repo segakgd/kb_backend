@@ -2,7 +2,7 @@
 
 namespace App\Dto\Admin\Project\Response;
 
-class ProjectTariffSettingDto
+class ProjectTariffSettingRespDto
 {
     private string $name;
 

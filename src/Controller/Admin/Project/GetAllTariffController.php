@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Project;
 
-use App\Dto\Admin\Project\TariffSettingDto;
+use App\Dto\Admin\Project\TariffSettingRespDto;
 use App\Entity\User\Project;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -20,7 +20,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
         type: 'array',
         items: new OA\Items(
             ref: new Model(
-                type: TariffSettingDto::class
+                type: TariffSettingRespDto::class
             )
         )
     ),
@@ -33,7 +33,7 @@ class GetAllTariffController extends AbstractController
     {
         return new JsonResponse(
             [
-                new TariffSettingDto()
+                new TariffSettingRespDto()
             ]
         );
     }

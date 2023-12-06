@@ -2,7 +2,7 @@
 
 namespace App\Dto\Admin\Project\Response;
 
-class ProjectNotificationSettingDto
+class ProjectNotificationSettingRespDto
 {
     private ?bool $post;
 

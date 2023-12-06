@@ -2,7 +2,7 @@
 
 namespace App\Dto\Admin\Project\Request;
 
-class ProjectNotificationSettingUpdateDto
+class ProjectNotificationSettingUpdateReqDto
 {
     private ?bool $post;
 

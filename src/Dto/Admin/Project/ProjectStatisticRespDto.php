@@ -2,7 +2,7 @@
 
 namespace App\Dto\Admin\Project;
 
-class ProjectStatisticDto
+class ProjectStatisticRespDto
 {
     private int $count;
 

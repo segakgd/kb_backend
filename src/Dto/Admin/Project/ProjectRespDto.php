@@ -5,7 +5,7 @@ namespace App\Dto\Admin\Project;
 use DateTimeImmutable;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class ProjectDto
+class ProjectRespDto
 {
     private string $name;
 
@@ -18,7 +18,7 @@ class ProjectDto
 
     private DateTimeImmutable $activeFrom;
 
-    private ProjectStatisticsDto $statistic;
+    private ProjectStatisticsRespDto $statistic;
 
     public function getName(): string
     {
@@ -70,12 +70,12 @@ class ProjectDto
         $this->activeFrom = $activeFrom;
     }
 
-    public function getStatistic(): ProjectStatisticsDto
+    public function getStatistic(): ProjectStatisticsRespDto
     {
         return $this->statistic;
     }
 
-    public function setStatistic(ProjectStatisticsDto $statistic): void
+    public function setStatistic(ProjectStatisticsRespDto $statistic): void
     {
         $this->statistic = $statistic;
     }
