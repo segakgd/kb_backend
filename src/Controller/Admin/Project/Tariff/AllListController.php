@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin\Project;
+namespace App\Controller\Admin\Project\Tariff;
 
 use App\Dto\Admin\Project\TariffSettingRespDto;
 use App\Entity\User\Project;
@@ -25,7 +25,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
         )
     ),
 )]
-class GetAllTariffController extends AbstractController
+class AllListController extends AbstractController
 {
     #[Route('/api/admin/projects/{project}/setting/tariff', name: 'admin_project_list_tariff', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]

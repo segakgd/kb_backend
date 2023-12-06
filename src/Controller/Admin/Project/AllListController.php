@@ -24,7 +24,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
         )
     ),
 )]
-class GetAllController extends AbstractController
+class AllListController extends AbstractController
 {
     #[Route('/api/admin/projects/', name: 'admin_project_get_all', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]

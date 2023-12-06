@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin\Project;
+namespace App\Controller\Admin\Project\Setting;
 
 use App\Dto\Admin\Project\Request\ProjectSettingUpdateReqDto;
 use App\Dto\Admin\Project\Response\ProjectSettingRespDto;
@@ -26,7 +26,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
         type: ProjectSettingRespDto::class,
     )
 )]
-class UpdateSettingController extends AbstractController
+class UpdateController extends AbstractController
 {
     #[Route('/api/admin/projects/{project}/setting', name: 'admin_project_update', methods: ['PUT'])]
     #[IsGranted('existUser', 'project')]
