@@ -27,7 +27,7 @@ class UserRegistrationController extends AbstractController
     /**
      * @throws Exception
      */
-    #[Route('/api/user/registration/', name: 'visitor_registration', methods: "POST")]
+//    #[Route('/api/user/registration/', name: 'visitor_registration', methods: "POST")]
     public function exist(Request $request): JsonResponse
     {
         $userDto = $this->serializer->deserialize($request->getContent(), UserDto::class, 'json');

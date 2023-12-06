@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Controller\Admin\Project\Setting;
+namespace App\Controller\Admin\Project\Tariff;
 
-use App\Dto\Admin\Project\Request\ProjectSettingReqDto;
-use App\Dto\Admin\Project\Response\Setting\ProjectSettingRespDto;
+use App\Dto\Admin\Project\Request\TariffSettingReqDto;
 use App\Entity\User\Project;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -16,24 +15,19 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[OA\Tag(name: 'Project')]
 #[OA\RequestBody(
     content: new Model(
-        type: ProjectSettingReqDto::class,
+        type: TariffSettingReqDto::class,
     )
 )]
 #[OA\Response(
-    response: Response::HTTP_OK,
-    description: 'Возвращает обновлённые нестройки',
-    content: new Model(
-        type: ProjectSettingRespDto::class,
-    )
+    response: Response::HTTP_NO_CONTENT,
+    description: 'Возвращает 204 если новый тариф применён',
 )]
 class UpdateController extends AbstractController
 {
-    #[Route('/api/admin/projects/{project}/setting', name: 'admin_project_update', methods: ['POST'])]
+    #[Route('/api/admin/projects/{project}/setting/tariff', name: 'admin_project_update_tariff', methods: ['POST'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project): JsonResponse
     {
-        return new JsonResponse(
-            new ProjectSettingRespDto()
-        );
+        return new JsonResponse('', Response::HTTP_NO_CONTENT);
     }
 }
