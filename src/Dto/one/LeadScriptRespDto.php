@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Dto\Order;
+namespace App\Dto\one;
 
-class ProductCategoryRespDto
+class LeadScriptRespDto
 {
     private string $name;
 

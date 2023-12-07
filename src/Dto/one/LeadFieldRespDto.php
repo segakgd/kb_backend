@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Dto;
+namespace App\Dto\one;
 
-class LeadContactRespDto
+class LeadFieldRespDto
 {
     private string $type;
 

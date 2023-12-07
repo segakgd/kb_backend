@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Lead;
 
-use App\Dto\Order\LeadFullRespDto;
+use App\Dto\one\LeadFullRespDto;
 use App\Entity\User\Project;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
