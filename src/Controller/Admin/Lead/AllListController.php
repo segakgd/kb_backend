@@ -37,6 +37,11 @@ class AllListController extends AbstractController
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project): JsonResponse
     {
-        return new JsonResponse();
+        return new JsonResponse(
+            [
+                new LeadRespDto(),
+                new LeadRespDto(),
+            ]
+        );
     }
 }

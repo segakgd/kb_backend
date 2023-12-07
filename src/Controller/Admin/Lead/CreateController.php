@@ -2,24 +2,32 @@
 
 namespace App\Controller\Admin\Lead;
 
+use App\Dto\Create\LeadFullReqDto;
 use App\Entity\User\Project;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[OA\Tag(name: 'Lead')]
+#[OA\RequestBody(
+    content: new Model(
+        type: LeadFullReqDto::class,
+    )
+)]
 #[OA\Response(
     response: Response::HTTP_NO_CONTENT,
-    description: 'Если получилось удалить возвращаем 204',
+    description: 'Возвращает 204 при создании',
 )]
-class RemoveController extends AbstractController
+class CreateController extends AbstractController
 {
-    #[Route('/api/admin/project/{project}/lead/{leadId}/', name: 'admin_lead_remove', methods: ['DELETE'])]
+    #[Route('/api/admin/project/{project}/lead/', name: 'admin_lead_create', methods: ['POST'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Project $project, int $leadId): JsonResponse
+    public function execute(Request $request, Project $project): JsonResponse
     {
         return new JsonResponse('', 204);
     }

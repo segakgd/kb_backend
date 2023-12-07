@@ -26,6 +26,8 @@ class OneListController extends AbstractController
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project, int $leadId): JsonResponse
     {
-        return new JsonResponse();
+        return new JsonResponse(
+            new LeadFullRespDto()
+        );
     }
 }
