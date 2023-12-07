@@ -16,13 +16,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[OA\Response(
     response: Response::HTTP_OK,
     description: 'Возвращает коллекцию заявок',
-    content: new OA\JsonContent(
-        type: 'array',
-        items: new OA\Items(
-            ref: new Model(
-                type: LeadFullRespDto::class
-            )
-        )
+    content: new Model(
+        type: LeadFullRespDto::class
     ),
 )]
 class OneListController extends AbstractController
