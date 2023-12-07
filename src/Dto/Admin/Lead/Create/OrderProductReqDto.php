@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dto\Create;
+namespace App\Dto\Admin\Lead\Create;
 
 class OrderProductReqDto
 {

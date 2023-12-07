@@ -1,23 +1,23 @@
 <?php
 
-namespace App\Dto\Create;
+namespace App\Dto\Admin\Lead\Response\Order\Product;
 
-class OrderVariantReqDto
+class ProductVariantRespDto
 {
-    private int $id;
+    private string $name;
 
-    private int $count;
+    private int $count = 0;
 
-    private int $price;
+    private int $price = 0;
 
-    public function getId(): int
+    public function getName(): string
     {
-        return $this->id;
+        return $this->name;
     }
 
-    public function setId(int $id): void
+    public function setName(string $name): void
     {
-        $this->id = $id;
+        $this->name = $name;
     }
 
     public function getCount(): int

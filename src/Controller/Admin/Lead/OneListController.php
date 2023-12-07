@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Lead;
 
-use App\Dto\one\LeadFullRespDto;
+use App\Dto\Admin\Lead\Response\LeadRespDto;
 use App\Entity\User\Project;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -17,7 +17,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
     response: Response::HTTP_OK,
     description: 'Возвращает коллекцию заявок',
     content: new Model(
-        type: LeadFullRespDto::class
+        type: LeadRespDto::class
     ),
 )]
 class OneListController extends AbstractController
@@ -27,7 +27,7 @@ class OneListController extends AbstractController
     public function execute(Project $project, int $leadId): JsonResponse
     {
         return new JsonResponse(
-            new LeadFullRespDto()
+            new LeadRespDto()
         );
     }
 }

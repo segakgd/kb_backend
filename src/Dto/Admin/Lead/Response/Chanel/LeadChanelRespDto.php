@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dto\one;
+namespace App\Dto\Admin\Lead\Response\Chanel;
 
 class LeadChanelRespDto
 {

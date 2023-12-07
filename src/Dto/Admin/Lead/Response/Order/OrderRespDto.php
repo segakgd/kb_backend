@@ -1,7 +1,11 @@
 <?php
 
-namespace App\Dto\one;
+namespace App\Dto\Admin\Lead\Response\Order;
 
+use App\Dto\Admin\Lead\Response\Order\Payment\PaymentRespDto;
+use App\Dto\Admin\Lead\Response\Order\Product\ProductRespDto;
+use App\Dto\Admin\Lead\Response\Order\Promotion\PromotionRespDto;
+use App\Dto\Admin\Lead\Response\Order\Shipping\ShippingRespDto;
 use DateTimeImmutable;
 
 class OrderRespDto

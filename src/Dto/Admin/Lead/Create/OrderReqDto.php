@@ -1,12 +1,6 @@
 <?php
 
-namespace App\Dto\Create;
-
-use App\Dto\one\PaymentRespDto;
-use App\Dto\one\ProductRespDto;
-use App\Dto\one\PromotionRespDto;
-use App\Dto\one\ShippingRespDto;
-use DateTimeImmutable;
+namespace App\Dto\Admin\Lead\Create;
 
 class OrderReqDto
 {

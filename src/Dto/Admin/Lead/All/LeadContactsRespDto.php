@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dto\All;
+namespace App\Dto\Admin\Lead\All;
 
 class LeadContactsRespDto
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dto\one;
+namespace App\Dto\Admin\Lead\Response\Order\Payment;
 
 /**
  * Внимание! Все расчёты валют делаем в целых, не в дробных, к тому же, используем только операции умножения!

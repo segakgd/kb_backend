@@ -1,10 +1,15 @@
 <?php
 
-namespace App\Dto\one;
+namespace App\Dto\Admin\Lead\Response;
 
+use App\Dto\Admin\Lead\Response\Chanel\LeadChanelRespDto;
+use App\Dto\Admin\Lead\Response\Fields\LeadContactsRespDto;
+use App\Dto\Admin\Lead\Response\Fields\LeadFieldRespDto;
+use App\Dto\Admin\Lead\Response\Order\OrderRespDto;
+use App\Dto\Admin\Lead\Response\Script\LeadScriptRespDto;
 use DateTimeImmutable;
 
-class LeadFullRespDto
+class LeadRespDto
 {
     private int $number;
 

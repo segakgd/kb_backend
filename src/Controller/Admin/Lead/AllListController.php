@@ -2,8 +2,8 @@
 
 namespace App\Controller\Admin\Lead;
 
-use App\Dto\All\FilterLeadReqDto;
-use App\Dto\All\LeadRespDto;
+use App\Dto\Admin\Lead\All\FilterLeadReqDto;
+use App\Dto\Admin\Lead\All\LeadRespDto;
 use App\Entity\User\Project;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
