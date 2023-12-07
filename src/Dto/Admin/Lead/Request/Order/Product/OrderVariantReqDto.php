@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dto\Admin\Lead\Create;
+namespace App\Dto\Admin\Lead\Request\Order\Product;
 
 class OrderVariantReqDto
 {

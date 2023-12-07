@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Dto\Admin\Lead\All;
+namespace App\Dto\Admin\Lead\Request;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class FilterLeadReqDto
+class FilterLeadsReqDto
 {
     private const AVAILABLE_MESSENGER = [
         'telegram',

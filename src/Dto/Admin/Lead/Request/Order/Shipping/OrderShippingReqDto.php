@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Dto\Admin\Lead\Create;
+namespace App\Dto\Admin\Lead\Request\Order\Shipping;
 
-class OrderPromotionReqDto
+class OrderShippingReqDto
 {
     private int $id;
 

@@ -1,8 +1,11 @@
 <?php
 
-namespace App\Dto\Admin\Lead\Create;
+namespace App\Dto\Admin\Lead\Request;
 
-class LeadFullReqDto
+use App\Dto\Admin\Lead\Request\Field\LeadFieldReqDto;
+use App\Dto\Admin\Lead\Request\Order\OrderReqDto;
+
+class LeadReqDto
 {
     private array $contacts;
 

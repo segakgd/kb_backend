@@ -2,8 +2,8 @@
 
 namespace App\Controller\Admin\Lead;
 
-use App\Dto\Admin\Lead\All\FilterLeadReqDto;
-use App\Dto\Admin\Lead\All\LeadRespDto;
+use App\Dto\Admin\Lead\Request\FilterLeadsReqDto;
+use App\Dto\Admin\Lead\Response\AllLeadRespDto;
 use App\Entity\User\Project;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -16,7 +16,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[OA\Tag(name: 'Lead')]
 #[OA\RequestBody(
     content: new Model(
-        type: FilterLeadReqDto::class,
+        type: FilterLeadsReqDto::class,
     )
 )]
 #[OA\Response(
@@ -26,7 +26,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
         type: 'array',
         items: new OA\Items(
             ref: new Model(
-                type: LeadRespDto::class
+                type: AllLeadRespDto::class
             )
         )
     ),
@@ -39,8 +39,8 @@ class AllListController extends AbstractController
     {
         return new JsonResponse(
             [
-                new LeadRespDto(),
-                new LeadRespDto(),
+                new AllLeadRespDto(),
+                new AllLeadRespDto(),
             ]
         );
     }

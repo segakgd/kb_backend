@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Dto\Admin\Lead\All;
+namespace App\Dto\Admin\Lead\Response;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class LeadRespDto
+class AllLeadRespDto
 {
     private const AVAILABLE_STATUSES = [
         'new',
@@ -30,7 +30,7 @@ class LeadRespDto
 
     private string $costWithFraction;
 
-    private LeadContactsRespDto $contacts;
+    private AllLeadContactsRespDto $contacts;
 
     #[Assert\Choice(self::AVAILABLE_TYPE)]
     private string $type;
@@ -87,12 +87,12 @@ class LeadRespDto
         $this->costWithFraction = $costWithFraction;
     }
 
-    public function getContacts(): LeadContactsRespDto
+    public function getContacts(): AllLeadContactsRespDto
     {
         return $this->contacts;
     }
 
-    public function setContacts(LeadContactsRespDto $contacts): void
+    public function setContacts(AllLeadContactsRespDto $contacts): void
     {
         $this->contacts = $contacts;
     }

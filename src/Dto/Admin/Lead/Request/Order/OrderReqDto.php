@@ -1,6 +1,10 @@
 <?php
 
-namespace App\Dto\Admin\Lead\Create;
+namespace App\Dto\Admin\Lead\Request\Order;
+
+use App\Dto\Admin\Lead\Request\Order\Product\OrderProductReqDto;
+use App\Dto\Admin\Lead\Request\Order\Promotion\OrderPromotionReqDto;
+use App\Dto\Admin\Lead\Request\Order\Shipping\OrderShippingReqDto;
 
 class OrderReqDto
 {

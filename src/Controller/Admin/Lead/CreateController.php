@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Lead;
 
-use App\Dto\Admin\Lead\Create\LeadFullReqDto;
+use App\Dto\Admin\Lead\Request\LeadReqDto;
 use App\Entity\User\Project;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -16,7 +16,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[OA\Tag(name: 'Lead')]
 #[OA\RequestBody(
     content: new Model(
-        type: LeadFullReqDto::class,
+        type: LeadReqDto::class,
     )
 )]
 #[OA\Response(

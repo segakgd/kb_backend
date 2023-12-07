@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Dto\Admin\Lead\All;
+namespace App\Dto\Admin\Lead\Request\Field;
 
-class LeadContactRespDto
+class LeadFieldReqDto
 {
     private string $type;
 
