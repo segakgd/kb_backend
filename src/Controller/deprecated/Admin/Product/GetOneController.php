@@ -6,8 +6,6 @@ use App\Entity\User\Project;
 use App\Service\Admin\Ecommerce\Product\ProductManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class GetOneController extends AbstractController

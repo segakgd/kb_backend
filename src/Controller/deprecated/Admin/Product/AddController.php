@@ -19,12 +19,12 @@ class AddController extends AbstractController
     ) {
     }
 
-//    #[Route(
-//        '/api/admin/project/{project}/product/{product}/category/{productCategory}/',
-//        name: 'admin_product_add_in_category',
-//        methods: ['POST'])
-//    ]
-//    #[IsGranted('existUser', 'project')]
+    #[Route(
+        '/api/admin/project/{project}/product/{product}/category/{productCategory}/',
+        name: 'admin_product_add_in_category',
+        methods: ['POST'])
+    ]
+    #[IsGranted('existUser', 'project')]
     public function execute(
         Product $product,
         ProductCategory $productCategory
