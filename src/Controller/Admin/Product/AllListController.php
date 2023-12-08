@@ -2,15 +2,30 @@
 
 namespace App\Controller\Admin\Product;
 
+use App\Dto\Admin\Product\AllProductRespDto;
 use App\Entity\User\Project;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[OA\Response(
+    response: Response::HTTP_OK,
+    description: 'Возвращает коллекцию товаров',
+    content: new OA\JsonContent(
+        type: 'array',
+        items: new OA\Items(
+            ref: new Model(
+                type: AllProductRespDto::class
+            )
+        )
+    ),
+)]
 #[OA\Tag(name: 'Product')]
-class GetAllController extends AbstractController
+class AllListController extends AbstractController
 {
     #[Route('/api/admin/project/{project}/product/', name: 'admin_product_get_all', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
