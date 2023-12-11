@@ -12,6 +12,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[OA\Tag(name: 'Product')]
 class UpdateController extends AbstractController
 {
+    /** Обновление одного продукта */
     #[Route('/api/admin/project/{project}/product/{productId}/', name: 'admin_product_update', methods: ['POST'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project, int $productId): JsonResponse

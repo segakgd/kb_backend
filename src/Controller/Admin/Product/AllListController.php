@@ -27,6 +27,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[OA\Tag(name: 'Product')]
 class AllListController extends AbstractController
 {
+    /** Получение всех продуктов */
     #[Route('/api/admin/project/{project}/product/', name: 'admin_product_get_all', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project): JsonResponse

@@ -13,6 +13,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[OA\Tag(name: 'Product')]
 class RemoveController extends AbstractController
 {
+    /** Удаление одного продукта */
     #[Route('/api/admin/project/{project}/product/{productId}/', name: 'admin_product_remove', methods: ['DELETE'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project, int $productId): JsonResponse
