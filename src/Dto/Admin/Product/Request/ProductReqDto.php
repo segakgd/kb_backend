@@ -1,11 +1,9 @@
 <?php
 
-namespace App\Dto\Admin\Product;
+namespace App\Dto\Admin\Product\Request;
 
-class ProductRespDto
+class ProductReqDto
 {
-    private int $id;
-
     private string $name;
 
     private string $article;
@@ -21,16 +19,6 @@ class ProductRespDto
     private array $category;
 
     private array $variants;
-
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    public function setId(int $id): void
-    {
-        $this->id = $id;
-    }
 
     public function getName(): string
     {
@@ -97,7 +85,7 @@ class ProductRespDto
         return $this->category;
     }
 
-    public function addCategory(ProductCategoryRespDto $category): void
+    public function addCategory(ProductCategoryReqDto $category): void
     {
         $this->category[] = $category;
     }
@@ -107,7 +95,7 @@ class ProductRespDto
         return $this->variants;
     }
 
-    public function addVariants(ProductVariantRespDto $variant): void
+    public function addVariants(ProductVariantReqDto $variant): void
     {
         $this->variants[] = $variant;
     }

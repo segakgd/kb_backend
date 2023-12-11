@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dto\Admin\Product;
+namespace App\Dto\Admin\Product\Response;
 
 class AllProductRespDto
 {

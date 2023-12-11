@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Dto\Admin\Product;
+namespace App\Dto\Admin\Product\Request;
 
-class ProductVariantRespDto
+class ProductVariantReqDto
 {
     private string $name;
 
