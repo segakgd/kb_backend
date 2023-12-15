@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Project;
 
-use App\Dto\Admin\Project\Request\ProjectCreateReqDto;
+use App\Controller\Admin\Project\DTO\Request\ProjectCreateReqDto;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

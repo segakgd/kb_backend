@@ -2,8 +2,8 @@
 
 namespace App\Controller\Admin\Project\Setting;
 
-use App\Dto\Admin\Project\Request\ProjectSettingReqDto;
-use App\Dto\Admin\Project\Response\Setting\ProjectSettingRespDto;
+use App\Controller\Admin\Project\DTO\Request\ProjectSettingReqDto;
+use App\Controller\Admin\Project\DTO\Response\Setting\ProjectSettingRespDto;
 use App\Entity\User\Project;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;

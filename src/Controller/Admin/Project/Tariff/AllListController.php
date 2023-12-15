@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Project\Tariff;
 
-use App\Dto\Admin\Project\Response\TariffSettingRespDto;
+use App\Controller\Admin\Project\DTO\Response\TariffSettingRespDto;
 use App\Entity\User\Project;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
