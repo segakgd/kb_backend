@@ -27,6 +27,5 @@ class GetOneController extends AbstractController
     public function execute(Project $project, int $promotionId): JsonResponse
     {
         return new JsonResponse();
-
     }
 }

@@ -18,7 +18,7 @@ class PaymentRespDto
 
     private int $totalPrice = 0;
 
-    private string $totalPriceWithFraction = '0';
+    private string $totalPriceWithFraction = '0'; // todo WF
 
     public function isPaymentStatus(): bool
     {

@@ -13,7 +13,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[OA\Tag(name: 'Promotion')]
 #[OA\Response(
     response: Response::HTTP_NO_CONTENT,
-    description: '', // todo You need to write a description
+    description: 'Если получилось удалить возвращаем 204',
 )]
 class RemoveController extends AbstractController
 {
@@ -22,6 +22,5 @@ class RemoveController extends AbstractController
     public function execute(Project $project, int $promotionId): JsonResponse
     {
         return new JsonResponse();
-
     }
 }

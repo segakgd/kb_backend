@@ -30,6 +30,5 @@ class UpdateController extends AbstractController
     public function execute(Request $request, Project $project, int $promotionId): JsonResponse
     {
         return new JsonResponse();
-
     }
 }

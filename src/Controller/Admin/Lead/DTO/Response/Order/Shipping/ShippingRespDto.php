@@ -11,7 +11,7 @@ class ShippingRespDto
 
     private int $totalAmount = 0;
 
-    private string $totalAmountWithFraction = '0';
+    private string $totalAmountWithFraction = '0'; // todo WF
 
     public function getName(): string
     {

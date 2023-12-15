@@ -11,6 +11,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[OA\Tag(name: 'Product')]
+#[OA\Response(
+    response: Response::HTTP_NO_CONTENT,
+    description: 'Удаляет продукт',
+)]
 class RemoveController extends AbstractController
 {
     /** Удаление одного продукта */
