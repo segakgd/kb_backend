@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin\Promotion;
 
+use App\Controller\Admin\Promotion\DTO\Request\PromotionReqDto;
 use App\Entity\User\Project;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -13,17 +14,14 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[OA\Tag(name: 'Promotion')]
+#[OA\RequestBody(
+    content: new Model(
+        type: PromotionReqDto::class,
+    )
+)]
 #[OA\Response(
-    response: Response::HTTP_OK,
+    response: Response::HTTP_NO_CONTENT,
     description: '', // todo You need to write a description
-//    content: new OA\JsonContent(
-//        type: 'array',
-//        items: new OA\Items(
-//            ref: new Model(
-//                type: ProjectRespDto::class
-//            )
-//        )
-//    ),
 )]
 class CreateController extends AbstractController
 {

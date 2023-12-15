@@ -15,7 +15,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[OA\Tag(name: 'Promotion')]
 #[OA\Response(
     response: Response::HTTP_OK,
-    description: '', // todo You need to write a description
+    description: 'Выводим скидки и промокоды для главной страницы скидок и промокодов',
     content: new Model(
         type: ViewAllPromotionsRespDto::class,
     ),
