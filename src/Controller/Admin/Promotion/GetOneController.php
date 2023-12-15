@@ -2,7 +2,6 @@
 
 namespace App\Controller\Admin\Promotion;
 
-use App\Controller\Admin\Project\Project\Response\ProjectRespDto;
 use App\Entity\User\Project;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -16,14 +15,14 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[OA\Response(
     response: Response::HTTP_OK,
     description: '', // todo You need to write a description
-    content: new OA\JsonContent(
-        type: 'array',
-        items: new OA\Items(
-            ref: new Model(
-                type: ProjectRespDto::class
-            )
-        )
-    ),
+//    content: new OA\JsonContent(
+//        type: 'array',
+//        items: new OA\Items(
+//            ref: new Model(
+//                type: ProjectRespDto::class
+//            )
+//        )
+//    ),
 )]
 class GetOneController extends AbstractController
 {

@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Product;
 
-use App\Dto\Admin\Product\Response\ProductRespDto;
+use App\Controller\Admin\Product\DTO\Response\ProductRespDto;
 use App\Entity\User\Project;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;

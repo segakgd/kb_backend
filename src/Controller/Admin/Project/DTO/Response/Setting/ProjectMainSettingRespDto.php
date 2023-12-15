@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Project\DTO\Response\Setting;
 
-use App\Controller\Admin\Project\Project\Response\ProjectTariffSettingRespDto;
+use App\Controller\Admin\Project\DTO\Response\ProjectTariffSettingRespDto;
 
 class ProjectMainSettingRespDto
 {

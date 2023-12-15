@@ -2,8 +2,8 @@
 
 namespace App\Controller\Admin\Project\DTO\Request;
 
-use App\Controller\Admin\Project\Project\Request\Setting\Main\ProjectMainSettingReqDto;
-use App\Controller\Admin\Project\Project\Request\Setting\Notification\ProjectNotificationsSettingReqDto;
+use App\Controller\Admin\Project\DTO\Request\Setting\Main\ProjectMainSettingReqDto;
+use App\Controller\Admin\Project\DTO\Request\Setting\Notification\ProjectNotificationsSettingReqDto;
 
 class ProjectSettingReqDto
 {

@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Project\DTO\Response;
 
-use App\Controller\Admin\Project\Project\Response\Statistic\ProjectStatisticsRespDto;
+use App\Controller\Admin\Project\DTO\Response\Statistic\ProjectStatisticsRespDto;
 use DateTimeImmutable;
 use Symfony\Component\Validator\Constraints as Assert;
 

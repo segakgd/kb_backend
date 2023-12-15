@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Dto\Admin\Product\Request;
+namespace App\Controller\Admin\Product\DTO\Response;
 
-class ProductCategoryReqDto
+class ProductCategoryRespDto
 {
     private int $id;
 

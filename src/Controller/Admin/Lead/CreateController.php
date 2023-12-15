@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Lead;
 
-use App\Dto\Admin\Lead\Request\LeadReqDto;
+use App\Controller\Admin\Lead\DTO\Request\LeadReqDto;
 use App\Entity\User\Project;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
