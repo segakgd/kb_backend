@@ -14,17 +14,22 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[OA\Tag(name: 'ProductCategory')]
 #[OA\Response(
-    response: Response::HTTP_NO_CONTENT,
+    response: Response::HTTP_OK,
     description: '', // todo You need to write a description
-    content: new Model(
-        type: ProductCategoryRespDto::class,
+    content: new OA\JsonContent(
+        type: 'array',
+        items: new OA\Items(
+            ref: new Model(
+                type: ProductCategoryRespDto::class
+            )
+        )
     ),
 )]
-class GetOneController extends AbstractController
+class ViewAllController extends AbstractController
 {
-    #[Route('/api/admin/project/{project}/productCategory/{productCategoryId}/', name: 'admin_product_category_get_one', methods: ['GET'])]
+    #[Route('/api/admin/project/{project}/productCategory/', name: 'admin_product_category_get_all', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Project $project, int $productCategoryId): JsonResponse
+    public function execute(Project $project): JsonResponse
     {
         return new JsonResponse();
     }
