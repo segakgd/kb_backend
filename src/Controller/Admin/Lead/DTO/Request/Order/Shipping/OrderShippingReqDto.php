@@ -13,9 +13,11 @@ class OrderShippingReqDto
         return $this->id;
     }
 
-    public function setId(int $id): void
+    public function setId(int $id): self
     {
         $this->id = $id;
+
+        return $this;
     }
 
     public function getTotalAmount(): int
@@ -23,8 +25,10 @@ class OrderShippingReqDto
         return $this->totalAmount;
     }
 
-    public function setTotalAmount(int $totalAmount): void
+    public function setTotalAmount(int $totalAmount): self
     {
         $this->totalAmount = $totalAmount;
+
+        return $this;
     }
 }

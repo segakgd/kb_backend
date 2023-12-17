@@ -25,9 +25,11 @@ class OrderRespDto
         return $this->products;
     }
 
-    public function addProduct(ProductRespDto $product): void
+    public function addProduct(ProductRespDto $product): self
     {
         $this->products[] = $product;
+
+        return $this;
     }
 
     public function getShipping(): ShippingRespDto
@@ -35,9 +37,11 @@ class OrderRespDto
         return $this->shipping;
     }
 
-    public function setShipping(ShippingRespDto $shipping): void
+    public function setShipping(ShippingRespDto $shipping): self
     {
         $this->shipping = $shipping;
+
+        return $this;
     }
 
     public function getPromotions(): array
@@ -45,9 +49,11 @@ class OrderRespDto
         return $this->promotions;
     }
 
-    public function addPromotion(PromotionRespDto $promotion): void
+    public function addPromotion(PromotionRespDto $promotion): self
     {
         $this->promotions[] = $promotion;
+
+        return $this;
     }
 
     public function getPayment(): PaymentRespDto
@@ -55,9 +61,11 @@ class OrderRespDto
         return $this->payment;
     }
 
-    public function setPayment(PaymentRespDto $payment): void
+    public function setPayment(PaymentRespDto $payment): self
     {
         $this->payment = $payment;
+
+        return $this;
     }
 
     public function getCreatedAt(): DateTimeImmutable
@@ -65,8 +73,10 @@ class OrderRespDto
         return $this->createdAt;
     }
 
-    public function setCreatedAt(DateTimeImmutable $createdAt): void
+    public function setCreatedAt(DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
     }
 }

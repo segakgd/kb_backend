@@ -15,9 +15,11 @@ class AllLeadContactsRespDto
         return $this->phone;
     }
 
-    public function setPhone(AllLeadContactRespDto $phone): void
+    public function setPhone(AllLeadContactRespDto $phone): self
     {
         $this->phone = $phone;
+
+        return $this;
     }
 
     public function getMail(): AllLeadContactRespDto
@@ -25,9 +27,11 @@ class AllLeadContactsRespDto
         return $this->mail;
     }
 
-    public function setMail(AllLeadContactRespDto $mail): void
+    public function setMail(AllLeadContactRespDto $mail): self
     {
         $this->mail = $mail;
+
+        return $this;
     }
 
     public function getTelegram(): AllLeadContactRespDto
@@ -35,8 +39,10 @@ class AllLeadContactsRespDto
         return $this->telegram;
     }
 
-    public function setTelegram(AllLeadContactRespDto $telegram): void
+    public function setTelegram(AllLeadContactRespDto $telegram): self
     {
         $this->telegram = $telegram;
+
+        return $this;
     }
 }

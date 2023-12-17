@@ -21,9 +21,11 @@ class FilterLeadsReqDto
         return $this->script;
     }
 
-    public function setScript(string $script): void
+    public function setScript(string $script): self
     {
         $this->script = $script;
+
+        return $this;
     }
 
     public function getMessenger(): string
@@ -31,8 +33,10 @@ class FilterLeadsReqDto
         return $this->messenger;
     }
 
-    public function setMessenger(string $messenger): void
+    public function setMessenger(string $messenger): self
     {
         $this->messenger = $messenger;
+
+        return $this;
     }
 }

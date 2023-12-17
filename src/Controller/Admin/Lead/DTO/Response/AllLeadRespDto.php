@@ -42,9 +42,11 @@ class AllLeadRespDto
         return $this->number;
     }
 
-    public function setNumber(int $number): void
+    public function setNumber(int $number): self
     {
         $this->number = $number;
+
+        return $this;
     }
 
     public function getStatus(): string
@@ -52,9 +54,11 @@ class AllLeadRespDto
         return $this->status;
     }
 
-    public function setStatus(string $status): void
+    public function setStatus(string $status): self
     {
         $this->status = $status;
+
+        return $this;
     }
 
     public function getFullName(): string
@@ -62,9 +66,11 @@ class AllLeadRespDto
         return $this->fullName;
     }
 
-    public function setFullName(string $fullName): void
+    public function setFullName(string $fullName): self
     {
         $this->fullName = $fullName;
+
+        return $this;
     }
 
     public function getCost(): int
@@ -72,9 +78,11 @@ class AllLeadRespDto
         return $this->cost;
     }
 
-    public function setCost(int $cost): void
+    public function setCost(int $cost): self
     {
         $this->cost = $cost;
+
+        return $this;
     }
 
     public function getCostWithFraction(): string
@@ -82,9 +90,11 @@ class AllLeadRespDto
         return $this->costWithFraction;
     }
 
-    public function setCostWithFraction(string $costWithFraction): void
+    public function setCostWithFraction(string $costWithFraction): self
     {
         $this->costWithFraction = $costWithFraction;
+
+        return $this;
     }
 
     public function getContacts(): AllLeadContactsRespDto
@@ -92,9 +102,11 @@ class AllLeadRespDto
         return $this->contacts;
     }
 
-    public function setContacts(AllLeadContactsRespDto $contacts): void
+    public function setContacts(AllLeadContactsRespDto $contacts): self
     {
         $this->contacts = $contacts;
+
+        return $this;
     }
 
     public function getType(): string
@@ -102,9 +114,11 @@ class AllLeadRespDto
         return $this->type;
     }
 
-    public function setType(string $type): void
+    public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
     }
 
     public function isPaymentStatus(): bool
@@ -112,8 +126,10 @@ class AllLeadRespDto
         return $this->paymentStatus;
     }
 
-    public function setPaymentStatus(bool $paymentStatus): void
+    public function setPaymentStatus(bool $paymentStatus): self
     {
         $this->paymentStatus = $paymentStatus;
+
+        return $this;
     }
 }

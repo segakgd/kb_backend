@@ -4,10 +4,13 @@ namespace App\Controller\Admin\Lead\DTO\Response\Order\Product;
 
 class ProductRespDto
 {
+    const TYPE_SERVICE = 'service';
+
+    const TYPE_PRODUCT = 'product';
+
     private string $name;
 
-    /** product, service */
-    private string $type;
+    private string $type; // product, service
 
     private ProductCategoryRespDto $category;
 
@@ -15,20 +18,22 @@ class ProductRespDto
 
     private string $image;
 
-    private int $totalCount = 0;
+    private ?int $totalCount = null;
 
     private int $totalAmount = 0;
 
-    private string $totalAmountWithFraction = '0';// todo WF
+    private string $totalAmountWF = '0';
 
     public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName(string $name): void
+    public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
     }
 
     public function getType(): string
@@ -36,9 +41,11 @@ class ProductRespDto
         return $this->type;
     }
 
-    public function setType(string $type): void
+    public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
     }
 
     public function getCategory(): ProductCategoryRespDto
@@ -46,9 +53,11 @@ class ProductRespDto
         return $this->category;
     }
 
-    public function setCategory(ProductCategoryRespDto $category): void
+    public function setCategory(ProductCategoryRespDto $category): self
     {
         $this->category = $category;
+
+        return $this;
     }
 
     public function getVariant(): ProductVariantRespDto
@@ -56,9 +65,11 @@ class ProductRespDto
         return $this->variant;
     }
 
-    public function setVariant(ProductVariantRespDto $variant): void
+    public function setVariant(ProductVariantRespDto $variant): self
     {
         $this->variant = $variant;
+
+        return $this;
     }
 
     public function getImage(): string
@@ -66,9 +77,11 @@ class ProductRespDto
         return $this->image;
     }
 
-    public function setImage(string $image): void
+    public function setImage(string $image): self
     {
         $this->image = $image;
+
+        return $this;
     }
 
     public function getTotalCount(): int
@@ -76,9 +89,11 @@ class ProductRespDto
         return $this->totalCount;
     }
 
-    public function setTotalCount(int $totalCount): void
+    public function setTotalCount(?int $totalCount): self
     {
         $this->totalCount = $totalCount;
+
+        return $this;
     }
 
     public function getTotalAmount(): int
@@ -86,18 +101,22 @@ class ProductRespDto
         return $this->totalAmount;
     }
 
-    public function setTotalAmount(int $totalAmount): void
+    public function setTotalAmount(int $totalAmount): self
     {
         $this->totalAmount = $totalAmount;
+
+        return $this;
     }
 
-    public function getTotalAmountWithFraction(): string
+    public function getTotalAmountWF(): string
     {
-        return $this->totalAmountWithFraction;
+        return $this->totalAmountWF;
     }
 
-    public function setTotalAmountWithFraction(string $totalAmountWithFraction): void
+    public function setTotalAmountWF(string $totalAmountWithFraction): self
     {
-        $this->totalAmountWithFraction = $totalAmountWithFraction;
+        $this->totalAmountWF = $totalAmountWithFraction;
+
+        return $this;
     }
 }

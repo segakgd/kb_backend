@@ -2,7 +2,8 @@
 
 namespace App\Controller\Admin\Lead;
 
-use App\Controller\Admin\Lead\DTO\Request\LeadReqDto;
+use App\Controller\Admin\Lead\DTO\Request\FilterLeadsReqDto;
+use App\Controller\Admin\Lead\DTO\Response\AllLeadRespDto;
 use App\Entity\User\Project;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -18,14 +19,22 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[OA\Tag(name: 'Lead')]
 #[OA\RequestBody(
     content: new Model(
-        type: LeadReqDto::class,
+        type: FilterLeadsReqDto::class,
     )
 )]
 #[OA\Response(
-    response: Response::HTTP_NO_CONTENT,
-    description: 'Возвращает 204 при создании',
+    response: Response::HTTP_OK,
+    description: 'Возвращает коллекцию заявок',
+    content: new OA\JsonContent(
+        type: 'array',
+        items: new OA\Items(
+            ref: new Model(
+                type: AllLeadRespDto::class
+            )
+        )
+    ),
 )]
-class CreateController extends AbstractController
+class ViewAllController extends AbstractController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,
@@ -33,13 +42,13 @@ class CreateController extends AbstractController
     ) {
     }
 
-    #[Route('/api/admin/project/{project}/lead/', name: 'admin_lead_create', methods: ['POST'])]
+    #[Route('/api/admin/project/{project}/lead/', name: 'admin_lead_get_all', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project): JsonResponse
     {
         $content = $request->getContent();
 
-        $requestDto = $this->serializer->deserialize($content, LeadReqDto::class, 'json');
+        $requestDto = $this->serializer->deserialize($content, FilterLeadsReqDto::class, 'json');
 
         $errors = $this->validator->validate($requestDto);
 
@@ -49,6 +58,11 @@ class CreateController extends AbstractController
 
         // todo ... тут мы должны обратиться к сервису или менеджеру ...
 
-        return new JsonResponse('', 204);
+        return new JsonResponse(
+            [
+                new AllLeadRespDto(),
+                new AllLeadRespDto(),
+            ]
+        );
     }
 }

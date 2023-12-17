@@ -20,9 +20,11 @@ class OrderReqDto
         return $this->products;
     }
 
-    public function addProduct(OrderProductReqDto $product): void
+    public function addProduct(OrderProductReqDto $product): self
     {
         $this->products[] = $product;
+
+        return $this;
     }
 
     public function getShipping(): OrderShippingReqDto
@@ -30,9 +32,11 @@ class OrderReqDto
         return $this->shipping;
     }
 
-    public function setShipping(OrderShippingReqDto $shipping): void
+    public function setShipping(OrderShippingReqDto $shipping): self
     {
         $this->shipping = $shipping;
+
+        return $this;
     }
 
     public function getPromotions(): array
@@ -40,8 +44,10 @@ class OrderReqDto
         return $this->promotions;
     }
 
-    public function addPromotion(OrderPromotionReqDto $promotion): void
+    public function addPromotion(OrderPromotionReqDto $promotion): self
     {
         $this->promotions[] = $promotion;
+
+        return $this;
     }
 }

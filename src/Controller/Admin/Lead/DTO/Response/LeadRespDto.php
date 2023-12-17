@@ -11,13 +11,23 @@ use DateTimeImmutable;
 
 class LeadRespDto
 {
+    const LEAD_STATUS_NEW = 'new';
+
+    const LEAD_STATUS_PROCESS = 'process';
+
+    const LEAD_STATUS_SUSPENDED = 'suspended';
+
+    const LEAD_STATUS_REJECTED = 'rejected';
+
+    const LEAD_STATUS_SUCCESSFUL = 'successful';
+
     private int $number;
 
     private LeadContactsRespDto $contacts;
 
     private array $fields;
 
-    private string $status;
+    private string $status; // new process suspended rejected successful
 
     private OrderRespDto $order;
 
@@ -32,9 +42,11 @@ class LeadRespDto
         return $this->number;
     }
 
-    public function setNumber(int $number): void
+    public function setNumber(int $number): self
     {
         $this->number = $number;
+
+        return $this;
     }
 
     public function getContacts(): LeadContactsRespDto
@@ -42,9 +54,11 @@ class LeadRespDto
         return $this->contacts;
     }
 
-    public function setContacts(LeadContactsRespDto $contacts): void
+    public function setContacts(LeadContactsRespDto $contacts): self
     {
         $this->contacts = $contacts;
+
+        return $this;
     }
 
     public function getFields(): array
@@ -52,9 +66,11 @@ class LeadRespDto
         return $this->fields;
     }
 
-    public function addField(LeadFieldRespDto $fields): void
+    public function addField(LeadFieldRespDto $fields): self
     {
         $this->fields[] = $fields;
+
+        return $this;
     }
 
     public function getStatus(): string
@@ -62,9 +78,11 @@ class LeadRespDto
         return $this->status;
     }
 
-    public function setStatus(string $status): void
+    public function setStatus(string $status): self
     {
         $this->status = $status;
+
+        return $this;
     }
 
     public function getOrder(): OrderRespDto
@@ -72,9 +90,11 @@ class LeadRespDto
         return $this->order;
     }
 
-    public function setOrder(OrderRespDto $order): void
+    public function setOrder(OrderRespDto $order): self
     {
         $this->order = $order;
+
+        return $this;
     }
 
     public function getChanel(): LeadChanelRespDto
@@ -82,9 +102,11 @@ class LeadRespDto
         return $this->chanel;
     }
 
-    public function setChanel(LeadChanelRespDto $chanel): void
+    public function setChanel(LeadChanelRespDto $chanel): self
     {
         $this->chanel = $chanel;
+
+        return $this;
     }
 
     public function getScript(): LeadScriptRespDto
@@ -92,9 +114,11 @@ class LeadRespDto
         return $this->script;
     }
 
-    public function setScript(LeadScriptRespDto $script): void
+    public function setScript(LeadScriptRespDto $script): self
     {
         $this->script = $script;
+
+        return $this;
     }
 
     public function getCreatedAt(): DateTimeImmutable
@@ -102,8 +126,10 @@ class LeadRespDto
         return $this->createdAt;
     }
 
-    public function setCreatedAt(DateTimeImmutable $createdAt): void
+    public function setCreatedAt(DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
     }
 }
