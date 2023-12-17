@@ -6,6 +6,22 @@ use DateTimeImmutable;
 
 class HistoryRespDto
 {
+    const HISTORY_STATUS_ERROR = 'error'; // todo потом вынести из dto
+
+    const HISTORY_STATUS_SUCCESS = 'success'; // todo потом вынести из dto
+
+    const HISTORY_STATUS_PROCESS = 'process'; // todo потом вынести из dto
+
+    const HISTORY_TYPE_LEAD_NEW = 'newLead'; // todo потом вынести из dto
+
+    const HISTORY_TYPE_MESSAGE_SENDING = 'sendingMessage'; // todo потом вынести из dto
+
+    const HISTORY_TYPE_LOGIN = 'login'; // todo потом вынести из dto
+
+    const SENDER_TELEGRAM = 'telegram'; // todo потом вынести из dto
+
+    const SENDER_VK = 'vk'; // todo потом вынести из dto
+
     private DateTimeImmutable $createdAt;
 
     private string $type; // newLead, sendingMessage, login
@@ -23,9 +39,11 @@ class HistoryRespDto
         return $this->createdAt;
     }
 
-    public function setCreatedAt(DateTimeImmutable $createdAt): void
+    public function setCreatedAt(DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
     }
 
     public function getType(): string
@@ -33,9 +51,11 @@ class HistoryRespDto
         return $this->type;
     }
 
-    public function setType(string $type): void
+    public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
     }
 
     public function getStatus(): string
@@ -43,9 +63,11 @@ class HistoryRespDto
         return $this->status;
     }
 
-    public function setStatus(string $status): void
+    public function setStatus(string $status): self
     {
         $this->status = $status;
+
+        return $this;
     }
 
     public function getSender(): string
@@ -53,9 +75,11 @@ class HistoryRespDto
         return $this->sender;
     }
 
-    public function setSender(string $sender): void
+    public function setSender(string $sender): self
     {
         $this->sender = $sender;
+
+        return $this;
     }
 
     public function getRecipient(): string
@@ -63,9 +87,11 @@ class HistoryRespDto
         return $this->recipient;
     }
 
-    public function setRecipient(string $recipient): void
+    public function setRecipient(string $recipient): self
     {
         $this->recipient = $recipient;
+
+        return $this;
     }
 
     public function getError(): HistoryErrorRespDto
@@ -73,8 +99,10 @@ class HistoryRespDto
         return $this->error;
     }
 
-    public function setError(HistoryErrorRespDto $error): void
+    public function setError(HistoryErrorRespDto $error): self
     {
         $this->error = $error;
+
+        return $this;
     }
 }

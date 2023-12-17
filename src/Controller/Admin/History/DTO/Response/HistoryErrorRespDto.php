@@ -13,9 +13,11 @@ class HistoryErrorRespDto
         return $this->code;
     }
 
-    public function setCode(string $code): void
+    public function setCode(string $code): self
     {
         $this->code = $code;
+
+        return $this;
     }
 
     public function getContext(): array
@@ -23,8 +25,10 @@ class HistoryErrorRespDto
         return $this->context;
     }
 
-    public function addContext(HistoryErrorRespDtoInterface $context): void
+    public function addContext(HistoryErrorRespDtoInterface $context): self
     {
         $this->context[] = $context;
+
+        return $this;
     }
 }

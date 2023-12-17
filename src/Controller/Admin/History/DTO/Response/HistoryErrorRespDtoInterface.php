@@ -6,5 +6,5 @@ interface HistoryErrorRespDtoInterface
 {
     public function getMessage(): string;
 
-    public function setMessage(string $message): void;
+    public function setMessage(string $message): self;
 }

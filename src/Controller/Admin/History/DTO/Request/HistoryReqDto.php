@@ -4,15 +4,17 @@ namespace App\Controller\Admin\History\DTO\Request;
 
 class HistoryReqDto
 {
-    private string $filter; // type, status, dateTime, sender, recipient
+    private ?string $filter = null; // type, status, dateTime, sender, recipient
 
-    public function getFilter(): string
+    public function getFilter(): ?string
     {
         return $this->filter;
     }
 
-    public function setFilter(string $filter): void
+    public function setFilter(?string $filter): self
     {
         $this->filter = $filter;
+
+        return $this;
     }
 }
