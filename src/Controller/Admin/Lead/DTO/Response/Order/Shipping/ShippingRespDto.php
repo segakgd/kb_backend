@@ -4,6 +4,10 @@ namespace App\Controller\Admin\Lead\DTO\Response\Order\Shipping;
 
 class ShippingRespDto
 {
+    const TYPE_COURIER = 'courier';
+
+    const TYPE_PICKUP = 'pickup';
+
     private string $name;
 
     /** courier - курьер, pickup - самовывоз */
@@ -11,16 +15,18 @@ class ShippingRespDto
 
     private int $totalAmount = 0;
 
-    private string $totalAmountWithFraction = '0'; // todo WF
+    private string $totalAmountWF = '0';
 
     public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName(string $name): void
+    public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
     }
 
     public function getType(): string
@@ -28,9 +34,11 @@ class ShippingRespDto
         return $this->type;
     }
 
-    public function setType(string $type): void
+    public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
     }
 
     public function getTotalAmount(): int
@@ -38,18 +46,22 @@ class ShippingRespDto
         return $this->totalAmount;
     }
 
-    public function setTotalAmount(int $totalAmount): void
+    public function setTotalAmount(int $totalAmount): self
     {
         $this->totalAmount = $totalAmount;
+
+        return $this;
     }
 
-    public function getTotalAmountWithFraction(): string
+    public function getTotalAmountWF(): string
     {
-        return $this->totalAmountWithFraction;
+        return $this->totalAmountWF;
     }
 
-    public function setTotalAmountWithFraction(string $totalAmountWithFraction): void
+    public function setTotalAmountWF(string $totalAmountWithFraction): self
     {
-        $this->totalAmountWithFraction = $totalAmountWithFraction;
+        $this->totalAmountWF = $totalAmountWithFraction;
+
+        return $this;
     }
 }

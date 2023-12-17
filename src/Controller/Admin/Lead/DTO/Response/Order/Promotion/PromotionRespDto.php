@@ -4,6 +4,10 @@ namespace App\Controller\Admin\Lead\DTO\Response\Order\Promotion;
 
 class PromotionRespDto
 {
+    const CALCULATION_TYPE_PERCENT = 'percent';
+
+    const CALCULATION_TYPE_FIXED = 'fixed';
+
     private string $name;
 
     /** Могут быть как percent так и fixed */
@@ -16,16 +20,18 @@ class PromotionRespDto
 
     private int $totalAmount = 0;
 
-    private string $totalAmountWithFraction = '0'; // todo WF
+    private string $totalAmountWF = '0';
 
     public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName(string $name): void
+    public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
     }
 
     public function getCalculationType(): string
@@ -33,9 +39,11 @@ class PromotionRespDto
         return $this->calculationType;
     }
 
-    public function setCalculationType(string $calculationType): void
+    public function setCalculationType(string $calculationType): self
     {
         $this->calculationType = $calculationType;
+
+        return $this;
     }
 
     public function getCode(): string
@@ -43,9 +51,11 @@ class PromotionRespDto
         return $this->code;
     }
 
-    public function setCode(string $code): void
+    public function setCode(string $code): self
     {
         $this->code = $code;
+
+        return $this;
     }
 
     public function getDiscount(): int
@@ -53,9 +63,11 @@ class PromotionRespDto
         return $this->discount;
     }
 
-    public function setDiscount(int $discount): void
+    public function setDiscount(int $discount): self
     {
         $this->discount = $discount;
+
+        return $this;
     }
 
     public function getTotalAmount(): int
@@ -63,18 +75,22 @@ class PromotionRespDto
         return $this->totalAmount;
     }
 
-    public function setTotalAmount(int $totalAmount): void
+    public function setTotalAmount(int $totalAmount): self
     {
         $this->totalAmount = $totalAmount;
+
+        return $this;
     }
 
-    public function getTotalAmountWithFraction(): string
+    public function getTotalAmountWF(): string
     {
-        return $this->totalAmountWithFraction;
+        return $this->totalAmountWF;
     }
 
-    public function setTotalAmountWithFraction(string $totalAmountWithFraction): void
+    public function setTotalAmountWF(string $totalAmountWithFraction): self
     {
-        $this->totalAmountWithFraction = $totalAmountWithFraction;
+        $this->totalAmountWF = $totalAmountWithFraction;
+
+        return $this;
     }
 }

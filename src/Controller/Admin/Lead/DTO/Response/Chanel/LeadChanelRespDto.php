@@ -13,9 +13,11 @@ class LeadChanelRespDto
         return $this->name;
     }
 
-    public function setName(string $name): void
+    public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
     }
 
     public function getLink(): string
@@ -23,8 +25,10 @@ class LeadChanelRespDto
         return $this->link;
     }
 
-    public function setLink(string $link): void
+    public function setLink(string $link): self
     {
         $this->link = $link;
+
+        return $this;
     }
 }

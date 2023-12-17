@@ -15,9 +15,11 @@ class OrderProductReqDto
         return $this->variants;
     }
 
-    public function addVariant(OrderVariantReqDto $variant): void
+    public function addVariant(OrderVariantReqDto $variant): self
     {
         $this->variants[] = $variant;
+
+        return $this;
     }
 
     public function getTotalCount(): int
@@ -25,9 +27,11 @@ class OrderProductReqDto
         return $this->totalCount;
     }
 
-    public function setTotalCount(int $totalCount): void
+    public function setTotalCount(int $totalCount): self
     {
         $this->totalCount = $totalCount;
+
+        return $this;
     }
 
     public function getTotalAmount(): int
@@ -35,8 +39,10 @@ class OrderProductReqDto
         return $this->totalAmount;
     }
 
-    public function setTotalAmount(int $totalAmount): void
+    public function setTotalAmount(int $totalAmount): self
     {
         $this->totalAmount = $totalAmount;
+
+        return $this;
     }
 }

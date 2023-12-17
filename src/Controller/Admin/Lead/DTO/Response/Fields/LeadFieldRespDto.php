@@ -15,9 +15,11 @@ class LeadFieldRespDto
         return $this->type;
     }
 
-    public function setType(string $type): void
+    public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
     }
 
     public function getName(): string
@@ -25,9 +27,11 @@ class LeadFieldRespDto
         return $this->name;
     }
 
-    public function setName(string $name): void
+    public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
     }
 
     public function getValue(): int|string
@@ -35,8 +39,10 @@ class LeadFieldRespDto
         return $this->value;
     }
 
-    public function setValue(int|string $value): void
+    public function setValue(int|string $value): self
     {
         $this->value = $value;
+
+        return $this;
     }
 }

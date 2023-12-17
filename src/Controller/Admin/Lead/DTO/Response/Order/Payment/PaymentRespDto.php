@@ -16,18 +16,21 @@ class PaymentRespDto
 
     private int $promotionSum = 0;
 
-    private int $totalPrice = 0;
+    private int $totalAmount = 0;
 
-    private string $totalPriceWithFraction = '0'; // todo WF
+    private string $totalAmountWF = '0';
+
 
     public function isPaymentStatus(): bool
     {
         return $this->paymentStatus;
     }
 
-    public function setPaymentStatus(bool $paymentStatus): void
+    public function setPaymentStatus(bool $paymentStatus): self
     {
         $this->paymentStatus = $paymentStatus;
+
+        return $this;
     }
 
     public function getProductPrice(): int
@@ -35,9 +38,11 @@ class PaymentRespDto
         return $this->productPrice;
     }
 
-    public function setProductPrice(int $productPrice): void
+    public function setProductPrice(int $productPrice): self
     {
         $this->productPrice = $productPrice;
+
+        return $this;
     }
 
     public function getShippingPrice(): int
@@ -45,9 +50,11 @@ class PaymentRespDto
         return $this->shippingPrice;
     }
 
-    public function setShippingPrice(int $shippingPrice): void
+    public function setShippingPrice(int $shippingPrice): self
     {
         $this->shippingPrice = $shippingPrice;
+
+        return $this;
     }
 
     public function getPromotionSum(): int
@@ -55,28 +62,34 @@ class PaymentRespDto
         return $this->promotionSum;
     }
 
-    public function setPromotionSum(int $promotionSum): void
+    public function setPromotionSum(int $promotionSum): self
     {
         $this->promotionSum = $promotionSum;
+
+        return $this;
     }
 
-    public function getTotalPrice(): int
+    public function getTotalAmount(): int
     {
-        return $this->totalPrice;
+        return $this->totalAmount;
     }
 
-    public function setTotalPrice(int $totalPrice): void
+    public function setTotalAmount(int $totalAmount): self
     {
-        $this->totalPrice = $totalPrice;
+        $this->totalAmount = $totalAmount;
+
+        return $this;
     }
 
-    public function getTotalPriceWithFraction(): string
+    public function getTotalAmountWF(): string
     {
-        return $this->totalPriceWithFraction;
+        return $this->totalAmountWF;
     }
 
-    public function setTotalPriceWithFraction(string $totalPriceWithFraction): void
+    public function setTotalAmountWF(string $totalAmountWF): self
     {
-        $this->totalPriceWithFraction = $totalPriceWithFraction;
+        $this->totalAmountWF = $totalAmountWF;
+
+        return $this;
     }
 }

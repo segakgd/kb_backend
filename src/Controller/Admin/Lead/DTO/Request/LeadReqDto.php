@@ -18,9 +18,11 @@ class LeadReqDto
         return $this->contacts;
     }
 
-    public function addContacts(LeadFieldReqDto $contact): void
+    public function addContacts(LeadFieldReqDto $contact): self
     {
         $this->contacts[] = $contact;
+
+        return $this;
     }
 
     public function getFields(): array
@@ -28,9 +30,11 @@ class LeadReqDto
         return $this->fields;
     }
 
-    public function addFields(LeadFieldReqDto $field): void
+    public function addFields(LeadFieldReqDto $field): self
     {
         $this->fields[] = $field;
+
+        return $this;
     }
 
     public function getOrder(): OrderReqDto
@@ -38,8 +42,10 @@ class LeadReqDto
         return $this->order;
     }
 
-    public function setOrder(OrderReqDto $order): void
+    public function setOrder(OrderReqDto $order): self
     {
         $this->order = $order;
+
+        return $this;
     }
 }

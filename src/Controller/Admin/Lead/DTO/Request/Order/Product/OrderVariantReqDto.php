@@ -15,9 +15,11 @@ class OrderVariantReqDto
         return $this->id;
     }
 
-    public function setId(int $id): void
+    public function setId(int $id): self
     {
         $this->id = $id;
+
+        return $this;
     }
 
     public function getCount(): int
@@ -25,9 +27,11 @@ class OrderVariantReqDto
         return $this->count;
     }
 
-    public function setCount(int $count): void
+    public function setCount(int $count): self
     {
         $this->count = $count;
+
+        return $this;
     }
 
     public function getPrice(): int
@@ -35,8 +39,10 @@ class OrderVariantReqDto
         return $this->price;
     }
 
-    public function setPrice(int $price): void
+    public function setPrice(int $price): self
     {
         $this->price = $price;
+
+        return $this;
     }
 }

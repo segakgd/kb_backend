@@ -14,7 +14,7 @@ class ViewAllControllerTest extends ApiTestCase
     use ProjectTrait;
 
     /**
-     * @dataProvider positiveVariantsOrder
+     * @dataProvider positive
      *
      * @throws Exception
      */
@@ -43,7 +43,7 @@ class ViewAllControllerTest extends ApiTestCase
     }
 
 
-    private function positiveVariantsOrder(): iterable
+    private function positive(): iterable
     {
         yield [
             [
