@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Controller\Admin\Lead;
+namespace App\Controller\Admin\Product;
 
-use App\Controller\Admin\Lead\DTO\Request\FilterLeadsReqDto;
-use App\Controller\Admin\Lead\DTO\Response\AllLeadRespDto;
+use App\Controller\Admin\Product\DTO\Response\AllProductRespDto;
 use App\Entity\User\Project;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -13,35 +12,26 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[OA\Tag(name: 'Lead')]
-#[OA\RequestBody(
-    content: new Model(
-        type: FilterLeadsReqDto::class,
-    )
-)]
 #[OA\Response(
     response: Response::HTTP_OK,
-    description: 'Возвращает коллекцию заявок',
+    description: 'Возвращает коллекцию товаров',
     content: new OA\JsonContent(
         type: 'array',
         items: new OA\Items(
             ref: new Model(
-                type: AllLeadRespDto::class
+                type: AllProductRespDto::class
             )
         )
     ),
 )]
-class AllListController extends AbstractController
+#[OA\Tag(name: 'Product')]
+class ViewAllController extends AbstractController
 {
-    #[Route('/api/admin/project/{project}/lead/', name: 'admin_lead_get_all', methods: ['GET'])]
+    /** Получение всех продуктов */
+    #[Route('/api/admin/project/{project}/product/', name: 'admin_product_get_all', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project): JsonResponse
     {
-        return new JsonResponse(
-            [
-                new AllLeadRespDto(),
-                new AllLeadRespDto(),
-            ]
-        );
+        return new JsonResponse();
     }
 }

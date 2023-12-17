@@ -20,7 +20,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
         type: LeadRespDto::class
     ),
 )]
-class OneListController extends AbstractController
+class ViewOneController extends AbstractController
 {
     #[Route('/api/admin/project/{project}/lead/{leadId}/', name: 'admin_lead_get_one', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
