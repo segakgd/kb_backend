@@ -2,8 +2,8 @@
 
 namespace App\Service\Admin\Ecommerce\Deal;
 
-use App\Dto\Ecommerce\DealDto;
-use App\Dto\Ecommerce\OrderDto;
+use App\Dto\deprecated\Ecommerce\DealDto;
+use App\Dto\deprecated\Ecommerce\OrderDto;
 use App\Entity\Lead\Deal;
 use App\Entity\Lead\DealOrder;
 use App\Repository\Lead\DealEntityRepository;

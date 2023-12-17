@@ -2,7 +2,7 @@
 
 namespace App\Service\Common\Project;
 
-use App\Dto\Project\ProjectDto;
+use App\Dto\deprecated\Project\ProjectDto;
 use App\Entity\User\Project;
 use App\Entity\User\User;
 

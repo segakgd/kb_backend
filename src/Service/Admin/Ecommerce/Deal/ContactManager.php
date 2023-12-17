@@ -2,7 +2,7 @@
 
 namespace App\Service\Admin\Ecommerce\Deal;
 
-use App\Dto\Ecommerce\ContactsDto;
+use App\Dto\deprecated\Ecommerce\ContactsDto;
 use App\Entity\Lead\DealContacts;
 use App\Repository\Lead\ContactsEntityRepository;
 use DateTimeImmutable;

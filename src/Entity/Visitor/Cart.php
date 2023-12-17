@@ -2,10 +2,10 @@
 
 namespace App\Entity\Visitor;
 
-use App\Dto\Ecommerce\ContactsDto;
-use App\Dto\Ecommerce\ProductDto;
-use App\Dto\Ecommerce\PromotionDto;
-use App\Dto\Ecommerce\ShippingDto;
+use App\Dto\deprecated\Ecommerce\ContactsDto;
+use App\Dto\deprecated\Ecommerce\ProductDto;
+use App\Dto\deprecated\Ecommerce\PromotionDto;
+use App\Dto\deprecated\Ecommerce\ShippingDto;
 use App\Repository\Visitor\CartRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;

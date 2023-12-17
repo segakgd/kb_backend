@@ -2,7 +2,7 @@
 
 namespace App\Service\Admin\Ecommerce\Deal;
 
-use App\Dto\Ecommerce\FieldDto;
+use App\Dto\deprecated\Ecommerce\FieldDto;
 use App\Entity\Lead\DealField;
 
 interface FieldManagerInterface

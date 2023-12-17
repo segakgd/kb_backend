@@ -2,7 +2,7 @@
 
 namespace App\Service\Admin\Ecommerce\ProductVariant;
 
-use App\Dto\Ecommerce\ProductVariantDto;
+use App\Dto\deprecated\Ecommerce\ProductVariantDto;
 use App\Entity\Ecommerce\ProductVariant;
 
 interface ProductVariantManagerInterface
