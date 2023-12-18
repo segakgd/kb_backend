@@ -20,7 +20,6 @@ class PaymentRespDto
 
     private string $totalAmountWF = '0';
 
-
     public function isPaymentStatus(): bool
     {
         return $this->paymentStatus;
