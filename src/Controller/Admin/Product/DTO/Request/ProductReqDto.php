@@ -25,9 +25,11 @@ class ProductReqDto
         return $this->name;
     }
 
-    public function setName(string $name): void
+    public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
     }
 
     public function getArticle(): string
@@ -35,9 +37,11 @@ class ProductReqDto
         return $this->article;
     }
 
-    public function setArticle(string $article): void
+    public function setArticle(string $article): self
     {
         $this->article = $article;
+
+        return $this;
     }
 
     public function getType(): string
@@ -45,9 +49,11 @@ class ProductReqDto
         return $this->type;
     }
 
-    public function setType(string $type): void
+    public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
     }
 
     public function isVisible(): bool
@@ -55,9 +61,11 @@ class ProductReqDto
         return $this->visible;
     }
 
-    public function setVisible(bool $visible): void
+    public function setVisible(bool $visible): self
     {
         $this->visible = $visible;
+
+        return $this;
     }
 
     public function getDescription(): string
@@ -65,9 +73,11 @@ class ProductReqDto
         return $this->description;
     }
 
-    public function setDescription(string $description): void
+    public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
     }
 
     public function getImage(): string
@@ -75,9 +85,11 @@ class ProductReqDto
         return $this->image;
     }
 
-    public function setImage(string $image): void
+    public function setImage(string $image): self
     {
         $this->image = $image;
+
+        return $this;
     }
 
     public function getCategory(): array
@@ -85,9 +97,11 @@ class ProductReqDto
         return $this->category;
     }
 
-    public function addCategory(ProductCategoryReqDto $category): void
+    public function addCategory(ProductCategoryReqDto $category): self
     {
         $this->category[] = $category;
+
+        return $this;
     }
 
     public function getVariants(): array
@@ -95,8 +109,10 @@ class ProductReqDto
         return $this->variants;
     }
 
-    public function addVariants(ProductVariantReqDto $variant): void
+    public function addVariants(ProductVariantReqDto $variant): self
     {
         $this->variants[] = $variant;
+
+        return $this;
     }
 }

@@ -27,9 +27,11 @@ class ProductRespDto
         return $this->id;
     }
 
-    public function setId(int $id): void
+    public function setId(int $id): self
     {
         $this->id = $id;
+
+        return $this;
     }
 
     public function getName(): string
@@ -37,9 +39,11 @@ class ProductRespDto
         return $this->name;
     }
 
-    public function setName(string $name): void
+    public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
     }
 
     public function getArticle(): string
@@ -47,9 +51,11 @@ class ProductRespDto
         return $this->article;
     }
 
-    public function setArticle(string $article): void
+    public function setArticle(string $article): self
     {
         $this->article = $article;
+
+        return $this;
     }
 
     public function getType(): string
@@ -57,9 +63,11 @@ class ProductRespDto
         return $this->type;
     }
 
-    public function setType(string $type): void
+    public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
     }
 
     public function isVisible(): bool
@@ -67,9 +75,11 @@ class ProductRespDto
         return $this->visible;
     }
 
-    public function setVisible(bool $visible): void
+    public function setVisible(bool $visible): self
     {
         $this->visible = $visible;
+
+        return $this;
     }
 
     public function getDescription(): string
@@ -77,9 +87,11 @@ class ProductRespDto
         return $this->description;
     }
 
-    public function setDescription(string $description): void
+    public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
     }
 
     public function getImage(): string
@@ -87,9 +99,11 @@ class ProductRespDto
         return $this->image;
     }
 
-    public function setImage(string $image): void
+    public function setImage(string $image): self
     {
         $this->image = $image;
+
+        return $this;
     }
 
     public function getCategory(): array
@@ -97,9 +111,11 @@ class ProductRespDto
         return $this->category;
     }
 
-    public function addCategory(ProductCategoryRespDto $category): void
+    public function addCategory(ProductCategoryRespDto $category): self
     {
         $this->category[] = $category;
+
+        return $this;
     }
 
     public function getVariants(): array
@@ -107,8 +123,10 @@ class ProductRespDto
         return $this->variants;
     }
 
-    public function addVariants(ProductVariantRespDto $variant): void
+    public function addVariants(ProductVariantRespDto $variant): self
     {
         $this->variants[] = $variant;
+
+        return $this;
     }
 }
