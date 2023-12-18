@@ -7,6 +7,7 @@ use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -17,6 +18,6 @@ class UpdateController extends AbstractController
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project, int $leadId): JsonResponse
     {
-        return new JsonResponse(); // todo пока что оставил, позже сделаем этот функционал
+        return new JsonResponse([], Response::HTTP_NO_CONTENT); // todo пока что оставил, позже сделаем этот функционал
     }
 }

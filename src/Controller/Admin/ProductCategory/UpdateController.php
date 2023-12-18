@@ -29,6 +29,6 @@ class UpdateController extends AbstractController
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project, int $productCategoryId): JsonResponse
     {
-        return new JsonResponse();
+        return new JsonResponse([], Response::HTTP_NO_CONTENT);
     }
 }
