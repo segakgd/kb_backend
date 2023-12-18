@@ -26,9 +26,9 @@ class AllLeadRespDto
 
     private string $fullName;
 
-    private int $cost;
+    private int $totalAmount = 0;
 
-    private string $costWithFraction;
+    private string $totalAmountWF = '0';
 
     private AllLeadContactsRespDto $contacts;
 
@@ -73,26 +73,26 @@ class AllLeadRespDto
         return $this;
     }
 
-    public function getCost(): int
+    public function getTotalAmount(): int
     {
-        return $this->cost;
+        return $this->totalAmount;
     }
 
-    public function setCost(int $cost): self
+    public function setTotalAmount(int $totalAmount): self
     {
-        $this->cost = $cost;
+        $this->totalAmount = $totalAmount;
 
         return $this;
     }
 
-    public function getCostWithFraction(): string
+    public function getTotalAmountWF(): string
     {
-        return $this->costWithFraction;
+        return $this->totalAmountWF;
     }
 
-    public function setCostWithFraction(string $costWithFraction): self
+    public function setTotalAmountWF(string $totalAmountWF): self
     {
-        $this->costWithFraction = $costWithFraction;
+        $this->totalAmountWF = $totalAmountWF;
 
         return $this;
     }

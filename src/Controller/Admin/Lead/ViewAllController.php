@@ -3,7 +3,10 @@
 namespace App\Controller\Admin\Lead;
 
 use App\Controller\Admin\Lead\DTO\Request\FilterLeadsReqDto;
+use App\Controller\Admin\Lead\DTO\Response\AllLeadContactRespDto;
+use App\Controller\Admin\Lead\DTO\Response\AllLeadContactsRespDto;
 use App\Controller\Admin\Lead\DTO\Response\AllLeadRespDto;
+use App\Controller\Admin\Lead\DTO\Response\LeadRespDto;
 use App\Entity\User\Project;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -58,11 +61,33 @@ class ViewAllController extends AbstractController
 
         // todo ... тут мы должны обратиться к сервису или менеджеру ...
 
+        $contacts = (new AllLeadContactsRespDto())
+            ->setMail(
+                (new AllLeadContactRespDto())
+                    ->setName('Почта')
+                    ->setType('mail')
+                    ->setValue('mail@mail.fake')
+            )
+        ;
+
+        $fakeLead = (new AllLeadRespDto())
+            ->setType('service')
+            ->setStatus(LeadRespDto::LEAD_STATUS_NEW)
+            ->setNumber(111)
+            ->setContacts($contacts)
+            ->setPaymentStatus(true)
+            ->setTotalAmount(30000)
+            ->setTotalAmountWF('300,00')
+            ->setFullName('Fake Faker Fake')
+        ;
+
         return new JsonResponse(
-            [
-                new AllLeadRespDto(),
-                new AllLeadRespDto(),
-            ]
+            $this->serializer->normalize(
+                [
+                    $fakeLead,
+                    $fakeLead,
+                ]
+            )
         );
     }
 }
