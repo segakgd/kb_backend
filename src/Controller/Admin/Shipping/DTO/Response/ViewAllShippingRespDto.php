@@ -23,9 +23,11 @@ class ViewAllShippingRespDto
         return $this->name;
     }
 
-    public function setName(string $name): void
+    public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
     }
 
     public function getApplyFromAmount(): int
@@ -33,9 +35,11 @@ class ViewAllShippingRespDto
         return $this->applyFromAmount;
     }
 
-    public function setApplyFromAmount(int $applyFromAmount): void
+    public function setApplyFromAmount(int $applyFromAmount): self
     {
         $this->applyFromAmount = $applyFromAmount;
+
+        return $this;
     }
 
     public function getApplyFromAmountWF(): string
@@ -43,9 +47,11 @@ class ViewAllShippingRespDto
         return $this->applyFromAmountWF;
     }
 
-    public function setApplyFromAmountWF(string $applyFromAmountWF): void
+    public function setApplyFromAmountWF(string $applyFromAmountWF): self
     {
         $this->applyFromAmountWF = $applyFromAmountWF;
+
+        return $this;
     }
 
     public function getApplyToAmount(): int
@@ -53,9 +59,11 @@ class ViewAllShippingRespDto
         return $this->applyToAmount;
     }
 
-    public function setApplyToAmount(int $applyToAmount): void
+    public function setApplyToAmount(int $applyToAmount): self
     {
         $this->applyToAmount = $applyToAmount;
+
+        return $this;
     }
 
     public function getApplyToAmountWF(): string
@@ -63,9 +71,11 @@ class ViewAllShippingRespDto
         return $this->applyToAmountWF;
     }
 
-    public function setApplyToAmountWF(string $applyToAmountWF): void
+    public function setApplyToAmountWF(string $applyToAmountWF): self
     {
         $this->applyToAmountWF = $applyToAmountWF;
+
+        return $this;
     }
 
     public function isActive(): bool
@@ -73,9 +83,11 @@ class ViewAllShippingRespDto
         return $this->isActive;
     }
 
-    public function setIsActive(bool $isActive): void
+    public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
+
+        return $this;
     }
 
     public function getType(): string
@@ -83,8 +95,10 @@ class ViewAllShippingRespDto
         return $this->type;
     }
 
-    public function setType(string $type): void
+    public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
     }
 }
