@@ -8,7 +8,7 @@ use App\Tests\Functional\Trait\User\UserTrait;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
-class ViewAllControllerTest extends ApiTestCase
+class ViewOneControllerTest extends ApiTestCase
 {
     use UserTrait;
     use ProjectTrait;
@@ -18,52 +18,48 @@ class ViewAllControllerTest extends ApiTestCase
      *
      * @throws Exception
      */
-    public function testViewAll(array $requestContent, array $response)
+    public function testViewAll(array $response)
     {
         $client = static::createClient();
         $entityManager = $this->getEntityManager();
+
         $user = $this->createUser($entityManager);
         $project = $this->createProject($entityManager, $user);
 
         $client->loginUser($user);
+
         $client->request(
             'GET',
-            '/api/admin/project/'. $project->getId() .'/shipping/',
-            [],
-            [],
-            [],
-            json_encode($requestContent)
+            '/api/admin/project/'. $project->getId() .'/shipping/' . 1 . '/', // todo ВНИМАНИЕ! я пока что поставил 1, но нужно брать существующий продукт
         );
+
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+
         $this->assertResponse($client->getResponse()->getContent(), $response);
     }
 
-    private function positive(): iterable  // todo разобраться с тестом ...
+
+    private function positive(): iterable
     {
         yield [
             [
-                'type' => 'phone',
-                'name' => 'Добавочный телефон',
-                'value' => '2396',
-            ],
-            [
-                [
+                "shipping" => [
                     'name' => 'shipping 1',
-                    'applyFromAmount' => 100,
-                    'applyFromAmountWF' => '100',
-                    'applyToAmount' => 10,
-                    'applyToAmountWF' => '10',
-                    'active' => true,
                     'type' => 'pickup',
-                ],
-                [
-                    'name' => 'shipping 1',
-                    'applyFromAmount' => 100,
+                    'calculationType' => 'percent',
+                    'amount' => 10,
+                    'amountWF' => '100',
+                    'applyFromAmount' => 20,
                     'applyFromAmountWF' => '100',
-                    'applyToAmount' => 10,
-                    'applyToAmountWF' => '10',
-                    'active' => true,
-                    'type' => 'pickup',
+                    'applyToAmount' => 100,
+                    'applyToAmountWF' => '100',
+                    'description' => 'test testtesttes ttest test test',
+                    'fields' => [
+                        'type' => 'phone',
+                        'name' => 'Добавочный телефон',
+                        'value' => '2396',
+                    ],
+                    'isActive' => true,
                 ],
             ],
         ];

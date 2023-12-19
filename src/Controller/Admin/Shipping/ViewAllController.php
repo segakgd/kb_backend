@@ -2,7 +2,8 @@
 
 namespace App\Controller\Admin\Shipping;
 
-use App\Controller\Admin\Shipping\DTO\Request\ShippingReqDto;
+use App\Controller\Admin\Lead\DTO\Response\Order\Shipping\ShippingRespDto;
+use App\Controller\Admin\Shipping\DTO\Request\ShippingFieldReqDto;
 use App\Controller\Admin\Shipping\DTO\Response\ViewAllShippingRespDto;
 use App\Entity\User\Project;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -43,7 +44,7 @@ class ViewAllController extends AbstractController
     {
         $content = $request->getContent();
 
-        $requestDto = $this->serializer->deserialize($content, ShippingReqDto::class, 'json');
+        $requestDto = $this->serializer->deserialize($content, ShippingFieldReqDto::class, 'json');
 
         $errors = $this->validator->validate($requestDto);
 
@@ -55,14 +56,13 @@ class ViewAllController extends AbstractController
 
         $fakeShipping = (new ViewAllShippingRespDto())
             ->setName('shipping 1')
-            ->setType('pickup')
+            ->setType(ShippingRespDto::TYPE_PICKUP)
             ->setApplyFromAmount(100)
             ->setIsActive(true)
             ->setApplyToAmount(10)
             ->setApplyFromAmountWF('100')
             ->setApplyToAmountWF('10')
         ;
-
         return new JsonResponse(
             $this->serializer->normalize(
                 [
