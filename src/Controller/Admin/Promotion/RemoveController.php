@@ -21,6 +21,6 @@ class RemoveController extends AbstractController
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project, int $promotionId): JsonResponse
     {
-        return new JsonResponse();
+        return new JsonResponse('', 204);
     }
 }
