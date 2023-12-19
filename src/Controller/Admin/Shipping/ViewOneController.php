@@ -34,9 +34,9 @@ class ViewOneController extends AbstractController
     public function execute(Project $project, int $shippingId): JsonResponse
     {
         $fields = (new ShippingFieldRespDto())
-            ->setName('name')
-            ->setType('type')
-            ->setValue('value');
+            ->setName('Добавочный телефон')
+            ->setType('phone')
+            ->setValue('2396');
 
         $fakeShipping = (new ShippingRespDto())
             ->setName('shipping 1')

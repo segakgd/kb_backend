@@ -22,7 +22,6 @@ class ViewOneControllerTest extends ApiTestCase
     {
         $client = static::createClient();
         $entityManager = $this->getEntityManager();
-
         $user = $this->createUser($entityManager);
         $project = $this->createProject($entityManager, $user);
 
@@ -43,24 +42,23 @@ class ViewOneControllerTest extends ApiTestCase
     {
         yield [
             [
-                "shipping" => [
-                    'name' => 'shipping 1',
-                    'type' => 'pickup',
-                    'calculationType' => 'percent',
-                    'amount' => 10,
-                    'amountWF' => '100',
-                    'applyFromAmount' => 20,
-                    'applyFromAmountWF' => '100',
-                    'applyToAmount' => 100,
-                    'applyToAmountWF' => '100',
-                    'description' => 'test testtesttes ttest test test',
-                    'fields' => [
-                        'type' => 'phone',
-                        'name' => 'Добавочный телефон',
-                        'value' => '2396',
-                    ],
-                    'isActive' => true,
+                "name" => "shipping 1",
+                "type" => "pickup",
+                "calculationType" => "percent",
+                "amount" => 10,
+                "applyFromAmount" => 100,
+                "applyFromAmountWF" => "100",
+                "applyToAmount" => 10,
+                "applyToAmountWF" => "10",
+                "description" => "asdasdasd",
+                "fields" => [
+                [
+                  "name" => "Добавочный телефон",
+                  "value" => "2396",
+                  "type" => "phone",
                 ],
+            ],
+                "active" => true
             ],
         ];
     }
