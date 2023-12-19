@@ -4,9 +4,9 @@ namespace App\Controller\Admin\Lead\DTO\Response\Order\Shipping;
 
 class ShippingRespDto
 {
-    const TYPE_COURIER = 'courier';
+    public const TYPE_COURIER = 'courier';
 
-    const TYPE_PICKUP = 'pickup';
+    public const TYPE_PICKUP = 'pickup';
 
     private string $name;
 

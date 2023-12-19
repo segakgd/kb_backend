@@ -4,6 +4,7 @@ namespace App\Voter;
 
 use App\Entity\User\Project;
 use App\Entity\User\User;
+use LogicException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
@@ -37,7 +38,7 @@ class ProjectVoter extends Voter
 
         return match($attribute) {
             self::EXIST_USER_PERMISSION => $this->isUserExistInProject($project, $user),
-            default => throw new \LogicException('Access error')
+            default => throw new LogicException('Access error')
         };
     }
 
