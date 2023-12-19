@@ -18,6 +18,8 @@ class UpdateController extends AbstractController
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project, int $leadId): JsonResponse
     {
+        // todo ... тут мы должны обратиться к сервису или менеджеру ...
+
         return new JsonResponse([], Response::HTTP_NO_CONTENT); // todo пока что оставил, позже сделаем этот функционал
     }
 }

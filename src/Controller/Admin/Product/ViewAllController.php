@@ -38,6 +38,8 @@ class ViewAllController extends AbstractController
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project): JsonResponse
     {
+        // todo ... тут мы должны обратиться к сервису или менеджеру ...
+
         $product = (new AllProductRespDto())
             ->setId(111)
             ->setName('Продукт')
