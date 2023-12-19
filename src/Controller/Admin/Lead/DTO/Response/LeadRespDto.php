@@ -11,15 +11,15 @@ use DateTimeImmutable;
 
 class LeadRespDto
 {
-    const LEAD_STATUS_NEW = 'new';
+    public const LEAD_STATUS_NEW = 'new';
 
-    const LEAD_STATUS_PROCESS = 'process';
+    public const LEAD_STATUS_PROCESS = 'process';
 
-    const LEAD_STATUS_SUSPENDED = 'suspended';
+    public const LEAD_STATUS_SUSPENDED = 'suspended';
 
-    const LEAD_STATUS_REJECTED = 'rejected';
+    public const LEAD_STATUS_REJECTED = 'rejected';
 
-    const LEAD_STATUS_SUCCESSFUL = 'successful';
+    public const LEAD_STATUS_SUCCESSFUL = 'successful';
 
     private int $number;
 

@@ -23,6 +23,6 @@ class RemoveController extends AbstractController
     {
         // todo ... тут мы должны обратиться к сервису или менеджеру ...
 
-        return new JsonResponse('', 204);
+        return new JsonResponse([], Response::HTTP_NO_CONTENT);
     }
 }

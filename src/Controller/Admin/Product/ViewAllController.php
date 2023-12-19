@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Serializer\SerializerInterface;
 
 #[OA\Response(
     response: Response::HTTP_OK,
@@ -27,11 +28,35 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[OA\Tag(name: 'Product')]
 class ViewAllController extends AbstractController
 {
+    public function __construct(
+        private readonly SerializerInterface $serializer
+    ) {
+    }
+
     /** Получение всех продуктов */
     #[Route('/api/admin/project/{project}/product/', name: 'admin_product_get_all', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project): JsonResponse
     {
-        return new JsonResponse();
+        // todo ... тут мы должны обратиться к сервису или менеджеру ...
+
+        $product = (new AllProductRespDto())
+            ->setId(111)
+            ->setName('Продукт')
+            ->setType('service')
+            ->setArticle('PRODUCT-1')
+            ->setAffordablePrices('100-200')
+            ->setVisible(true)
+            ->setCount(1)
+        ;
+
+        return new JsonResponse(
+            $this->serializer->normalize(
+                [
+                    $product,
+                    $product,
+                ]
+            )
+        );
     }
 }

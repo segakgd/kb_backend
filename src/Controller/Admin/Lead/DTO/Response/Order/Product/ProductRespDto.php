@@ -4,9 +4,9 @@ namespace App\Controller\Admin\Lead\DTO\Response\Order\Product;
 
 class ProductRespDto
 {
-    const TYPE_SERVICE = 'service';
+    public const TYPE_SERVICE = 'service';
 
-    const TYPE_PRODUCT = 'product';
+    public const TYPE_PRODUCT = 'product';
 
     private string $name;
 

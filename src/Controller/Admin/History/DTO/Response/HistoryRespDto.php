@@ -6,21 +6,21 @@ use DateTimeImmutable;
 
 class HistoryRespDto
 {
-    const HISTORY_STATUS_ERROR = 'error'; // todo потом вынести из dto
+    public const HISTORY_STATUS_ERROR = 'error'; // todo потом вынести из dto
 
-    const HISTORY_STATUS_SUCCESS = 'success'; // todo потом вынести из dto
+    public const HISTORY_STATUS_SUCCESS = 'success'; // todo потом вынести из dto
 
-    const HISTORY_STATUS_PROCESS = 'process'; // todo потом вынести из dto
+    public const HISTORY_STATUS_PROCESS = 'process'; // todo потом вынести из dto
 
-    const HISTORY_TYPE_LEAD_NEW = 'newLead'; // todo потом вынести из dto
+    public const HISTORY_TYPE_LEAD_NEW = 'newLead'; // todo потом вынести из dto
 
-    const HISTORY_TYPE_MESSAGE_SENDING = 'sendingMessage'; // todo потом вынести из dto
+    public const HISTORY_TYPE_MESSAGE_SENDING = 'sendingMessage'; // todo потом вынести из dto
 
-    const HISTORY_TYPE_LOGIN = 'login'; // todo потом вынести из dto
+    public const HISTORY_TYPE_LOGIN = 'login'; // todo потом вынести из dto
 
-    const SENDER_TELEGRAM = 'telegram'; // todo потом вынести из dto
+    public const SENDER_TELEGRAM = 'telegram'; // todo потом вынести из dto
 
-    const SENDER_VK = 'vk'; // todo потом вынести из dto
+    public const SENDER_VK = 'vk'; // todo потом вынести из dto
 
     private DateTimeImmutable $createdAt;
 

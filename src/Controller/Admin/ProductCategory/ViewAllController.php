@@ -31,6 +31,18 @@ class ViewAllController extends AbstractController
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project): JsonResponse
     {
-        return new JsonResponse();
+        // todo ... тут мы должны обратиться к сервису или менеджеру ...
+
+        $fakeProductCategory = (new ProductCategoryRespDto())
+            ->setId(111)
+            ->setName('Category name')
+        ;
+
+        return new JsonResponse(
+            [
+                $fakeProductCategory,
+                $fakeProductCategory,
+            ]
+        );
     }
 }

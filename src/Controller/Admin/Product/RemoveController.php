@@ -22,6 +22,8 @@ class RemoveController extends AbstractController
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project, int $productId): JsonResponse
     {
+        // todo ... тут мы должны обратиться к сервису или менеджеру ...
+
         return new JsonResponse([], Response::HTTP_NO_CONTENT);
     }
 }

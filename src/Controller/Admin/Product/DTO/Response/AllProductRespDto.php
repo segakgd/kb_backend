@@ -24,9 +24,11 @@ class AllProductRespDto
         return $this->id;
     }
 
-    public function setId(int $id): void
+    public function setId(int $id): self
     {
         $this->id = $id;
+
+        return $this;
     }
 
     public function getName(): string
@@ -34,9 +36,11 @@ class AllProductRespDto
         return $this->name;
     }
 
-    public function setName(string $name): void
+    public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
     }
 
     public function getArticle(): string
@@ -44,9 +48,11 @@ class AllProductRespDto
         return $this->article;
     }
 
-    public function setArticle(string $article): void
+    public function setArticle(string $article): self
     {
         $this->article = $article;
+
+        return $this;
     }
 
     public function isVisible(): bool
@@ -54,9 +60,11 @@ class AllProductRespDto
         return $this->visible;
     }
 
-    public function setVisible(bool $visible): void
+    public function setVisible(bool $visible): self
     {
         $this->visible = $visible;
+
+        return $this;
     }
 
     public function getType(): string
@@ -64,9 +72,11 @@ class AllProductRespDto
         return $this->type;
     }
 
-    public function setType(string $type): void
+    public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
     }
 
     public function getAffordablePrices(): string
@@ -74,9 +84,11 @@ class AllProductRespDto
         return $this->affordablePrices;
     }
 
-    public function setAffordablePrices(string $affordablePrices): void
+    public function setAffordablePrices(string $affordablePrices): self
     {
         $this->affordablePrices = $affordablePrices;
+
+        return $this;
     }
 
     public function getCount(): int
@@ -84,8 +96,10 @@ class AllProductRespDto
         return $this->count;
     }
 
-    public function setCount(int $count): void
+    public function setCount(int $count): self
     {
         $this->count = $count;
+
+        return $this;
     }
 }

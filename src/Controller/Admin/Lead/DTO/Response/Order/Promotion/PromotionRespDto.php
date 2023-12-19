@@ -4,9 +4,9 @@ namespace App\Controller\Admin\Lead\DTO\Response\Order\Promotion;
 
 class PromotionRespDto
 {
-    const CALCULATION_TYPE_PERCENT = 'percent';
+    public const CALCULATION_TYPE_PERCENT = 'percent';
 
-    const CALCULATION_TYPE_FIXED = 'fixed';
+    public const CALCULATION_TYPE_FIXED = 'fixed';
 
     private string $name;
 
