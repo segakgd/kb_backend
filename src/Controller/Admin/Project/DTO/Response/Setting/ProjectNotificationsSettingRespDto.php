@@ -13,9 +13,11 @@ class ProjectNotificationsSettingRespDto
         return $this->newLead;
     }
 
-    public function setNewLead(ProjectNotificationSettingRespDto $newLead): void
+    public function setNewLead(ProjectNotificationSettingRespDto $newLead): self
     {
         $this->newLead = $newLead;
+
+        return $this;
     }
 
     public function getChangesStatusLead(): ProjectNotificationSettingRespDto
@@ -23,8 +25,10 @@ class ProjectNotificationsSettingRespDto
         return $this->changesStatusLead;
     }
 
-    public function setChangesStatusLead(ProjectNotificationSettingRespDto $changesStatusLead): void
+    public function setChangesStatusLead(ProjectNotificationSettingRespDto $changesStatusLead): self
     {
         $this->changesStatusLead = $changesStatusLead;
+
+        return $this;
     }
 }

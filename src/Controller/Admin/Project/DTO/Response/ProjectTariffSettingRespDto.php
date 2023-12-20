@@ -8,16 +8,18 @@ class ProjectTariffSettingRespDto
 
     private int $price;
 
-    private string $priceWithFraction;
+    private string $priceWF;
 
     public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName(string $name): void
+    public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
     }
 
     public function getPrice(): int
@@ -25,18 +27,22 @@ class ProjectTariffSettingRespDto
         return $this->price;
     }
 
-    public function setPrice(int $price): void
+    public function setPrice(int $price): self
     {
         $this->price = $price;
+
+        return $this;
     }
 
-    public function getPriceWithFraction(): string
+    public function getPriceWF(): string
     {
-        return $this->priceWithFraction;
+        return $this->priceWF;
     }
 
-    public function setPriceWithFraction(string $priceWithFraction): void
+    public function setPriceWF(string $priceWithFraction): self
     {
-        $this->priceWithFraction = $priceWithFraction;
+        $this->priceWF = $priceWithFraction;
+
+        return $this;
     }
 }
