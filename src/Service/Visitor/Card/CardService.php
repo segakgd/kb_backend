@@ -2,7 +2,7 @@
 
 namespace App\Service\Visitor\Card;
 
-use App\Dto\deprecated\CartDto;
+use App\Dto\CartDto;
 use App\Dto\deprecated\Ecommerce\ProductDto;
 use App\Service\Admin\Ecommerce\Product\ProductManagerInterface;
 
