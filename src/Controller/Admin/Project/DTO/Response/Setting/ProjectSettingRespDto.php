@@ -13,9 +13,11 @@ class ProjectSettingRespDto
         return $this->mainSettings;
     }
 
-    public function setMainSettings(ProjectMainSettingRespDto $mainSettings): void
+    public function setMainSettings(ProjectMainSettingRespDto $mainSettings): self
     {
         $this->mainSettings = $mainSettings;
+
+        return $this;
     }
 
     public function getNotificationSetting(): ProjectNotificationsSettingRespDto
@@ -23,8 +25,11 @@ class ProjectSettingRespDto
         return $this->notificationSetting;
     }
 
-    public function setNotificationSetting(ProjectNotificationsSettingRespDto $notificationSetting): void
+    public function setNotificationSetting(ProjectNotificationsSettingRespDto $notificationSetting): self
     {
         $this->notificationSetting = $notificationSetting;
+
+        return $this;
+
     }
 }
