@@ -2,7 +2,7 @@
 
 namespace App\Service\Common\Project;
 
-use App\Dto\Project\ProjectDto;
+use App\Controller\Admin\Project\DTO\Request\ProjectCreateReqDto;
 use App\Entity\User\Project;
 use App\Entity\User\User;
 use App\Repository\User\ProjectEntityRepository;
@@ -22,31 +22,14 @@ class ProjectService implements ProjectServiceInterface
         return $user->getProjects()->toArray(); // todo жёсткий костыль
     }
 
-    public function getOne(int $projectId): ?Project
-    {
-        return $this->projectEntityRepository->find($projectId);
-    }
-
-    public function add(ProjectDto $projectDto, User $user): Project
+    public function add(ProjectCreateReqDto $projectDto, User $user): Project
     {
         $entity = (new Project);
 
         $entity->addUser($user);
-        $entity
-            ->setName($projectDto->getName())
-        ;
-
-        $this->projectEntityRepository->saveAndFlush($entity);
-
-        return $entity;
-    }
-
-    public function update(ProjectDto $projectDto, int $projectId): Project
-    {
-        $entity = $this->getOne($projectId);
-        $entity
-            ->setName($projectDto->getName())
-        ;
+        $entity->setName($projectDto->getName());
+        $projectDto->getBot(); // todo это должно использоваться для чего?? Точно ли нужно?
+        $projectDto->getMode(); // todo это должно влитять на те модули который хочет получить клиент. Но возможно как-то рано об этом задумались.
 
         $this->projectEntityRepository->saveAndFlush($entity);
 
@@ -55,7 +38,7 @@ class ProjectService implements ProjectServiceInterface
 
     public function remove(int $projectId): bool
     {
-        $project = $this->getOne($projectId);
+        $project = $this->projectEntityRepository->find($projectId);
 
         try {
             if ($project){
