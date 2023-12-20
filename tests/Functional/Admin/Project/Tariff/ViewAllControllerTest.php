@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Functional\Admin\Project\Setting;
+namespace App\Tests\Functional\Admin\Project\Tariff;
 
 use App\Tests\Functional\ApiTestCase;
 use App\Tests\Functional\Trait\Project\ProjectTrait;
@@ -30,7 +30,7 @@ class ViewAllControllerTest extends ApiTestCase
 
         $client->request(
             'GET',
-            '/api/admin/project/'. $project->getId() .'/setting/',
+            '/api/admin/project/'. $project->getId() .'/setting/tariff/',
         );
 
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
@@ -41,28 +41,21 @@ class ViewAllControllerTest extends ApiTestCase
     {
         yield [
             [
-                "mainSettings" => [
-                    "name" => "Мой первый проект",
-                    "country" => "russia",
-                    "timeZone" => "Europe/Moscow",
-                    "language" => "ru",
-                    "currency" => "RUB",
-                    "tariff" => [
-                        "name" => "Самый лучший тариф",
-                        "price" => 100000,
-                        "priceWF" => "1000,00",
-                    ]
+                [
+                    "name" => "Название тарифа",
+                    "code" => "CODE_2024",
+                    "price" => 100000,
+                    "priceWF" => "1000,00",
+                    "description" => "Какое-то описание тарифа ",
+                    "active" => true,
                 ],
-                "notificationSetting" => [
-                    "newLead" => [
-                        "mail" => true,
-                        "telegram" => false,
-                        "sms" => true,
-                    ],
-                    "changesStatusLead" => [
-                        "mail" => true,
-                        "sms" => true,
-                    ]
+                [
+                    "name" => "Название тарифа",
+                    "code" => "CODE_2024",
+                    "price" => 100000,
+                    "priceWF" => "1000,00",
+                    "description" => "Какое-то описание тарифа ",
+                    "active" => true,
                 ]
             ]
         ];

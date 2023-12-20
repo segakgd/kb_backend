@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Functional\Admin\Project\Setting;
+namespace App\Tests\Functional\Admin\Project\Tariff;
 
 use App\Tests\Functional\ApiTestCase;
 use App\Tests\Functional\Trait\Project\ProjectTrait;
@@ -30,7 +30,7 @@ class UpdateControllerTest extends ApiTestCase
 
         $client->request(
             'POST',
-            '/api/admin/project/'. $project->getId() .'/setting/',
+            '/api/admin/project/'. $project->getId() .'/setting/tariff/',
             [],
             [],
             [],
@@ -46,24 +46,7 @@ class UpdateControllerTest extends ApiTestCase
     {
         yield [
             [
-                "mainSettings" => [
-                    "name" => "Мой первый проект",
-                    "country" => "russia",
-                    "timeZone" => "Europe/Moscow",
-                    "language" => "ru",
-                    "currency" => "RUB",
-                ],
-                "notificationSetting" => [
-                    "newLead" => [
-                        "mail" => true,
-                        "telegram" => false,
-                        "sms" => true,
-                    ],
-                    "changesStatusLead" => [
-                        "mail" => true,
-                        "sms" => true,
-                    ]
-                ]
+                'code' => 'NEW_TARIFF',
             ]
         ];
     }

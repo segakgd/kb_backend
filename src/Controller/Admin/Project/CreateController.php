@@ -32,10 +32,11 @@ class CreateController extends AbstractController
     ) {
     }
 
-    #[Route('/api/admin/projects/', name: 'admin_project_create', methods: ['POST'])]
-    #[IsGranted('existUser', 'project')]
+    #[Route('/api/admin/project/', name: 'admin_project_create', methods: ['POST'])]
     public function execute(Request $request): JsonResponse
     {
+        // todo ВНИМАНИЕ! нужно проерить права пользователя (не гость)
+
         $content = $request->getContent();
 
         $requestDto = $this->serializer->deserialize($content, ProjectCreateReqDto::class, 'json');

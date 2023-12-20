@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Functional\Admin\Project\Setting;
+namespace App\Tests\Functional\Admin\Project;
 
 use App\Tests\Functional\ApiTestCase;
 use App\Tests\Functional\Trait\Project\ProjectTrait;
@@ -8,7 +8,7 @@ use App\Tests\Functional\Trait\User\UserTrait;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
-class UpdateControllerTest extends ApiTestCase
+class CreateControllerTest extends ApiTestCase
 {
     use UserTrait;
     use ProjectTrait;
@@ -24,13 +24,11 @@ class UpdateControllerTest extends ApiTestCase
         $entityManager = $this->getEntityManager();
 
         $user = $this->createUser($entityManager);
-        $project = $this->createProject($entityManager, $user);
-
         $client->loginUser($user);
 
         $client->request(
             'POST',
-            '/api/admin/project/'. $project->getId() .'/setting/',
+            '/api/admin/project/',
             [],
             [],
             [],
@@ -46,24 +44,9 @@ class UpdateControllerTest extends ApiTestCase
     {
         yield [
             [
-                "mainSettings" => [
-                    "name" => "Мой первый проект",
-                    "country" => "russia",
-                    "timeZone" => "Europe/Moscow",
-                    "language" => "ru",
-                    "currency" => "RUB",
-                ],
-                "notificationSetting" => [
-                    "newLead" => [
-                        "mail" => true,
-                        "telegram" => false,
-                        "sms" => true,
-                    ],
-                    "changesStatusLead" => [
-                        "mail" => true,
-                        "sms" => true,
-                    ]
-                ]
+                'name' => 'Новый проект',
+                'mode' => 'shop',
+                'bot' => 'vk',
             ]
         ];
     }

@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Serializer\SerializerInterface;
 
 #[OA\Tag(name: 'Project')]
 #[OA\Response(
@@ -29,10 +29,16 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 )]
 class ViewAllController extends AbstractController
 {
-    #[Route('/api/admin/projects/', name: 'admin_project_get_all', methods: ['GET'])]
-    #[IsGranted('existUser', 'project')]
+    public function __construct(
+        private readonly SerializerInterface $serializer
+    ) {
+    }
+
+    #[Route('/api/admin/project/', name: 'admin_project_get_all', methods: ['GET'])]
     public function execute(): JsonResponse
     {
+        // todo ВНИМАНИЕ! нужно проерить права пользователя (не гость)
+
         $fakeStatistic = (new ProjectStatisticRespDto())
             ->setCount(13)
         ;
@@ -52,10 +58,12 @@ class ViewAllController extends AbstractController
         ;
 
         return new JsonResponse(
-            [
-                $fakeProject,
-                $fakeProject,
-            ]
+            $this->serializer->normalize(
+                [
+                    $fakeProject,
+                    $fakeProject,
+                ]
+            )
         );
     }
 }

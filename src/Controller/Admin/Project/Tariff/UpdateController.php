@@ -33,7 +33,8 @@ class UpdateController extends AbstractController
     ) {
     }
 
-    #[Route('/api/admin/projects/{project}/setting/tariff', name: 'admin_project_update_tariff', methods: ['POST'])]
+    /** Применяем фабранный тариф к проекту */
+    #[Route('/api/admin/project/{project}/setting/tariff/', name: 'admin_project_update_tariff', methods: ['POST'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project): JsonResponse
     {
