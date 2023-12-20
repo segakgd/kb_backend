@@ -31,9 +31,19 @@ class ViewAllController extends AbstractController
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project): JsonResponse
     {
+        $fakeTariff = (new TariffSettingRespDto())
+            ->setName('Название тарифа')
+            ->setPrice(100000)
+            ->setPriceWF('1000,00')
+            ->setDescription('Какое-то описание тарифа ')
+            ->setCode('CODE_2024')
+            ->setActive(true)
+        ;
+
         return new JsonResponse(
             [
-                new TariffSettingRespDto()
+                $fakeTariff,
+                $fakeTariff,
             ]
         );
     }

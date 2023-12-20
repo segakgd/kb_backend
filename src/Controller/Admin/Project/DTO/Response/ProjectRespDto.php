@@ -10,8 +10,6 @@ class ProjectRespDto
 {
     private string $name;
 
-    private string $link;
-
     #[Assert\Choice(['active', 'frozen', 'blocked'])]
     private string $status;
 
@@ -26,19 +24,11 @@ class ProjectRespDto
         return $this->name;
     }
 
-    public function setName(string $name): void
+    public function setName(string $name): self
     {
         $this->name = $name;
-    }
 
-    public function getLink(): string
-    {
-        return $this->link;
-    }
-
-    public function setLink(string $link): void
-    {
-        $this->link = $link;
+        return $this;
     }
 
     public function getStatus(): string
@@ -46,9 +36,11 @@ class ProjectRespDto
         return $this->status;
     }
 
-    public function setStatus(string $status): void
+    public function setStatus(string $status): self
     {
         $this->status = $status;
+
+        return $this;
     }
 
     public function getActiveTo(): DateTimeImmutable
@@ -56,9 +48,11 @@ class ProjectRespDto
         return $this->activeTo;
     }
 
-    public function setActiveTo(DateTimeImmutable $activeTo): void
+    public function setActiveTo(DateTimeImmutable $activeTo): self
     {
         $this->activeTo = $activeTo;
+
+        return $this;
     }
 
     public function getActiveFrom(): DateTimeImmutable
@@ -66,9 +60,11 @@ class ProjectRespDto
         return $this->activeFrom;
     }
 
-    public function setActiveFrom(DateTimeImmutable $activeFrom): void
+    public function setActiveFrom(DateTimeImmutable $activeFrom): self
     {
         $this->activeFrom = $activeFrom;
+
+        return $this;
     }
 
     public function getStatistic(): ProjectStatisticsRespDto
@@ -76,8 +72,10 @@ class ProjectRespDto
         return $this->statistic;
     }
 
-    public function setStatistic(ProjectStatisticsRespDto $statistic): void
+    public function setStatistic(ProjectStatisticsRespDto $statistic): self
     {
         $this->statistic = $statistic;
+
+        return $this;
     }
 }
