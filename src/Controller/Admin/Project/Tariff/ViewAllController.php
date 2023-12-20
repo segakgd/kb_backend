@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Serializer\SerializerInterface;
 
 #[OA\Tag(name: 'Project')]
 #[OA\Response(
@@ -25,16 +26,33 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
         )
     ),
 )]
-class AllListController extends AbstractController
+class ViewAllController extends AbstractController
 {
-    #[Route('/api/admin/projects/{project}/setting/tariff', name: 'admin_project_list_tariff', methods: ['GET'])]
+    public function __construct(
+        private readonly SerializerInterface $serializer
+    ) {
+    }
+
+    #[Route('/api/admin/project/{project}/setting/tariff/', name: 'admin_project_list_tariff', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project): JsonResponse
     {
+        $fakeTariff = (new TariffSettingRespDto())
+            ->setName('Название тарифа')
+            ->setPrice(100000)
+            ->setPriceWF('1000,00')
+            ->setDescription('Какое-то описание тарифа ')
+            ->setCode('CODE_2024')
+            ->setActive(true)
+        ;
+
         return new JsonResponse(
-            [
-                new TariffSettingRespDto()
-            ]
+            $this->serializer->normalize(
+                [
+                    $fakeTariff,
+                    $fakeTariff,
+                ]
+            )
         );
     }
 }
