@@ -22,6 +22,7 @@ class ViewAllControllerTest extends ApiTestCase
     {
         $client = static::createClient();
         $entityManager = $this->getEntityManager();
+
         $user = $this->createUser($entityManager);
         $project = $this->createProject($entityManager, $user);
 
@@ -35,7 +36,6 @@ class ViewAllControllerTest extends ApiTestCase
             [],
             json_encode($requestContent)
         );
-
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertResponse($client->getResponse()->getContent(), $response);
     }
@@ -51,44 +51,48 @@ class ViewAllControllerTest extends ApiTestCase
                 'triggersQuantity' => 100,
                 'isActive' => true,
                 'amount' => 15,
-                '$amountWithFraction' => '10',
+                'amountWithFraction' => '10,00',
                 'activeFrom' => '2023-12-16T23:22:00+00:00',
                 'activeTo' => '2023-12-25T23:22:00+00:00'
             ],
             [
                 [
-                    "number" => 111,
-                    "status" => "new",
-                    "fullName" => "Fake Faker Fake",
-                    "totalAmount" => 30000,
-                    "totalAmountWF" => "300,00",
-                    "contacts" => [
-                        "mail" => [
-                            "type" => "mail",
-                            "name" => "Почта",
-                            "value" => "mail@mail.fake"
-                        ]
+                    "discounts" => [
+                        "name" => "discount",
+                        "type" => "percent",
+                        "triggersQuantity" => 100,
+                        "active" => true,
+                        "amount" => 10,
+                        "amountWithFraction" => "10,00"
                     ],
-                    "type" => "service",
-                    "paymentStatus" => true
+                    "promoCodes" => [
+                        "name" => "promo",
+                        "type" => "current",
+                        "triggersQuantity" => 100,
+                        "active" => true,
+                        "amount" => 10,
+                        "amountWithFraction" => "10,00"
+                    ],
                 ],
-                [
-                    "number" => 111,
-                    "status" => "new",
-                    "fullName" => "Fake Faker Fake",
-                    "totalAmount" => 30000,
-                    "totalAmountWF" => "300,00",
-                    "contacts" => [
-                        "mail" => [
-                            "type" => "mail",
-                            "name" => "Почта",
-                            "value" => "mail@mail.fake"
-                        ]
+            [
+                    "discounts" => [
+                        "name" => "discount",
+                        "type" => "percent",
+                        "triggersQuantity" => 100,
+                        "active" => true,
+                        "amount" => 10,
+                        "amountWithFraction" => "10,00"
                     ],
-                    "type" => "service",
-                    "paymentStatus" => true
-                ]
-            ]
+                    "promoCodes" => [
+                        "name" => "promo",
+                        "type" => "current",
+                        "triggersQuantity" => 100,
+                        "active" => true,
+                        "amount" => 10,
+                        "amountWithFraction" => "10,00"
+                    ],
+                ],
+            ],
         ];
     }
 }

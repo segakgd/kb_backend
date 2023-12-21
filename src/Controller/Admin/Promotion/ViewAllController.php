@@ -45,13 +45,15 @@ class ViewAllController extends AbstractController
         if (count($errors) > 0) {
             return $this->json(['message' => $errors->get(0)->getMessage()], Response::HTTP_BAD_REQUEST);
         }
+
         $fakeDiscount = (new PromotionRespDto())
             ->setName('discount')
             ->setType('percent')
             ->setAmount(10)
             ->setIsActive(true)
             ->setTriggersQuantity(100)
-            ->setAmountWithFraction('10');
+            ->setAmountWithFraction('10,00')
+        ;
 
         $fakePromo = (new PromotionRespDto())
             ->setName('promo')
@@ -59,17 +61,13 @@ class ViewAllController extends AbstractController
             ->setAmount(10)
             ->setIsActive(true)
             ->setTriggersQuantity(100)
-            ->setAmountWithFraction('10');
+            ->setAmountWithFraction('10,00')
+        ;
 
-        $fakePromotion = (new ViewAllPromotionsRespDto)
+        $fakePromotion = (new ViewAllPromotionsRespDto())
             ->addDiscounts($fakeDiscount)
             ->addPromoCodes($fakePromo);
-dd($this->serializer->normalize(
-    [
-        $fakePromotion,
-        $fakePromotion,
-    ]
-));
+
         return new JsonResponse(
             $this->serializer->normalize(
                 [

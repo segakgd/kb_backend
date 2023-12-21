@@ -15,7 +15,7 @@ class ViewAllPromotionsRespDto
 
     public function addDiscounts(PromotionRespDto $discount): self
     {
-        $this->discounts[] = $discount;
+        $this->discounts = $discount;
 
         return $this;
     }
@@ -27,7 +27,7 @@ class ViewAllPromotionsRespDto
 
     public function addPromoCodes(PromotionRespDto $promoCode): self
     {
-        $this->promoCodes[] = $promoCode;
+        $this->promoCodes = $promoCode;
 
         return $this;
     }
