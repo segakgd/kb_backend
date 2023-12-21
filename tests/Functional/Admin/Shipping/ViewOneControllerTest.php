@@ -18,18 +18,19 @@ class ViewOneControllerTest extends ApiTestCase
      *
      * @throws Exception
      */
-    public function testViewAll(array $response)
+    public function testViewOne(array $response)
     {
         $client = static::createClient();
         $entityManager = $this->getEntityManager();
         $user = $this->createUser($entityManager);
+
         $project = $this->createProject($entityManager, $user);
 
         $client->loginUser($user);
 
         $client->request(
             'GET',
-            '/api/admin/project/'. $project->getId() .'/shipping/' . 1 . '/', // todo ВНИМАНИЕ! я пока что поставил 1, но нужно брать существующий продукт
+            '/api/admin/project/'. $project->getId() .'/shipping/' . 1 . '/', // todo ВНИМАНИЕ! я пока что поставил 1, но нужно брать существующую доставку
         );
 
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
@@ -46,11 +47,11 @@ class ViewOneControllerTest extends ApiTestCase
                 "type" => "pickup",
                 "calculationType" => "percent",
                 "amount" => 10,
-                "applyFromAmount" => 100,
-                "applyFromAmountWF" => "100",
-                "applyToAmount" => 10,
-                "applyToAmountWF" => "10",
-                "description" => "asdasdasd",
+                "applyFromAmount" => 10000,
+                "applyFromAmountWF" => "100,00",
+                "applyToAmount" => 10000,
+                "applyToAmountWF" => "10,00",
+                "description" => "Urgent delivery is required",
                 "fields" => [
                 [
                   "name" => "Добавочный телефон",

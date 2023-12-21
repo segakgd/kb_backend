@@ -23,6 +23,7 @@ class ViewAllControllerTest extends ApiTestCase
         $client = static::createClient();
         $entityManager = $this->getEntityManager();
         $user = $this->createUser($entityManager);
+
         $project = $this->createProject($entityManager, $user);
 
         $client->loginUser($user);
@@ -38,7 +39,7 @@ class ViewAllControllerTest extends ApiTestCase
         $this->assertResponse($client->getResponse()->getContent(), $response);
     }
 
-    private function positive(): iterable  // todo разобраться с тестом ...
+    private function positive(): iterable
     {
         yield [
             [
@@ -49,19 +50,19 @@ class ViewAllControllerTest extends ApiTestCase
             [
                 [
                     'name' => 'shipping 1',
-                    'applyFromAmount' => 100,
-                    'applyFromAmountWF' => '100',
+                    'applyFromAmount' => 10000,
+                    'applyFromAmountWF' => '100,00',
                     'applyToAmount' => 10,
-                    'applyToAmountWF' => '10',
+                    'applyToAmountWF' => '10,00',
                     'active' => true,
                     'type' => 'pickup',
                 ],
                 [
                     'name' => 'shipping 1',
-                    'applyFromAmount' => 100,
-                    'applyFromAmountWF' => '100',
+                    'applyFromAmount' => 10000,
+                    'applyFromAmountWF' => '100,00',
                     'applyToAmount' => 10,
-                    'applyToAmountWF' => '10',
+                    'applyToAmountWF' => '10,00',
                     'active' => true,
                     'type' => 'pickup',
                 ],

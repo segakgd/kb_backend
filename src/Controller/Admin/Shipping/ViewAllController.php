@@ -57,11 +57,11 @@ class ViewAllController extends AbstractController
         $fakeShipping = (new ViewAllShippingRespDto())
             ->setName('shipping 1')
             ->setType(ShippingRespDto::TYPE_PICKUP)
-            ->setApplyFromAmount(100)
+            ->setApplyFromAmount(10000)
             ->setIsActive(true)
             ->setApplyToAmount(10)
-            ->setApplyFromAmountWF('100')
-            ->setApplyToAmountWF('10')
+            ->setApplyFromAmountWF('100,00')
+            ->setApplyToAmountWF('10,00')
         ;
         return new JsonResponse(
             $this->serializer->normalize(

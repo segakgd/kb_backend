@@ -18,7 +18,7 @@ class CreateControllerTest extends ApiTestCase
      *
      * @throws Exception
      */
-    public function testViewAll(array $requestContent)
+    public function testCreate(array $requestContent)
     {
         $client = static::createClient();
         $entityManager = $this->getEntityManager();
@@ -50,12 +50,12 @@ class CreateControllerTest extends ApiTestCase
                     'type' => 'pickup',
                     'calculationType' => 'percent',
                     'amount' => 10,
-                    'amountWF' => '100',
-                    'applyFromAmount' => 20,
-                    'applyFromAmountWF' => '100',
-                    'applyToAmount' => 100,
-                    'applyToAmountWF' => '100',
-                    'description' => 'test testtesttes ttest test test',
+                    'amountWF' => '100,00',
+                    'applyFromAmount' => 20000,
+                    'applyFromAmountWF' => '100,00',
+                    'applyToAmount' => 10000,
+                    'applyToAmountWF' => '100,00',
+                    'description' => 'Urgent delivery is required',
                     'fields' => [
                         'type' => 'phone',
                         'name' => 'Добавочный телефон',
