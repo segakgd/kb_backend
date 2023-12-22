@@ -33,9 +33,11 @@ class ShippingRespDto
         return $this->name;
     }
 
-    public function setName(string $name): void
+    public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
     }
 
     public function getType(): string
@@ -43,9 +45,11 @@ class ShippingRespDto
         return $this->type;
     }
 
-    public function setType(string $type): void
+    public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
     }
 
     public function getCalculationType(): string
@@ -53,9 +57,11 @@ class ShippingRespDto
         return $this->calculationType;
     }
 
-    public function setCalculationType(string $calculationType): void
+    public function setCalculationType(string $calculationType): self
     {
         $this->calculationType = $calculationType;
+
+        return $this;
     }
 
     public function getAmount(): int
@@ -63,9 +69,11 @@ class ShippingRespDto
         return $this->amount;
     }
 
-    public function setAmount(int $amount): void
+    public function setAmount(int $amount): self
     {
         $this->amount = $amount;
+
+        return $this;
     }
 
     public function getAmountWF(): string
@@ -73,9 +81,11 @@ class ShippingRespDto
         return $this->amountWF;
     }
 
-    public function setAmountWF(string $amountWF): void
+    public function setAmountWF(string $amountWF): self
     {
         $this->amountWF = $amountWF;
+
+        return $this;
     }
 
     public function getApplyFromAmount(): int
@@ -83,9 +93,11 @@ class ShippingRespDto
         return $this->applyFromAmount;
     }
 
-    public function setApplyFromAmount(int $applyFromAmount): void
+    public function setApplyFromAmount(int $applyFromAmount): self
     {
         $this->applyFromAmount = $applyFromAmount;
+
+        return $this;
     }
 
     public function getApplyFromAmountWF(): string
@@ -93,9 +105,11 @@ class ShippingRespDto
         return $this->applyFromAmountWF;
     }
 
-    public function setApplyFromAmountWF(string $applyFromAmountWF): void
+    public function setApplyFromAmountWF(string $applyFromAmountWF): self
     {
         $this->applyFromAmountWF = $applyFromAmountWF;
+
+        return $this;
     }
 
     public function getApplyToAmount(): int
@@ -103,9 +117,11 @@ class ShippingRespDto
         return $this->applyToAmount;
     }
 
-    public function setApplyToAmount(int $applyToAmount): void
+    public function setApplyToAmount(int $applyToAmount): self
     {
         $this->applyToAmount = $applyToAmount;
+
+        return $this;
     }
 
     public function getApplyToAmountWF(): string
@@ -113,9 +129,11 @@ class ShippingRespDto
         return $this->applyToAmountWF;
     }
 
-    public function setApplyToAmountWF(string $applyToAmountWF): void
+    public function setApplyToAmountWF(string $applyToAmountWF): self
     {
         $this->applyToAmountWF = $applyToAmountWF;
+
+        return $this;
     }
 
     public function getDescription(): string
@@ -123,9 +141,11 @@ class ShippingRespDto
         return $this->description;
     }
 
-    public function setDescription(string $description): void
+    public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
     }
 
     public function getFields(): array
@@ -133,9 +153,11 @@ class ShippingRespDto
         return $this->fields;
     }
 
-    public function addFields(ShippingFieldRespDto $field): void
+    public function addFields(ShippingFieldRespDto $field): self
     {
         $this->fields[] = $field;
+
+        return $this;
     }
 
     public function isActive(): bool
@@ -143,8 +165,10 @@ class ShippingRespDto
         return $this->isActive;
     }
 
-    public function setIsActive(bool $isActive): void
+    public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
+
+        return $this;
     }
 }
