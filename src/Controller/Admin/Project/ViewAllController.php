@@ -3,9 +3,10 @@
 namespace App\Controller\Admin\Project;
 
 use App\Controller\Admin\Project\DTO\Response\ProjectRespDto;
-use App\Controller\Admin\Project\DTO\Response\Statistic\ProjectStatisticRespDto;
-use App\Controller\Admin\Project\DTO\Response\Statistic\ProjectStatisticsRespDto;
-use DateTimeImmutable;
+use App\Entity\User\Project;
+use App\Entity\User\User;
+use App\Service\Admin\Statistic\StatisticsServiceInterface;
+use App\Service\Common\Project\ProjectServiceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,7 +31,9 @@ use Symfony\Component\Serializer\SerializerInterface;
 class ViewAllController extends AbstractController
 {
     public function __construct(
-        private readonly SerializerInterface $serializer
+        private readonly SerializerInterface $serializer,
+        private readonly StatisticsServiceInterface $statisticsService,
+        private readonly ProjectServiceInterface $projectService,
     ) {
     }
 
@@ -39,31 +42,34 @@ class ViewAllController extends AbstractController
     {
         // todo ВНИМАНИЕ! нужно проерить права пользователя (не гость)
 
-        $fakeStatistic = (new ProjectStatisticRespDto())
-            ->setCount(13)
-        ;
+        /** @var User $user */
+        $user = $this->getUser();
 
-        $fakeStatistics = (new ProjectStatisticsRespDto())
-            ->setChats($fakeStatistic)
-            ->setLead($fakeStatistic)
-            ->setBooking($fakeStatistic)
-        ;
-
-        $fakeProject = (new ProjectRespDto())
-            ->setName('Название проекта')
-            ->setStatus('active')
-            ->setStatistic($fakeStatistics)
-            ->setActiveFrom(new DateTimeImmutable())
-            ->setActiveTo(new DateTimeImmutable())
-        ;
+        $projects = $this->projectService->getAll($user);
+        $response = $this->mapToResponse($projects);
 
         return new JsonResponse(
-            $this->serializer->normalize(
-                [
-                    $fakeProject,
-                    $fakeProject,
-                ]
-            )
+            $this->serializer->normalize($response)
         );
+    }
+
+    private function mapToResponse($projects): array
+    {
+        $result = [];
+
+        /** @var Project $project */
+        foreach ($projects as $project){
+            $fakeStatisticsByProject = $this->statisticsService->getStatisticForProject();
+
+            $result[] = (new ProjectRespDto())
+                ->setName($project->getName())
+                ->setStatus($project->getStatus())
+                ->setStatistic($fakeStatisticsByProject)
+                ->setActiveFrom($project->getActiveFrom())
+                ->setActiveTo($project->getActiveTo())
+            ;
+        }
+
+        return $result;
     }
 }

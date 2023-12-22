@@ -19,7 +19,7 @@ class ProjectService implements ProjectServiceInterface
 
     public function getAll(User $user): array
     {
-        return $user->getProjects()->toArray(); // todo жёсткий костыль
+        return $this->projectEntityRepository->findByUser($user);
     }
 
     public function add(ProjectCreateReqDto $projectDto, User $user): Project

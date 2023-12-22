@@ -2,6 +2,7 @@
 
 namespace App\Tests\Functional\Admin\Project;
 
+use App\Entity\User\Project;
 use App\Tests\Functional\ApiTestCase;
 use App\Tests\Functional\Trait\Project\ProjectTrait;
 use App\Tests\Functional\Trait\User\UserTrait;
@@ -18,26 +19,28 @@ class ViewAllControllerTest extends ApiTestCase
      *
      * @throws Exception
      */
-    public function testViewAll(array $requestContent)
+    public function testViewAll(array $response)
     {
         $client = static::createClient();
         $entityManager = $this->getEntityManager();
 
         $user = $this->createUser($entityManager);
+
+        $this->createProject($entityManager, $user);
+        $this->createProject($entityManager, $user);
+
+        $entityManager->flush();
+
         $client->loginUser($user);
 
         $client->request(
             'GET',
             '/api/admin/project/',
-            [],
-            [],
-            [],
-            json_encode($requestContent)
         );
 
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
-        // todo когда будет готова реализация - проверить изменения в базе
+        $this->assertResponse($client->getResponse()->getContent(), $response);
     }
 
     private function positive(): iterable
@@ -45,8 +48,8 @@ class ViewAllControllerTest extends ApiTestCase
         yield [
             [
                 [
-                    "name" => "Название проекта",
-                    "status" => "active",
+                    "name" => "Проект тестовый",
+                    "status" => Project::STATUS_ACTIVE,
                     "activeTo" => "2023-12-20T15:20:34+00:00",
                     "activeFrom" => "2023-12-20T15:20:34+00:00",
                     "statistic" => [
@@ -62,8 +65,8 @@ class ViewAllControllerTest extends ApiTestCase
                     ]
                 ],
                 [
-                    "name" => "Название проекта",
-                    "status" => "active",
+                    "name" => "Проект тестовый",
+                    "status" => Project::STATUS_ACTIVE,
                     "activeTo" => "2023-12-20T15:20:34+00:00",
                     "activeFrom" => "2023-12-20T15:20:34+00:00",
                     "statistic" => [
