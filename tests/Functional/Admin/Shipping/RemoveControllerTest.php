@@ -24,6 +24,8 @@ class RemoveControllerTest extends ApiTestCase
         $user = $this->createUser($entityManager);
         $project = $this->createProject($entityManager, $user);
 
+        $entityManager->flush();
+
         $client->loginUser($user);
 
         $client->request(

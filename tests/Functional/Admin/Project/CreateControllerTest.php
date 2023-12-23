@@ -24,6 +24,9 @@ class CreateControllerTest extends ApiTestCase
         $entityManager = $this->getEntityManager();
 
         $user = $this->createUser($entityManager);
+
+        $entityManager->flush();
+
         $client->loginUser($user);
 
         $client->request(

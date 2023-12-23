@@ -3,6 +3,7 @@
 namespace App\Controller\Admin\Project\DTO\Response;
 
 use App\Controller\Admin\Project\DTO\Response\Statistic\ProjectStatisticsRespDto;
+use App\Entity\User\Project;
 use DateTimeImmutable;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -10,7 +11,7 @@ class ProjectRespDto
 {
     private string $name;
 
-    #[Assert\Choice(['active', 'frozen', 'blocked'])]
+    #[Assert\Choice([Project::STATUS_ACTIVE, Project::STATUS_FROZEN, Project::STATUS_BLOCKED])]
     private string $status;
 
     private DateTimeImmutable $activeTo;

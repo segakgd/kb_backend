@@ -48,7 +48,7 @@ class ViewOneController extends AbstractController
             ->setApplyToAmountWF('10,00')
             ->setCalculationType('percent')
             ->setDescription('Urgent delivery is required')
-            ->setAmount(10)
+            ->setAmount(1000)
             ->addFields($fields)
         ;
         return new JsonResponse(

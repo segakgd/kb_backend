@@ -2,7 +2,7 @@
 
 namespace App\Service\Visitor\Card;
 
-use App\Dto\deprecated\CartDto;
+use App\Dto\CartDto;
 
 interface CardServiceInterface
 {

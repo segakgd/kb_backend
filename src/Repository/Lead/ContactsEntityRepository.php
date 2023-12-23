@@ -21,13 +21,13 @@ class ContactsEntityRepository extends ServiceEntityRepository
         parent::__construct($registry, DealContacts::class);
     }
 
-    public function saveAndFlush(DealContacts $entity, bool $flush = false): void
+    public function saveAndFlush(DealContacts $entity): void
     {
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
     }
 
-    public function removeAndFlush(DealContacts $entity, bool $flush = false): void
+    public function removeAndFlush(DealContacts $entity): void
     {
         $this->getEntityManager()->remove($entity);
         $this->getEntityManager()->flush();

@@ -22,9 +22,11 @@ class ViewAllControllerTest extends ApiTestCase
     {
         $client = static::createClient();
         $entityManager = $this->getEntityManager();
-        $user = $this->createUser($entityManager);
 
+        $user = $this->createUser($entityManager);
         $project = $this->createProject($entityManager, $user);
+
+        $entityManager->flush();
 
         $client->loginUser($user);
         $client->request(
@@ -52,7 +54,7 @@ class ViewAllControllerTest extends ApiTestCase
                     'name' => 'shipping 1',
                     'applyFromAmount' => 10000,
                     'applyFromAmountWF' => '100,00',
-                    'applyToAmount' => 10,
+                    'applyToAmount' => 1000,
                     'applyToAmountWF' => '10,00',
                     'active' => true,
                     'type' => 'pickup',
@@ -61,7 +63,7 @@ class ViewAllControllerTest extends ApiTestCase
                     'name' => 'shipping 1',
                     'applyFromAmount' => 10000,
                     'applyFromAmountWF' => '100,00',
-                    'applyToAmount' => 10,
+                    'applyToAmount' => 1000,
                     'applyToAmountWF' => '10,00',
                     'active' => true,
                     'type' => 'pickup',
