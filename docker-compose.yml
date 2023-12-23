@@ -4,7 +4,7 @@ services:
   php-fpm:
     container_name: php-fpm
     build:
-      context: ./php-fpm
+      context: _conf/php-fpm
     environment:
       - APP_ENV=${APP_ENV}
       - APP_SECRET=${APP_SECRET}
@@ -15,15 +15,14 @@ services:
   nginx:
     container_name: nginx
     build:
-      context: ./nginx
+      context: _conf/nginx
     volumes:
       - ./../kraiber-backend/:/var/www/KBackend
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/sites/:/etc/nginx/sites-available
-      - ./nginx/conf.d/:/etc/nginx/conf.d
-      - ./logs:/var/log/nginx
+      - ./_conf/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./_conf/nginx/sites/:/etc/nginx/sites-available
+      - ./_conf/nginx/conf.d/:/etc/nginx/conf.d
+      - ./_conf/logs:/var/log/nginx
     depends_on:
       - php-fpm
     ports:
       - "80:80"
-      - "443:443"
