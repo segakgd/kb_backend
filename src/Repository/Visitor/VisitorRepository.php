@@ -22,48 +22,17 @@ class VisitorRepository extends ServiceEntityRepository
         parent::__construct($registry, Visitor::class);
     }
 
-    public function save(Visitor $entity, bool $flush = false): void
+    public function saveAndFlush(Visitor $entity): void
     {
         $entity->setUpdatedAt(new DateTimeImmutable());
 
         $this->getEntityManager()->persist($entity);
-
-        if ($flush) { // todo
-            $this->getEntityManager()->flush();
-        }
+        $this->getEntityManager()->flush();
     }
 
-    public function remove(Visitor $entity, bool $flush = false): void
+    public function removeAndFlush(Visitor $entity): void
     {
         $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        $this->getEntityManager()->flush();
     }
-
-//    /**
-//     * @return Visitor[] Returns an array of Visitor objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('v')
-//            ->andWhere('v.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('v.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Visitor
-//    {
-//        return $this->createQueryBuilder('v')
-//            ->andWhere('v.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

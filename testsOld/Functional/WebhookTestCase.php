@@ -16,15 +16,16 @@ class WebhookTestCase extends WebTestCase
             [],
             [],
             '{
-              "update_id": 671775868,
+              "update_id": 321408154,
               "message": {
-                "message_id": 149,
+                "message_id": 3,
                 "from": {
                   "id": 873817360,
                   "is_bot": false,
                   "first_name": "Sega",
                   "username": "sega_kgd",
-                  "language_code": "ru"
+                  "language_code": "ru",
+                  "is_premium": true
                 },
                 "chat": {
                   "id": 873817360,
@@ -32,15 +33,8 @@ class WebhookTestCase extends WebTestCase
                   "username": "sega_kgd",
                   "type": "private"
                 },
-                "date": 1687894238,
-                "text": "/command1",
-                "entities": [
-                  {
-                    "offset": 0,
-                    "length": 9,
-                    "type": "bot_command"
-                  }
-                ]
+                "date": 1703359492,
+                "text": "фывфы"
               }
             }'
         );
