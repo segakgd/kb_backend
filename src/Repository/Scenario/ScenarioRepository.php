@@ -21,43 +21,15 @@ class ScenarioRepository extends ServiceEntityRepository
         parent::__construct($registry, Scenario::class);
     }
 
-    public function save(Scenario $entity): void
+    public function saveAndFlush(Scenario $entity): void
     {
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
     }
 
-    public function remove(Scenario $entity, bool $flush = false): void
+    public function removeAndFlush(Scenario $entity): void
     {
         $this->getEntityManager()->remove($entity);
-
-        if ($flush) { // todo
-            $this->getEntityManager()->flush();
-        }
+        $this->getEntityManager()->flush();
     }
-
-//    /**
-//     * @return Step[] Returns an array of Step objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Step
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

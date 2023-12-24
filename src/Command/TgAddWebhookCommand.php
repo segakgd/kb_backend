@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(
-    name: 'tg:add:webhook',
+    name: 'kb:tg:add:webhook',
     description: 'Add webhook',
 )]
 class TgAddWebhookCommand extends Command

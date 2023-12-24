@@ -13,7 +13,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Throwable;
 
 #[AsCommand(
-    name: 'tg:go',
+    name: 'kb:tg:go',
     description: 'Add a short description for your command',
 )]
 class TgGoCommand extends Command
