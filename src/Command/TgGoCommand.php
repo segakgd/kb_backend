@@ -19,8 +19,8 @@ use Throwable;
 class TgGoCommand extends Command
 {
     public function __construct(
-        private VisitorEventRepository $chatEventRepository, // todo использовать сервис
-        private ActionHandler $actionHandler,
+        private readonly VisitorEventRepository $visitorEventRepository, // todo использовать сервис
+        private readonly ActionHandler $actionHandler,
         string $name = null
     ) {
         parent::__construct($name);
@@ -30,7 +30,7 @@ class TgGoCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $chatEvent = $this->chatEventRepository->findOneBy(
+        $chatEvent = $this->visitorEventRepository->findOneBy(
             [
                 'status' => VisitorEvent::STATUS_NEW,
             ]
@@ -67,6 +67,6 @@ class TgGoCommand extends Command
     {
         $chatEvent->setStatus($status);
 
-        $this->chatEventRepository->saveAndFlush($chatEvent);
+        $this->visitorEventRepository->saveAndFlush($chatEvent);
     }
 }

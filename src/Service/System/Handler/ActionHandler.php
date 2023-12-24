@@ -5,6 +5,7 @@ namespace App\Service\System\Handler;
 use App\Entity\Visitor\VisitorEvent;
 use App\Service\System\Handler\Items\CommandHandler;
 use App\Service\System\Handler\Items\MessageHandler;
+use Exception;
 
 class ActionHandler
 {
@@ -14,6 +15,9 @@ class ActionHandler
     ) {
     }
 
+    /**
+     * @throws Exception
+     */
     public function handle(VisitorEvent $chatEvent): bool
     {
         return match ($chatEvent->getType()) {
