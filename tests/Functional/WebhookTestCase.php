@@ -34,11 +34,11 @@ class WebhookTestCase extends WebTestCase
                   "type": "private"
                 },
                 "date": 1703359492,
-                "text": "фывфы"
+                "text": "Что-то"
               }
             }'
         );
 
-        dd($client->getResponse()->getContent());
+        dd($client->getResponse()->getContent(), $client->getResponse()->getStatusCode());
     }
 }

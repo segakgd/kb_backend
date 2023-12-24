@@ -29,6 +29,13 @@ class VisitorSessionService implements VisitorSessionServiceInterface
         return $visitorSession;
     }
 
+    public function rewriteChatEvent(VisitorSession $visitorSession, int $visitorEventId): void
+    {
+        $visitorSession->setChatEvent($visitorEventId);
+
+        $this->visitorSessionRepository->save($visitorSession);
+    }
+
     private function createChatService(Visitor $visitor): VisitorSession
     {
         $chatSession = (new VisitorSession())
