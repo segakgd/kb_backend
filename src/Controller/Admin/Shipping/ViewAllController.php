@@ -59,7 +59,7 @@ class ViewAllController extends AbstractController
             ->setType(ShippingRespDto::TYPE_PICKUP)
             ->setApplyFromAmount(10000)
             ->setIsActive(true)
-            ->setApplyToAmount(10)
+            ->setApplyToAmount(1000)
             ->setApplyFromAmountWF('100,00')
             ->setApplyToAmountWF('10,00')
         ;

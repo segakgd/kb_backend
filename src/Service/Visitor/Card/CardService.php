@@ -2,14 +2,12 @@
 
 namespace App\Service\Visitor\Card;
 
-use App\Dto\deprecated\CartDto;
-use App\Dto\deprecated\Ecommerce\ProductDto;
-use App\Service\Admin\Ecommerce\Product\ProductManagerInterface;
+use App\Dto\CartDto;
 
 class CardService implements CardServiceInterface
 {
     public function __construct(
-        private readonly ProductManagerInterface $productService,
+//        private readonly ProductManagerInterface $productService,
         // private PromotionServiceInterface $promotionService, todo нужно будет учитывать
         // private ShippingServiceInterface $service, todo нужно будет учитывать
     ) {
@@ -26,13 +24,13 @@ class CardService implements CardServiceInterface
     {
         $allPrice = 0;
 
-        /** @var ProductDto $product */
+//        /** @var ProductDto $product */
         foreach ($cartDto->getProducts() as $product){
             foreach ($product->getVariants() as $variant){
-
-                if (!$this->productService->isExist($variant->getId())){ // todo проверить на наличие, на принадлежность к проекту, на резерв
-                    continue; // todo вернуть ошибку
-                }
+//
+//                if (!$this->productService->isExist($variant->getId())){ // todo проверить на наличие, на принадлежность к проекту, на резерв
+//                    continue; // todo вернуть ошибку
+//                }
 
                 // получаем цену
                 $price = $variant->getPrice();

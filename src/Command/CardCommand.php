@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Dto\deprecated\Core\Telegram\Invoice\InvoiceDto;
+use App\Dto\Core\Telegram\Invoice\InvoiceDto;
 use App\Dto\deprecated\Ecommerce\ProductDto;
 use App\Service\Integration\Telegram\TelegramService;
 use App\Service\Visitor\Card\CardServiceInterface;

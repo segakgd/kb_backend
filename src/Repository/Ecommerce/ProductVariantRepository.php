@@ -22,23 +22,17 @@ class ProductVariantRepository extends ServiceEntityRepository
         parent::__construct($registry, ProductVariant::class);
     }
 
-    public function saveAndFlush(ProductVariant $entity, bool $flush = false): void
+    public function saveAndFlush(ProductVariant $entity): void
     {
         $entity->setUpdatedAt(new DateTimeImmutable());
 
         $this->getEntityManager()->persist($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        $this->getEntityManager()->flush();
     }
 
-    public function removeAndFlush(ProductVariant $entity, bool $flush = false): void
+    public function removeAndFlush(ProductVariant $entity): void
     {
         $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        $this->getEntityManager()->flush();
     }
 }

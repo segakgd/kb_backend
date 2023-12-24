@@ -26,6 +26,8 @@ class ViewOneControllerTest extends ApiTestCase
 
         $project = $this->createProject($entityManager, $user);
 
+        $entityManager->flush();
+
         $client->loginUser($user);
 
         $client->request(
@@ -46,7 +48,7 @@ class ViewOneControllerTest extends ApiTestCase
                 "name" => "shipping 1",
                 "type" => "pickup",
                 "calculationType" => "percent",
-                "amount" => 10,
+                "amount" => 1000,
                 "applyFromAmount" => 10000,
                 "applyFromAmountWF" => "100,00",
                 "applyToAmount" => 10000,
