@@ -2,35 +2,48 @@
 
 namespace App\Service\Visitor\Session;
 
+use App\Entity\Visitor\Visitor;
 use App\Entity\Visitor\VisitorSession;
 use App\Repository\Visitor\VisitorSessionRepository;
+use DateTimeImmutable;
 
-class VisitorSessionService
+class VisitorSessionService implements VisitorSessionServiceInterface
 {
     public function __construct(
-        private readonly VisitorSessionRepository $chatSessionRepository,
+        private readonly VisitorSessionRepository $visitorSessionRepository,
     ) {
     }
 
-    public function getOrCreateChatSession(int $chatId, string $channel): ?VisitorSession
+    public function getOrCreateSession(Visitor $visitor): ?VisitorSession
     {
-        $chatSession = $this->chatSessionRepository->getSessionByChatIdAndChannel($chatId, $channel);
+        $visitorSession = $this->visitorSessionRepository->findOneBy(
+            [
+                'visitorId' => $visitor->getId()
+            ]
+        );
 
-        if (!$chatSession){
-            $chatSession = $this->createChatService($chatId, $channel);
+        if (!$visitorSession){
+            $visitorSession = $this->createChatService($visitor);
         }
 
-        return $chatSession;
+        return $visitorSession;
     }
 
-    private function createChatService(int $chatId, string $channel): VisitorSession
+    public function rewriteChatEvent(VisitorSession $visitorSession, int $visitorEventId): void
+    {
+        $visitorSession->setChatEvent($visitorEventId);
+
+        $this->visitorSessionRepository->save($visitorSession);
+    }
+
+    private function createChatService(Visitor $visitor): VisitorSession
     {
         $chatSession = (new VisitorSession())
-            ->setChatId($chatId)
-            ->setChannel($channel)
+            ->setVisitorId($visitor->getId())
+            ->setCreatedAt(new DateTimeImmutable())
         ;
 
-        $this->chatSessionRepository->save($chatSession);
+        $this->visitorSessionRepository->save($chatSession);
 
         return $chatSession;
     }

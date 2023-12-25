@@ -10,18 +10,22 @@ class TariffSettingRespDto
 
     private int $price;
 
+    private string $priceWF;
+
     private string $description;
 
-    private bool $isUsed;
+    private bool $active;
 
     public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName(string $name): void
+    public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
     }
 
     public function getCode(): string
@@ -29,9 +33,11 @@ class TariffSettingRespDto
         return $this->code;
     }
 
-    public function setCode(string $code): void
+    public function setCode(string $code): self
     {
         $this->code = $code;
+
+        return $this;
     }
 
     public function getPrice(): int
@@ -39,9 +45,23 @@ class TariffSettingRespDto
         return $this->price;
     }
 
-    public function setPrice(int $price): void
+    public function setPrice(int $price): self
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    public function getPriceWF(): string
+    {
+        return $this->priceWF;
+    }
+
+    public function setPriceWF(string $priceWF): self
+    {
+        $this->priceWF = $priceWF;
+
+        return $this;
     }
 
     public function getDescription(): string
@@ -49,18 +69,22 @@ class TariffSettingRespDto
         return $this->description;
     }
 
-    public function setDescription(string $description): void
+    public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
     }
 
-    public function isUsed(): bool
+    public function isActive(): bool
     {
-        return $this->isUsed;
+        return $this->active;
     }
 
-    public function setIsUsed(bool $isUsed): void
+    public function setActive(bool $active): self
     {
-        $this->isUsed = $isUsed;
+        $this->active = $active;
+
+        return $this;
     }
 }

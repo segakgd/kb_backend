@@ -1,21 +1,28 @@
-version: '3'
+version: '3.8'
 
 services:
-###> doctrine/doctrine-bundle ###
-  database:
-    image: postgres:${POSTGRES_VERSION:-15}-alpine
+  php-fpm:
+    container_name: php-fpm
+    build:
+      context: _conf/php-fpm
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-app}
-      # You should definitely change the password in production
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
-      POSTGRES_USER: ${POSTGRES_USER:-app}
+      - APP_ENV=${APP_ENV}
+      - APP_SECRET=${APP_SECRET}
+      - DATABASE_URL=${DATABASE_URL}
     volumes:
-      - database_data:/var/lib/postgresql/data:rw
-      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/db/data:/var/lib/postgresql/data:rw
-###< doctrine/doctrine-bundle ###
+      - ./../kraiber-backend/:/var/www/KBackend
 
-volumes:
-###> doctrine/doctrine-bundle ###
-  database_data:
-###< doctrine/doctrine-bundle ###
+  nginx:
+    container_name: nginx
+    build:
+      context: _conf/nginx
+    volumes:
+      - ./../kraiber-backend/:/var/www/KBackend
+      - ./_conf/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./_conf/nginx/sites/:/etc/nginx/sites-available
+      - ./_conf/nginx/conf.d/:/etc/nginx/conf.d
+      - ./_conf/logs:/var/log/nginx
+    depends_on:
+      - php-fpm
+    ports:
+      - "80:80"

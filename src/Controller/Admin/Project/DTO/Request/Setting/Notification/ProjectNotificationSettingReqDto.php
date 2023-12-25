@@ -4,20 +4,20 @@ namespace App\Controller\Admin\Project\DTO\Request\Setting\Notification;
 
 class ProjectNotificationSettingReqDto
 {
-    private ?bool $post;
+    private ?bool $mail;
 
     private ?bool $telegram;
 
     private ?bool $sms;
 
-    public function getPost(): ?bool
+    public function getMail(): ?bool
     {
-        return $this->post;
+        return $this->mail;
     }
 
-    public function setPost(?bool $post): void
+    public function setMail(?bool $mail): void
     {
-        $this->post = $post;
+        $this->mail = $mail;
     }
 
     public function getTelegram(): ?bool

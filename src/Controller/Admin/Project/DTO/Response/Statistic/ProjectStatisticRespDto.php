@@ -11,8 +11,10 @@ class ProjectStatisticRespDto
         return $this->count;
     }
 
-    public function setCount(int $count): void
+    public function setCount(int $count): self
     {
         $this->count = $count;
+
+        return $this;
     }
 }

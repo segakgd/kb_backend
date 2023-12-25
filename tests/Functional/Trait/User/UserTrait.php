@@ -15,7 +15,6 @@ trait UserTrait
         ;
 
         $manager->persist($user);
-        $manager->flush($user);
 
         return $user;
     }

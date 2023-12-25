@@ -26,6 +26,8 @@ class ViewAllControllerTest extends ApiTestCase
         $user = $this->createUser($entityManager);
         $project = $this->createProject($entityManager, $user);
 
+        $entityManager->flush();
+
         $client->loginUser($user);
 
         $client->request(
@@ -36,7 +38,6 @@ class ViewAllControllerTest extends ApiTestCase
             [],
             json_encode($requestContent)
         );
-
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertResponse($client->getResponse()->getContent(), $response);
     }

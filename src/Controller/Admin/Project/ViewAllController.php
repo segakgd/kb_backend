@@ -3,13 +3,17 @@
 namespace App\Controller\Admin\Project;
 
 use App\Controller\Admin\Project\DTO\Response\ProjectRespDto;
+use App\Entity\User\Project;
+use App\Entity\User\User;
+use App\Service\Admin\Statistic\StatisticsServiceInterface;
+use App\Service\Common\Project\ProjectServiceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Serializer\SerializerInterface;
 
 #[OA\Tag(name: 'Project')]
 #[OA\Response(
@@ -26,12 +30,46 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 )]
 class ViewAllController extends AbstractController
 {
-    #[Route('/api/admin/projects/', name: 'admin_project_get_all', methods: ['GET'])]
-    #[IsGranted('existUser', 'project')]
+    public function __construct(
+        private readonly SerializerInterface $serializer,
+        private readonly StatisticsServiceInterface $statisticsService,
+        private readonly ProjectServiceInterface $projectService,
+    ) {
+    }
+
+    #[Route('/api/admin/project/', name: 'admin_project_get_all', methods: ['GET'])]
     public function execute(): JsonResponse
     {
+        // todo ВНИМАНИЕ! нужно проерить права пользователя (не гость)
+
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $projects = $this->projectService->getAll($user);
+        $response = $this->mapToResponse($projects);
+
         return new JsonResponse(
-            new ProjectRespDto()
+            $this->serializer->normalize($response)
         );
+    }
+
+    private function mapToResponse($projects): array
+    {
+        $result = [];
+
+        /** @var Project $project */
+        foreach ($projects as $project){
+            $fakeStatisticsByProject = $this->statisticsService->getStatisticForProject();
+
+            $result[] = (new ProjectRespDto())
+                ->setName($project->getName())
+                ->setStatus($project->getStatus())
+                ->setStatistic($fakeStatisticsByProject)
+                ->setActiveFrom($project->getActiveFrom())
+                ->setActiveTo($project->getActiveTo())
+            ;
+        }
+
+        return $result;
     }
 }

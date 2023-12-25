@@ -8,132 +8,142 @@ use App\Entity\Visitor\VisitorSession;
 use App\Repository\Visitor\VisitorEventRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Admin\Scenario\BehaviorScenarioService;
-use App\Service\System\Handler\ActionAfterHandler;
-use App\Service\System\Handler\ActionBeforeHandler;
+//use App\Service\System\Handler\ActionAfterHandler;
+//use App\Service\System\Handler\ActionBeforeHandler;
+use App\Service\Visitor\Session\VisitorSessionServiceInterface;
 use Exception;
 
 class VisitorEventService
 {
     public function __construct(
-        private readonly VisitorEventRepository $chatEventRepository,
-        private readonly VisitorSessionRepository $chatSessionRepository,
+        private readonly VisitorEventRepository $visitorEventRepository,
+        private readonly VisitorSessionRepository $visitorSessionRepository,
+        private readonly VisitorSessionServiceInterface $visitorSessionService,
         private readonly BehaviorScenarioService $behaviorScenarioService,
-        private readonly ActionAfterHandler $actionAfterHandler,
-        private readonly ActionBeforeHandler $actionBeforeHandler,
+//        private readonly ActionAfterHandler $actionAfterHandler,
+//        private readonly ActionBeforeHandler $actionBeforeHandler,
     ) {
     }
 
     /**
      * @throws Exception
      */
-    public function createChatEventForSession(VisitorSession $chatSession, string $type, string $content): void
+    public function createChatEventForSession(VisitorSession $visitorSession, string $type, string $content): void
     {
-        $chatEventId = $chatSession->getChatEvent();
+        $visitorEventId = $visitorSession->getChatEvent();
 
-        if ($chatEventId){
-            $chatEvent = $this->chatEventRepository->find($chatEventId);
+        if ($visitorEventId){
 
-            if (null !== $chatEvent && $chatEvent->issetActions()){
-                if ($chatEvent->getActionAfter()){ // todo это внутренние события. их нужно обрабатывать паралельно?
-                    $this->actionAfterHandler->handle();
-                }
+            // todo вот какая не очевидная ситуация... почему в этом блоке проверка только на null...
+            //  если null, то проскакиваем за пределы if-а и доходим до вызова createVisitorEventByScenario... -_-
+            $visitorEvent = $this->visitorEventRepository->find($visitorEventId);
 
-                if ($chatEvent->getActionBefore()){ // todo это внутренние события. их нужно обрабатывать паралельно?
-                    $this->actionBeforeHandler->handle();
-                }
+//            if (null !== $visitorEvent && $visitorEvent->issetActions()){
+//                if ($visitorEvent->getActionAfter()){ // todo это внутренние события. их нужно обрабатывать паралельно?
+//                    $this->actionAfterHandler->handle();
+//                }
+//
+//                if ($visitorEvent->getActionBefore()){ // todo это внутренние события. их нужно обрабатывать паралельно?
+//                    $this->actionBeforeHandler->handle();
+//                }
+//
+//                $visitorEvent->setStatus(VisitorEvent::STATUS_DONE); // todo почему done?
+//
+//                $this->visitorEventRepository->saveAndFlush($visitorEvent);
+//            }
 
-                $chatEvent->setStatus(VisitorEvent::STATUS_DONE); // todo почему done?
+//            // если мы находимся тут, это значит что пора проверить, можем ли мы затереть собитие, которое ожидает что-то или нет.
+//            if (null !== $visitorEvent && $this->isMandatoryEvent($visitorEvent, $type)){
+//                throw new Exception('Событие обязательно, нужно уведомить пользователя об этом');
+//            }
 
-                $this->chatEventRepository->saveAndFlush($chatEvent);
-            }
-
-            // если мы находимся тут, это значит что пора проверить, можем ли мы затереть собитие, которое ожидает что-то или нет.
-            if (null !== $chatEvent && $this->isMandatoryEvent($chatEvent, $type)){
-                throw new Exception('Событие обязательно, нужно уведомить пользователя об этом');
-            }
-
-            if (null !== $chatEvent){
-                $this->rewriteChatEventByScenario($chatEvent, $chatSession, $type, $content);
+            // todo ааа... понял. типа мы перезаписываем старое событие новым...
+            if (null !== $visitorEvent){
+                $this->rewriteChatEventByScenario($visitorEvent, $visitorSession, $type, $content);
 
                 return;
             }
         }
 
-        $this->createChatEventByScenario($chatSession, $type, $content);
+        $this->createVisitorEventByScenario($visitorSession, $type, $content);
     }
 
-    private function createChatEventByScenario(VisitorSession $chatSession, string $type, string $content): void
+    /**
+     * @throws Exception
+     */
+    private function createVisitorEventByScenario(VisitorSession $visitorSession, string $type, string $content): void
     {
         $scenario = $this->behaviorScenarioService->getScenarioByNameAndType($type, $content);
 
-        $chatEvent = $this->createChatEvent($scenario, $type);
-        $chatEventId = $chatEvent->getId();
+        if (null === $scenario){
+            throw new Exception('Не существует ни одного сценария'); // todo может быть такое, что $scenario не существет
+        }
 
-        $chatSession->setChatEvent($chatEventId);
+        $visitorEvent = $this->createChatEvent($scenario, $type);
+        $visitorEventId = $visitorEvent->getId();
 
-        $this->chatSessionRepository->save($chatSession);
+        $visitorSession->setChatEvent($visitorEventId);
 
+        $this->visitorSessionRepository->save($visitorSession);
     }
 
     private function rewriteChatEventByScenario(
-        VisitorEvent $chatEvent,
-        VisitorSession $chatSession,
+        VisitorEvent $visitorEvent,
+        VisitorSession $visitorSession,
         string $type,
-        string $content
+        string $content,
     ): void {
         $scenario = $this->behaviorScenarioService->getScenarioByNameAndType($type, $content);
 
-        if (!$scenario){
-            $ownerBehaviorScenarioId = $chatEvent->getBehaviorScenario();
+        if (!$scenario){ // todo что тут проиходит?
+            $ownerBehaviorScenarioId = $visitorEvent->getBehaviorScenario();
             $scenario = $this->behaviorScenarioService->getScenarioByOwnerId($ownerBehaviorScenarioId);
         }
 
-        if (!$scenario){
+        if (!$scenario){ // todo как сюда дойти? оО
             $scenario = $this->behaviorScenarioService->generateDefaultScenario();
         }
 
-        $chatEvent = $this->createChatEvent($scenario, $type);
+        // один и тот же сценарий, нет смысла перезатирать
+        if ($visitorEvent->getBehaviorScenario() === $scenario->getId()){
+            return;
+        }
 
-        $oldEventId = $chatSession->getChatEvent();
-        $chatEventId = $chatEvent->getId();
+        $oldEventId = $visitorSession->getChatEvent();
+        $visitorEvent = $this->createChatEvent($scenario, $type);
 
-        // обновляем сессию
-        $chatSession->setChatEvent($chatEventId);
-
-        $this->chatSessionRepository->save($chatSession);
-
-        // старое событие удаляем
-        $oldEvent = $this->chatEventRepository->find($oldEventId);
-        $this->chatEventRepository->remove($oldEvent);
+        $this->visitorSessionService->rewriteChatEvent($visitorSession, $visitorEvent->getId());
+        $this->visitorEventRepository->removeById($oldEventId);
     }
 
     private function createChatEvent(Scenario $scenario, string $type): VisitorEvent
     {
-        $chatEvent = (new VisitorEvent())
+        $visitorEvent = (new VisitorEvent())
             ->setType($type)
             ->setBehaviorScenario($scenario->getId())
             ->setActionAfter($scenario->getActionAfter() ?? null)
         ;
 
-        $this->chatEventRepository->saveAndFlush($chatEvent);
+        $this->visitorEventRepository->saveAndFlush($visitorEvent);
 
-        return $chatEvent;
+        return $visitorEvent;
     }
 
-    private function isMandatoryEvent(VisitorEvent $chatEvent, string $type): bool
-    {
-        if ($type === 'command') {
-            return false;
-        }
-
-        if (empty($chatEvent->getActionAfter())) {
-            return false;
-        }
-
-        if (VisitorEvent::STATUS_DONE === $chatEvent->getStatus()) {
-            return false;
-        }
-
-        return true;
-    }
+//    /** является обязательным мероприятием */
+//    private function isMandatoryEvent(VisitorEvent $visitorEvent, string $type): bool // todo не понимаю эту идею
+//    {
+//        if ($type === 'command') {
+//            return false;
+//        }
+//
+//        if (empty($visitorEvent->getActionAfter())) {
+//            return false;
+//        }
+//
+//        if (VisitorEvent::STATUS_DONE === $visitorEvent->getStatus()) {
+//            return false;
+//        }
+//
+//        return true;
+//    }
 }

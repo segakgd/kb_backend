@@ -32,4 +32,14 @@ class VisitorEventRepository extends ServiceEntityRepository
         $this->getEntityManager()->remove($entity);
         $this->getEntityManager()->flush();
     }
+
+    public function removeById(int $visitorEventId): void
+    {
+        $visitorEvent = $this->find($visitorEventId);
+
+        if ($visitorEvent){
+            $this->getEntityManager()->remove($visitorEvent);
+            $this->getEntityManager()->flush();
+        }
+    }
 }

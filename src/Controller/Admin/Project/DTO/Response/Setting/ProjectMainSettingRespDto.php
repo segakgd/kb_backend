@@ -23,9 +23,11 @@ class ProjectMainSettingRespDto
         return $this->name;
     }
 
-    public function setName(?string $name): void
+    public function setName(?string $name): self
     {
         $this->name = $name;
+
+        return $this;
     }
 
     public function getCountry(): ?string
@@ -33,9 +35,11 @@ class ProjectMainSettingRespDto
         return $this->country;
     }
 
-    public function setCountry(?string $country): void
+    public function setCountry(?string $country): self
     {
         $this->country = $country;
+
+        return $this;
     }
 
     public function getTimeZone(): ?string
@@ -43,9 +47,11 @@ class ProjectMainSettingRespDto
         return $this->timeZone;
     }
 
-    public function setTimeZone(?string $timeZone): void
+    public function setTimeZone(?string $timeZone): self
     {
         $this->timeZone = $timeZone;
+
+        return $this;
     }
 
     public function getLanguage(): ?string
@@ -53,9 +59,11 @@ class ProjectMainSettingRespDto
         return $this->language;
     }
 
-    public function setLanguage(?string $language): void
+    public function setLanguage(?string $language): self
     {
         $this->language = $language;
+
+        return $this;
     }
 
     public function getCurrency(): ?string
@@ -63,9 +71,11 @@ class ProjectMainSettingRespDto
         return $this->currency;
     }
 
-    public function setCurrency(?string $currency): void
+    public function setCurrency(?string $currency): self
     {
         $this->currency = $currency;
+
+        return $this;
     }
 
     public function getTariff(): ProjectTariffSettingRespDto
@@ -73,8 +83,10 @@ class ProjectMainSettingRespDto
         return $this->tariff;
     }
 
-    public function setTariff(ProjectTariffSettingRespDto $tariff): void
+    public function setTariff(ProjectTariffSettingRespDto $tariff): self
     {
         $this->tariff = $tariff;
+
+        return $this;
     }
 }

@@ -4,20 +4,22 @@ namespace App\Controller\Admin\Project\DTO\Response\Setting;
 
 class ProjectNotificationSettingRespDto
 {
-    private ?bool $post;
+    private ?bool $mail;
 
     private ?bool $telegram;
 
     private ?bool $sms;
 
-    public function getPost(): ?bool
+    public function getMail(): ?bool
     {
-        return $this->post;
+        return $this->mail;
     }
 
-    public function setPost(?bool $post): void
+    public function setMail(?bool $mail): self
     {
-        $this->post = $post;
+        $this->mail = $mail;
+
+        return $this;
     }
 
     public function getTelegram(): ?bool
@@ -25,9 +27,11 @@ class ProjectNotificationSettingRespDto
         return $this->telegram;
     }
 
-    public function setTelegram(?bool $telegram): void
+    public function setTelegram(?bool $telegram): self
     {
         $this->telegram = $telegram;
+
+        return $this;
     }
 
     public function getSms(): ?bool
@@ -35,8 +39,10 @@ class ProjectNotificationSettingRespDto
         return $this->sms;
     }
 
-    public function setSms(?bool $sms): void
+    public function setSms(?bool $sms): self
     {
         $this->sms = $sms;
+
+        return $this;
     }
 }

@@ -2,18 +2,18 @@
 
 namespace App\Tests\Functional;
 
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class ApiTestCase extends WebTestCase
 {
-    private ?ObjectManager $entityManager = null;
+    private ?EntityManagerInterface $entityManager = null;
 
     /**
      * @throws Exception
      */
-    public function getEntityManager(): ObjectManager
+    public function getEntityManager(): EntityManagerInterface
     {
         if (!$this->entityManager){
             $container = self::getContainer();
@@ -26,6 +26,10 @@ class ApiTestCase extends WebTestCase
     public function assertResponse(string $response, array $responseCorrect): void
     {
         $response = json_decode($response, true);
+
+        if (empty($response) || empty($responseCorrect)){
+            throw new \PHPUnit\Util\Exception('Нету данных для сравнения');
+        }
 
         $this->assertResponseItems($response, $responseCorrect);
     }

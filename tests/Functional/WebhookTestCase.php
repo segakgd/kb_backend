@@ -9,22 +9,23 @@ class WebhookTestCase extends WebTestCase
     public function test(){
         $client = static::createClient();
 
-        $crawler = $client->request(
+        $client->request(
             'POST',
-            '/webhook/1/telegram/',
+            '/webhook/' . 2836 . '/telegram/',
             [],
             [],
             [],
             '{
-              "update_id": 671775868,
+              "update_id": 321408154,
               "message": {
-                "message_id": 149,
+                "message_id": 3,
                 "from": {
                   "id": 873817360,
                   "is_bot": false,
                   "first_name": "Sega",
                   "username": "sega_kgd",
-                  "language_code": "ru"
+                  "language_code": "ru",
+                  "is_premium": true
                 },
                 "chat": {
                   "id": 873817360,
@@ -32,101 +33,12 @@ class WebhookTestCase extends WebTestCase
                   "username": "sega_kgd",
                   "type": "private"
                 },
-                "date": 1687894238,
-                "text": "/command1",
-                "entities": [
-                  {
-                    "offset": 0,
-                    "length": 9,
-                    "type": "bot_command"
-                  }
-                ]
+                "date": 1703359492,
+                "text": "Что-то"
               }
             }'
         );
 
-//        $crawler = $client->request(
-//            'POST',
-//            '/webhook/1/telegram/',
-//            [],
-//            [],
-//            [],
-//            '{
-//              "update_id": 671775864,
-//              "message": {
-//                "message_id": 136,
-//                "from": {
-//                  "id": 873817360,
-//                  "is_bot": false,
-//                  "first_name": "Sega",
-//                  "username": "sega_kgd",
-//                  "language_code": "ru"
-//                },
-//                "chat": {
-//                  "id": 873817360,
-//                  "first_name": "Sega",
-//                  "username": "sega_kgd",
-//                  "type": "private"
-//                },
-//                "date": 1687119306,
-//                "text": "Моё имя"
-//              }
-//            }'
-//        );
-
-        dd($crawler);
-
-
-//        {
-//            "update_id": 671775847,
-//  "message": {
-//            "message_id": 80,
-//    "from": {
-//                "id": 873817360,
-//      "is_bot": false,
-//      "first_name": "Sega",
-//      "username": "sega_kgd",
-//      "language_code": "ru"
-//    },
-//    "chat": {
-//                "id": 873817360,
-//      "first_name": "Sega",
-//      "username": "sega_kgd",
-//      "type": "private"
-//    },
-//    "date": 1685559541,
-//    "text": "/command1",
-//    "entities": [
-//      {
-//          "offset": 0,
-//        "length": 9,
-//        "type": "bot_command"
-//      }
-//    ]
-//  }
-//}
-
-        // '/webhook/'
-
-//        {
-//          "update_id": 671775841,
-//          "message": {
-//            "message_id": 45,
-//            "from": {
-//               "id": 873817360,
-//              "is_bot": false,
-//              "first_name": "Sega",
-//              "language_code": "ru"
-//            },
-//            "chat": {
-//              "id": 873817360,
-//              "first_name": "Sega",
-//              "username": "sega_kgd",
-//              "type": "private"
-//            },
-//            "date": 1683837388,
-//            "text": "asdasd"
-//          }
-//        }
+        dd($client->getResponse()->getContent(), $client->getResponse()->getStatusCode());
     }
 }

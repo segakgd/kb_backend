@@ -15,9 +15,11 @@ class ProjectStatisticsRespDto
         return $this->lead;
     }
 
-    public function setLead(ProjectStatisticRespDto $lead): void
+    public function setLead(ProjectStatisticRespDto $lead): self
     {
         $this->lead = $lead;
+
+        return $this;
     }
 
     public function getBooking(): ProjectStatisticRespDto
@@ -25,9 +27,11 @@ class ProjectStatisticsRespDto
         return $this->booking;
     }
 
-    public function setBooking(ProjectStatisticRespDto $booking): void
+    public function setBooking(ProjectStatisticRespDto $booking): self
     {
         $this->booking = $booking;
+
+        return $this;
     }
 
     public function getChats(): ProjectStatisticRespDto
@@ -35,8 +39,10 @@ class ProjectStatisticsRespDto
         return $this->chats;
     }
 
-    public function setChats(ProjectStatisticRespDto $chats): void
+    public function setChats(ProjectStatisticRespDto $chats): self
     {
         $this->chats = $chats;
+
+        return $this;
     }
 }

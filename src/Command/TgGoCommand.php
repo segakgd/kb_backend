@@ -13,14 +13,14 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Throwable;
 
 #[AsCommand(
-    name: 'tg:go',
+    name: 'kb:tg:handler_events',
     description: 'Add a short description for your command',
 )]
 class TgGoCommand extends Command
 {
     public function __construct(
-        private VisitorEventRepository $chatEventRepository, // todo использовать сервис
-        private ActionHandler $actionHandler,
+        private readonly VisitorEventRepository $visitorEventRepository, // todo использовать сервис
+        private readonly ActionHandler $actionHandler,
         string $name = null
     ) {
         parent::__construct($name);
@@ -30,7 +30,7 @@ class TgGoCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $chatEvent = $this->chatEventRepository->findOneBy(
+        $chatEvent = $this->visitorEventRepository->findOneBy(
             [
                 'status' => VisitorEvent::STATUS_NEW,
             ]
@@ -51,6 +51,8 @@ class TgGoCommand extends Command
 //                $this->updateChatEventStatus($chatEvent, ChatEvent::STATUS_DONE);
 //            }
 
+            $this->updateChatEventStatus($chatEvent, VisitorEvent::STATUS_DONE);
+
         } catch (Throwable $throwable){
 
             $this->updateChatEventStatus($chatEvent, VisitorEvent::STATUS_FAIL);
@@ -67,6 +69,6 @@ class TgGoCommand extends Command
     {
         $chatEvent->setStatus($status);
 
-        $this->chatEventRepository->saveAndFlush($chatEvent);
+        $this->visitorEventRepository->saveAndFlush($chatEvent);
     }
 }

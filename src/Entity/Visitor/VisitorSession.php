@@ -6,6 +6,7 @@ use App\Repository\Visitor\VisitorSessionRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
+/** Сессия пользователя */
 #[ORM\Entity(repositoryClass: VisitorSessionRepository::class)]
 class VisitorSession
 {
