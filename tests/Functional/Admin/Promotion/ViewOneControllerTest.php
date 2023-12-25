@@ -26,6 +26,8 @@ class ViewOneControllerTest extends ApiTestCase
         $user = $this->createUser($entityManager);
         $project = $this->createProject($entityManager, $user);
 
+        $entityManager->flush();
+
         $client->loginUser($user);
 
         $client->request(
@@ -46,12 +48,12 @@ class ViewOneControllerTest extends ApiTestCase
                 "name" => "promo",
                 "type" => "current",
                 "code" => "2024",
-                "triggersQuantity" => 100,
+                "triggersQuantity" => 10000,
                 "active" => true,
-                "amount" => 10,
+                "amount" => 1000,
                 "amountWithFraction" => "10,00",
-                "activeFrom" => "2023-12-21T22:04:20+00:00",
-                "activeTo" => "2023-12-21T22:04:20+00:00",
+                "activeFrom" => "2023-12-25T13:24:08+00:00",
+                "activeTo" => "2023-12-25T13:24:08+00:00"
             ]
         ];
     }

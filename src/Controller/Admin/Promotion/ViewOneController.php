@@ -35,13 +35,13 @@ class ViewOneController extends AbstractController
         $fakeFullPromotion = (new FullPromotionRespDto())
             ->setName('promo')
             ->setType('current')
-            ->setAmount(10)
-            ->setIsActive(true)
-            ->setTriggersQuantity(100)
-            ->setAmountWithFraction('10,00')
             ->setCode('2024')
+            ->setAmount(1000)
+            ->setAmountWithFraction('10,00')
+            ->setTriggersQuantity(10000)
             ->setActiveTo(new DateTimeImmutable())
             ->setActiveFrom(new DateTimeImmutable())
+            ->setIsActive(true)
         ;
 
         return new JsonResponse(

@@ -51,7 +51,7 @@ class ApiTestCase extends WebTestCase
                 continue;
             }
 
-            $this->assertEquals($responseItem, $responseCorrect[$key]);
+            $this->assertEquals($responseItem, $responseCorrect[$key], 'Ошибка в ключе: ' . $key);
         }
     }
 }

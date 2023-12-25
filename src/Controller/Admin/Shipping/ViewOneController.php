@@ -39,7 +39,7 @@ class ViewOneController extends AbstractController
             ->setValue('2396');
 
         $fakeShipping = (new ShippingRespDto())
-            ->setName('shipping 1')
+            ->setName('Доставка до самого дома')
             ->setType(\App\Controller\Admin\Lead\DTO\Response\Order\Shipping\ShippingRespDto::TYPE_PICKUP)
             ->setApplyFromAmount(10000)
             ->setIsActive(true)

@@ -45,7 +45,7 @@ class ViewOneControllerTest extends ApiTestCase
     {
         yield [
             [
-                "name" => "shipping 1",
+                "name" => "Доставка до самого дома",
                 "type" => "pickup",
                 "calculationType" => "percent",
                 "amount" => 1000,

@@ -40,8 +40,11 @@ class ViewAllController extends AbstractController
     public function execute(Request $request, Project $project): JsonResponse
     {
         $content = $request->getContent();
+
         $requestDto = $this->serializer->deserialize($content, PromotionReqDto::class, 'json');
+
         $errors = $this->validator->validate($requestDto);
+
         if (count($errors) > 0) {
             return $this->json(['message' => $errors->get(0)->getMessage()], Response::HTTP_BAD_REQUEST);
         }
@@ -49,19 +52,19 @@ class ViewAllController extends AbstractController
         $fakeDiscount = (new PromotionRespDto())
             ->setName('discount')
             ->setType('percent')
-            ->setAmount(10)
-            ->setIsActive(true)
-            ->setTriggersQuantity(100)
+            ->setAmount(1000)
             ->setAmountWithFraction('10,00')
+            ->setTriggersQuantity(10000)
+            ->setIsActive(true)
         ;
 
         $fakePromo = (new PromotionRespDto())
             ->setName('promo')
             ->setType('current')
-            ->setAmount(10)
-            ->setIsActive(true)
-            ->setTriggersQuantity(100)
+            ->setAmount(1000)
             ->setAmountWithFraction('10,00')
+            ->setTriggersQuantity(10000)
+            ->setIsActive(true)
         ;
 
         $fakePromotion = (new ViewAllPromotionsRespDto())

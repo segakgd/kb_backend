@@ -26,6 +26,8 @@ class CreateControllerTest extends ApiTestCase
         $user = $this->createUser($entityManager);
         $project = $this->createProject($entityManager, $user);
 
+        $entityManager->flush();
+
         $client->loginUser($user);
 
         $client->request(
@@ -48,11 +50,11 @@ class CreateControllerTest extends ApiTestCase
             [
                 'name' => 'promo',
                 'type' => 'percent',
-                'code' => '1232',
-                'triggersQuantity' => 100,
+                'code' => 'PROMO_CODE',
+                'triggersQuantity' => 10000,
                 'isActive' => true,
-                'amount' => 15,
-                '$amountWithFraction' => '10',
+                'amount' => 15000,
+                'amountWithFraction' => '150,00',
                 'activeFrom' => '2023-12-16T23:22:00+00:00',
                 'activeTo' => '2023-12-25T23:22:00+00:00'
             ],

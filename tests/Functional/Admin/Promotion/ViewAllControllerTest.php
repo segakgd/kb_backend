@@ -26,6 +26,8 @@ class ViewAllControllerTest extends ApiTestCase
         $user = $this->createUser($entityManager);
         $project = $this->createProject($entityManager, $user);
 
+        $entityManager->flush();
+
         $client->loginUser($user);
 
         $client->request(
@@ -36,6 +38,7 @@ class ViewAllControllerTest extends ApiTestCase
             [],
             json_encode($requestContent)
         );
+
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertResponse($client->getResponse()->getContent(), $response);
     }
@@ -58,40 +61,48 @@ class ViewAllControllerTest extends ApiTestCase
             [
                 [
                     "discounts" => [
-                        "name" => "discount",
-                        "type" => "percent",
-                        "triggersQuantity" => 100,
-                        "active" => true,
-                        "amount" => 10,
-                        "amountWithFraction" => "10,00"
+                        [
+                            "name" => "discount",
+                            "type" => "percent",
+                            "triggersQuantity" => 10000,
+                            "active" => true,
+                            "amount" => 1000,
+                            "amountWithFraction" => "10,00"
+                        ]
                     ],
                     "promoCodes" => [
-                        "name" => "promo",
-                        "type" => "current",
-                        "triggersQuantity" => 100,
-                        "active" => true,
-                        "amount" => 10,
-                        "amountWithFraction" => "10,00"
-                    ],
+                        [
+                            "name" => "promo",
+                            "type" => "current",
+                            "triggersQuantity" => 10000,
+                            "active" => true,
+                            "amount" => 1000,
+                            "amountWithFraction" => "10,00"
+                        ]
+                    ]
                 ],
-            [
+                [
                     "discounts" => [
-                        "name" => "discount",
-                        "type" => "percent",
-                        "triggersQuantity" => 100,
-                        "active" => true,
-                        "amount" => 10,
-                        "amountWithFraction" => "10,00"
+                        [
+                            "name" => "discount",
+                            "type" => "percent",
+                            "triggersQuantity" => 10000,
+                            "active" => true,
+                            "amount" => 1000,
+                            "amountWithFraction" => "10,00"
+                        ]
                     ],
                     "promoCodes" => [
-                        "name" => "promo",
-                        "type" => "current",
-                        "triggersQuantity" => 100,
-                        "active" => true,
-                        "amount" => 10,
-                        "amountWithFraction" => "10,00"
-                    ],
-                ],
+                        [
+                            "name" => "promo",
+                            "type" => "current",
+                            "triggersQuantity" => 10000,
+                            "active" => true,
+                            "amount" => 1000,
+                            "amountWithFraction" => "10,00"
+                        ]
+                    ]
+                ]
             ],
         ];
     }
