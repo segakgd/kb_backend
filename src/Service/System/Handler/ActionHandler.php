@@ -20,8 +20,10 @@ class ActionHandler
      */
     public function handle(VisitorEvent $chatEvent): bool
     {
+        // todo не увеорен что это хорошее решение...
+
         return match ($chatEvent->getType()) {
-            'command' => $this->commandHandler->handle($chatEvent) ?? true, // ?? true todo временное решение
+            'command' => $this->commandHandler->handle($chatEvent),
             'message' => $this->messageHandler->handle($chatEvent),
             default => false
         };

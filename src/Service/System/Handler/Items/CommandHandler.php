@@ -20,7 +20,7 @@ class CommandHandler
     ) {
     }
 
-    public function handle(VisitorEvent $visitorEvent): void
+    public function handle(VisitorEvent $visitorEvent): bool
     {
         $behaviorScenarioId = $visitorEvent->getBehaviorScenario();
 
@@ -65,5 +65,7 @@ class CommandHandler
 
             $this->telegramService->sendMessage($messageDto, '5109953245:AAE7TIhplLRxJdGmM27YSeSIdJdOh4ZXVVY');
         }
+
+        return true;
     }
 }
