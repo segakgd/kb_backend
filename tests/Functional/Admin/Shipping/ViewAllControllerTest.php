@@ -51,7 +51,7 @@ class ViewAllControllerTest extends ApiTestCase
             ],
             [
                 [
-                    'name' => 'shipping 1',
+                    'name' => 'Доставка до самого дома',
                     'applyFromAmount' => 10000,
                     'applyFromAmountWF' => '100,00',
                     'applyToAmount' => 1000,
@@ -60,7 +60,7 @@ class ViewAllControllerTest extends ApiTestCase
                     'type' => 'pickup',
                 ],
                 [
-                    'name' => 'shipping 1',
+                    'name' => 'Доставка до самого дома',
                     'applyFromAmount' => 10000,
                     'applyFromAmountWF' => '100,00',
                     'applyToAmount' => 1000,

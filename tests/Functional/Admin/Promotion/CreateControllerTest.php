@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Functional\Admin\Shipping;
+namespace App\Tests\Functional\Admin\Promotion;
 
 use App\Tests\Functional\ApiTestCase;
 use App\Tests\Functional\Trait\Project\ProjectTrait;
@@ -32,12 +32,13 @@ class CreateControllerTest extends ApiTestCase
 
         $client->request(
             'POST',
-            '/api/admin/project/'. $project->getId() .'/shipping/',
+            '/api/admin/project/'. $project->getId() .'/promotion/',
             [],
             [],
             [],
             json_encode($requestContent)
         );
+
         $this->assertEquals(Response::HTTP_NO_CONTENT, $client->getResponse()->getStatusCode());
 
         // todo когда будет готова реализация - проверить изменения в базе
@@ -47,24 +48,15 @@ class CreateControllerTest extends ApiTestCase
     {
         yield [
             [
-                "shipping" => [
-                    'name' => 'Доставка до самого дома',
-                    'type' => 'pickup',
-                    'calculationType' => 'percent',
-                    'amount' => 10,
-                    'amountWF' => '100,00',
-                    'applyFromAmount' => 20000,
-                    'applyFromAmountWF' => '100,00',
-                    'applyToAmount' => 10000,
-                    'applyToAmountWF' => '100,00',
-                    'description' => 'Urgent delivery is required',
-                    'fields' => [
-                        'type' => 'phone',
-                        'name' => 'Добавочный телефон',
-                        'value' => '2396',
-                    ],
-                    'isActive' => true,
-                ],
+                'name' => 'promo',
+                'type' => 'percent',
+                'code' => 'PROMO_CODE',
+                'triggersQuantity' => 10000,
+                'isActive' => true,
+                'amount' => 15000,
+                'amountWithFraction' => '150,00',
+                'activeFrom' => '2023-12-16T23:22:00+00:00',
+                'activeTo' => '2023-12-25T23:22:00+00:00'
             ],
         ];
     }
