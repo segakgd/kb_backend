@@ -23,7 +23,7 @@ class MessageHandler
     /**
      * @throws Exception
      */
-    public function handle(VisitorEvent $chatEvent): void
+    public function handle(VisitorEvent $chatEvent): bool
     {
         $behaviorScenarioId = $chatEvent->getBehaviorScenario();
         $behaviorScenario = $this->behaviorScenarioRepository->find($behaviorScenarioId);
@@ -34,13 +34,8 @@ class MessageHandler
 
         $behaviorScenarioContent = $behaviorScenario->getContent();
 
-        $chatSession = $this->visitorSessionRepository->findOneBy(
-            [
-                'chatEvent' => $chatEvent->getId()
-            ]
-        );
-
-        $visitor = $this->visitorRepository->find($chatSession->getVisitorId());
+        $visitorSession = $this->visitorSessionRepository->findByEventId($chatEvent->getId());
+        $visitor = $this->visitorRepository->find($visitorSession->getVisitorId());
 
         $messageDto = (new MessageDto())
             ->setChatId($visitor->getChannelVisitorId())
@@ -51,6 +46,8 @@ class MessageHandler
             $messageDto->setReplyMarkup($behaviorScenarioContent['replyMarkup']);
         }
 
-        $this->telegramService->sendMessage($messageDto, '6722125407:AAEDDnc7qpbaZpZg-wpfXQ5h7Yp5mhJND0U');
+        $this->telegramService->sendMessage($messageDto, '6722125407:AAEDDnc7qpbaZpZg-wpfXQ5h7Yp5mhJND0U'); // todo токен брать из настрек
+
+        return true;
     }
 }

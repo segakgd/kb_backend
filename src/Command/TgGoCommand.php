@@ -13,7 +13,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Throwable;
 
 #[AsCommand(
-    name: 'kb:tg:go',
+    name: 'kb:tg:handler_events',
     description: 'Add a short description for your command',
 )]
 class TgGoCommand extends Command
@@ -50,6 +50,8 @@ class TgGoCommand extends Command
 //            } else {
 //                $this->updateChatEventStatus($chatEvent, ChatEvent::STATUS_DONE);
 //            }
+
+            $this->updateChatEventStatus($chatEvent, VisitorEvent::STATUS_DONE);
 
         } catch (Throwable $throwable){
 

@@ -22,7 +22,7 @@ class ActionHandler
     {
         return match ($chatEvent->getType()) {
             'command' => $this->commandHandler->handle($chatEvent) ?? true, // ?? true todo временное решение
-            'message' => $this->messageHandler->handle($chatEvent) ?? true, // ?? true todo временное решение
+            'message' => $this->messageHandler->handle($chatEvent),
             default => false
         };
     }
