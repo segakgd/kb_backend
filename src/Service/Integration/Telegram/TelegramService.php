@@ -21,7 +21,7 @@ class TelegramService implements TelegramServiceInterface
         $request = $this->buildRequest(
             $messageDto->getArray(),
             'sendMessage',
-        $token,
+            $token,
             HttpClient::METHOD_POST,
         );
 
@@ -33,7 +33,7 @@ class TelegramService implements TelegramServiceInterface
         $request = $this->buildRequest(
             $invoiceDto->getArray(),
             'sendInvoice',
-        $token,
+            $token,
             HttpClient::METHOD_POST,
         );
 
@@ -59,6 +59,6 @@ class TelegramService implements TelegramServiceInterface
             ->setScenario($scenario)
             ->setToken($token)
             ->setMethod($method)
-        ;
+            ;
     }
 }

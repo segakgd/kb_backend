@@ -21,7 +21,7 @@ class Visitor
     private ?string $channel = null;
 
     #[ORM\Column]
-    private ?int $channelVisitorId = null;
+    private ?int $channelVisitorId = null; // todo надо поменять название
 
     #[ORM\Column]
     private ?DateTimeImmutable $createdAt = null;

@@ -22,7 +22,6 @@ class HttpClient implements HttpClientInterface
         $code = $responseArray['ok'] === true ? 200 : 400;
         $description = $responseArray['description'] ?? '';
 
-        dd($code, $description);
         return new Response($code, $description);
     }
 

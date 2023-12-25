@@ -2,37 +2,28 @@
 
 namespace App\Converter;
 
-use App\Entity\Scenario\Scenario;
-use App\Repository\Scenario\ScenarioRepository;
+use App\Service\Visitor\Scenario\ScenarioServiceInterface;
+use Exception;
 
 class SettingConverter
 {
     public function __construct(
-        private readonly ScenarioRepository $behaviorScenarioRepository, // todo использовать сервис
+        private readonly ScenarioServiceInterface $scenarioService,
     ) {
     }
 
+    /**
+     * @throws Exception
+     */
     public function convert(array $settings, int $ownerId = null): array
     {
         $result = [];
 
         foreach ($settings as $key => $settingItem) {
-
-            $step = (new Scenario())
-                ->setType($settingItem['type'])
-                ->setName($key)
-                ->setContent($settingItem['content'])
-                ->setActionAfter($settingItem['actionAfter'] ?? null)
-            ;
-
-            if ($ownerId){
-                $step->setOwnerStepId($ownerId);
-            }
-
-            $this->behaviorScenarioRepository->save($step);
+            $scenario = $this->scenarioService->createScenario($settingItem, $key, $ownerId);
 
             if (isset($settingItem['sub'])){
-                $resultSud = $this->convert($settingItem['sub'], $step->getId());
+                $resultSud = $this->convert($settingItem['sub'], $scenario->getId());
 
                 $result = array_merge($result, $resultSud);
             }

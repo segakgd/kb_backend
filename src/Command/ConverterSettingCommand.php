@@ -11,7 +11,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Throwable;
 
 #[AsCommand(
-    name: 'tg:convert',
+    name: 'kb:scenario:convert',
     description: 'Convert user setting',
 )]
 class ConverterSettingCommand extends Command
@@ -182,7 +182,7 @@ class ConverterSettingCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         try {
-            $this->settingConverter->convert(self::USER_SETTING_3);
+            $this->settingConverter->convert(self::USER_SETTING);
 
         } catch (Throwable $throwable){
             $io->error($throwable->getMessage());

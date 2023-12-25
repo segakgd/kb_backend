@@ -21,12 +21,11 @@ class VisitorSessionRepository extends ServiceEntityRepository
         parent::__construct($registry, VisitorSession::class);
     }
 
-    public function getSessionByChatIdAndChannel(int $chatId, string $channel): ?VisitorSession
+    public function findByEventId(int $eventId): ?VisitorSession
     {
         return $this->findOneBy(
             [
-                'chatId' => $chatId,
-                'channel' => $channel,
+                'chatEvent' => $eventId
             ]
         );
     }
