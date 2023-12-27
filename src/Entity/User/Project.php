@@ -35,10 +35,10 @@ class Project
     private ?string $status = self::STATUS_ACTIVE;
 
     #[ORM\Column(nullable: true)]
-    private ?DateTimeImmutable $ActiveFrom = null;
+    private ?DateTimeImmutable $activeFrom = null;
 
     #[ORM\Column(nullable: true)]
-    private ?DateTimeImmutable $ActiveTo = null;
+    private ?DateTimeImmutable $activeTo = null;
 
     public function __construct()
     {
@@ -103,24 +103,24 @@ class Project
 
     public function getActiveFrom(): ?DateTimeImmutable
     {
-        return $this->ActiveFrom;
+        return $this->activeFrom;
     }
 
-    public function setActiveFrom(?DateTimeImmutable $ActiveFrom): static
+    public function setActiveFrom(?DateTimeImmutable $activeFrom): static
     {
-        $this->ActiveFrom = $ActiveFrom;
+        $this->activeFrom = $activeFrom;
 
         return $this;
     }
 
     public function getActiveTo(): ?DateTimeImmutable
     {
-        return $this->ActiveTo;
+        return $this->activeTo;
     }
 
-    public function setActiveTo(?DateTimeImmutable $ActiveTo): static
+    public function setActiveTo(?DateTimeImmutable $activeTo): static
     {
-        $this->ActiveTo = $ActiveTo;
+        $this->activeTo = $activeTo;
 
         return $this;
     }

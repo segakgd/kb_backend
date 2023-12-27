@@ -53,7 +53,7 @@ class ViewAllController extends AbstractController
         );
     }
 
-    private function mapToResponse($projects): array
+    private function mapToResponse(array $projects): array
     {
         $result = [];
 
