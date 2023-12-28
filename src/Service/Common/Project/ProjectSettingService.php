@@ -2,6 +2,7 @@
 
 namespace App\Service\Common\Project;
 
+use App\Controller\Admin\Project\DTO\Request\ProjectSettingReqDto;
 use App\Entity\User\ProjectSetting;
 use App\Entity\User\Tariff;
 use App\Repository\User\ProjectSettingRepository;
@@ -14,6 +15,101 @@ class ProjectSettingService implements ProjectSettingServiceInterface
         private readonly ProjectSettingRepository $projectSettingRepository,
         private readonly TariffRepository $tariffRepository,
     ) {
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getSettingForProject(int $projectId): ProjectSetting
+    {
+        $projectSetting = $this->projectSettingRepository->findOneBy(
+            [
+                'projectId' => $projectId,
+            ]
+        );
+
+        if (!$projectSetting){
+            throw new Exception('Настроек заданного проекта не существует');
+        }
+
+        return $projectSetting;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function updateSetting(int $projectId, ProjectSettingReqDto $projectSettingReq): void
+    {
+        $notificationSettings = $projectSettingReq->getNotificationSettings();
+        $mainSettings = $projectSettingReq->getMainSettings();
+
+        $currency = $mainSettings->getCurrency();
+        $country = $mainSettings->getCountry();
+        $language = $mainSettings->getLanguage();
+        $timeZone = $mainSettings->getTimeZone();
+
+        $newLead = $notificationSettings->getNewLead();
+        $changesStatusLead = $notificationSettings->getChangesStatusLead();
+
+        $projectSetting = $this->getSettingForProject($projectId);
+
+        $notification = $projectSetting->getNotification();
+        $basic = $projectSetting->getBasic();
+
+        // todo убрать дублирование + подчистить
+
+        if (null !== $currency){
+            $basic['currency'] = $currency;
+        }
+
+        if (null !== $country){
+            $basic['country'] = $country;
+        }
+
+        if (null !== $language){
+            $basic['language'] = $language;
+        }
+
+        if (null !== $timeZone){
+            $basic['timeZone'] = $timeZone;
+        }
+
+        if (null !== $newLead->getSystem()){
+            $notification['aboutNewLead']['system'] = $newLead->getSystem();
+        }
+
+        if (null !== $newLead->getSms()){
+            $notification['aboutNewLead']['mail'] = $newLead->getSms();
+        }
+
+        if (null !== $newLead->getMail()){
+            $notification['aboutNewLead']['sms'] = $newLead->getMail();
+        }
+
+        if (null !== $newLead->getTelegram()){
+            $notification['aboutNewLead']['telegram'] = $newLead->getTelegram();
+        }
+
+        if (null !== $changesStatusLead->getSystem()){
+            $notification['aboutChangesStatusLead']['system'] = $changesStatusLead->getSystem();
+        }
+
+        if (null !== $changesStatusLead->getSms()){
+            $notification['aboutChangesStatusLead']['mail'] = $changesStatusLead->getSms();
+        }
+
+        if (null !== $changesStatusLead->getMail()){
+            $notification['aboutChangesStatusLead']['sms'] = $changesStatusLead->getMail();
+        }
+
+        if (null !== $changesStatusLead->getTelegram()){
+            $notification['aboutChangesStatusLead']['telegram'] = $changesStatusLead->getTelegram();
+        }
+
+        $projectSetting->setNotification($notification);
+        $projectSetting->setBasic($basic);
+
+        $this->projectSettingRepository->saveAndFlush($projectSetting);
     }
 
     /**

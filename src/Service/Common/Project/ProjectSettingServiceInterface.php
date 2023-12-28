@@ -11,7 +11,7 @@ interface ProjectSettingServiceInterface
 
     public function getSettingForProject(int $projectId): ProjectSetting;
 
-    public function updateSetting(ProjectSettingReqDto $projectSettingReq): void;
+    public function updateSetting(int $projectId, ProjectSettingReqDto $projectSettingReq): void;
 
     public function updateTariff(int $projectId, Tariff $tariff): bool;
 

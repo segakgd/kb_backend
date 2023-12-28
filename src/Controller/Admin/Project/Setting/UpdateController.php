@@ -4,6 +4,7 @@ namespace App\Controller\Admin\Project\Setting;
 
 use App\Controller\Admin\Project\DTO\Request\ProjectSettingReqDto;
 use App\Entity\User\Project;
+use App\Service\Common\Project\ProjectSettingServiceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,7 +26,8 @@ class UpdateController extends AbstractController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,
-        private readonly SerializerInterface $serializer
+        private readonly SerializerInterface $serializer,
+        private readonly ProjectSettingServiceInterface $projectSettingService,
     ) {
     }
 
@@ -43,7 +45,7 @@ class UpdateController extends AbstractController
             return $this->json(['message' => $errors->get(0)->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
-        // todo ... тут мы должны обратиться к сервису или менеджеру ...
+        $this->projectSettingService->updateSetting($project->getId(), $requestDto);
 
         return new JsonResponse('', Response::HTTP_NO_CONTENT);
     }

@@ -4,13 +4,13 @@ namespace App\Controller\Admin\Project\DTO\Request\Setting\Main;
 
 class ProjectMainSettingReqDto
 {
-    private ?string $country;
+    private ?string $country = null;
 
-    private ?string $timeZone;
+    private ?string $timeZone = null;
 
-    private ?string $language;
+    private ?string $language = null;
 
-    private ?string $currency;
+    private ?string $currency = null;
 
     public function getCountry(): ?string
     {
