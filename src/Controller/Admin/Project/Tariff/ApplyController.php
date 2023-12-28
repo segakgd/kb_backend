@@ -53,7 +53,7 @@ class ApplyController extends AbstractController
         $isApply = $this->tariffService->applyTariff($project, $requestDto->getCode());
 
         if (!$isApply){
-            return new JsonResponse('', Response::HTTP_CONFLICT);
+            return new JsonResponse('Тариф не применился', Response::HTTP_CONFLICT);
         }
 
         return new JsonResponse('', Response::HTTP_NO_CONTENT);

@@ -44,7 +44,6 @@ class ViewAllControllerTest extends ApiTestCase
         yield [
             [
                 "mainSettings" => [
-                    "name" => "Мой первый проект",
                     "country" => "russia",
                     "timeZone" => "Europe/Moscow",
                     "language" => "ru",

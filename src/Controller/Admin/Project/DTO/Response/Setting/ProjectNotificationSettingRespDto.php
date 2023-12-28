@@ -4,11 +4,25 @@ namespace App\Controller\Admin\Project\DTO\Response\Setting;
 
 class ProjectNotificationSettingRespDto
 {
+    private ?bool $system = true;
+
     private ?bool $mail;
 
     private ?bool $telegram;
 
     private ?bool $sms;
+
+    public function getSystem(): ?bool
+    {
+        return $this->system;
+    }
+
+    public function setSystem(?bool $system): self
+    {
+        $this->system = $system;
+
+        return $this;
+    }
 
     public function getMail(): ?bool
     {
