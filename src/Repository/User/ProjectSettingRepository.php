@@ -20,4 +20,10 @@ class ProjectSettingRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, ProjectSetting::class);
     }
+
+    public function saveAndFlush(ProjectSetting $entity): void
+    {
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
+    }
 }

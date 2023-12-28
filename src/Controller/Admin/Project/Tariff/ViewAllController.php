@@ -3,7 +3,6 @@
 namespace App\Controller\Admin\Project\Tariff;
 
 use App\Controller\Admin\Project\DTO\Response\TariffSettingRespDto;
-use App\Entity\User\Project;
 use App\Entity\User\Tariff;
 use App\Service\Common\Project\TariffServiceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -12,7 +11,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 
 #[OA\Tag(name: 'Tariff')]
@@ -55,6 +53,7 @@ class ViewAllController extends AbstractController
         /** @var Tariff $tariff */
         foreach ($tariffs as $tariff){
             $result[] = (new TariffSettingRespDto())
+                ->setId($tariff->getId())
                 ->setName($tariff->getName())
                 ->setPrice($tariff->getPrice())
                 ->setPriceWF($tariff->getPriceWF())
@@ -66,5 +65,4 @@ class ViewAllController extends AbstractController
 
         return $result;
     }
-
 }

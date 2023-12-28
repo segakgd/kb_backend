@@ -13,6 +13,7 @@ class ProjectService implements ProjectServiceInterface
 {
     public function __construct(
         private readonly ProjectEntityRepository $projectEntityRepository,
+        private readonly ProjectSettingServiceInterface $projectSettingService,
         private readonly LoggerInterface $logger,
     ) {
     }
@@ -30,6 +31,8 @@ class ProjectService implements ProjectServiceInterface
         $entity->setName($projectDto->getName());
 
         $this->projectEntityRepository->saveAndFlush($entity);
+
+        $this->projectSettingService->initSetting($entity->getId());
 
         return $entity;
     }
