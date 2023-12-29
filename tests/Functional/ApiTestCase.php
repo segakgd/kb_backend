@@ -23,7 +23,8 @@ class ApiTestCase extends WebTestCase
         return $this->entityManager;
     }
 
-    public function assertResponse(string $response, array $responseCorrect): void
+    // todo можно добавить поле исключение (по типу except = кроме) чтоб не плодить костыли в тестах
+    public function assertResponse(string $response, array $responseCorrect, array $except = ['id']): void
     {
         $response = json_decode($response, true);
 

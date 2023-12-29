@@ -3,6 +3,7 @@
 namespace App\Tests\Functional\Admin\Project\Setting;
 
 use App\Entity\User\ProjectSetting;
+use App\Entity\User\Tariff;
 use App\Tests\Functional\ApiTestCase;
 use App\Tests\Functional\Trait\Project\ProjectTrait;
 use App\Tests\Functional\Trait\User\UserTrait;
@@ -43,15 +44,20 @@ class UpdateControllerTest extends ApiTestCase
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
         $projectSettingRepository = $entityManager->getRepository(ProjectSetting::class);
+        $tariffRepository = $entityManager->getRepository(Tariff::class);
 
         $responseContent = json_decode($client->getResponse()->getContent(), true);
+
         $projectSetting = $projectSettingRepository->find($responseContent['id'] ?? null);
 
         $serializer = $this->getContainer()->get('serializer');
 
         $projectSetting = $serializer->normalize($projectSetting);
 
+        $tariffRepository = $tariffRepository->find($projectSetting['tariffId'] ?? null);
+
         $correctResponse['projectId'] = $project->getId();
+        $correctResponse['tariffId'] = $tariffRepository->getId();
 
         $this->assertResponse(json_encode($projectSetting, true), $correctResponse);
     }
@@ -79,7 +85,6 @@ class UpdateControllerTest extends ApiTestCase
                 ]
             ],
             [
-                "tariffId" => 5,
                 "notification" =>  [
                     "aboutNewLead" =>  [
                         "system" => true,
