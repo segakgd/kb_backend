@@ -37,13 +37,12 @@ class ViewAllControllerTest extends ApiTestCase
 
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
-        // todo убрать костыли:
         $jsonResponse = $client->getResponse()->getContent();
+
         $actualResponse = json_decode($jsonResponse, true);
         $actualResponseItem = $actualResponse[count($actualResponse) - 1];
-        $response['code'] = $actualResponseItem['code'];
 
-        $this->assertResponse(json_encode($actualResponseItem), $response); // берём последний, так себе решение
+        $this->assertResponse(json_encode($actualResponseItem), $response, ['id', 'code']); // берём последний, так себе решение
     }
 
     private function positive(): iterable

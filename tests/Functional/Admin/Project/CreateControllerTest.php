@@ -40,6 +40,8 @@ class CreateControllerTest extends ApiTestCase
 
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertResponse($client->getResponse()->getContent(), $response);
+
+        // todo проверить что вместе с проектом создаются и настройки
     }
 
     private function positive(): iterable
