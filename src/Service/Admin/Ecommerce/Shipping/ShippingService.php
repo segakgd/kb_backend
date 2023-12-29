@@ -2,7 +2,7 @@
 
 namespace App\Service\Admin\Ecommerce\Shipping;
 
-class ShippingService // todo нужен интерфейс
+class ShippingService implements ShippingServiceInterface
 {
-
+    // todo реальзация
 }

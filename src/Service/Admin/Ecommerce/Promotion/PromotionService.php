@@ -2,7 +2,7 @@
 
 namespace App\Service\Admin\Ecommerce\Promotion;
 
-class PromotionService // todo нужен интерфейс
+class PromotionService implements PromotionServiceInterface
 {
-
+    // todo реальзация
 }

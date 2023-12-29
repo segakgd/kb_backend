@@ -2,7 +2,7 @@
 
 namespace App\Service\Admin\Ecommerce\Lead;
 
-class LeadService implements LeadServiceInterface
+interface LeadServiceInterface
 {
     // todo реальзация
 }
