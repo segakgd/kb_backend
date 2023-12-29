@@ -3,7 +3,14 @@
 namespace App\Controller\Admin\Project\Setting;
 
 use App\Controller\Admin\Project\DTO\Request\ProjectSettingReqDto;
+use App\Controller\Admin\Project\DTO\Response\ProjectTariffSettingRespDto;
+use App\Controller\Admin\Project\DTO\Response\Setting\ProjectMainSettingRespDto;
+use App\Controller\Admin\Project\DTO\Response\Setting\ProjectNotificationSettingRespDto;
+use App\Controller\Admin\Project\DTO\Response\Setting\ProjectNotificationsSettingRespDto;
+use App\Controller\Admin\Project\DTO\Response\Setting\ProjectSettingRespDto;
 use App\Entity\User\Project;
+use App\Entity\User\ProjectSetting;
+use App\Entity\User\Tariff;
 use App\Service\Common\Project\ProjectSettingServiceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -45,8 +52,53 @@ class UpdateController extends AbstractController
             return $this->json(['message' => $errors->get(0)->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
-        $this->projectSettingService->updateSetting($project->getId(), $requestDto);
+        $projectSetting = $this->projectSettingService->updateSetting($project->getId(), $requestDto);
 
-        return new JsonResponse('', Response::HTTP_NO_CONTENT);
+        return new JsonResponse(
+            $this->serializer->normalize(
+                $this->mapToResponse($projectSetting),
+            )
+        );
+    }
+
+    private function mapToResponse(ProjectSetting $projectSetting): ProjectSettingRespDto
+    {
+        $basic = $projectSetting->getBasic();
+        $notifications = $projectSetting->getNotification(); // todo превратить в dto а то ниже ад
+
+        $aboutNewLead = $notifications['aboutNewLead'] ?? null;
+        $aboutChangesStatusLead = $notifications['aboutChangesStatusLead'] ?? null;
+
+        $fakeNotificationAboutNewLead = (new ProjectNotificationSettingRespDto())
+            ->setSystem($aboutNewLead['system'] ?? false)
+            ->setMail($aboutNewLead['mail'] ?? false)
+            ->setSms($aboutNewLead['sms'] ?? false)
+            ->setTelegram($aboutNewLead['telegram'] ?? false)
+        ;
+
+        $fakeNotificationAboutChangesStatusLead = (new ProjectNotificationSettingRespDto())
+            ->setSystem($aboutChangesStatusLead['system'] ?? false)
+            ->setMail($aboutChangesStatusLead['mail'] ?? false)
+            ->setSms($aboutChangesStatusLead['sms'] ?? false)
+            ->setTelegram($aboutChangesStatusLead['telegram'] ?? false)
+        ;
+
+        $fakeNotificationSetting = (new ProjectNotificationsSettingRespDto())
+            ->setNewLead($fakeNotificationAboutNewLead)
+            ->setChangesStatusLead($fakeNotificationAboutChangesStatusLead)
+        ;
+
+        $fakeMainSetting = (new ProjectMainSettingRespDto())
+            ->setCountry($basic['country'] ?? 'russia')
+            ->setLanguage($basic['language'] ?? 'ru')
+            ->setTimeZone($basic['timeZone'] ?? 'Europe/Moscow')
+            ->setCurrency($basic['currency'] ?? 'RUB')
+        ;
+
+        return (new ProjectSettingRespDto())
+            ->setId($projectSetting->getId())
+            ->setMainSettings($fakeMainSetting)
+            ->setNotificationSetting($fakeNotificationSetting)
+            ;
     }
 }

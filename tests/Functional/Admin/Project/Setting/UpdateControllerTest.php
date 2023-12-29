@@ -2,6 +2,7 @@
 
 namespace App\Tests\Functional\Admin\Project\Setting;
 
+use App\Entity\User\ProjectSetting;
 use App\Tests\Functional\ApiTestCase;
 use App\Tests\Functional\Trait\Project\ProjectTrait;
 use App\Tests\Functional\Trait\User\UserTrait;
@@ -18,7 +19,7 @@ class UpdateControllerTest extends ApiTestCase
      *
      * @throws Exception
      */
-    public function test(array $requestContent)
+    public function test(array $requestContent, array $correctResponse)
     {
         $client = static::createClient();
         $entityManager = $this->getEntityManager();
@@ -39,9 +40,20 @@ class UpdateControllerTest extends ApiTestCase
             json_encode($requestContent)
         );
 
-        $this->assertEquals(Response::HTTP_NO_CONTENT, $client->getResponse()->getStatusCode());
+        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
-        // todo когда будет готова реализация - проверить изменения в базе
+        $projectSettingRepository = $entityManager->getRepository(ProjectSetting::class);
+
+        $responseContent = json_decode($client->getResponse()->getContent(), true);
+        $projectSetting = $projectSettingRepository->find($responseContent['id'] ?? null);
+
+        $serializer = $this->getContainer()->get('serializer');
+
+        $projectSetting = $serializer->normalize($projectSetting);
+
+        $correctResponse['projectId'] = $project->getId();
+
+        $this->assertResponse(json_encode($projectSetting, true), $correctResponse);
     }
 
     private function positive(): iterable
@@ -65,6 +77,29 @@ class UpdateControllerTest extends ApiTestCase
                         "sms" => true,
                     ]
                 ]
+            ],
+            [
+                "tariffId" => 5,
+                "notification" =>  [
+                    "aboutNewLead" =>  [
+                        "system" => true,
+                        "mail" => false,
+                        "sms" => false,
+                        "telegram" => false,
+                    ],
+                    "aboutChangesStatusLead" => [
+                        "system" => true,
+                        "mail" => false,
+                        "sms" => false,
+                        "telegram" => false,
+                    ],
+                ],
+                "basic" => [
+                    "country" => "russia",
+                    "language" => "ru",
+                    "timeZone" => "Europe/Moscow",
+                    "currency" => "RUB",
+                ],
             ]
         ];
     }

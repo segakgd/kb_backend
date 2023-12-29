@@ -39,7 +39,7 @@ class ProjectSettingService implements ProjectSettingServiceInterface
     /**
      * @throws Exception
      */
-    public function updateSetting(int $projectId, ProjectSettingReqDto $projectSettingReq): void
+    public function updateSetting(int $projectId, ProjectSettingReqDto $projectSettingReq): ProjectSetting
     {
         $notificationSettings = $projectSettingReq->getNotificationSettings();
         $mainSettings = $projectSettingReq->getMainSettings();
@@ -111,6 +111,8 @@ class ProjectSettingService implements ProjectSettingServiceInterface
         $projectSetting->setBasic($basic);
 
         $this->projectSettingRepository->saveAndFlush($projectSetting);
+
+        return $projectSetting;
     }
 
     /**
