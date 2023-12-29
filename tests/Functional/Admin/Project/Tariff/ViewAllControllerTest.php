@@ -40,7 +40,7 @@ class ViewAllControllerTest extends ApiTestCase
         $jsonResponse = $client->getResponse()->getContent();
 
         $actualResponse = json_decode($jsonResponse, true);
-        $actualResponseItem = $actualResponse[count($actualResponse) - 1];
+        $actualResponseItem = $actualResponse[count($actualResponse) - 1]; // todo не самое лучшее решение, но пока что какие-то тарблы с бандлом тестовым, мб уйдёт проблема при переходе на нормальную базу
 
         $this->assertResponse(json_encode($actualResponseItem), $response, ['id', 'code']); // берём последний, так себе решение
     }
