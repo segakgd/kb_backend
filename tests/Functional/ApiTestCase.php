@@ -23,7 +23,6 @@ class ApiTestCase extends WebTestCase
         return $this->entityManager;
     }
 
-    // todo можно добавить поле исключение (по типу except = кроме) чтоб не плодить костыли в тестах
     public function assertResponse(string $response, array $responseCorrect, array $except = ['id']): void
     {
         $response = json_decode($response, true);
@@ -32,13 +31,13 @@ class ApiTestCase extends WebTestCase
             throw new \PHPUnit\Util\Exception('Нету данных для сравнения');
         }
 
-        $this->assertResponseItems($response, $responseCorrect);
+        $this->assertResponseItems($response, $responseCorrect, $except);
     }
 
-    private function assertResponseItems(array $response, mixed $responseCorrect): void
+    private function assertResponseItems(array $response, mixed $responseCorrect, array $except = []): void
     {
         foreach ($response as $key => $responseItem){
-            if ($key === 'id'){
+            if (in_array($key, $except)){
                 continue;
             }
 
@@ -47,7 +46,7 @@ class ApiTestCase extends WebTestCase
             }
 
             if (is_array($responseItem)){
-                $this->assertResponseItems($responseItem, $responseCorrect[$key]);
+                $this->assertResponseItems($responseItem, $responseCorrect[$key], $except);
 
                 continue;
             }
