@@ -18,7 +18,7 @@ class ViewOneControllerTest extends ApiTestCase
      *
      * @throws Exception
      */
-    public function testViewOne(array $response)
+    public function test(array $response)
     {
         $client = static::createClient();
         $entityManager = $this->getEntityManager();

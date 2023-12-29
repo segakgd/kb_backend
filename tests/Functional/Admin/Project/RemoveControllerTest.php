@@ -16,7 +16,7 @@ class RemoveControllerTest extends ApiTestCase
     /**
      * @throws Exception
      */
-    public function testViewAll()
+    public function test()
     {
         $client = static::createClient();
         $entityManager = $this->getEntityManager();
