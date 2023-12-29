@@ -3,14 +3,12 @@
 namespace App\Controller\Admin\Project\Setting;
 
 use App\Controller\Admin\Project\DTO\Request\ProjectSettingReqDto;
-use App\Controller\Admin\Project\DTO\Response\ProjectTariffSettingRespDto;
 use App\Controller\Admin\Project\DTO\Response\Setting\ProjectMainSettingRespDto;
 use App\Controller\Admin\Project\DTO\Response\Setting\ProjectNotificationSettingRespDto;
 use App\Controller\Admin\Project\DTO\Response\Setting\ProjectNotificationsSettingRespDto;
 use App\Controller\Admin\Project\DTO\Response\Setting\ProjectSettingRespDto;
 use App\Entity\User\Project;
 use App\Entity\User\ProjectSetting;
-use App\Entity\User\Tariff;
 use App\Service\Common\Project\ProjectSettingServiceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;

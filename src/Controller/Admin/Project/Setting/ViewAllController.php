@@ -55,7 +55,7 @@ class ViewAllController extends AbstractController
         );
     }
 
-    private function mapToResponse(ProjectSetting $projectSetting, Tariff $tariff): ProjectSettingRespDto
+    private function mapToResponse(ProjectSetting $projectSetting, Tariff $tariff): ProjectSettingRespDto // todo убрать в маппер
     {
         $basic = $projectSetting->getBasic();
         $notifications = $projectSetting->getNotification(); // todo превратить в dto а то ниже ад
