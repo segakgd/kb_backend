@@ -8,23 +8,23 @@ use App\Tests\Functional\Trait\User\UserTrait;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
-class UpdateControllerTest extends ApiTestCase
+class ApplyControllerTest extends ApiTestCase
 {
     use UserTrait;
     use ProjectTrait;
 
     /**
-     * @dataProvider positive
-     *
      * @throws Exception
      */
-    public function test(array $requestContent)
+    public function test()
     {
         $client = static::createClient();
         $entityManager = $this->getEntityManager();
 
         $user = $this->createUser($entityManager);
-        $project = $this->createProject($entityManager, $user);
+        $project = $this->initProject($entityManager, $user);
+
+        $tariffForTest = $this->createTestTariff($entityManager);
 
         $entityManager->flush();
 
@@ -36,20 +36,15 @@ class UpdateControllerTest extends ApiTestCase
             [],
             [],
             [],
-            json_encode($requestContent)
+            json_encode(
+                [
+                    'code' => $tariffForTest->getCode()
+                ]
+            )
         );
 
         $this->assertEquals(Response::HTTP_NO_CONTENT, $client->getResponse()->getStatusCode());
 
         // todo когда будет готова реализация - проверить изменения в базе
-    }
-
-    private function positive(): iterable
-    {
-        yield [
-            [
-                'code' => 'NEW_TARIFF',
-            ]
-        ];
     }
 }

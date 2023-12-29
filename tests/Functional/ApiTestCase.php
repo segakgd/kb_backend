@@ -37,6 +37,10 @@ class ApiTestCase extends WebTestCase
     private function assertResponseItems(array $response, mixed $responseCorrect): void
     {
         foreach ($response as $key => $responseItem){
+            if ($key === 'id'){
+                continue;
+            }
+
             if (!key_exists($key, $responseCorrect)){
                 throw new \PHPUnit\Util\Exception('Неверный ключ ' . $key . ' в входящем массиве');
             }

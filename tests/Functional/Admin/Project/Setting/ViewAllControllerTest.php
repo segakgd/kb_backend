@@ -24,7 +24,7 @@ class ViewAllControllerTest extends ApiTestCase
         $entityManager = $this->getEntityManager();
 
         $user = $this->createUser($entityManager);
-        $project = $this->createProject($entityManager, $user);
+        $project = $this->initProject($entityManager, $user);
 
         $entityManager->flush();
 
@@ -49,20 +49,23 @@ class ViewAllControllerTest extends ApiTestCase
                     "language" => "ru",
                     "currency" => "RUB",
                     "tariff" => [
-                        "name" => "Самый лучший тариф",
-                        "price" => 100000,
-                        "priceWF" => "1000,00",
+                        "name" => "Триал",
+                        "price" => 0,
+                        "priceWF" => "0"
                     ]
                 ],
                 "notificationSetting" => [
                     "newLead" => [
-                        "mail" => true,
+                        "system" => true,
+                        "mail" => false,
                         "telegram" => false,
-                        "sms" => true,
+                        "sms" => false
                     ],
                     "changesStatusLead" => [
-                        "mail" => true,
-                        "sms" => true,
+                        "system" => true,
+                        "mail" => false,
+                        "telegram" => false,
+                        "sms" => false
                     ]
                 ]
             ]

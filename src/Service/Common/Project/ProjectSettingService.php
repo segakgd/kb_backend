@@ -3,6 +3,7 @@
 namespace App\Service\Common\Project;
 
 use App\Controller\Admin\Project\DTO\Request\ProjectSettingReqDto;
+use App\Controller\Admin\Project\DTO\Request\Setting\Notification\ProjectNotificationSettingReqDto;
 use App\Entity\User\ProjectSetting;
 use App\Entity\User\Tariff;
 use App\Repository\User\ProjectSettingRepository;
@@ -48,8 +49,8 @@ class ProjectSettingService implements ProjectSettingServiceInterface
         $language = $mainSettings->getLanguage();
         $timeZone = $mainSettings->getTimeZone();
 
-        $newLead = $notificationSettings->getNewLead();
-        $changesStatusLead = $notificationSettings->getChangesStatusLead();
+        $newLead = $notificationSettings?->getNewLead() ?? new ProjectNotificationSettingReqDto();
+        $changesStatusLead = $notificationSettings?->getChangesStatusLead() ?? new ProjectNotificationSettingReqDto();
 
         $projectSetting = $this->getSettingForProject($projectId);
 

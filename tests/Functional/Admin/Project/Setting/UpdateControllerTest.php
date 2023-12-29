@@ -24,7 +24,7 @@ class UpdateControllerTest extends ApiTestCase
         $entityManager = $this->getEntityManager();
 
         $user = $this->createUser($entityManager);
-        $project = $this->createProject($entityManager, $user);
+        $project = $this->initProject($entityManager, $user);
 
         $entityManager->flush();
 
