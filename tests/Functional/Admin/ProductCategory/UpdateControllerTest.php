@@ -18,7 +18,7 @@ class UpdateControllerTest extends ApiTestCase
      *
      * @throws Exception
      */
-    public function testViewAll(array $requestContent)
+    public function test(array $requestContent)
     {
         $client = static::createClient();
         $entityManager = $this->getEntityManager();

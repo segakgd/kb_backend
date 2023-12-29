@@ -13,6 +13,7 @@ class ProjectService implements ProjectServiceInterface
 {
     public function __construct(
         private readonly ProjectEntityRepository $projectEntityRepository,
+        private readonly ProjectSettingServiceInterface $projectSettingService,
         private readonly LoggerInterface $logger,
     ) {
     }
@@ -28,10 +29,10 @@ class ProjectService implements ProjectServiceInterface
 
         $entity->addUser($user);
         $entity->setName($projectDto->getName());
-        $projectDto->getBot(); // todo это должно использоваться для чего?? Точно ли нужно?
-        $projectDto->getMode(); // todo это должно влитять на те модули который хочет получить клиент. Но возможно как-то рано об этом задумались.
 
         $this->projectEntityRepository->saveAndFlush($entity);
+
+        $this->projectSettingService->initSetting($entity->getId());
 
         return $entity;
     }

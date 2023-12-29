@@ -7,26 +7,26 @@ use App\Controller\Admin\Project\DTO\Request\Setting\Notification\ProjectNotific
 
 class ProjectSettingReqDto
 {
-    private ProjectMainSettingReqDto $mainSettings;
+    private ?ProjectMainSettingReqDto $mainSettings = null;
 
-    private ProjectNotificationsSettingReqDto $notificationSettings;
+    private ?ProjectNotificationsSettingReqDto $notificationSettings = null;
 
-    public function getMainSettings(): ProjectMainSettingReqDto
+    public function getMainSettings(): ?ProjectMainSettingReqDto
     {
         return $this->mainSettings;
     }
 
-    public function setMainSettings(ProjectMainSettingReqDto $mainSettings): void
+    public function setMainSettings(?ProjectMainSettingReqDto $mainSettings): void
     {
         $this->mainSettings = $mainSettings;
     }
 
-    public function getNotificationSettings(): ProjectNotificationsSettingReqDto
+    public function getNotificationSettings(): ?ProjectNotificationsSettingReqDto
     {
         return $this->notificationSettings;
     }
 
-    public function setNotificationSettings(ProjectNotificationsSettingReqDto $notificationSettings): void
+    public function setNotificationSettings(?ProjectNotificationsSettingReqDto $notificationSettings): void
     {
         $this->notificationSettings = $notificationSettings;
     }

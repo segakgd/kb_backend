@@ -2,7 +2,7 @@
 
 namespace App\Service\Admin\Ecommerce\History;
 
-class HistoryService // todo нужен интерфейс
+class HistoryService implements HistoryServiceInterface
 {
-
+    // todo реальзация
 }

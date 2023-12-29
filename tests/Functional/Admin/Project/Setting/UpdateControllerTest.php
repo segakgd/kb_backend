@@ -2,6 +2,7 @@
 
 namespace App\Tests\Functional\Admin\Project\Setting;
 
+use App\Entity\User\ProjectSetting;
 use App\Tests\Functional\ApiTestCase;
 use App\Tests\Functional\Trait\Project\ProjectTrait;
 use App\Tests\Functional\Trait\User\UserTrait;
@@ -18,13 +19,13 @@ class UpdateControllerTest extends ApiTestCase
      *
      * @throws Exception
      */
-    public function testViewAll(array $requestContent)
+    public function test(array $requestContent, array $correctResponse)
     {
         $client = static::createClient();
         $entityManager = $this->getEntityManager();
 
         $user = $this->createUser($entityManager);
-        $project = $this->createProject($entityManager, $user);
+        $project = $this->initProject($entityManager, $user);
 
         $entityManager->flush();
 
@@ -39,9 +40,17 @@ class UpdateControllerTest extends ApiTestCase
             json_encode($requestContent)
         );
 
-        $this->assertEquals(Response::HTTP_NO_CONTENT, $client->getResponse()->getStatusCode());
+        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
-        // todo когда будет готова реализация - проверить изменения в базе
+        $serializer = $this->getContainer()->get('serializer');
+        $projectSettingRepository = $entityManager->getRepository(ProjectSetting::class);
+
+        $responseContent = json_decode($client->getResponse()->getContent(), true);
+
+        $projectSetting = $projectSettingRepository->find($responseContent['id'] ?? null);
+        $projectSetting = $serializer->normalize($projectSetting);
+
+        $this->assertResponse(json_encode($projectSetting, true), $correctResponse, ['id', 'projectId', 'tariffId']);
     }
 
     private function positive(): iterable
@@ -49,7 +58,6 @@ class UpdateControllerTest extends ApiTestCase
         yield [
             [
                 "mainSettings" => [
-                    "name" => "Мой первый проект",
                     "country" => "russia",
                     "timeZone" => "Europe/Moscow",
                     "language" => "ru",
@@ -66,6 +74,28 @@ class UpdateControllerTest extends ApiTestCase
                         "sms" => true,
                     ]
                 ]
+            ],
+            [
+                "notification" =>  [
+                    "aboutNewLead" =>  [
+                        "system" => true,
+                        "mail" => false,
+                        "sms" => false,
+                        "telegram" => false,
+                    ],
+                    "aboutChangesStatusLead" => [
+                        "system" => true,
+                        "mail" => false,
+                        "sms" => false,
+                        "telegram" => false,
+                    ],
+                ],
+                "basic" => [
+                    "country" => "russia",
+                    "language" => "ru",
+                    "timeZone" => "Europe/Moscow",
+                    "currency" => "RUB",
+                ],
             ]
         ];
     }

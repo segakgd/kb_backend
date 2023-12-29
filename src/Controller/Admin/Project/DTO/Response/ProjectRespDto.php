@@ -9,16 +9,30 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ProjectRespDto
 {
+    private int $id;
+
     private string $name;
 
     #[Assert\Choice([Project::STATUS_ACTIVE, Project::STATUS_FROZEN, Project::STATUS_BLOCKED])]
     private string $status;
 
-    private DateTimeImmutable $activeTo;
+    private ?DateTimeImmutable $activeTo;
 
-    private DateTimeImmutable $activeFrom;
+    private ?DateTimeImmutable $activeFrom;
 
     private ProjectStatisticsRespDto $statistic;
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 
     public function getName(): string
     {
@@ -44,24 +58,24 @@ class ProjectRespDto
         return $this;
     }
 
-    public function getActiveTo(): DateTimeImmutable
+    public function getActiveTo(): ?DateTimeImmutable
     {
         return $this->activeTo;
     }
 
-    public function setActiveTo(DateTimeImmutable $activeTo): self
+    public function setActiveTo(?DateTimeImmutable $activeTo): self
     {
         $this->activeTo = $activeTo;
 
         return $this;
     }
 
-    public function getActiveFrom(): DateTimeImmutable
+    public function getActiveFrom(): ?DateTimeImmutable
     {
         return $this->activeFrom;
     }
 
-    public function setActiveFrom(DateTimeImmutable $activeFrom): self
+    public function setActiveFrom(?DateTimeImmutable $activeFrom): self
     {
         $this->activeFrom = $activeFrom;
 
