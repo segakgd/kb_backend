@@ -22,7 +22,9 @@ services:
       - ./_conf/nginx/sites/:/etc/nginx/sites-available
       - ./_conf/nginx/conf.d/:/etc/nginx/conf.d
       - ./_conf/logs:/var/log/nginx
+      - ./_conf/nginx/sert:/etc/nginx/ssl
     depends_on:
       - php-fpm
     ports:
       - "80:80"
+      - "443:443"
