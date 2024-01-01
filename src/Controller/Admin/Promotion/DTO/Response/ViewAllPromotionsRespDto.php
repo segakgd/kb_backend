@@ -4,27 +4,31 @@ namespace App\Controller\Admin\Promotion\DTO\Response;
 
 class ViewAllPromotionsRespDto
 {
-    private PromotionRespDto $discounts;
+    private array $discounts;
 
-    private PromotionRespDto $promoCodes;
+    private array $promoCodes;
 
-    public function getDiscounts(): PromotionRespDto
+    public function getDiscounts(): array
     {
         return $this->discounts;
     }
 
-    public function addDiscounts(PromotionRespDto $discount): void
+    public function addDiscounts(PromotionRespDto $discount): self
     {
         $this->discounts[] = $discount;
+
+        return $this;
     }
 
-    public function getPromoCodes(): PromotionRespDto
+    public function getPromoCodes(): array
     {
         return $this->promoCodes;
     }
 
-    public function addPromoCodes(PromotionRespDto $promoCode): void
+    public function addPromoCodes(PromotionRespDto $promoCode): self
     {
         $this->promoCodes[] = $promoCode;
+
+        return $this;
     }
 }

@@ -48,7 +48,7 @@ class CreateControllerTest extends ApiTestCase
         yield [
             [
                 "shipping" => [
-                    'name' => 'shipping 1',
+                    'name' => 'Доставка до самого дома',
                     'type' => 'pickup',
                     'calculationType' => 'percent',
                     'amount' => 10,

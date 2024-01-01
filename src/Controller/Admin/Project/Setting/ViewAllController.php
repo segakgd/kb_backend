@@ -8,6 +8,10 @@ use App\Controller\Admin\Project\DTO\Response\Setting\ProjectNotificationSetting
 use App\Controller\Admin\Project\DTO\Response\Setting\ProjectNotificationsSettingRespDto;
 use App\Controller\Admin\Project\DTO\Response\Setting\ProjectSettingRespDto;
 use App\Entity\User\Project;
+use App\Entity\User\ProjectSetting;
+use App\Entity\User\Tariff;
+use App\Service\Common\Project\ProjectSettingServiceInterface;
+use App\Service\Common\Project\TariffServiceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,7 +32,9 @@ use Symfony\Component\Serializer\SerializerInterface;
 class ViewAllController extends AbstractController
 {
     public function __construct(
-        private readonly SerializerInterface $serializer
+        private readonly SerializerInterface $serializer,
+        private readonly ProjectSettingServiceInterface $projectSettingService,
+        private readonly TariffServiceInterface $tariffService,
     ) {
     }
 
@@ -36,15 +42,39 @@ class ViewAllController extends AbstractController
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project): JsonResponse
     {
+        $projectSetting = $this->projectSettingService->getSettingForProject($project->getId());
+
+        $tariffId = $projectSetting->getTariffId();
+
+        $tariff = $this->tariffService->getTariffById($tariffId);
+
+        return new JsonResponse(
+            $this->serializer->normalize(
+                $this->mapToResponse($projectSetting, $tariff),
+            )
+        );
+    }
+
+    private function mapToResponse(ProjectSetting $projectSetting, Tariff $tariff): ProjectSettingRespDto // todo убрать в маппер
+    {
+        $basic = $projectSetting->getBasic();
+        $notifications = $projectSetting->getNotification(); // todo превратить в dto а то ниже ад
+
+        $aboutNewLead = $notifications['aboutNewLead'] ?? null;
+        $aboutChangesStatusLead = $notifications['aboutChangesStatusLead'] ?? null;
+
         $fakeNotificationAboutNewLead = (new ProjectNotificationSettingRespDto())
-            ->setMail(true)
-            ->setSms(true)
-            ->setTelegram(false)
+            ->setSystem($aboutNewLead['system'] ?? false)
+            ->setMail($aboutNewLead['mail'] ?? false)
+            ->setSms($aboutNewLead['sms'] ?? false)
+            ->setTelegram($aboutNewLead['telegram'] ?? false)
         ;
 
         $fakeNotificationAboutChangesStatusLead = (new ProjectNotificationSettingRespDto())
-            ->setMail(true)
-            ->setSms(true)
+            ->setSystem($aboutChangesStatusLead['system'] ?? false)
+            ->setMail($aboutChangesStatusLead['mail'] ?? false)
+            ->setSms($aboutChangesStatusLead['sms'] ?? false)
+            ->setTelegram($aboutChangesStatusLead['telegram'] ?? false)
         ;
 
         $fakeNotificationSetting = (new ProjectNotificationsSettingRespDto())
@@ -52,30 +82,23 @@ class ViewAllController extends AbstractController
             ->setChangesStatusLead($fakeNotificationAboutChangesStatusLead)
         ;
 
-        $fakeTariffSetting = (new ProjectTariffSettingRespDto())
-            ->setName('Самый лучший тариф')
-            ->setPrice(100000)
-            ->setPriceWF('1000,00')
+        $tariffSetting = (new ProjectTariffSettingRespDto())
+            ->setName($tariff->getName())
+            ->setPrice($tariff->getPrice())
+            ->setPriceWF($tariff->getPriceWF())
         ;
 
         $fakeMainSetting = (new ProjectMainSettingRespDto())
-            ->setName('Мой первый проект')
-            ->setCountry('russia')
-            ->setLanguage('ru')
-            ->setTariff($fakeTariffSetting)
-            ->setTimeZone('Europe/Moscow')
-            ->setCurrency('RUB')
+            ->setCountry($basic['country'] ?? 'russia')
+            ->setLanguage($basic['language'] ?? 'ru')
+            ->setTariff($tariffSetting)
+            ->setTimeZone($basic['timeZone'] ?? 'Europe/Moscow')
+            ->setCurrency($basic['currency'] ?? 'RUB')
         ;
 
-        $fakeProjectSetting = (new ProjectSettingRespDto())
+        return (new ProjectSettingRespDto())
             ->setMainSettings($fakeMainSetting)
             ->setNotificationSetting($fakeNotificationSetting)
         ;
-
-        return new JsonResponse(
-            $this->serializer->normalize(
-                $fakeProjectSetting,
-            )
-        );
     }
 }

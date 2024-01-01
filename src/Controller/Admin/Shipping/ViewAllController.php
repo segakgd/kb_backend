@@ -55,13 +55,13 @@ class ViewAllController extends AbstractController
         // todo ... тут мы должны обратиться к сервису или менеджеру ...
 
         $fakeShipping = (new ViewAllShippingRespDto())
-            ->setName('shipping 1')
+            ->setName('Доставка до самого дома')
             ->setType(ShippingRespDto::TYPE_PICKUP)
             ->setApplyFromAmount(10000)
-            ->setIsActive(true)
             ->setApplyToAmount(1000)
             ->setApplyFromAmountWF('100,00')
             ->setApplyToAmountWF('10,00')
+            ->setIsActive(true)
         ;
         return new JsonResponse(
             $this->serializer->normalize(
