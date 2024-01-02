@@ -35,7 +35,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 class ViewOneController extends AbstractController
 {
     public function __construct(
-        private readonly SerializerInterface $serializer
+        private readonly SerializerInterface $serializer,
     ) {
     }
 

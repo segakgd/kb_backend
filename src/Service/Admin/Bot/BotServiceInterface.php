@@ -4,5 +4,5 @@ namespace App\Service\Admin\Bot;
 
 interface BotServiceInterface
 {
-    // todo описать
+    public function add(): void;
 }

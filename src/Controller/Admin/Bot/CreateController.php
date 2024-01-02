@@ -30,7 +30,8 @@ class CreateController extends AbstractController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,
-        private readonly SerializerInterface $serializer
+        private readonly SerializerInterface $serializer,
+        private readonly BotServiceInterface $botService,
     ) {
     }
 
@@ -47,6 +48,8 @@ class CreateController extends AbstractController
         if (count($errors) > 0) {
             return $this->json(['message' => $errors->get(0)->getMessage()], Response::HTTP_BAD_REQUEST);
         }
+
+
 
         // todo ... тут мы должны обратиться к сервису или менеджеру ...
 
