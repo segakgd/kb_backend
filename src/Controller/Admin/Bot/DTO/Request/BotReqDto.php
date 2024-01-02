@@ -11,10 +11,22 @@ class BotReqDto
         'vk',
     ];
 
+    protected string $name;
+
     #[Assert\Choice(self::AVAILABLE_MESSENGER)]
     protected string $type;
 
     protected string $token;
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
 
     public function getType(): string
     {

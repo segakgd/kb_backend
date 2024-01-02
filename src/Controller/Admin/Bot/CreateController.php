@@ -5,6 +5,7 @@ namespace App\Controller\Admin\Bot;
 use App\Controller\Admin\Bot\DTO\Request\BotReqDto;
 use App\Controller\Admin\Lead\DTO\Request\LeadReqDto;
 use App\Entity\User\Project;
+use App\Service\Admin\Bot\BotServiceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -49,9 +50,7 @@ class CreateController extends AbstractController
             return $this->json(['message' => $errors->get(0)->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
-
-
-        // todo ... тут мы должны обратиться к сервису или менеджеру ...
+        $this->botService->add($requestDto, $project->getId());
 
         return new JsonResponse([], Response::HTTP_NO_CONTENT);
     }

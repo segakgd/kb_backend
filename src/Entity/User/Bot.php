@@ -22,6 +22,9 @@ class Bot
     #[ORM\Column]
     private ?int $projectId = null;
 
+    #[ORM\Column(length: 50)]
+    private ?string $name = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +62,18 @@ class Bot
     public function setProjectId(int $projectId): static
     {
         $this->projectId = $projectId;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
 
         return $this;
     }

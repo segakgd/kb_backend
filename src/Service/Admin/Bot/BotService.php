@@ -2,6 +2,8 @@
 
 namespace App\Service\Admin\Bot;
 
+use App\Controller\Admin\Bot\DTO\Request\BotReqDto;
+use App\Entity\User\Bot;
 use App\Repository\User\BotRepository;
 
 class BotService implements BotServiceInterface
@@ -11,8 +13,15 @@ class BotService implements BotServiceInterface
     ) {
     }
 
-    public function add(): void
+    public function add(BotReqDto $botSettingDto, int $projectId): void
     {
-        $this->botRepository->saveAndFlush();
+        $newBot = (new Bot())
+            ->setName($botSettingDto->getName())
+            ->setType($botSettingDto->getType())
+            ->setToken($botSettingDto->getToken())
+            ->setProjectId($projectId)
+        ;
+
+        $this->botRepository->saveAndFlush($newBot);
     }
 }
