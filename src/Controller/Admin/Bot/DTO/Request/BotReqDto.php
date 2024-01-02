@@ -21,9 +21,11 @@ class BotReqDto
         return $this->type;
     }
 
-    public function setType(string $type): void
+    public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
     }
 
     public function getToken(): string
@@ -31,8 +33,10 @@ class BotReqDto
         return $this->token;
     }
 
-    public function setToken(string $token): void
+    public function setToken(string $token): self
     {
         $this->token = $token;
+
+        return $this;
     }
 }
