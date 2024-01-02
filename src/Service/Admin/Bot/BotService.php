@@ -13,7 +13,7 @@ class BotService implements BotServiceInterface
     ) {
     }
 
-    public function add(BotReqDto $botSettingDto, int $projectId): void
+    public function add(BotReqDto $botSettingDto, int $projectId): Bot
     {
         $newBot = (new Bot())
             ->setName($botSettingDto->getName())
@@ -23,5 +23,7 @@ class BotService implements BotServiceInterface
         ;
 
         $this->botRepository->saveAndFlush($newBot);
+
+        return $newBot;
     }
 }

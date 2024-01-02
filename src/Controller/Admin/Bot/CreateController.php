@@ -50,8 +50,10 @@ class CreateController extends AbstractController
             return $this->json(['message' => $errors->get(0)->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
-        $this->botService->add($requestDto, $project->getId());
+        $bot = $this->botService->add($requestDto, $project->getId());
 
-        return new JsonResponse([], Response::HTTP_NO_CONTENT);
+        return new JsonResponse(
+            $this->serializer->normalize($bot)
+        );
     }
 }

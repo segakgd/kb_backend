@@ -23,10 +23,8 @@ class ApiTestCase extends WebTestCase
         return $this->entityManager;
     }
 
-    public function assertResponse(string $response, array $responseCorrect, array $except = ['id']): void
+    public function assertResponse(array $response, array $responseCorrect, array $except = ['id']): void
     {
-        $response = json_decode($response, true);
-
         if (empty($response) || empty($responseCorrect)){
             throw new \PHPUnit\Util\Exception('Нету данных для сравнения');
         }

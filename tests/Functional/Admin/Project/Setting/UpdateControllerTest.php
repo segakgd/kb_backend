@@ -50,7 +50,7 @@ class UpdateControllerTest extends ApiTestCase
         $projectSetting = $projectSettingRepository->find($responseContent['id'] ?? null);
         $projectSetting = $serializer->normalize($projectSetting);
 
-        $this->assertResponse(json_encode($projectSetting, true), $correctResponse, ['id', 'projectId', 'tariffId']);
+        $this->assertResponse($projectSetting, $correctResponse, ['id', 'projectId', 'tariffId']);
     }
 
     private function positive(): iterable

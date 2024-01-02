@@ -37,7 +37,8 @@ class ViewOneControllerTest extends ApiTestCase
 
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
-        $this->assertResponse($client->getResponse()->getContent(), $response);
+        $responseArr = json_decode($client->getResponse()->getContent(), true);
+        $this->assertResponse($responseArr, $response);
     }
 
 

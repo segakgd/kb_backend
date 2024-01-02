@@ -35,8 +35,10 @@ class ViewAllControllerTest extends ApiTestCase
             '/api/admin/project/'. $project->getId() .'/bot/',
         );
 
+        $responseArr = json_decode($client->getResponse()->getContent(), true);
+
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
-        $this->assertResponse($client->getResponse()->getContent(), $response);
+        $this->assertResponse($responseArr, $response);
     }
 
     private function positive(): iterable
