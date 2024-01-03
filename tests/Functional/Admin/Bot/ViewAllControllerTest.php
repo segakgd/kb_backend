@@ -1,24 +1,26 @@
 <?php
 
-namespace App\Tests\Functional\Admin\Promotion;
+namespace App\Tests\Functional\Admin\Bot;
 
 use App\Tests\Functional\ApiTestCase;
+use App\Tests\Functional\Trait\Bot\BotTrait;
 use App\Tests\Functional\Trait\Project\ProjectTrait;
 use App\Tests\Functional\Trait\User\UserTrait;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
-class ViewOneControllerTest extends ApiTestCase
+class ViewAllControllerTest extends ApiTestCase
 {
     use UserTrait;
     use ProjectTrait;
+    use BotTrait;
 
     /**
      * @dataProvider positive
      *
      * @throws Exception
      */
-    public function test(array $response)
+    public function testViewAll(array $response)
     {
         $client = static::createClient();
         $entityManager = $this->getEntityManager();
@@ -28,33 +30,36 @@ class ViewOneControllerTest extends ApiTestCase
 
         $entityManager->flush();
 
+        $this->createBot($entityManager, $project);
+        $this->createBot($entityManager, $project);
+
+        $entityManager->flush();
+
         $client->loginUser($user);
 
         $client->request(
             'GET',
-            '/api/admin/project/'. $project->getId() .'/promotion/' . 1 . '/', // todo ВНИМАНИЕ! я пока что поставил 1, но нужно брать существующую промоакцию
+            '/api/admin/project/'. $project->getId() .'/bot/',
         );
 
-        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
-
         $responseArr = json_decode($client->getResponse()->getContent(), true);
+
+        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertResponse($responseArr, $response);
     }
-
 
     private function positive(): iterable
     {
         yield [
             [
-                "name" => "promo",
-                "type" => "current",
-                "code" => "2024",
-                "triggersQuantity" => 10000,
-                "active" => true,
-                "amount" => 1000,
-                "amountWithFraction" => "10,00",
-                "activeFrom" => "2023-12-25T13:24:08+00:00",
-                "activeTo" => "2023-12-25T13:24:08+00:00"
+                [
+                    "name" => "Мой новый бот",
+                    "type" => "telegram"
+                ],
+                [
+                    "name" => "Мой новый бот",
+                    "type" => "telegram"
+                ],
             ]
         ];
     }

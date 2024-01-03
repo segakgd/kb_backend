@@ -38,8 +38,10 @@ class CreateControllerTest extends ApiTestCase
             json_encode($requestContent)
         );
 
+        $responseArr = json_decode($client->getResponse()->getContent(), true);
+
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
-        $this->assertResponse($client->getResponse()->getContent(), $response);
+        $this->assertResponse($responseArr, $response);
 
         // todo проверить что вместе с проектом создаются и настройки (можно в отдельном тесте)
     }

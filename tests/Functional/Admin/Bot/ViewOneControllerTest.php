@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Tests\Functional\Admin\Product;
+namespace App\Tests\Functional\Admin\Bot;
 
 use App\Tests\Functional\ApiTestCase;
+use App\Tests\Functional\Trait\Bot\BotTrait;
 use App\Tests\Functional\Trait\Project\ProjectTrait;
 use App\Tests\Functional\Trait\User\UserTrait;
 use Exception;
@@ -12,6 +13,7 @@ class ViewOneControllerTest extends ApiTestCase
 {
     use UserTrait;
     use ProjectTrait;
+    use BotTrait;
 
     /**
      * @dataProvider positive
@@ -28,11 +30,15 @@ class ViewOneControllerTest extends ApiTestCase
 
         $entityManager->flush();
 
+        $bot = $this->createBot($entityManager, $project);
+
+        $entityManager->flush();
+
         $client->loginUser($user);
 
         $client->request(
             'GET',
-            '/api/admin/project/'. $project->getId() .'/product/' . 1 . '/', // todo ВНИМАНИЕ! захардкодил 1
+            '/api/admin/project/'. $project->getId() .'/bot/' . $bot->getId() . '/', // todo ВНИМАНИЕ! я пока что поставил 1, но нужно брать существующий продукт
         );
 
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
@@ -41,31 +47,12 @@ class ViewOneControllerTest extends ApiTestCase
         $this->assertResponse($responseArr, $response);
     }
 
-
     private function positive(): iterable
     {
         yield [
             [
-                "id" => 111,
-                "name" => "Продукт",
-                "article" => "ARTICLE",
-                "type" => "product",
-                "visible" => true,
-                "description" => "Какое-то описание чего-либо",
-                "image" => "image.fake",
-                "category" => [
-                    [
-                        "id" => 111,
-                        "name" => "Имя категории"
-                    ]
-                ],
-                "variants" => [
-                    [
-                        "name" => "Имя варианта",
-                        "count" => 1,
-                        "price" => 10000
-                    ]
-                ]
+                "name" => 'Мой новый бот',
+                "type" => 'telegram',
             ]
         ];
     }

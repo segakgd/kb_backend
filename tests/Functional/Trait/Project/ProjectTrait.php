@@ -12,6 +12,13 @@ use Doctrine\Persistence\ObjectManager;
 
 trait ProjectTrait
 {
+    private ?Project $project;
+
+    public function getProject(): ?Project
+    {
+        return $this->project;
+    }
+
     public function initProject(ObjectManager $manager, User $user): Project
     {
         $project = $this->createProject($manager, $user);
@@ -34,6 +41,8 @@ trait ProjectTrait
         ;
 
         $manager->persist($project);
+
+        $this->project = $project;
 
         return $project;
     }
