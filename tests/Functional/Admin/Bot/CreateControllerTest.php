@@ -4,6 +4,7 @@ namespace App\Tests\Functional\Admin\Bot;
 
 use App\Entity\User\Bot;
 use App\Tests\Functional\ApiTestCase;
+use App\Tests\Functional\Trait\Bot\BotTrait;
 use App\Tests\Functional\Trait\Project\ProjectTrait;
 use App\Tests\Functional\Trait\User\UserTrait;
 use Exception;
@@ -14,6 +15,7 @@ class CreateControllerTest extends ApiTestCase
 {
     use UserTrait;
     use ProjectTrait;
+    use BotTrait;
 
     private SerializerInterface $serializer;
 

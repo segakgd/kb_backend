@@ -3,6 +3,7 @@
 namespace App\Tests\Functional\Admin\Bot;
 
 use App\Tests\Functional\ApiTestCase;
+use App\Tests\Functional\Trait\Bot\BotTrait;
 use App\Tests\Functional\Trait\Project\ProjectTrait;
 use App\Tests\Functional\Trait\User\UserTrait;
 use Exception;
@@ -12,6 +13,7 @@ class ViewAllControllerTest extends ApiTestCase
 {
     use UserTrait;
     use ProjectTrait;
+    use BotTrait;
 
     /**
      * @dataProvider positive
@@ -25,6 +27,11 @@ class ViewAllControllerTest extends ApiTestCase
 
         $user = $this->createUser($entityManager);
         $project = $this->createProject($entityManager, $user);
+
+        $entityManager->flush();
+
+        $this->createBot($entityManager, $project);
+        $this->createBot($entityManager, $project);
 
         $entityManager->flush();
 
@@ -46,12 +53,10 @@ class ViewAllControllerTest extends ApiTestCase
         yield [
             [
                 [
-                    "id" => 1,
                     "name" => "Мой новый бот",
                     "type" => "telegram"
                 ],
                 [
-                    "id" => 1,
                     "name" => "Мой новый бот",
                     "type" => "telegram"
                 ],

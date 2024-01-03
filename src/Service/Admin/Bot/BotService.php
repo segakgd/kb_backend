@@ -54,6 +54,9 @@ class BotService implements BotServiceInterface
         return $newBot;
     }
 
+    /**
+     * @throws Exception
+     */
     public function update(UpdateBotReqDto $botSettingDto, int $botId, int $projectId): Bot
     {
         $bot = $this->botRepository->findOneBy(
@@ -62,6 +65,10 @@ class BotService implements BotServiceInterface
                 'projectId' => $projectId,
             ]
         );
+
+        if (null === $bot){
+            throw new Exception('Бот не найден');
+        }
 
         if ($botSettingDto->getName()){
             $bot->setName($botSettingDto->getName());
