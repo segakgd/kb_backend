@@ -3,7 +3,10 @@
 namespace App\Controller\Admin\Bot;
 
 use App\Controller\Admin\Bot\DTO\Request\UpdateBotReqDto;
+use App\Controller\Admin\Bot\DTO\Response\BotResDto;
+use App\Entity\User\Bot;
 use App\Entity\User\Project;
+use App\Service\Admin\Bot\BotServiceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,6 +34,7 @@ class UpdateController extends AbstractController
     public function __construct(
         private readonly ValidatorInterface $validator,
         private readonly SerializerInterface $serializer,
+        private readonly BotServiceInterface $botService,
     ) {
     }
 
@@ -49,8 +53,21 @@ class UpdateController extends AbstractController
             return $this->json(['message' => $errors->get(0)->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
-        // todo ... тут мы должны обратиться к сервису или менеджеру ...
+        $bot = $this->botService->update($requestDto, $botId, $project->getId());
 
-        return new JsonResponse([], Response::HTTP_NO_CONTENT);
+        $response = $this->mapToResponse($bot);
+
+        return new JsonResponse(
+            $this->serializer->normalize($response)
+        );
+    }
+
+    private function mapToResponse(Bot $bot): BotResDto
+    {
+        return (new BotResDto())
+            ->setId($bot->getId())
+            ->setName($bot->getName())
+            ->setType($bot->getType())
+            ;
     }
 }

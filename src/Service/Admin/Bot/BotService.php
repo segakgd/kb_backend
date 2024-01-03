@@ -3,6 +3,7 @@
 namespace App\Service\Admin\Bot;
 
 use App\Controller\Admin\Bot\DTO\Request\BotReqDto;
+use App\Controller\Admin\Bot\DTO\Request\UpdateBotReqDto;
 use App\Entity\User\Bot;
 use App\Repository\User\BotRepository;
 use Exception;
@@ -51,6 +52,32 @@ class BotService implements BotServiceInterface
         $this->botRepository->saveAndFlush($newBot);
 
         return $newBot;
+    }
+
+    public function update(UpdateBotReqDto $botSettingDto, int $botId, int $projectId): Bot
+    {
+        $bot = $this->botRepository->findOneBy(
+            [
+                'id' => $botId,
+                'projectId' => $projectId,
+            ]
+        );
+
+        if ($botSettingDto->getName()){
+            $bot->setName($botSettingDto->getName());
+        }
+
+        if ($botSettingDto->getType()){
+            $bot->setType($botSettingDto->getType());
+        }
+
+        if ($botSettingDto->getToken()){
+            $bot->setToken($botSettingDto->getToken());
+        }
+
+        $this->botRepository->saveAndFlush($bot);
+
+        return $bot;
     }
 
     /**

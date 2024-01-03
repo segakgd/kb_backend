@@ -3,6 +3,8 @@
 namespace App\Controller\Admin\Bot;
 
 use App\Controller\Admin\Bot\DTO\Request\BotReqDto;
+use App\Controller\Admin\Bot\DTO\Response\BotResDto;
+use App\Entity\User\Bot;
 use App\Entity\User\Project;
 use App\Service\Admin\Bot\BotServiceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -51,8 +53,19 @@ class CreateController extends AbstractController
 
         $bot = $this->botService->add($requestDto, $project->getId());
 
+        $response = $this->mapToResponse($bot);
+
         return new JsonResponse(
-            $this->serializer->normalize($bot)
+            $this->serializer->normalize($response)
         );
+    }
+
+    private function mapToResponse(Bot $bot): BotResDto
+    {
+        return (new BotResDto())
+            ->setId($bot->getId())
+            ->setName($bot->getName())
+            ->setType($bot->getType())
+            ;
     }
 }

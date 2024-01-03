@@ -4,18 +4,18 @@ namespace App\Controller\Admin\Bot\DTO\Response;
 
 class BotResDto
 {
-    protected string $id;
+    protected int $id;
 
     protected string $name;
 
     protected string $type;
 
-    public function getId(): string
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function setId(string $id): self
+    public function setId(int $id): self
     {
         $this->id = $id;
 
