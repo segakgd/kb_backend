@@ -6,13 +6,18 @@ use App\Controller\Admin\Bot\DTO\Request\BotReqDto;
 use App\Controller\Admin\Bot\DTO\Request\InitBotReqDto;
 use App\Controller\Admin\Bot\DTO\Request\UpdateBotReqDto;
 use App\Entity\User\Bot;
+use App\Event\InitBotEvent;
 use App\Repository\User\BotRepository;
 use Exception;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class BotService implements BotServiceInterface
 {
     public function __construct(
         private readonly BotRepository $botRepository,
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -35,6 +40,10 @@ class BotService implements BotServiceInterface
         $bot->setActive($requestDto->isActive());
 
         $this->botRepository->saveAndFlush($bot);
+
+        if ($requestDto->isActive()){
+            $this->eventDispatcher->dispatch((new InitBotEvent($bot)));
+        }
     }
 
     /**
