@@ -3,7 +3,6 @@
 namespace App\Controller\Admin\Bot;
 
 use App\Controller\Admin\Bot\DTO\Request\BotReqDto;
-use App\Controller\Admin\Lead\DTO\Request\LeadReqDto;
 use App\Entity\User\Project;
 use App\Service\Admin\Bot\BotServiceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
