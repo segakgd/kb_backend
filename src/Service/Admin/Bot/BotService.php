@@ -3,6 +3,7 @@
 namespace App\Service\Admin\Bot;
 
 use App\Controller\Admin\Bot\DTO\Request\BotReqDto;
+use App\Controller\Admin\Bot\DTO\Request\InitBotReqDto;
 use App\Controller\Admin\Bot\DTO\Request\UpdateBotReqDto;
 use App\Entity\User\Bot;
 use App\Repository\User\BotRepository;
@@ -13,6 +14,27 @@ class BotService implements BotServiceInterface
     public function __construct(
         private readonly BotRepository $botRepository,
     ) {
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function init(InitBotReqDto $requestDto, int $botId, int $projectId): void
+    {
+        $bot = $this->botRepository->findOneBy(
+            [
+                'id' => $botId,
+                'projectId' => $projectId,
+            ]
+        );
+
+        if (null === $bot){
+            throw new Exception('Бот не найден');
+        }
+
+        $bot->setActive($requestDto->isActive());
+
+        $this->botRepository->saveAndFlush($bot);
     }
 
     /**

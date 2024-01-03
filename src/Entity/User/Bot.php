@@ -25,6 +25,9 @@ class Bot
     #[ORM\Column(length: 50)]
     private ?string $name = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $active = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -74,6 +77,18 @@ class Bot
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active): static
+    {
+        $this->active = $active;
 
         return $this;
     }
