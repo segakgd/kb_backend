@@ -1,24 +1,25 @@
 <?php
 
-namespace App\Tests\Functional\Admin\Project\Tariff;
+namespace App\Tests\Functional\Admin\Bot;
 
+use App\Entity\User\Bot;
 use App\Tests\Functional\ApiTestCase;
+use App\Tests\Functional\Trait\Bot\BotTrait;
 use App\Tests\Functional\Trait\Project\ProjectTrait;
 use App\Tests\Functional\Trait\User\UserTrait;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
-class UpdateControllerTest extends ApiTestCase
+class RemoveControllerTest extends ApiTestCase
 {
     use UserTrait;
     use ProjectTrait;
+    use BotTrait;
 
     /**
-     * @dataProvider positive
-     *
      * @throws Exception
      */
-    public function testViewAll(array $requestContent)
+    public function testOneDelete()
     {
         $client = static::createClient();
         $entityManager = $this->getEntityManager();
@@ -28,28 +29,24 @@ class UpdateControllerTest extends ApiTestCase
 
         $entityManager->flush();
 
+        $bot = $this->createBot($entityManager, $project);
+
+        $entityManager->flush();
+
+        $botId = $bot->getId();
         $client->loginUser($user);
 
         $client->request(
-            'POST',
-            '/api/admin/project/'. $project->getId() .'/setting/tariff/',
-            [],
-            [],
-            [],
-            json_encode($requestContent)
+            'DELETE',
+            '/api/admin/project/'. $project->getId() .'/bot/' . $botId . '/',
         );
 
         $this->assertEquals(Response::HTTP_NO_CONTENT, $client->getResponse()->getStatusCode());
 
-        // todo когда будет готова реализация - проверить изменения в базе
-    }
+        $botRepository = $entityManager->getRepository(Bot::class);
 
-    private function positive(): iterable
-    {
-        yield [
-            [
-                'code' => 'NEW_TARIFF',
-            ]
-        ];
+        $bot = $botRepository->find($botId);
+
+        $this->assertNull($bot);
     }
 }

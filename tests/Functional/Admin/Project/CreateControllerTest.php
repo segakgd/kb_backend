@@ -18,7 +18,7 @@ class CreateControllerTest extends ApiTestCase
      *
      * @throws Exception
      */
-    public function testViewAll(array $requestContent)
+    public function test(array $requestContent, array $response)
     {
         $client = static::createClient();
         $entityManager = $this->getEntityManager();
@@ -38,9 +38,12 @@ class CreateControllerTest extends ApiTestCase
             json_encode($requestContent)
         );
 
-        $this->assertEquals(Response::HTTP_NO_CONTENT, $client->getResponse()->getStatusCode());
+        $responseArr = json_decode($client->getResponse()->getContent(), true);
 
-        // todo когда будет готова реализация - проверить изменения в базе
+        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        $this->assertResponse($responseArr, $response);
+
+        // todo проверить что вместе с проектом создаются и настройки (можно в отдельном тесте)
     }
 
     private function positive(): iterable
@@ -50,6 +53,23 @@ class CreateControllerTest extends ApiTestCase
                 'name' => 'Новый проект',
                 'mode' => 'shop',
                 'bot' => 'vk',
+            ],
+            [
+                "name" => "Новый проект",
+                "status" => "active",
+                "activeTo" => null,
+                "activeFrom" => null,
+                "statistic" => [
+                    "lead" => [
+                        "count" => 13
+                    ],
+                    "booking" => [
+                        "count" => 13
+                    ],
+                    "chats" => [
+                        "count" => 13
+                    ]
+                ]
             ]
         ];
     }

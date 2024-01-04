@@ -34,7 +34,7 @@ class ViewAllController extends AbstractController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,
-        private readonly SerializerInterface $serializer
+        private readonly SerializerInterface $serializer,
     ) {
     }
 

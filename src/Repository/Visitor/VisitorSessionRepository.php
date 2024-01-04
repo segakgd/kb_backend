@@ -35,13 +35,4 @@ class VisitorSessionRepository extends ServiceEntityRepository
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
     }
-
-    public function remove(VisitorSession $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->remove($entity);
-
-        if ($flush) { // todo
-            $this->getEntityManager()->flush();
-        }
-    }
 }

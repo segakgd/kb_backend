@@ -3,7 +3,10 @@
 namespace App\Controller\Admin\Project;
 
 use App\Controller\Admin\Project\DTO\Request\ProjectCreateReqDto;
+use App\Controller\Admin\Project\DTO\Response\ProjectRespDto;
+use App\Entity\User\Project;
 use App\Repository\User\UserRepository;
+use App\Service\Admin\Statistic\StatisticsServiceInterface;
 use App\Service\Common\Project\ProjectServiceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -32,6 +35,7 @@ class CreateController extends AbstractController
         private readonly SerializerInterface $serializer,
         private readonly ProjectServiceInterface $projectService,
         private readonly UserRepository $userRepository,
+        private readonly StatisticsServiceInterface $statisticsService,
     ) {
     }
 
@@ -58,8 +62,25 @@ class CreateController extends AbstractController
             return new JsonResponse([], Response::HTTP_FORBIDDEN);
         }
 
-        $this->projectService->add($requestDto, $user);
+        $project = $this->projectService->add($requestDto, $user);
+        $response = $this->mapToResponse($project);
 
-        return new JsonResponse([], Response::HTTP_NO_CONTENT);
+        return new JsonResponse(
+            $this->serializer->normalize($response)
+        );
+    }
+
+    private function mapToResponse(Project $project): ProjectRespDto
+    {
+        $fakeStatisticsByProject = $this->statisticsService->getStatisticForProject();
+
+        return (new ProjectRespDto())
+            ->setId($project->getId())
+            ->setName($project->getName())
+            ->setStatus($project->getStatus())
+            ->setStatistic($fakeStatisticsByProject)
+            ->setActiveFrom($project->getActiveFrom())
+            ->setActiveTo($project->getActiveTo())
+            ;
     }
 }

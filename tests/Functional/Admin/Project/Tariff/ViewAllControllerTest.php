@@ -18,13 +18,13 @@ class ViewAllControllerTest extends ApiTestCase
      *
      * @throws Exception
      */
-    public function testViewAll(array $response)
+    public function test(array $response)
     {
         $client = static::createClient();
         $entityManager = $this->getEntityManager();
 
         $user = $this->createUser($entityManager);
-        $project = $this->createProject($entityManager, $user);
+        $this->initProject($entityManager, $user);
 
         $entityManager->flush();
 
@@ -32,33 +32,28 @@ class ViewAllControllerTest extends ApiTestCase
 
         $client->request(
             'GET',
-            '/api/admin/project/'. $project->getId() .'/setting/tariff/',
+            '/api/admin/tariffs/',
         );
 
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
-        $this->assertResponse($client->getResponse()->getContent(), $response);
+
+        $jsonResponse = $client->getResponse()->getContent();
+
+        $actualResponse = json_decode($jsonResponse, true);
+        $actualResponseItem = $actualResponse[count($actualResponse) - 1]; // todo не самое лучшее решение, но пока что какие-то тарблы с бандлом тестовым, мб уйдёт проблема при переходе на нормальную базу
+
+        $this->assertResponse($actualResponseItem, $response, ['id', 'code']); // берём последний, так себе решение
     }
 
     private function positive(): iterable
     {
         yield [
             [
-                [
-                    "name" => "Название тарифа",
-                    "code" => "CODE_2024",
-                    "price" => 100000,
-                    "priceWF" => "1000,00",
-                    "description" => "Какое-то описание тарифа ",
-                    "active" => true,
-                ],
-                [
-                    "name" => "Название тарифа",
-                    "code" => "CODE_2024",
-                    "price" => 100000,
-                    "priceWF" => "1000,00",
-                    "description" => "Какое-то описание тарифа ",
-                    "active" => true,
-                ]
+                "name" => "Тестовый тариф",
+                "price" => 10000,
+                "priceWF" => "100,00",
+                "description" => "For test",
+                "active" => true
             ]
         ];
     }

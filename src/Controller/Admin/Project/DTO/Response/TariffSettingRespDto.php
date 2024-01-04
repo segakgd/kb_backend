@@ -4,6 +4,8 @@ namespace App\Controller\Admin\Project\DTO\Response;
 
 class TariffSettingRespDto
 {
+    private int $id;
+
     private string $name;
 
     private string $code;
@@ -15,6 +17,18 @@ class TariffSettingRespDto
     private string $description;
 
     private bool $active;
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 
     public function getName(): string
     {

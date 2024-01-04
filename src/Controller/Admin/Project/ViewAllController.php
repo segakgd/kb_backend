@@ -53,7 +53,7 @@ class ViewAllController extends AbstractController
         );
     }
 
-    private function mapToResponse($projects): array
+    private function mapToResponse(array $projects): array
     {
         $result = [];
 
@@ -62,6 +62,7 @@ class ViewAllController extends AbstractController
             $fakeStatisticsByProject = $this->statisticsService->getStatisticForProject();
 
             $result[] = (new ProjectRespDto())
+                ->setId($project->getId())
                 ->setName($project->getName())
                 ->setStatus($project->getStatus())
                 ->setStatistic($fakeStatisticsByProject)

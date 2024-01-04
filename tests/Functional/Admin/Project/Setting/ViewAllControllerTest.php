@@ -18,13 +18,13 @@ class ViewAllControllerTest extends ApiTestCase
      *
      * @throws Exception
      */
-    public function testViewAll(array $response)
+    public function test(array $response)
     {
         $client = static::createClient();
         $entityManager = $this->getEntityManager();
 
         $user = $this->createUser($entityManager);
-        $project = $this->createProject($entityManager, $user);
+        $project = $this->initProject($entityManager, $user);
 
         $entityManager->flush();
 
@@ -36,7 +36,9 @@ class ViewAllControllerTest extends ApiTestCase
         );
 
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
-        $this->assertResponse($client->getResponse()->getContent(), $response);
+
+        $responseArr = json_decode($client->getResponse()->getContent(), true);
+        $this->assertResponse($responseArr, $response);
     }
 
     private function positive(): iterable
@@ -44,26 +46,28 @@ class ViewAllControllerTest extends ApiTestCase
         yield [
             [
                 "mainSettings" => [
-                    "name" => "Мой первый проект",
                     "country" => "russia",
                     "timeZone" => "Europe/Moscow",
                     "language" => "ru",
                     "currency" => "RUB",
                     "tariff" => [
-                        "name" => "Самый лучший тариф",
-                        "price" => 100000,
-                        "priceWF" => "1000,00",
+                        "name" => "Триал",
+                        "price" => 0,
+                        "priceWF" => "0"
                     ]
                 ],
                 "notificationSetting" => [
                     "newLead" => [
-                        "mail" => true,
+                        "system" => true,
+                        "mail" => false,
                         "telegram" => false,
-                        "sms" => true,
+                        "sms" => false
                     ],
                     "changesStatusLead" => [
-                        "mail" => true,
-                        "sms" => true,
+                        "system" => true,
+                        "mail" => false,
+                        "telegram" => false,
+                        "sms" => false
                     ]
                 ]
             ]

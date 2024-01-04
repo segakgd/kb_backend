@@ -18,7 +18,7 @@ class ViewAllControllerTest extends ApiTestCase
      *
      * @throws Exception
      */
-    public function testViewAll(array $response)
+    public function test(array $response)
     {
         $client = static::createClient();
         $entityManager = $this->getEntityManager();
@@ -36,7 +36,9 @@ class ViewAllControllerTest extends ApiTestCase
         );
 
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
-        $this->assertResponse($client->getResponse()->getContent(), $response);
+
+        $responseArr = json_decode($client->getResponse()->getContent(), true);
+        $this->assertResponse($responseArr, $response);
     }
 
 

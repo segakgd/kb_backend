@@ -18,7 +18,7 @@ class ViewOneControllerTest extends ApiTestCase
      *
      * @throws Exception
      */
-    public function testViewOne(array $response)
+    public function test(array $response)
     {
         $client = static::createClient();
         $entityManager = $this->getEntityManager();
@@ -37,7 +37,8 @@ class ViewOneControllerTest extends ApiTestCase
 
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
-        $this->assertResponse($client->getResponse()->getContent(), $response);
+        $responseArr = json_decode($client->getResponse()->getContent(), true);
+        $this->assertResponse($responseArr, $response);
     }
 
 

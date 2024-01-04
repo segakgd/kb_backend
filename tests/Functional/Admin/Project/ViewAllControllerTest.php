@@ -2,7 +2,6 @@
 
 namespace App\Tests\Functional\Admin\Project;
 
-use App\Entity\User\Project;
 use App\Tests\Functional\ApiTestCase;
 use App\Tests\Functional\Trait\Project\ProjectTrait;
 use App\Tests\Functional\Trait\User\UserTrait;
@@ -19,7 +18,7 @@ class ViewAllControllerTest extends ApiTestCase
      *
      * @throws Exception
      */
-    public function testViewAll(array $response)
+    public function test(array $response)
     {
         $client = static::createClient();
         $entityManager = $this->getEntityManager();
@@ -40,7 +39,8 @@ class ViewAllControllerTest extends ApiTestCase
 
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
-        $this->assertResponse($client->getResponse()->getContent(), $response);
+        $responseArr = json_decode($client->getResponse()->getContent(), true);
+        $this->assertResponse($responseArr, $response);
     }
 
     private function positive(): iterable
@@ -49,9 +49,9 @@ class ViewAllControllerTest extends ApiTestCase
             [
                 [
                     "name" => "Проект тестовый",
-                    "status" => Project::STATUS_ACTIVE,
-                    "activeTo" => "2023-12-20T15:20:34+00:00",
-                    "activeFrom" => "2023-12-20T15:20:34+00:00",
+                    "status" => "active",
+                    "activeTo" => "2023-12-29T17:35:02+00:00",
+                    "activeFrom" => "2023-12-29T17:35:02+00:00",
                     "statistic" => [
                         "lead" => [
                             "count" => 13
@@ -66,9 +66,9 @@ class ViewAllControllerTest extends ApiTestCase
                 ],
                 [
                     "name" => "Проект тестовый",
-                    "status" => Project::STATUS_ACTIVE,
-                    "activeTo" => "2023-12-20T15:20:34+00:00",
-                    "activeFrom" => "2023-12-20T15:20:34+00:00",
+                    "status" => "active",
+                    "activeTo" => "2023-12-29T17:35:02+00:00",
+                    "activeFrom" => "2023-12-29T17:35:02+00:00",
                     "statistic" => [
                         "lead" => [
                             "count" => 13

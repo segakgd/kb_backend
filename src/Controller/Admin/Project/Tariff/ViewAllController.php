@@ -3,17 +3,17 @@
 namespace App\Controller\Admin\Project\Tariff;
 
 use App\Controller\Admin\Project\DTO\Response\TariffSettingRespDto;
-use App\Entity\User\Project;
+use App\Entity\User\Tariff;
+use App\Service\Common\Project\TariffServiceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 
-#[OA\Tag(name: 'Project')]
+#[OA\Tag(name: 'Tariff')]
 #[OA\Response(
     response: Response::HTTP_OK,
     description: 'Возвращает коллекцию доступных тарифов',
@@ -29,30 +29,40 @@ use Symfony\Component\Serializer\SerializerInterface;
 class ViewAllController extends AbstractController
 {
     public function __construct(
-        private readonly SerializerInterface $serializer
+        private readonly SerializerInterface $serializer,
+        private readonly TariffServiceInterface $tariffService,
     ) {
     }
 
-    #[Route('/api/admin/project/{project}/setting/tariff/', name: 'admin_project_list_tariff', methods: ['GET'])]
-    #[IsGranted('existUser', 'project')]
-    public function execute(Project $project): JsonResponse
+    #[Route('/api/admin/tariffs/', name: 'admin_list_tariffs', methods: ['GET'])]
+    public function execute(): JsonResponse
     {
-        $fakeTariff = (new TariffSettingRespDto())
-            ->setName('Название тарифа')
-            ->setPrice(100000)
-            ->setPriceWF('1000,00')
-            ->setDescription('Какое-то описание тарифа ')
-            ->setCode('CODE_2024')
-            ->setActive(true)
-        ;
+        // todo проверить что пользователь в систему зашёл. На право на лево не стоит раскидываться апихами
+
+        $tariffs = $this->tariffService->getAllTariff();
 
         return new JsonResponse(
-            $this->serializer->normalize(
-                [
-                    $fakeTariff,
-                    $fakeTariff,
-                ]
-            )
+            $this->serializer->normalize($this->mapToResponse($tariffs))
         );
+    }
+
+    private function mapToResponse(array $tariffs): array
+    {
+        $result = [];
+
+        /** @var Tariff $tariff */
+        foreach ($tariffs as $tariff){
+            $result[] = (new TariffSettingRespDto())
+                ->setId($tariff->getId())
+                ->setName($tariff->getName())
+                ->setPrice($tariff->getPrice())
+                ->setPriceWF($tariff->getPriceWF())
+                ->setDescription($tariff->getDescription())
+                ->setCode($tariff->getCode())
+                ->setActive($tariff->isActive())
+            ;
+        }
+
+        return $result;
     }
 }
