@@ -3,6 +3,7 @@
 namespace App\Entity\History;
 
 use App\Repository\History\HistoryRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: HistoryRepository::class)]
@@ -14,7 +15,7 @@ class History
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
+    private ?DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(length: 255)]
     private ?string $type = null;
@@ -31,17 +32,20 @@ class History
     #[ORM\Column]
     private array $error = [];
 
+    #[ORM\Column]
+    private ?int $projectId = null;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    public function setCreatedAt(DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
 
@@ -104,6 +108,18 @@ class History
     public function setError(array $error): static
     {
         $this->error = $error;
+
+        return $this;
+    }
+
+    public function getProjectId(): ?int
+    {
+        return $this->projectId;
+    }
+
+    public function setProjectId(int $projectId): static
+    {
+        $this->projectId = $projectId;
 
         return $this;
     }
