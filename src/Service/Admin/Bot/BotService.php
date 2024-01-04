@@ -10,8 +10,6 @@ use App\Event\InitBotEvent;
 use App\Repository\User\BotRepository;
 use Exception;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class BotService implements BotServiceInterface
 {
