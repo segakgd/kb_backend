@@ -3,16 +3,47 @@
 namespace App\Service\Admin\Bot;
 
 use App\Controller\Admin\Bot\DTO\Request\BotReqDto;
+use App\Controller\Admin\Bot\DTO\Request\InitBotReqDto;
 use App\Controller\Admin\Bot\DTO\Request\UpdateBotReqDto;
 use App\Entity\User\Bot;
+use App\Event\InitBotEvent;
 use App\Repository\User\BotRepository;
 use Exception;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class BotService implements BotServiceInterface
 {
     public function __construct(
         private readonly BotRepository $botRepository,
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function init(InitBotReqDto $requestDto, int $botId, int $projectId): void
+    {
+        $bot = $this->botRepository->findOneBy(
+            [
+                'id' => $botId,
+                'projectId' => $projectId,
+            ]
+        );
+
+        if (null === $bot){
+            throw new Exception('Бот не найден');
+        }
+
+        $bot->setActive($requestDto->isActive());
+
+        $this->botRepository->saveAndFlush($bot);
+
+        if ($requestDto->isActive()){
+            $this->eventDispatcher->dispatch((new InitBotEvent($bot)));
+        }
     }
 
     /**
