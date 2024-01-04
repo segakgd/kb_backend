@@ -3,7 +3,9 @@
 
 namespace App\Service\Admin\History;
 
+use App\Entity\History\History;
 use App\Repository\History\HistoryRepository;
+use DateTimeImmutable;
 
 class HistoryService implements HistoryServiceInterface
 {
@@ -19,5 +21,22 @@ class HistoryService implements HistoryServiceInterface
                 'projectId' => $projectId
             ]
         );
+    }
+
+    public function add(int $projectId): History
+    {
+        $history = (new History())
+            ->setProjectId($projectId)
+            ->setType('error')
+            ->setStatus('dsad')
+            ->setSender('asdsad')
+            ->setRecipient('dsadas')
+            ->setError([])
+            ->setCreatedAt(new DateTimeImmutable())
+        ;
+
+        $this->historyRepositoryRepository->saveAndFlush($history);
+
+        return $history;
     }
 }
