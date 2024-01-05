@@ -3,7 +3,10 @@
 namespace App\Command;
 
 use App\Dto\Core\Telegram\Webhook\WebhookDto;
+use App\Event\InitBotEvent;
+use App\Repository\User\BotRepository;
 use App\Service\Integration\Telegram\TelegramService;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,7 +19,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 class TgAddWebhookCommand extends Command
 {
     public function __construct(
-        private readonly TelegramService $telegramService,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly BotRepository $botRepository,
         string $name = null
     ) {
         parent::__construct($name);
@@ -24,11 +28,17 @@ class TgAddWebhookCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $webhookDto = (new WebhookDto())
-            ->setUrl('https://webhook.site/a7768496-d271-465a-a4c6-2c1bd3c08e48')
-        ;
+        $myProjectId = 4842;
 
-        $this->telegramService->setWebhook($webhookDto, '6722125407:AAEDDnc7qpbaZpZg-wpfXQ5h7Yp5mhJND0U');
+        $bot = $this->botRepository->findOneBy(
+            [
+                'projectId' => $myProjectId,
+                'name' => 'Bot first',
+                'type' => 'telegram',
+            ]
+        );
+
+        $this->eventDispatcher->dispatch(new InitBotEvent($bot));
 
         return Command::SUCCESS;
     }

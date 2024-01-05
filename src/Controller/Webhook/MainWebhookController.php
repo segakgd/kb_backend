@@ -28,7 +28,7 @@ class MainWebhookController extends AbstractController
     /**
      * @throws Exception
      */
-    #[Route('/webhook/{projectId}/{channel}/', name: 'app_webhook_d', methods: ['POST'])]
+    #[Route('/webhook/{projectId}/{channel}/', name: 'app_webhook_handler', methods: ['POST'])]
     public function addWebhookAction(Request $request, int $projectId, string $channel): JsonResponse
     {
         $project = $this->projectEntityRepository->find($projectId);
