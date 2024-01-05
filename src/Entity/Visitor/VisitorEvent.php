@@ -39,6 +39,7 @@ class VisitorEvent
     #[ORM\Column(length: 15)]
     private string $status = self::STATUS_NEW;
 
+    #[ORM\Column]
     private ?DateTimeImmutable $createdAt = null;
 
     public function __construct()

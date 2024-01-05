@@ -7,7 +7,9 @@ use App\Entity\Visitor\VisitorSession;
 
 interface VisitorSessionServiceInterface
 {
-    public function getOrCreateSession(Visitor $visitor): ?VisitorSession;
+    public function identifyByChannel(int $channelId, string $channel): ?VisitorSession;
 
-    public function rewriteChatEvent(VisitorSession $visitorSession, int $visitorEventId): void;
+    public function createVisitorSession(Visitor $visitor, string $visitorName, int $chatId, string $chanel): VisitorSession;
+
+    public function rewriteVisitorEvent(VisitorSession $visitorSession, int $visitorEventId): void;
 }

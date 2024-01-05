@@ -45,4 +45,9 @@ class TelegramWebhookDto
     {
         return $this->message->getChat()->getId();
     }
+
+    public function getVisitorName(): string
+    {
+        return $this->message->getChat()->getFirstName();
+    }
 }

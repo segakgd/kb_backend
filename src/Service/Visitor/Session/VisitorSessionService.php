@@ -14,37 +14,36 @@ class VisitorSessionService implements VisitorSessionServiceInterface
     ) {
     }
 
-    public function getOrCreateSession(Visitor $visitor): ?VisitorSession
+
+    public function identifyByChannel(int $channelId, string $channel): ?VisitorSession
     {
-        $visitorSession = $this->visitorSessionRepository->findOneBy(
+        return $this->visitorSessionRepository->findOneBy(
             [
-                'visitorId' => $visitor->getId()
+                'channel' => $channel,
+                'channelId' => $channelId,
             ]
         );
-
-        if (!$visitorSession){
-            $visitorSession = $this->createChatService($visitor);
-        }
-
-        return $visitorSession;
     }
 
-    public function rewriteChatEvent(VisitorSession $visitorSession, int $visitorEventId): void
+    public function createVisitorSession(Visitor $visitor, string $visitorName, int $chatId, string $chanel): VisitorSession
     {
-        $visitorSession->setChatEvent($visitorEventId);
-
-        $this->visitorSessionRepository->save($visitorSession);
-    }
-
-    private function createChatService(Visitor $visitor): VisitorSession
-    {
-        $chatSession = (new VisitorSession())
+        $visitorSession = (new VisitorSession())
+            ->setName($visitorName)
+            ->setChannel($chanel)
+            ->setChannelId($chatId)
             ->setVisitorId($visitor->getId())
             ->setCreatedAt(new DateTimeImmutable())
         ;
 
-        $this->visitorSessionRepository->save($chatSession);
+        $this->visitorSessionRepository->save($visitorSession);
 
-        return $chatSession;
+        return $visitorSession;
+    }
+
+    public function rewriteVisitorEvent(VisitorSession $visitorSession, int $visitorEventId): void
+    {
+        $visitorSession->setVisitorEvent($visitorEventId);
+
+        $this->visitorSessionRepository->save($visitorSession);
     }
 }

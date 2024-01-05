@@ -25,7 +25,7 @@ class VisitorSessionRepository extends ServiceEntityRepository
     {
         return $this->findOneBy(
             [
-                'chatEvent' => $eventId
+                'visitorEvent' => $eventId
             ]
         );
     }

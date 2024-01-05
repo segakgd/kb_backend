@@ -25,7 +25,7 @@ class InitBotSubscriber implements EventSubscriberInterface
     {
         $dot = $event->getBot();
 
-        $uri = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'] . '/webhook/' . $dot->getProjectId() . '/' . $dot->getType() . '/';
+        $uri = 'https://mydevbot.ru' . '/webhook/' . $dot->getProjectId() . '/' . $dot->getType() . '/';
 
         $webhookDto = (new WebhookDto())
             ->setUrl($uri)

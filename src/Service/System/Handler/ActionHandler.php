@@ -18,13 +18,13 @@ class ActionHandler
     /**
      * @throws Exception
      */
-    public function handle(VisitorEvent $chatEvent): bool
+    public function handle(VisitorEvent $visitorEvent): bool
     {
         // todo не увеорен что это хорошее решение...
 
-        return match ($chatEvent->getType()) {
-            'command' => $this->commandHandler->handle($chatEvent),
-            'message' => $this->messageHandler->handle($chatEvent),
+        return match ($visitorEvent->getType()) {
+            'command' => $this->commandHandler->handle($visitorEvent),
+            'message' => $this->messageHandler->handle($visitorEvent),
             default => false
         };
     }

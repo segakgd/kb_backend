@@ -28,15 +28,20 @@ class VisitorEventService
     /**
      * @throws Exception
      */
-    public function createChatEventForSession(VisitorSession $visitorSession, string $type, string $content): void
+    public function createVisitorEventForSession(VisitorSession $visitorSession, string $type, string $content): void
     {
-        $visitorEventId = $visitorSession->getChatEvent();
+        $visitorEventId = $visitorSession->getVisitorEvent();
 
         if ($visitorEventId){
 
             // todo вот какая не очевидная ситуация... почему в этом блоке проверка только на null...
             //  если null, то проскакиваем за пределы if-а и доходим до вызова createVisitorEventByScenario... -_-
-            $visitorEvent = $this->visitorEventRepository->find($visitorEventId);
+            $visitorEvent = $this->visitorEventRepository->findOneBy(
+                [
+                    'id' => $visitorEventId,
+                    'status' => 'new',
+                ]
+            );
 
 //            if (null !== $visitorEvent && $visitorEvent->issetActions()){
 //                if ($visitorEvent->getActionAfter()){ // todo это внутренние события. их нужно обрабатывать паралельно?
@@ -82,7 +87,7 @@ class VisitorEventService
         $visitorEvent = $this->createChatEvent($scenario, $type);
         $visitorEventId = $visitorEvent->getId();
 
-        $visitorSession->setChatEvent($visitorEventId);
+        $visitorSession->setVisitorEvent($visitorEventId);
 
         $this->visitorSessionRepository->save($visitorSession);
     }
@@ -109,10 +114,10 @@ class VisitorEventService
             return;
         }
 
-        $oldEventId = $visitorSession->getChatEvent();
+        $oldEventId = $visitorSession->getVisitorEvent();
         $visitorEvent = $this->createChatEvent($scenario, $type);
 
-        $this->visitorSessionService->rewriteChatEvent($visitorSession, $visitorEvent->getId());
+        $this->visitorSessionService->rewriteVisitorEvent($visitorSession, $visitorEvent->getId());
         $this->visitorEventRepository->removeById($oldEventId);
     }
 
