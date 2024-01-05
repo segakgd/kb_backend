@@ -8,8 +8,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ScenarioRepository::class)]
 class Scenario
 {
-    // todo требуется добавить userId
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -29,6 +27,12 @@ class Scenario
 
     #[ORM\Column(nullable: true)]
     private ?array $actionAfter = [];
+
+    #[ORM\Column]
+    private ?int $projectId = null;
+
+    #[ORM\Column(length: 50)]
+    private ?string $groupType = null;
 
     public function getId(): ?int
     {
@@ -91,6 +95,30 @@ class Scenario
     public function setActionAfter(?array $actionAfter): self
     {
         $this->actionAfter = $actionAfter;
+
+        return $this;
+    }
+
+    public function getProjectId(): ?int
+    {
+        return $this->projectId;
+    }
+
+    public function setProjectId(int $projectId): static
+    {
+        $this->projectId = $projectId;
+
+        return $this;
+    }
+
+    public function getGroupType(): ?string
+    {
+        return $this->groupType;
+    }
+
+    public function setGroupType(string $groupType): static
+    {
+        $this->groupType = $groupType;
 
         return $this;
     }

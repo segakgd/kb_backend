@@ -4,6 +4,8 @@ namespace App\Controller\Webhook;
 
 use App\Dto\Webhook\Telegram\TelegramWebhookDto;
 use App\Entity\User\Project;
+use App\Repository\User\ProjectEntityRepository;
+use App\Service\Common\Project\ProjectServiceInterface;
 use App\Service\Visitor\Event\VisitorEventService;
 use App\Service\Visitor\Session\VisitorSessionService;
 use App\Service\Visitor\VisitorServiceInterface;
@@ -21,16 +23,21 @@ class MainWebhookController extends AbstractController
         private readonly VisitorSessionService $visitorSessionService,
         private readonly VisitorEventService $chatEventService,
         private readonly VisitorServiceInterface $visitorService,
+        private readonly ProjectEntityRepository $projectEntityRepository,
     ) {
     }
 
     /**
      * @throws Exception
      */
-    #[Route('/webhook/{project}/{channel}/', name: 'app_webhook_d', methods: ['POST'])]
-    public function addWebhookAction(Request $request, Project $project, string $channel): JsonResponse
+    #[Route('/webhook/{projectId}/{channel}/', name: 'app_webhook_d', methods: ['POST'])]
+    public function addWebhookAction(Request $request, int $projectId, string $channel): JsonResponse
     {
-        // todo учитывать $project - лучше не ожидат сразу сущность, а попробовать ждать int и ручами чекнуть есть ли проект, чтоб ошибка не такая жёсткая была
+        $project = $this->projectEntityRepository->find($projectId);
+
+        if (!$project){
+            return new JsonResponse();
+        }
 
         $webhookData = $this->serializer->deserialize(
             $request->getContent(),
