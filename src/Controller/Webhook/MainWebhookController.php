@@ -60,7 +60,7 @@ class MainWebhookController extends AbstractController
         }
 
         // определяем событие
-        $this->visitorEventService->createChatEventForSession(
+        $this->visitorEventService->createVisitorEventForSession(
             $visitorSession,
             $webhookData->getWebhookType(),
             $webhookData->getWebhookContent()

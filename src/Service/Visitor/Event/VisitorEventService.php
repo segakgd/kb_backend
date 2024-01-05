@@ -28,7 +28,7 @@ class VisitorEventService
     /**
      * @throws Exception
      */
-    public function createChatEventForSession(VisitorSession $visitorSession, string $type, string $content): void
+    public function createVisitorEventForSession(VisitorSession $visitorSession, string $type, string $content): void
     {
         $visitorEventId = $visitorSession->getVisitorEvent();
 
@@ -36,7 +36,12 @@ class VisitorEventService
 
             // todo вот какая не очевидная ситуация... почему в этом блоке проверка только на null...
             //  если null, то проскакиваем за пределы if-а и доходим до вызова createVisitorEventByScenario... -_-
-            $visitorEvent = $this->visitorEventRepository->find($visitorEventId);
+            $visitorEvent = $this->visitorEventRepository->findOneBy(
+                [
+                    'id' => $visitorEventId,
+                    'status' => 'new',
+                ]
+            );
 
 //            if (null !== $visitorEvent && $visitorEvent->issetActions()){
 //                if ($visitorEvent->getActionAfter()){ // todo это внутренние события. их нужно обрабатывать паралельно?
