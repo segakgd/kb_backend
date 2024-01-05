@@ -3,9 +3,7 @@
 namespace App\Controller\Webhook;
 
 use App\Dto\Webhook\Telegram\TelegramWebhookDto;
-use App\Entity\User\Project;
 use App\Repository\User\ProjectEntityRepository;
-use App\Service\Common\Project\ProjectServiceInterface;
 use App\Service\Visitor\Event\VisitorEventService;
 use App\Service\Visitor\Session\VisitorSessionService;
 use App\Service\Visitor\VisitorServiceInterface;
