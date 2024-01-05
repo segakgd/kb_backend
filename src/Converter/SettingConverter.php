@@ -15,15 +15,15 @@ class SettingConverter
     /**
      * @throws Exception
      */
-    public function convert(array $settings, int $ownerId = null): array
+    public function convert(array $settings, int $projectId, int $ownerId = null): array
     {
         $result = [];
 
         foreach ($settings as $key => $settingItem) {
-            $scenario = $this->scenarioService->createScenario($settingItem, $key, $ownerId);
+            $scenario = $this->scenarioService->createScenario($settingItem, $key, $projectId, 'group' . $projectId, $ownerId);
 
             if (isset($settingItem['sub'])){
-                $resultSud = $this->convert($settingItem['sub'], $scenario->getId());
+                $resultSud = $this->convert($settingItem['sub'], $projectId, $scenario->getId());
 
                 $result = array_merge($result, $resultSud);
             }

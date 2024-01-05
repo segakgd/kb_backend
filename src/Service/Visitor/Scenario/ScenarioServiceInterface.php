@@ -6,5 +6,11 @@ use App\Entity\Scenario\Scenario;
 
 interface ScenarioServiceInterface
 {
-    public function createScenario(array $settingItem, string $name, ?int $ownerId = null): Scenario;
+    public function createScenario(
+        array $settingItem,
+        string $name,
+        int $projectId,
+        string $groupType,
+        ?int $ownerId = null,
+    ): Scenario;
 }

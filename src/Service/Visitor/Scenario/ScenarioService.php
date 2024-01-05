@@ -16,7 +16,13 @@ class ScenarioService implements ScenarioServiceInterface
     /**
      * @throws Exception
      */
-    public function createScenario(array $settingItem, string $name, ?int $ownerId = null): Scenario // todo не самое лучшее рещение использовать массив для $settingItem, но пока оставил так. (надо будет переделать)
+    public function createScenario(
+        array $settingItem,
+        string $name,
+        int $projectId,
+        string $groupType,
+        ?int $ownerId = null,
+    ): Scenario // todo не самое лучшее рещение использовать массив для $settingItem, но пока оставил так. (надо будет переделать)
     {
         if (!isset($settingItem['type'])){
             throw new Exception('Не передан type');
@@ -31,6 +37,8 @@ class ScenarioService implements ScenarioServiceInterface
             ->setName($name)
             ->setContent($settingItem['content'])
             ->setActionAfter($settingItem['actionAfter'] ?? null)
+            ->setGroupType($groupType)
+            ->setProjectId($projectId)
         ;
 
         if ($ownerId){

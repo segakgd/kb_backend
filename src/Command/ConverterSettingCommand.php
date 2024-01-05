@@ -171,7 +171,7 @@ class ConverterSettingCommand extends Command
     ];
 
     public function __construct(
-        private SettingConverter $settingConverter,
+        private readonly SettingConverter $settingConverter,
         string $name = null
     ) {
         parent::__construct($name);
@@ -182,7 +182,7 @@ class ConverterSettingCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         try {
-            $this->settingConverter->convert(self::USER_SETTING);
+            $this->settingConverter->convert(self::USER_SETTING, 4842);
 
         } catch (Throwable $throwable){
             $io->error($throwable->getMessage());
