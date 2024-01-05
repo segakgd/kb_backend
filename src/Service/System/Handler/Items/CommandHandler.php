@@ -6,7 +6,6 @@ use App\Dto\Core\Telegram\Invoice\InvoiceDto;
 use App\Dto\Core\Telegram\Message\MessageDto;
 use App\Entity\Visitor\VisitorEvent;
 use App\Repository\Scenario\ScenarioRepository;
-use App\Repository\Visitor\VisitorRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Integration\Telegram\TelegramService;
 
@@ -16,7 +15,6 @@ class CommandHandler
         private readonly TelegramService $telegramService,
         private readonly ScenarioRepository $behaviorScenarioRepository,
         private readonly VisitorSessionRepository $visitorSessionRepository,
-        private readonly VisitorRepository $visitorRepository,
     ) {
     }
 
@@ -28,11 +26,10 @@ class CommandHandler
         $behaviorScenarioContent = $behaviorScenario->getContent();
 
         $visitorSession = $this->visitorSessionRepository->findByEventId($visitorEvent->getId());
-        $visitor = $this->visitorRepository->find($visitorSession->getVisitorId());
 
         if ($behaviorScenarioContent['product']){
             $invoiceDto = (new InvoiceDto())
-                ->setChatId($visitor->getChannelVisitorId())
+                ->setChatId($visitorSession->getChannelId())
                 ->setTitle($behaviorScenarioContent['product']['name'] ?? 'asdasd sa')
                 ->setDescription('его тут пока что нет')
                 ->setPayload("200")
@@ -55,7 +52,7 @@ class CommandHandler
 
         } else {
             $messageDto = (new MessageDto())
-                ->setChatId($visitor->getChannelVisitorId())
+                ->setChatId($visitorSession->getChannelId())
                 ->setText($behaviorScenarioContent['message'])
             ;
 

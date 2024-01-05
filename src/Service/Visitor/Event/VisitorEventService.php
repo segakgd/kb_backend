@@ -30,7 +30,7 @@ class VisitorEventService
      */
     public function createChatEventForSession(VisitorSession $visitorSession, string $type, string $content): void
     {
-        $visitorEventId = $visitorSession->getChatEvent();
+        $visitorEventId = $visitorSession->getVisitorEvent();
 
         if ($visitorEventId){
 
@@ -82,7 +82,7 @@ class VisitorEventService
         $visitorEvent = $this->createChatEvent($scenario, $type);
         $visitorEventId = $visitorEvent->getId();
 
-        $visitorSession->setChatEvent($visitorEventId);
+        $visitorSession->setVisitorEvent($visitorEventId);
 
         $this->visitorSessionRepository->save($visitorSession);
     }
@@ -109,10 +109,10 @@ class VisitorEventService
             return;
         }
 
-        $oldEventId = $visitorSession->getChatEvent();
+        $oldEventId = $visitorSession->getVisitorEvent();
         $visitorEvent = $this->createChatEvent($scenario, $type);
 
-        $this->visitorSessionService->rewriteChatEvent($visitorSession, $visitorEvent->getId());
+        $this->visitorSessionService->rewriteVisitorEvent($visitorSession, $visitorEvent->getId());
         $this->visitorEventRepository->removeById($oldEventId);
     }
 

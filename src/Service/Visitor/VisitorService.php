@@ -13,28 +13,9 @@ class VisitorService implements VisitorServiceInterface
     ) {
     }
 
-    public function identifyUser(int $chatId, string $channel): Visitor
-    {
-        $visitor = $this->visitorRepository->findOneBy(
-            [
-                'channelVisitorId' => $chatId,
-                'channel' => $channel,
-            ]
-        );
-
-        if (!$visitor){
-            $visitor = $this->createVisitor($chatId, $channel);
-        }
-
-        return $visitor;
-    }
-
-    private function createVisitor(int $chatId, string $channel): Visitor
+    public function createVisitor(): Visitor
     {
         $visitor = (new Visitor())
-            ->setName('Default') // todo !
-            ->setChannelVisitorId($chatId)
-            ->setChannel($channel)
             ->setCreatedAt(new DateTimeImmutable())
             ->setUpdatedAt(new DateTimeImmutable())
         ;

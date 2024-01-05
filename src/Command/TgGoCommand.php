@@ -30,20 +30,20 @@ class TgGoCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $chatEvent = $this->visitorEventRepository->findOneBy(
+        $visitorEvent = $this->visitorEventRepository->findOneBy(
             [
                 'status' => VisitorEvent::STATUS_NEW,
             ]
         );
 
-        if (!$chatEvent){
+        if (!$visitorEvent){
             return Command::SUCCESS;
         }
 
         try {
 //            $this->updateChatEventStatus($chatEvent, ChatEvent::STATUS_IN_PROCESS);
 
-            $this->actionHandler->handle($chatEvent);
+            $this->actionHandler->handle($visitorEvent);
 
 //            if ($chatEvent->issetActions()){
 //                $this->updateChatEventStatus($chatEvent, ChatEvent::WAITING_ACTION);
@@ -51,11 +51,11 @@ class TgGoCommand extends Command
 //                $this->updateChatEventStatus($chatEvent, ChatEvent::STATUS_DONE);
 //            }
 
-            $this->updateChatEventStatus($chatEvent, VisitorEvent::STATUS_DONE);
+            $this->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_DONE);
 
         } catch (Throwable $throwable){
 
-            $this->updateChatEventStatus($chatEvent, VisitorEvent::STATUS_FAIL);
+            $this->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_FAIL);
 
             $io->error($throwable->getMessage());
 

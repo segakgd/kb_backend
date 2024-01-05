@@ -15,12 +15,22 @@ class VisitorSession
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $name = null;
+
+    #[ORM\Column(length: 30)]
+    private ?string $channel = null;
+
+    #[ORM\Column]
+    private ?int $channelId = null;
+
     #[ORM\Column(nullable: true)]
     private ?int $visitorId = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $chatEvent = null;
+    private ?int $visitorEvent = null;
 
+    #[ORM\Column]
     private ?DateTimeImmutable $createdAt = null;
 
     public function __construct()
@@ -40,6 +50,42 @@ class VisitorSession
         return $this->visitorId;
     }
 
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): static
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getChannel(): ?string
+    {
+        return $this->channel;
+    }
+
+    public function setChannel(string $channel): static
+    {
+        $this->channel = $channel;
+
+        return $this;
+    }
+
+    public function getChannelId(): ?int
+    {
+        return $this->channelId;
+    }
+
+    public function setChannelId(int $channelId): static
+    {
+        $this->channelId = $channelId;
+
+        return $this;
+    }
+
     public function setVisitorId(int $visitorId): self
     {
         $this->visitorId = $visitorId;
@@ -47,14 +93,14 @@ class VisitorSession
         return $this;
     }
 
-    public function getChatEvent(): ?int
+    public function getVisitorEvent(): ?int
     {
-        return $this->chatEvent;
+        return $this->visitorEvent;
     }
 
-    public function setChatEvent(?int $chatEvent): self
+    public function setVisitorEvent(?int $visitorEvent): self
     {
-        $this->chatEvent = $chatEvent;
+        $this->visitorEvent = $visitorEvent;
 
         return $this;
     }

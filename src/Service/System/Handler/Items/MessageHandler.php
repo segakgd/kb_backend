@@ -5,7 +5,6 @@ namespace App\Service\System\Handler\Items;
 use App\Dto\Core\Telegram\Message\MessageDto;
 use App\Entity\Visitor\VisitorEvent;
 use App\Repository\Scenario\ScenarioRepository;
-use App\Repository\Visitor\VisitorRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Integration\Telegram\TelegramService;
 use Exception;
@@ -16,16 +15,15 @@ class MessageHandler
         private readonly TelegramService $telegramService,
         private readonly ScenarioRepository $behaviorScenarioRepository,
         private readonly VisitorSessionRepository $visitorSessionRepository,
-        private readonly VisitorRepository $visitorRepository,
     ) {
     }
 
     /**
      * @throws Exception
      */
-    public function handle(VisitorEvent $chatEvent): bool
+    public function handle(VisitorEvent $visitorEvent): bool
     {
-        $behaviorScenarioId = $chatEvent->getBehaviorScenario();
+        $behaviorScenarioId = $visitorEvent->getBehaviorScenario();
         $behaviorScenario = $this->behaviorScenarioRepository->find($behaviorScenarioId);
 
         if (!$behaviorScenario){
@@ -33,12 +31,10 @@ class MessageHandler
         }
 
         $behaviorScenarioContent = $behaviorScenario->getContent();
-
-        $visitorSession = $this->visitorSessionRepository->findByEventId($chatEvent->getId());
-        $visitor = $this->visitorRepository->find($visitorSession->getVisitorId());
+        $visitorSession = $this->visitorSessionRepository->findByEventId($visitorEvent->getId());
 
         $messageDto = (new MessageDto())
-            ->setChatId($visitor->getChannelVisitorId())
+            ->setChatId($visitorSession->getChannelId())
             ->setText($behaviorScenarioContent['message'])
         ;
 

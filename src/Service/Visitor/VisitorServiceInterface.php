@@ -2,7 +2,9 @@
 
 namespace App\Service\Visitor;
 
+use App\Entity\Visitor\Visitor;
+
 interface VisitorServiceInterface
 {
-    public function identifyUser(int $chatId, string $channel);
+    public function createVisitor(): Visitor;
 }
