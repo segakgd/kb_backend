@@ -17,7 +17,8 @@ use Throwable;
 class ConverterSettingCommand extends Command
 {
     private const USER_SETTING = [
-        '/command1' => [
+        [
+            'name' => '/command1',
             'type' => 'command',
             'content' => [
                 'message' => 'Что делаешь?',
@@ -32,141 +33,36 @@ class ConverterSettingCommand extends Command
                     ]
                 ]
             ],
+            'actionAfter' => [
+                [
+                    'type' => 'message',
+                    'value' => [
+                        'text' => 'Дополнительное сообщение'
+                    ],
+                ],
+                [
+                    'type' => 'message',
+                    'value' => [
+                        'text' => 'Дополнительное сообщение'
+                    ],
+                ],
+            ],
             'sub' => [
-                'Хорошо' => [
+                [
+                    'name' => 'Хорошо',
                     'type' => 'message',
                     'content' => [
                         'message' => 'Хорошо что всё хорошо',
                     ],
                 ],
-                'Плохо' => [
+                [
+                    'name' => 'Плохо',
                     'type' => 'message',
                     'content' => [
                         'message' => 'Плохо что всё плохо',
                     ],
                 ],
             ]
-        ],
-        '/command2' => [
-            'type' => 'command',
-            'content' => [
-                'message' => 'Как дела?',
-                'replyMarkup' => [
-                    [
-                        [
-                            'text' => 'Хорошо'
-                        ],
-                        [
-                            'text' => 'Плохо'
-                        ],
-                    ]
-                ]
-            ],
-            'sub' => [
-                'Ничего' => [
-                    'type' => 'message',
-                    'content' => [
-                        'message' => 'Ничего так ничего',
-                    ],
-                ],
-                'Что-то' => [
-                    'type' => 'message',
-                    'content' => [
-                        'message' => 'Что-то это что?',
-                    ],
-                ],
-            ]
-        ],
-    ];
-
-    private const USER_SETTING_2 = [
-        '/command1' => [
-            'type' => 'command',
-            'content' => [
-                'message' => 'Как вас зовут? (ФИО)',
-            ],
-            'actionAfter' => [
-                'contact' => [
-                    'name' => [
-                        'save'
-                    ]
-                ]
-            ],
-            'sub' => [
-                '#' => [
-                    'type' => 'message',
-                    'content' => [
-                        'message' => 'Гони номер телефона',
-                    ],
-                    'actionAfter' => [
-                        'contact' => [
-                            'phone' => [
-                                'save'
-                            ]
-                        ]
-                    ],
-                    'sub' => [
-                        '#' => [
-                            'type' => 'message',
-                            'content' => [
-                                'message' => 'Спасибо, мы с вами свяжемся',
-                            ],
-                        ],
-                    ]
-                ],
-            ]
-        ],
-    ];
-
-    private const USER_SETTING_3 = [
-        '/command1' => [
-            'type' => 'command',
-            'content' => [
-                'product' => [
-                    'name' => 'Продукт 1',
-                    'imageUri' => 'https://spb.zoon.ru/shops/magazin_belorusskih_produktov_na_grazhdanskom_prospekte_80_k_1/'
-                ],
-                'replyMarkup' => [
-                    [
-                        [
-                            'text' => 'Добавить в корзину'
-                        ],
-                        [
-                            'text' => 'Посмотреть корзину'
-                        ],
-                    ]
-                ]
-            ],
-            'sub' => [
-                'Добавить в корзину' => [
-                    'type' => 'message',
-                    'content' => [
-                        'message' => 'Товар добавлен в корзину',
-                    ],
-                    'replyMarkup' => [
-                        [
-                            [
-                                'text' => 'Посмотреть корзину'
-                            ],
-                            [
-                                'text' => 'Перейти к оплате'
-                            ],
-                        ]
-                    ],
-                ],
-            ]
-        ],
-        'Посмотреть корзину' => [
-            'type' => 'product',
-            'content' => [
-                'message' => 'У вас в корзине товаров: ',
-            ],
-        ],
-        'Перейти к оплате' => [
-            'type' => 'product',
-            'content' => [
-                'message' => 'Оплата...',
-            ],
         ],
     ];
 

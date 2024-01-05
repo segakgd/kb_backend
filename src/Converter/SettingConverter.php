@@ -19,8 +19,8 @@ class SettingConverter
     {
         $result = [];
 
-        foreach ($settings as $key => $settingItem) {
-            $scenario = $this->scenarioService->createScenario($settingItem, $key, $projectId, 'group' . $projectId, $ownerId);
+        foreach ($settings as $settingItem) {
+            $scenario = $this->scenarioService->createScenario($settingItem, $settingItem['name'], $projectId, 'group' . $projectId, $ownerId); // todo название группы не очень
 
             if (isset($settingItem['sub'])){
                 $resultSud = $this->convert($settingItem['sub'], $projectId, $scenario->getId());
