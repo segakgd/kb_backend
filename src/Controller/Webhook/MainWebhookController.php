@@ -45,7 +45,6 @@ class MainWebhookController extends AbstractController
 
         $chatId = $webhookData->getWebhookChatId();
         $visitorName = $webhookData->getVisitorName();
-        // т.е в первую очередь рысщем в сессиях...
 
         $visitorSession = $this->visitorSessionService->identifyByChannel($chatId, $channel);
 
@@ -59,10 +58,6 @@ class MainWebhookController extends AbstractController
                 'telegram'
             );
         }
-
-//        dd($webhookData->getWebhookType());
-
-//        dd($visitorSession);
 
         // определяем событие
         $this->visitorEventService->createChatEventForSession(
