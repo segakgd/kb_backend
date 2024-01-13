@@ -4,7 +4,7 @@ namespace App\EventSubscriber;
 
 use App\Dto\Core\Telegram\Webhook\WebhookDto;
 use App\Event\InitBotEvent;
-use App\Exception\History\BaseExceptionInterface;
+use App\Exception\History\HistoryExceptionInterface;
 use App\Service\Admin\History\HistoryServiceInterface;
 use App\Service\Integration\Telegram\TelegramServiceInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -29,11 +29,19 @@ class HistorySubscriber implements EventSubscriberInterface
     {
         $exception = $event->getThrowable();
 
-        if (!$exception instanceof BaseExceptionInterface)
+        if (!$exception instanceof HistoryExceptionInterface)
         {
             return;
         }
 
-        $this->historyService->add($exception->getProject());
+        $this->historyService->add(
+            $exception->getProjectId(),
+            $exception->getType(),
+            $exception->getStatus(),
+            $exception->getSender(),
+            $exception->getRecipient(),
+            $exception->getError(),
+            $exception->getCreatedAt()
+        );
     }
 }
