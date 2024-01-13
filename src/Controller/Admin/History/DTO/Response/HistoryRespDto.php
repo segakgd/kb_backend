@@ -32,7 +32,7 @@ class HistoryRespDto
 
     private string $recipient; // кому отправили (получатель)
 
-    private HistoryErrorRespDto $error;
+    private ?HistoryErrorRespDto $error;
 
     public function getCreatedAt(): DateTimeImmutable
     {
@@ -94,12 +94,12 @@ class HistoryRespDto
         return $this;
     }
 
-    public function getError(): HistoryErrorRespDto
+    public function getError(): ?HistoryErrorRespDto
     {
         return $this->error;
     }
 
-    public function setError(HistoryErrorRespDto $error): self
+    public function setError(?HistoryErrorRespDto $error): self
     {
         $this->error = $error;
 
