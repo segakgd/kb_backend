@@ -1,0 +1,296 @@
+{% extends "base.html.twig" %}
+
+{% block main %}
+    <div>
+        <div>
+            <h1>Kraiber - панель</h1>
+        </div>
+    </div>
+
+    <div class="kb__container">
+        <div class="kb__wrapper">
+            <div>
+                <h2>Боты</h2>
+            </div>
+
+            <div class="bot__wrapper">
+                {% if bots is empty %}
+                    <div class="kb__block-without-data">
+                        Данных нет
+                    </div>
+                {% endif %}
+
+                {% for bot in bots %}
+                    <div class="bot__item">
+                        <div class="bot__item_name">Название бота: {{ bot.botName }}</div>
+
+                        <div class="bot__item_block">
+                            <div class="bot__item-text">
+                                <div class="bot__item-text_item">
+                                    <span>Проект:</span> {{ bot.projectName }}
+                                </div>
+                                <div class="bot__item-text_item">
+                                    <span>Состояние:</span>
+                                    {% if bot.botActive is not empty %}
+                                        <span class="bot__item-text_item--state-green">Активен</span>
+                                    {% else %}
+                                        <span class="bot__item-text_item--state-red">Не активен</span>
+                                    {% endif %}
+                                </div>
+                                <div class="bot__item-text_item">
+                                    <span>Тип:</span> {{ bot.botType }}
+                                </div>
+                                <div class="bot__item-text_item">
+                                    <span>Токен:</span> {{ bot.botToken }}
+                                </div>
+                            </div>
+                            <div class="bot__item-buttons">
+                                {% if bot.botActive is not empty %}
+                                    <div class="bot__item-button bot__item-button--red">
+                                        <a href="#">Отключить бота</a>
+                                    </div>
+                                {% else %}
+                                    <div class="bot__item-button bot__item-button--green">
+                                        <a href="#">Включить бота</a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="kb__wrapper">
+            <div>
+                <h2>Сценарии</h2>
+            </div>
+
+            <div class="scenario__wrapper">
+                {% if scenario is empty %}
+                    <div class="kb__block-without-data">
+                        Данных нет
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+    <div class="kb__container">
+        <div class="kb__wrapper">
+            <div>
+                <h2>Команды</h2>
+            </div>
+
+            <div class="command__wrapper">
+{#                {% if commands is empty %}#}
+{#                    <div class="kb__block-without-data">#}
+{#                        Данных нет#}
+{#                    </div>#}
+{#                {% endif %}#}
+
+                {% for command in commands %}
+                    <div class="kb-min-block__item">
+                        <div class="kb-min-block__item_name">Название команды: {{ command.commandName }}</div>
+
+                        <div class="kb-min-block__item_block">
+                            <div class="kb-min-block__item-text">
+                                <div class="kb-min-block__item-text_item">
+                                    <span>Описание:</span> {{ command.commandDescription }}
+                                </div>
+                            </div>
+                            <div class="kb-min-block__item-buttons">
+                                <div class="kb-min-block__item-button kb-min-block__item-button--green">
+                                    <a href="{{ command.commandCode }}">Запустить команду</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="kb__wrapper">
+            <div>
+                <h2>Сессии</h2>
+            </div>
+
+            <div class="sessions__wrapper">
+                {% if sessions is empty %}
+                    <div class="kb__block-without-data">
+                        Данных нет
+                    </div>
+                {% endif %}
+
+                <div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="kb__wrapper">
+            <div>
+                <h2>События</h2>
+            </div>
+
+            <div class="event__wrapper">
+                {% if events is empty %}
+                    <div class="kb__block-without-data">
+                        Данных нет
+                    </div>
+                {% endif %}
+
+                <div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="kb__container">
+        <div class="kb__wrapper">
+            <div>
+                <h2>Истории</h2>
+            </div>
+            <div class="history__wrapper" id="history__wrapper">
+                {% if histories is empty %}
+                    <div class="kb__block-without-data">
+                        Данных нет
+                    </div>
+                {% endif %}
+
+                {% for historyItem in histories %}
+                    <div class="history__item
+                        {% if historyItem.status == 'error' %}
+                            history__item-error
+                        {% endif %}
+                    ">
+                        <div class="history__item-w"><div class="history__line history__date">{{ historyItem.createdAt|date('Y-m-d h:i:s') }}</div></div>
+                        <div class="history__item-w">
+                            <div class="history__item-name">Статус</div>
+                            <div class="history__line history__status
+                            {% if historyItem.status == 'error' %}
+                                history__status_fail
+                            {% elseif historyItem.status == 'success' %}
+                                history__status_success
+                            {% endif %}
+                            ">
+                                {% if historyItem.status == 'error' %}
+                                    Провалено
+                                {% elseif historyItem.status == 'success' %}
+                                    Успешно
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="history__item-w">
+                            <div class="history__item-name">Тип:</div>
+                            <div class="history__line history__type">{{ historyItem.type }}</div>
+                        </div>
+
+                        {% if historyItem.sender is defined %}
+                            <div class="history__item-w"><div class="history__item-name">Откуда:</div>
+                                <div class="history__line history__sender">
+                                    {{ historyItem.sender }}
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        {% if historyItem.recipient is defined %}
+                            <div class="history__item-w"><div class="history__item-name">Куда:</div>
+                                <div class="history__line history__sender">
+                                    {{ historyItem.recipient }}
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        {% if historyItem.errorMessage  is defined %}
+                            <div class="history__item-w"><div class="history__item-name">Контекст ошибки:</div>
+                                <div class="history__line history__text_error">
+                                    {{ historyItem.errorMessage }}
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {#    <div class="kb__wrapper">#}
+    {#        <div>#}
+    {#            <h2>Истории</h2>#}
+    {#        </div>#}
+    {#        <div class="history__wrapper">#}
+    {#            <div class="history__item history__item-error">#}
+    {#                <div class="history__item-w"><div class="history__line history__date">22-03-1995 14:22</div></div>#}
+    {#                <div class="history__item-w"><div class="history__item-name">Статус</div><div class="history__line history__status history__status_fail">Провалено</div></div>#}
+    {#                <div class="history__item-w"><div class="history__item-name">Тип:</div><div class="history__line history__type">отправка уведомлений в telegram</div></div>#}
+    {#                <div class="history__item-w"><div class="history__item-name">Получатель:</div><div class="history__line history__recipient-user">telegram@malamalatesttesttest</div></div>#}
+    {#                <div class="history__item-w"><div class="history__item-name">Контекст ошибки:</div><div class="history__line history__text_error">не подключён аккаунт получателя в настройках, или не верный токен подключения. Проверьте подключение: <a href="#">проверить подключение в настройках</a></div></div>#}
+    {#            </div>#}
+
+    {#            <div class="history__item">#}
+    {#                <div class="history__item-w"><div class="history__line history__date">22-03-1995 14:22</div></div>#}
+    {#                <div class="history__item-w"><div class="history__item-name">Статус</div><div class="history__line history__status history__status_success">Успешно</div></div>#}
+    {#                <div class="history__item-w"><div class="history__item-name">Тип:</div><div class="history__line history__type">вход в систему</div></div>#}
+    {#            </div>#}
+
+    {#            <div class="history__item history__item-error">#}
+    {#                <div class="history__item-w"><div class="history__line history__date">22-03-1995 14:22</div></div>#}
+    {#                <div class="history__item-w"><div class="history__item-name">Статус</div><div class="history__line history__status history__status_fail">Провалено</div></div>#}
+    {#                <div class="history__item-w"><div class="history__item-name">Тип:</div><div class="history__line history__type">отправка данных в сторонний сервис (интеграции)</div></div>#}
+    {#                <div class="history__item-w"><div class="history__line history__text_message">#заявки 234243</div></div>#}
+    {#                <div class="history__item-w"><div class="history__item-name">Куда:</div><div class="history__line history__recipient-service">bitrix</div></div>#}
+    {#                <div class="history__item-w"><div class="history__item-name">Контекст ошибки:</div><div class="history__line history__text_error">мы попробуем отправить заявку позже. Примерное время повторной отправки заявки 22:50</div> 22-03-1995</div>#}
+    {#            </div>#}
+
+    {#            <div class="history__item">#}
+    {#                <div class="history__item-w"><div class="history__line history__date">22-03-1995 14:22</div></div>#}
+    {#                <div class="history__item-w"><div class="history__item-name">Статус</div><div class="history__line history__status history__status_success">Успешно</div></div>#}
+    {#                <div class="history__item-w"><div class="history__item-name">Тип:</div><div class="history__line history__type">отправка данных в сторонний сервис (интеграции)</div></div>#}
+    {#                <div class="history__item-w"><div class="history__line history__text_message">#заявки 234243</div></div>#}
+    {#                <div class="history__item-w"><div class="history__item-name">Куда:</div><div class="history__line history__recipient-service">bitrix</div></div>#}
+    {#            </div>#}
+
+    {#            <div class="history__item">#}
+    {#                <div class="history__item-w"><div class="history__line history__date">22-03-1995 14:22</div></div>#}
+    {#                <div class="history__item-w"><div class="history__item-name">Статус</div><div class="history__line history__status history__status_success">Успешно</div></div>#}
+    {#                <div class="history__item-w"><div class="history__item-name">Тип:</div><div class="history__line history__type">новая заявка</div></div>#}
+    {#                <div class="history__item-w"><div class="history__item-name">Откуда:</div><div class="history__line history__sender">telegram</div></div>#}
+    {#                <div class="history__item-w"><div class="history__line history__text_message">#заявки 234243</div></div>#}
+    {#            </div>#}
+
+    {#            <div class="history__item">#}
+    {#                <div class="history__item-w"><div class="history__line history__date">22-03-1995 14:22</div></div>#}
+    {#                <div class="history__item-w"><div class="history__item-name">Статус</div><div class="history__line history__status history__status_success">Успешно</div></div>#}
+    {#                <div class="history__item-w"><div class="history__item-name">Тип:</div><div class="history__line history__type">вход в систему</div></div>#}
+    {#            </div>#}
+
+    {#            <div class="history__item">#}
+    {#                <div class="history__item-w"><div class="history__line history__date">22-03-1995 14:22</div></div>#}
+    {#                <div class="history__item-w"><div class="history__item-name">Статус</div><div class="history__line history__status history__status_success">Успешно</div></div>#}
+    {#                <div class="history__item-w"><div class="history__item-name">Тип:</div><div class="history__line history__type">вход в систему</div></div>#}
+    {#            </div>#}
+
+    {#            <div class="history__item">#}
+    {#                <div class="history__item-w"><div class="history__line history__date">22-03-1995 14:22</div></div>#}
+    {#                <div class="history__item-w"><div class="history__item-name">Статус</div><div class="history__line history__status history__status_success">Успешно</div></div>#}
+    {#                <div class="history__item-w"><div class="history__item-name">Тип:</div><div class="history__line history__type">новая заявка</div></div>#}
+    {#                <div class="history__item-w"><div class="history__item-name">Откуда:</div><div class="history__line history__sender">telegram</div></div>#}
+    {#                <div class="history__item-w"><div class="history__line history__text_message">#заявки 234243</div></div>#}
+    {#            </div>#}
+
+    {#            <div class="history__item history__item-error">#}
+    {#                <div class="history__item-w"><div class="history__line history__date">22-03-1995 14:22</div></div>#}
+    {#                <div class="history__item-w"><div class="history__item-name">Статус</div><div class="history__line history__status history__status_fail">Провалено</div></div>#}
+    {#                <div class="history__item-w"><div class="history__item-name">Тип:</div><div class="history__line history__type">вход в систему</div></div>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </div>#}
+
+    <script>
+        const objDiv = document.getElementById("history__wrapper");
+        objDiv.scrollTop = objDiv.scrollHeight;
+    </script>
+{% endblock %}

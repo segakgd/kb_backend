@@ -18,6 +18,11 @@ class ProjectService implements ProjectServiceInterface
     ) {
     }
 
+    public function findOneById(int $projectId): Project
+    {
+        return $this->projectEntityRepository->find($projectId);
+    }
+
     public function getAll(User $user): array
     {
         return $this->projectEntityRepository->findByUser($user);
