@@ -47,11 +47,11 @@
                             <div class="bot__item-buttons">
                                 {% if bot.botActive is not empty %}
                                     <div class="bot__item-button bot__item-button--red">
-                                        <a href="#">Отключить бота</a>
+                                        <a href="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/deactivate/">Отключить бота</a>
                                     </div>
                                 {% else %}
                                     <div class="bot__item-button bot__item-button--green">
-                                        <a href="#">Включить бота</a>
+                                        <a href="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/activate/">Включить бота</a>
                                     </div>
                                 {% endif %}
                             </div>
@@ -75,7 +75,6 @@
             </div>
         </div>
     </div>
-
 
     <div class="kb__container">
         <div class="kb__wrapper">
@@ -161,7 +160,7 @@
 
                 {% for event in events %}
                     <div class="kb-min-block__item">
-                        <div class="kb-min-block__item_name">Событие #: {{ event.id }}</div>
+                        <div class="kb-min-block__item_name">Событие #{{ event.id }}</div>
 
                         <div class="kb-min-block__item_block">
                             <div class="kb-min-block__item-text">

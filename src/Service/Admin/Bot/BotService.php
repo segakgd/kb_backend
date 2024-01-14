@@ -116,6 +116,22 @@ class BotService implements BotServiceInterface
         return $bot;
     }
 
+    public function updateStatus(int $botId, int $projectId, bool $status): Bot
+    {
+        $bot = $this->botRepository->findOneBy(
+            [
+                'id' => $botId,
+                'projectId' => $projectId,
+            ]
+        );
+
+        $bot->setActive($status);
+
+        $this->botRepository->saveAndFlush($bot);
+
+        return $bot;
+    }
+
     /**
      * @throws Exception
      */

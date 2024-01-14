@@ -16,5 +16,7 @@ interface BotServiceInterface
 
     public function update(UpdateBotReqDto $botSettingDto, int $botId, int $projectId): Bot;
 
+    public function updateStatus(int $botId, int $projectId, bool $status): Bot;
+
     public function remove(int $botId, int $projectId): void;
 }

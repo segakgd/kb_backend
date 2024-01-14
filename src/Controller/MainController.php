@@ -36,15 +36,17 @@ class MainController extends AbstractController
     public function main(): Response
     {
         $project = $this->projectService->findOneById(4842);
+        $projectId = $project->getId();
 
-        $histories = $this->historyService->findAll(4842);
-        $bots = $this->botService->findAll(4842);
-        $sessions = $this->visitorSessionService->findAll(4842);
-        $events = $this->visitorEventService->findAllByProjectId(4842);
+        $histories = $this->historyService->findAll($projectId);
+        $bots = $this->botService->findAll($projectId);
+        $sessions = $this->visitorSessionService->findAll($projectId);
+        $events = $this->visitorEventService->findAllByProjectId($projectId);
 
         return $this->render(
             'main/index.html.twig',
             [
+                'projectId' => $projectId,
                 'histories' => $this->prepareHistory($histories),
                 'bots' => $this->prepareBots($bots, $project),
                 'scenario' => [],
@@ -125,6 +127,7 @@ class MainController extends AbstractController
         foreach ($bots as $bot){
             $prepareBot = [
                 'projectName' => $projectName,
+                'botId' => $bot->getId(),
                 'botName' => $bot->getName(),
                 'botType' => $bot->getType(),
                 'botToken' => $bot->getToken(),
