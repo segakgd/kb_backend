@@ -84,11 +84,11 @@
             </div>
 
             <div class="command__wrapper">
-{#                {% if commands is empty %}#}
-{#                    <div class="kb__block-without-data">#}
-{#                        Данных нет#}
-{#                    </div>#}
-{#                {% endif %}#}
+                {% if commands is empty %}
+                    <div class="kb__block-without-data">
+                        Данных нет
+                    </div>
+                {% endif %}
 
                 {% for command in commands %}
                     <div class="kb-min-block__item">
@@ -123,9 +123,27 @@
                     </div>
                 {% endif %}
 
-                <div>
+                {% for session in sessions %}
+                    <div class="kb-min-block__item">
+                        <div class="kb-min-block__item_name">Название сессии: {{ session.sessionName }}</div>
 
-                </div>
+                        <div class="kb-min-block__item_block">
+                            <div class="kb-min-block__item-text">
+                                <div class="kb-min-block__item-text_item">
+                                    <span>Канал:</span> {{ session.sessionChannel }}
+                                </div>
+                                {% if session.sessionVisitorEvent is defined %}
+                                    <div class="kb-min-block__item-text_item">
+                                        <span>Тип события:</span> {{ session.sessionVisitorEvent.type }}
+                                    </div>
+                                    <div class="kb-min-block__item-text_item">
+                                        <span>Статус события:</span> {{ session.sessionVisitorEvent.status }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
         </div>
 
@@ -141,9 +159,22 @@
                     </div>
                 {% endif %}
 
-                <div>
+                {% for event in events %}
+                    <div class="kb-min-block__item">
+                        <div class="kb-min-block__item_name">Событие #: {{ event.id }}</div>
 
-                </div>
+                        <div class="kb-min-block__item_block">
+                            <div class="kb-min-block__item-text">
+                                <div class="kb-min-block__item-text_item">
+                                    <span>Тип события:</span> {{ event.type }}
+                                </div>
+                                <div class="kb-min-block__item-text_item">
+                                    <span>Статус события:</span> {{ event.status }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
         </div>
     </div>

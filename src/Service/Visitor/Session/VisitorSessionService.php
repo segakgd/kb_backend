@@ -14,6 +14,14 @@ class VisitorSessionService implements VisitorSessionServiceInterface
     ) {
     }
 
+    public function findAll(int $projectId): array
+    {
+        return $this->visitorSessionRepository->findBy(
+            [
+                'projectId' => $projectId
+            ]
+        );
+    }
 
     public function identifyByChannel(int $channelId, string $channel): ?VisitorSession
     {

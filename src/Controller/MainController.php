@@ -5,10 +5,14 @@ namespace App\Controller;
 use App\Entity\History\History;
 use App\Entity\User\Bot;
 use App\Entity\User\Project;
+use App\Entity\Visitor\VisitorEvent;
+use App\Entity\Visitor\VisitorSession;
 use App\Service\Admin\Bot\BotServiceInterface;
 use App\Service\Admin\History\HistoryService;
 use App\Service\Admin\History\HistoryServiceInterface;
 use App\Service\Common\Project\ProjectServiceInterface;
+use App\Service\Visitor\Event\VisitorEventService;
+use App\Service\Visitor\Session\VisitorSessionServiceInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,6 +24,8 @@ class MainController extends AbstractController
         private readonly HistoryServiceInterface $historyService,
         private readonly BotServiceInterface $botService,
         private readonly ProjectServiceInterface $projectService,
+        private readonly VisitorSessionServiceInterface $visitorSessionService,
+        private readonly VisitorEventService $visitorEventService,
     ) {
     }
 
@@ -33,6 +39,8 @@ class MainController extends AbstractController
 
         $histories = $this->historyService->findAll(4842);
         $bots = $this->botService->findAll(4842);
+        $sessions = $this->visitorSessionService->findAll(4842);
+        $events = $this->visitorEventService->findAllByProjectId(4842);
 
         return $this->render(
             'main/index.html.twig',
@@ -41,10 +49,59 @@ class MainController extends AbstractController
                 'bots' => $this->prepareBots($bots, $project),
                 'scenario' => [],
                 'commands' => $this->getCommands(),
-                'sessions' => [],
-                'events' => [],
+                'sessions' => $this->prepareSessions($sessions),
+                'events' => $this->prepareEvents($events),
             ]
         );
+    }
+
+    private function prepareEvents(array $events): array
+    {
+        $prepareEvents = [];
+
+        /** @var VisitorEvent $event */
+        foreach ($events as $event){
+            $prepareEvent = [
+                'id' => $event->getId(),
+                'type' => $event->getType(),
+                'status' => $event->getStatus(),
+                'createdAt' => $event->getCreatedAt(),
+            ];
+
+            $prepareEvents[] = $prepareEvent;
+        }
+
+        return $prepareEvents;
+    }
+
+    private function prepareSessions(array $sessions): array
+    {
+        $prepareSessions = [];
+
+        /** @var VisitorSession $session */
+        foreach ($sessions as $session){
+            $visitorEvent = null;
+
+            if ($session->getVisitorEvent()){
+                $visitorEvent = $this->visitorEventService->findOneById($session->getVisitorEvent());
+            }
+
+            $prepareSession = [
+                'sessionName' => $session->getName(),
+                'sessionChannel' => $session->getChannel(),
+            ];
+
+            if ($visitorEvent){
+                $prepareSession['sessionVisitorEvent'] = [
+                    'type' => $visitorEvent->getType(),
+                    'status' => $visitorEvent->getStatus(),
+                ];
+            }
+
+            $prepareSessions[] = $prepareSession;
+        }
+
+        return $prepareSessions;
     }
 
     private function getCommands(): array

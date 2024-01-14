@@ -238,12 +238,14 @@ h1, h2 {
 
 .sessions__wrapper{
     height: 400px;
+    overflow: auto;
 }
 
 
 
 .event__wrapper{
     height: 400px;
+    overflow: auto;
 }
 
 

@@ -33,6 +33,9 @@ class VisitorSession
     #[ORM\Column]
     private ?DateTimeImmutable $createdAt = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $projectId = null;
+
     public function __construct()
     {
         if ($this->createdAt === null){
@@ -113,6 +116,18 @@ class VisitorSession
     public function setCreatedAt(DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getProjectId(): ?int
+    {
+        return $this->projectId;
+    }
+
+    public function setProjectId(?int $projectId): static
+    {
+        $this->projectId = $projectId;
 
         return $this;
     }
