@@ -28,6 +28,9 @@ class Bot
     #[ORM\Column(nullable: true)]
     private ?bool $active = null;
 
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $webhookUri = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -89,6 +92,18 @@ class Bot
     public function setActive(bool $active): static
     {
         $this->active = $active;
+
+        return $this;
+    }
+
+    public function getWebhookUri(): ?string
+    {
+        return $this->webhookUri;
+    }
+
+    public function setWebhookUri(string $webhookUri): static
+    {
+        $this->webhookUri = $webhookUri;
 
         return $this;
     }

@@ -132,6 +132,7 @@ class MainController extends AbstractController
                 'botType' => $bot->getType(),
                 'botToken' => $bot->getToken(),
                 'botActive' => $bot->isActive(),
+                'webhookUri' => $bot->getWebhookUri() ?? '',
             ];
 
             $prepareBots[] = $prepareBot;

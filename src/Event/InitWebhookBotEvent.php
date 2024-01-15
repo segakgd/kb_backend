@@ -4,7 +4,7 @@ namespace App\Event;
 
 use App\Entity\User\Bot;
 
-class InitBotEvent
+class InitWebhookBotEvent
 {
     public function __construct(
         private readonly Bot $bot
