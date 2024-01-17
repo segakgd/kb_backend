@@ -1,11 +1,12 @@
-{% extends "base.html.twig" %}
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+
+{% block content_title %}The Title of the Page{% endblock %}
+{% block page_actions %}
+    <a class="btn btn-primary" href="...">Some Action</a>
+{% endblock %}
 
 {% block main %}
-    <div>
-        <div>
-            <h1>Kraiber - панель</h1>
-        </div>
-    </div>
 
     <div class="kb__container">
         <div class="kb__wrapper">
@@ -261,81 +262,4 @@
             </div>
         </div>
     </div>
-
-    {#    <div class="kb__wrapper">#}
-    {#        <div>#}
-    {#            <h2>Истории</h2>#}
-    {#        </div>#}
-    {#        <div class="history__wrapper">#}
-    {#            <div class="history__item history__item-error">#}
-    {#                <div class="history__item-w"><div class="history__line history__date">22-03-1995 14:22</div></div>#}
-    {#                <div class="history__item-w"><div class="history__item-name">Статус</div><div class="history__line history__status history__status_fail">Провалено</div></div>#}
-    {#                <div class="history__item-w"><div class="history__item-name">Тип:</div><div class="history__line history__type">отправка уведомлений в telegram</div></div>#}
-    {#                <div class="history__item-w"><div class="history__item-name">Получатель:</div><div class="history__line history__recipient-user">telegram@malamalatesttesttest</div></div>#}
-    {#                <div class="history__item-w"><div class="history__item-name">Контекст ошибки:</div><div class="history__line history__text_error">не подключён аккаунт получателя в настройках, или не верный токен подключения. Проверьте подключение: <a href="#">проверить подключение в настройках</a></div></div>#}
-    {#            </div>#}
-
-    {#            <div class="history__item">#}
-    {#                <div class="history__item-w"><div class="history__line history__date">22-03-1995 14:22</div></div>#}
-    {#                <div class="history__item-w"><div class="history__item-name">Статус</div><div class="history__line history__status history__status_success">Успешно</div></div>#}
-    {#                <div class="history__item-w"><div class="history__item-name">Тип:</div><div class="history__line history__type">вход в систему</div></div>#}
-    {#            </div>#}
-
-    {#            <div class="history__item history__item-error">#}
-    {#                <div class="history__item-w"><div class="history__line history__date">22-03-1995 14:22</div></div>#}
-    {#                <div class="history__item-w"><div class="history__item-name">Статус</div><div class="history__line history__status history__status_fail">Провалено</div></div>#}
-    {#                <div class="history__item-w"><div class="history__item-name">Тип:</div><div class="history__line history__type">отправка данных в сторонний сервис (интеграции)</div></div>#}
-    {#                <div class="history__item-w"><div class="history__line history__text_message">#заявки 234243</div></div>#}
-    {#                <div class="history__item-w"><div class="history__item-name">Куда:</div><div class="history__line history__recipient-service">bitrix</div></div>#}
-    {#                <div class="history__item-w"><div class="history__item-name">Контекст ошибки:</div><div class="history__line history__text_error">мы попробуем отправить заявку позже. Примерное время повторной отправки заявки 22:50</div> 22-03-1995</div>#}
-    {#            </div>#}
-
-    {#            <div class="history__item">#}
-    {#                <div class="history__item-w"><div class="history__line history__date">22-03-1995 14:22</div></div>#}
-    {#                <div class="history__item-w"><div class="history__item-name">Статус</div><div class="history__line history__status history__status_success">Успешно</div></div>#}
-    {#                <div class="history__item-w"><div class="history__item-name">Тип:</div><div class="history__line history__type">отправка данных в сторонний сервис (интеграции)</div></div>#}
-    {#                <div class="history__item-w"><div class="history__line history__text_message">#заявки 234243</div></div>#}
-    {#                <div class="history__item-w"><div class="history__item-name">Куда:</div><div class="history__line history__recipient-service">bitrix</div></div>#}
-    {#            </div>#}
-
-    {#            <div class="history__item">#}
-    {#                <div class="history__item-w"><div class="history__line history__date">22-03-1995 14:22</div></div>#}
-    {#                <div class="history__item-w"><div class="history__item-name">Статус</div><div class="history__line history__status history__status_success">Успешно</div></div>#}
-    {#                <div class="history__item-w"><div class="history__item-name">Тип:</div><div class="history__line history__type">новая заявка</div></div>#}
-    {#                <div class="history__item-w"><div class="history__item-name">Откуда:</div><div class="history__line history__sender">telegram</div></div>#}
-    {#                <div class="history__item-w"><div class="history__line history__text_message">#заявки 234243</div></div>#}
-    {#            </div>#}
-
-    {#            <div class="history__item">#}
-    {#                <div class="history__item-w"><div class="history__line history__date">22-03-1995 14:22</div></div>#}
-    {#                <div class="history__item-w"><div class="history__item-name">Статус</div><div class="history__line history__status history__status_success">Успешно</div></div>#}
-    {#                <div class="history__item-w"><div class="history__item-name">Тип:</div><div class="history__line history__type">вход в систему</div></div>#}
-    {#            </div>#}
-
-    {#            <div class="history__item">#}
-    {#                <div class="history__item-w"><div class="history__line history__date">22-03-1995 14:22</div></div>#}
-    {#                <div class="history__item-w"><div class="history__item-name">Статус</div><div class="history__line history__status history__status_success">Успешно</div></div>#}
-    {#                <div class="history__item-w"><div class="history__item-name">Тип:</div><div class="history__line history__type">вход в систему</div></div>#}
-    {#            </div>#}
-
-    {#            <div class="history__item">#}
-    {#                <div class="history__item-w"><div class="history__line history__date">22-03-1995 14:22</div></div>#}
-    {#                <div class="history__item-w"><div class="history__item-name">Статус</div><div class="history__line history__status history__status_success">Успешно</div></div>#}
-    {#                <div class="history__item-w"><div class="history__item-name">Тип:</div><div class="history__line history__type">новая заявка</div></div>#}
-    {#                <div class="history__item-w"><div class="history__item-name">Откуда:</div><div class="history__line history__sender">telegram</div></div>#}
-    {#                <div class="history__item-w"><div class="history__line history__text_message">#заявки 234243</div></div>#}
-    {#            </div>#}
-
-    {#            <div class="history__item history__item-error">#}
-    {#                <div class="history__item-w"><div class="history__line history__date">22-03-1995 14:22</div></div>#}
-    {#                <div class="history__item-w"><div class="history__item-name">Статус</div><div class="history__line history__status history__status_fail">Провалено</div></div>#}
-    {#                <div class="history__item-w"><div class="history__item-name">Тип:</div><div class="history__line history__type">вход в систему</div></div>#}
-    {#            </div>#}
-    {#        </div>#}
-    {#    </div>#}
-
-    <script>
-        const objDiv = document.getElementById("history__wrapper");
-        objDiv.scrollTop = objDiv.scrollHeight;
-    </script>
 {% endblock %}
