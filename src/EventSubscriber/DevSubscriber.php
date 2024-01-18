@@ -14,7 +14,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 class DevSubscriber implements EventSubscriberInterface
 {
     private const ALLOWED_IP = [
-        '178.68.18.84',
+        '89.190.240.56',
     ];
 
     private const OPEN_UR = [
