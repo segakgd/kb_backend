@@ -1,0 +1,535 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+
+{% block content_title %}The Title of the Page{% endblock %}
+{% block page_actions %}
+    <a class="btn btn-primary" href="#">Some Action</a>
+{% endblock %}
+
+{% block main %}
+    <br>
+
+    <div class="jj__main_wrapper jj__main_wrapper--line">
+        {# -------------------------------------------------------------------------------------------------------- #}
+        {# --------------------------------------------------Боты-------------------------------------------------- #}
+        {# -------------------------------------------------------------------------------------------------------- #}
+        <div class="jj__wrapper jj__wrapper-50">
+            <div class="jj__h">
+                <h2>Боты</h2>
+            </div>
+
+            <div class="jj__items">
+                {% if bots is empty %}
+                    <div class="jj__items-without-data">
+                        Данных нет
+                    </div>
+                {% endif %}
+
+                {% for bot in bots %}
+                    <div class="jj__item">
+                        <div class="jj__item_name">Название бота: {{ bot.botName }}</div>
+
+                        <div class="jj__item_data">
+                            <section>
+                                <span>Проект:</span> {{ bot.projectName }}
+                            </section>
+                            <section>
+                                <span>Состояние:</span>
+                                {% if bot.botActive is not empty %}
+                                    <span class="jj__color-green">Активен</span>
+                                {% else %}
+                                    <span class="jj__color-red">Не активен</span>
+                                {% endif %}
+                            </section>
+                            <section>
+                                <span>Тип:</span> {{ bot.botType }}
+                            </section>
+                            <section>
+                                <span>Токен:</span> {{ bot.botToken }}
+                            </section>
+                            <section>
+                                <span>Вебхук:</span> {{bot.webhookUri}}
+                            </section>
+                        </div>
+                        <div class="jj__item_data jj__item_data--line">
+                            <section>
+                                <a href="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/webhook/activate/">установить вебхук</a>
+                            </section>
+
+                            {% if bot.botActive is not empty %}
+                                <section>
+                                    <a href="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/deactivate/">Отключить бота</a>
+                                </section>
+                            {% else %}
+                                <section>
+                                    <a href="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/activate/">Включить бота</a>
+                                </section>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        {# -------------------------------------------------------------------------------------------------------- #}
+        {# -------------------------------------------------нарии-------------------------------------------------- #}
+        {# -------------------------------------------------------------------------------------------------------- #}
+        <div class="jj__wrapper jj__wrapper-50">
+            <div class="jj__h">
+                <h2>Сценарии</h2>
+            </div>
+
+            <div class="jj__items">
+                {% if scenario is empty %}
+                    <div class="jj__items-without-data">
+                        Данных нет
+                    </div>
+                {% endif %}
+
+                {% for scenarioItem in scenario %}
+                    <div class="jj__item">
+                        <div class="jj__item_name">Событие #{{ scenarioItem.id }}</div>
+
+                        <div class="jj__item_data jj__item_data--line">
+                            <section>
+                                <span>Название:</span> {{ scenarioItem.name }}
+                            </section>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="jj__main_wrapper jj__main_wrapper--line">
+        {# -------------------------------------------------------------------------------------------------------- #}
+        {# ------------------------------------------------События------------------------------------------------- #}
+        {# -------------------------------------------------------------------------------------------------------- #}
+        <div class="jj__wrapper jj__wrapper-30">
+            <div class="jj__h">
+                <h2>События</h2>
+            </div>
+
+            <div class="jj__items">
+                {% if events is empty %}
+                    <div class="jj__items-without-data">
+                        Данных нет
+                    </div>
+                {% endif %}
+
+                {% for event in events %}
+                    <div class="jj__item">
+                        <div class="jj__item_name">Событие #{{ event.id }}</div>
+
+                        <div class="jj__item_data jj__item_data--line">
+                            <section>
+                                <span>Тип события:</span> {{ event.type }}
+                            </section>
+                            <section>
+                                <span>Статус события:</span> {{ event.status }}
+                            </section>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        {# -------------------------------------------------------------------------------------------------------- #}
+        {# -------------------------------------------------Сессии------------------------------------------------- #}
+        {# -------------------------------------------------------------------------------------------------------- #}
+        <div class="jj__wrapper jj__wrapper-30">
+            <div class="jj__h">
+                <h2>Сессии</h2>
+            </div>
+
+            <div class="jj__items">
+                {% if sessions is empty %}
+                    <div class="jj__items-without-data">
+                        Данных нет
+                    </div>
+                {% endif %}
+
+                {% for session in sessions %}
+                    <div class="jj__item">
+                        <div class="jj__item_name">Название сессии: {{ session.sessionName }}</div>
+
+                        <div class="jj__item_data">
+                            <section>
+                                <span>Канал:</span> {{ session.sessionChannel }}
+                            </section>
+
+                            {% if session.sessionVisitorEvent is defined %}
+                                <section>
+                                    <span>Тип события:</span> {{ session.sessionVisitorEvent.type }}
+                                </section>
+                                <section>
+                                    <span>Статус события:</span> {{ session.sessionVisitorEvent.status }}
+                                </section>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        {# -------------------------------------------------------------------------------------------------------- #}
+        {# -------------------------------------------------Команды------------------------------------------------- #}
+        {# -------------------------------------------------------------------------------------------------------- #}
+        <div class="jj__wrapper jj__wrapper-30">
+            <div class="jj__h">
+                <h2>Команды</h2>
+            </div>
+
+            <div class="jj__items">
+                {% if commands is empty %}
+                    <div class="jj__items-without-data">
+                        Данных нет
+                    </div>
+                {% endif %}
+
+                {% for command in commands %}
+                    <div class="jj__item">
+                        <div class="jj__item_name">{{ command.commandName }}</div>
+
+                        <div class="jj__item_data">
+                            <section>
+                                <span>Описание:</span> {{ command.commandDescription }}
+                            </section>
+                            <section>
+                                <a href="/dev/project/{{ projectId }}/command/{{ command.commandCode }}/start/">Запустить команду</a>
+                            </section>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {# -------------------------------------------------------------------------------------------------------- #}
+    {# ------------------------------------------------Истории------------------------------------------------- #}
+    {# -------------------------------------------------------------------------------------------------------- #}
+    <div class="jj__main_wrapper">
+        <div class="jj__wrapper" id="history__wrapper">
+            <div class="jj__h">
+                <h2>Истории</h2>
+            </div>
+
+            <div class="jj__items">
+                {% if histories is empty %}
+                    <div class="jj__items-without-data">
+                        Данных нет
+                    </div>
+                {% endif %}
+
+                {% for historyItem in histories %}
+                    <div class="jj__item
+                        {% if historyItem.status == 'error' %}
+                            jj__border-status--fail
+                        {% elseif historyItem.status == 'success' %}
+                            jj__border-status--success
+                        {% endif %}
+                        ">
+                        <div class="jj__item_name">{{ historyItem.createdAt|date('Y-m-d h:i:s') }}</div>
+
+                        <div class="jj__item_data jj__item_data--line">
+                            <section class="jj__item_field--history-status">
+                                <span>Статус:</span>
+                                {% if historyItem.status == 'error' %}
+                                    <span class="jj__color-red"> Провалено </span>
+                                {% elseif historyItem.status == 'success' %}
+                                    <span class="jj__color-green"> Успешно </span>
+                                {% endif %}
+                            </section>
+                            <section class="jj__item_field--history-type">
+                                <span>Тип:</span> {{ historyItem.type }}
+                            </section>
+                            {% if historyItem.sender is defined %}
+                                <section class="jj__icon-soc--wrapper jj__item_field--history-sender">
+                                    <span>Откуда:</span> {{ historyItem.sender.name }} <img class="jj__icon-soc" src="{{ historyItem.sender.icon }}" alt="{{ historyItem.sender.name }}">
+                                </section>
+                            {% endif %}
+
+                            {% if historyItem.recipient is defined %}
+                                <section class="jj__icon-soc--wrapper jj__item_field--history-recipient">
+                                    <span>Куда:</span> {{ historyItem.recipient.name }} <img class="jj__icon-soc" src="{{ historyItem.recipient.icon }}" alt="{{ historyItem.recipient.name }}">
+                                </section>
+                            {% endif %}
+
+                            {% if historyItem.errorMessage  is defined %}
+                                <section class="jj__item_field--history-error">
+                                    <span>Контекст ошибки:</span> {{ historyItem.errorMessage }}
+                                </section>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+    <br>
+    <br>
+
+
+    {#    <div class="kb__container">#}
+    {#        <div class="kb__wrapper">#}
+    {#            <div>#}
+    {#                <h2>Боты</h2>#}
+    {#            </div>#}
+
+    {#            <div class="bot__wrapper">#}
+    {#                {% if bots is empty %}#}
+    {#                    <div class="kb__block-without-data">#}
+    {#                        Данных нет#}
+    {#                    </div>#}
+    {#                {% endif %}#}
+
+    {#                {% for bot in bots %}#}
+    {#                    <div class="bot__item">#}
+    {#                        <div class="bot__item_name">Название бота: {{ bot.botName }}</div>#}
+
+    {#                        <div class="bot__item_block">#}
+    {#                            <div class="bot__item-text">#}
+    {#                                <div class="bot__item-text_item">#}
+    {#                                    <span>Проект:</span> {{ bot.projectName }}#}
+    {#                                </div>#}
+    {#                                <div class="bot__item-text_item">#}
+    {#                                    <span>Состояние:</span>#}
+    {#                                    {% if bot.botActive is not empty %}#}
+    {#                                        <span class="bot__item-text_item--state-green">Активен</span>#}
+    {#                                    {% else %}#}
+    {#                                        <span class="bot__item-text_item--state-red">Не активен</span>#}
+    {#                                    {% endif %}#}
+    {#                                </div>#}
+    {#                                <div class="bot__item-text_item">#}
+    {#                                    <span>Тип:</span> {{ bot.botType }}#}
+    {#                                </div>#}
+    {#                                <div class="bot__item-text_item">#}
+    {#                                    <span>Токен:</span> {{ bot.botToken }}#}
+    {#                                </div>#}
+    {#                                <div class="bot__item-text_item">#}
+    {#                                    <span>Вебхук:</span> {{bot.webhookUri}}#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                            <div class="bot__item-buttons">#}
+    {#                                <div class="bot__item-button bot__item-button--blue">#}
+    {#                                                                        <a href="#">установить вебхук</a>#}
+    {#                                </div>#}
+
+    {#                                <div class="bot__item-button bot__item-button--blue">#}
+    {#                                                                        <a href="#">установить вебхук</a>#}
+    {#                                </div>#}
+
+    {#                                <div class="bot__item-button bot__item-button--blue">#}
+    {#                                    <a href="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/webhook/activate/">установить вебхук</a>#}
+    {#                                </div>#}
+
+    {#                                {% if bot.botActive is not empty %}#}
+    {#                                    <div class="bot__item-button bot__item-button--red">#}
+    {#                                        <a href="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/deactivate/">Отключить бота</a>#}
+    {#                                    </div>#}
+    {#                                {% else %}#}
+    {#                                    <div class="bot__item-button bot__item-button--green">#}
+    {#                                        <a href="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/activate/">Включить бота</a>#}
+    {#                                    </div>#}
+    {#                                {% endif %}#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                {% endfor %}#}
+    {#            </div>#}
+    {#        </div>#}
+
+    {#        <div class="kb__wrapper">#}
+    {#            <div>#}
+    {#                <h2>Сценарии</h2>#}
+    {#            </div>#}
+
+    {#            <div class="scenario__wrapper">#}
+    {#                {% if scenario is empty %}#}
+    {#                    <div class="kb__block-without-data">#}
+    {#                        Данных нет#}
+    {#                    </div>#}
+    {#                {% endif %}#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </div>#}
+
+    {#    <div class="kb__container">#}
+    {#        <div class="kb__wrapper">#}
+    {#            <div>#}
+    {#                <h2>Команды</h2>#}
+    {#            </div>#}
+
+    {#            <div class="command__wrapper">#}
+    {#                {% if commands is empty %}#}
+    {#                    <div class="kb__block-without-data">#}
+    {#                        Данных нет#}
+    {#                    </div>#}
+    {#                {% endif %}#}
+
+    {#                {% for command in commands %}#}
+    {#                    <div class="kb-min-block__item">#}
+    {#                        <div class="kb-min-block__item_name">Название команды: {{ command.commandName }}</div>#}
+
+    {#                        <div class="kb-min-block__item_block">#}
+    {#                            <div class="kb-min-block__item-text">#}
+    {#                                <div class="kb-min-block__item-text_item">#}
+    {#                                    <span>Описание:</span> {{ command.commandDescription }}#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                            <div class="kb-min-block__item-buttons">#}
+    {#                                <div class="kb-min-block__item-button kb-min-block__item-button--green">#}
+    {#                                    <a href="/dev/project/{{ projectId }}/command/{{ command.commandCode }}/start/">Запустить команду</a>#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                {% endfor %}#}
+    {#            </div>#}
+    {#        </div>#}
+
+    {#        <div class="kb__wrapper">#}
+    {#            <div>#}
+    {#                <h2>Сессии</h2>#}
+    {#            </div>#}
+
+    {#            <div class="sessions__wrapper">#}
+    {#                {% if sessions is empty %}#}
+    {#                    <div class="kb__block-without-data">#}
+    {#                        Данных нет#}
+    {#                    </div>#}
+    {#                {% endif %}#}
+
+    {#                {% for session in sessions %}#}
+    {#                    <div class="kb-min-block__item">#}
+    {#                        <div class="kb-min-block__item_name">Название сессии: {{ session.sessionName }}</div>#}
+
+    {#                        <div class="kb-min-block__item_block">#}
+    {#                            <div class="kb-min-block__item-text">#}
+    {#                                <div class="kb-min-block__item-text_item">#}
+    {#                                    <span>Канал:</span> {{ session.sessionChannel }}#}
+    {#                                </div>#}
+    {#                                {% if session.sessionVisitorEvent is defined %}#}
+    {#                                    <div class="kb-min-block__item-text_item">#}
+    {#                                        <span>Тип события:</span> {{ session.sessionVisitorEvent.type }}#}
+    {#                                    </div>#}
+    {#                                    <div class="kb-min-block__item-text_item">#}
+    {#                                        <span>Статус события:</span> {{ session.sessionVisitorEvent.status }}#}
+    {#                                    </div>#}
+    {#                                {% endif %}#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                {% endfor %}#}
+    {#            </div>#}
+    {#        </div>#}
+
+    {#        <div class="kb__wrapper">#}
+    {#            <div>#}
+    {#                <h2>События</h2>#}
+    {#            </div>#}
+
+    {#            <div class="event__wrapper">#}
+    {#                {% if events is empty %}#}
+    {#                    <div class="kb__block-without-data">#}
+    {#                        Данных нет#}
+    {#                    </div>#}
+    {#                {% endif %}#}
+
+    {#                {% for event in events %}#}
+    {#                    <div class="kb-min-block__item">#}
+    {#                        <div class="kb-min-block__item_name">Событие #{{ event.id }}</div>#}
+
+    {#                        <div class="kb-min-block__item_block">#}
+    {#                            <div class="kb-min-block__item-text">#}
+    {#                                <div class="kb-min-block__item-text_item">#}
+    {#                                    <span>Тип события:</span> {{ event.type }}#}
+    {#                                </div>#}
+    {#                                <div class="kb-min-block__item-text_item">#}
+    {#                                    <span>Статус события:</span> {{ event.status }}#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                {% endfor %}#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </div>#}
+
+    {#    <div class="kb__container">#}
+    {#        <div class="kb__wrapper">#}
+    {#            <div>#}
+    {#                <h2>Истории</h2>#}
+    {#            </div>#}
+    {#            <div class="history__wrapper" id="history__wrapper">#}
+    {#                {% if histories is empty %}#}
+    {#                    <div class="kb__block-without-data">#}
+    {#                        Данных нет#}
+    {#                    </div>#}
+    {#                {% endif %}#}
+
+    {#                {% for historyItem in histories %}#}
+    {#                    <div class="history__item#}
+    {#                        {% if historyItem.status == 'error' %}#}
+    {#                            history__item-error#}
+    {#                        {% endif %}#}
+    {#                    ">#}
+    {#                        <div class="history__item-w"><div class="history__line history__date">{{ historyItem.createdAt|date('Y-m-d h:i:s') }}</div></div>#}
+    {#                        <div class="history__item-w">#}
+    {#                            <div class="history__item-name">Статус</div>#}
+    {#                            <div class="history__line history__status#}
+    {#                            {% if historyItem.status == 'error' %}#}
+    {#                                history__status_fail#}
+    {#                            {% elseif historyItem.status == 'success' %}#}
+    {#                                history__status_success#}
+    {#                            {% endif %}#}
+    {#                            ">#}
+    {#                                {% if historyItem.status == 'error' %}#}
+    {#                                    Провалено#}
+    {#                                {% elseif historyItem.status == 'success' %}#}
+    {#                                    Успешно#}
+    {#                                {% endif %}#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                        <div class="history__item-w">#}
+    {#                            <div class="history__item-name">Тип:</div>#}
+    {#                            <div class="history__line history__type">{{ historyItem.type }}</div>#}
+    {#                        </div>#}
+
+    {#                        {% if historyItem.sender is defined %}#}
+    {#                            <div class="history__item-w"><div class="history__item-name">Откуда:</div>#}
+    {#                                <div class="history__line history__sender">#}
+    {#                                    {{ historyItem.sender }}#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                        {% endif %}#}
+
+    {#                        {% if historyItem.recipient is defined %}#}
+    {#                            <div class="history__item-w"><div class="history__item-name">Куда:</div>#}
+    {#                                <div class="history__line history__sender">#}
+    {#                                    {{ historyItem.recipient }}#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                        {% endif %}#}
+
+    {#                        {% if historyItem.errorMessage  is defined %}#}
+    {#                            <div class="history__item-w"><div class="history__item-name">Контекст ошибки:</div>#}
+    {#                                <div class="history__line history__text_error">#}
+    {#                                    {{ historyItem.errorMessage }}#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                        {% endif %}#}
+    {#                    </div>#}
+    {#                {% endfor %}#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </div>#}
+
+
+    <script>
+        const objDiv = document.getElementById("history__wrapper");
+        objDiv.scrollTop = objDiv.scrollHeight;
+    </script>
+{% endblock %}

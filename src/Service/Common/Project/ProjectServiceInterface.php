@@ -8,6 +8,8 @@ use App\Entity\User\User;
 
 interface ProjectServiceInterface
 {
+    public function findOneById(int $projectId): Project;
+
     public function getAll(User $user): array;
 
     public function add(ProjectCreateReqDto $projectDto, User $user): Project;

@@ -25,6 +25,20 @@ class VisitorEventService
     ) {
     }
 
+    public function findAllByProjectId(int $projectId): array
+    {
+        return $this->visitorEventRepository->findBy(
+            [
+                'projectId' => $projectId
+            ]
+        );
+    }
+
+    public function findOneById(int $id): ?VisitorEvent
+    {
+        return $this->visitorEventRepository->find($id);
+    }
+
     /**
      * @throws Exception
      */
@@ -127,6 +141,7 @@ class VisitorEventService
             ->setType($type)
             ->setBehaviorScenario($scenario->getId())
             ->setActionAfter($scenario->getActionAfter() ?? null)
+            ->setProjectId($scenario->getProjectId())
         ;
 
         $this->visitorEventRepository->saveAndFlush($visitorEvent);

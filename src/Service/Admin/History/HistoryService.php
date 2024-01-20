@@ -21,6 +21,8 @@ class HistoryService implements HistoryServiceInterface
 
     public const HISTORY_TYPE_SEND_MESSAGE_TO_CHANNEL = 'send_message_to_channel';
 
+    public const HISTORY_TYPE_SEND_MESSAGE_TO_TELEGRAM_CHANNEL = 'send_message_to_telegram_channel';
+
     public const HISTORY_TYPE_LOGIN = 'login';
 
     public const HISTORY_SENDER_TELEGRAM = 'telegram';

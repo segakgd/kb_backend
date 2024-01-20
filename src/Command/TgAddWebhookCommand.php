@@ -2,10 +2,8 @@
 
 namespace App\Command;
 
-use App\Dto\Core\Telegram\Webhook\WebhookDto;
-use App\Event\InitBotEvent;
+use App\Event\InitWebhookBotEvent;
 use App\Repository\User\BotRepository;
-use App\Service\Integration\Telegram\TelegramService;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -38,7 +36,7 @@ class TgAddWebhookCommand extends Command
             ]
         );
 
-        $this->eventDispatcher->dispatch(new InitBotEvent($bot));
+        $this->eventDispatcher->dispatch(new InitWebhookBotEvent($bot));
 
         return Command::SUCCESS;
     }

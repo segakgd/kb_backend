@@ -6,7 +6,7 @@ use App\Controller\Admin\Bot\DTO\Request\BotReqDto;
 use App\Controller\Admin\Bot\DTO\Request\InitBotReqDto;
 use App\Controller\Admin\Bot\DTO\Request\UpdateBotReqDto;
 use App\Entity\User\Bot;
-use App\Event\InitBotEvent;
+use App\Event\InitWebhookBotEvent;
 use App\Repository\User\BotRepository;
 use Exception;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -40,7 +40,7 @@ class BotService implements BotServiceInterface
         $this->botRepository->saveAndFlush($bot);
 
         if ($requestDto->isActive()){
-            $this->eventDispatcher->dispatch((new InitBotEvent($bot)));
+            $this->eventDispatcher->dispatch((new InitWebhookBotEvent($bot)));
         }
     }
 
@@ -110,6 +110,22 @@ class BotService implements BotServiceInterface
         if ($botSettingDto->getToken()){
             $bot->setToken($botSettingDto->getToken());
         }
+
+        $this->botRepository->saveAndFlush($bot);
+
+        return $bot;
+    }
+
+    public function updateStatus(int $botId, int $projectId, bool $status): Bot
+    {
+        $bot = $this->botRepository->findOneBy(
+            [
+                'id' => $botId,
+                'projectId' => $projectId,
+            ]
+        );
+
+        $bot->setActive($status);
 
         $this->botRepository->saveAndFlush($bot);
 

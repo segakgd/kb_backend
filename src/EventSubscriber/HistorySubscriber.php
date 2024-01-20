@@ -3,7 +3,7 @@
 namespace App\EventSubscriber;
 
 use App\Dto\Core\Telegram\Webhook\WebhookDto;
-use App\Event\InitBotEvent;
+use App\Event\InitWebhookBotEvent;
 use App\Exception\History\HistoryExceptionInterface;
 use App\Service\Admin\History\HistoryServiceInterface;
 use App\Service\Integration\Telegram\TelegramServiceInterface;
