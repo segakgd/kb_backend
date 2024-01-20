@@ -20,6 +20,6 @@ class BotActivateController extends AbstractController
     {
         $this->botService->updateStatus($botId, $project->getId(), true);
 
-        return new RedirectResponse('/');
+        return new RedirectResponse('/admin');
     }
 }

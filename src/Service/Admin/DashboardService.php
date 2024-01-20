@@ -137,8 +137,14 @@ class DashboardService
                 'createdAt' => $history->getCreatedAt(),
                 'status' => $history->getStatus(),
                 'type' => $this->getNormalizedType($history->getType()),
-                'sender' => $history->getSender(),
-                'recipient' => $history->getRecipient(),
+                'sender' => [
+                    'name' => $history->getSender(),
+                    'icon' => $this->getIconUri($history->getSender()),
+                ],
+                'recipient' => [
+                    'name' => $history->getRecipient(),
+                    'icon' => $this->getIconUri($history->getRecipient()),
+                ],
             ];
 
             if ($history->getStatus() === HistoryService::HISTORY_STATUS_ERROR){
@@ -164,5 +170,16 @@ class DashboardService
     private function getNormalizedErrorMessage(): string
     {
         return 'Пока что для примера просто оставлю это сообщение.';
+    }
+
+    private function getIconUri($name): string
+    {
+        return match ($name){
+            'whatsapp' => '/assets/images/icons/whatsapp-svgrepo-com.svg',
+            'telegram' => '/assets/images/icons/telegram-svgrepo-com.svg',
+            'vk' => '/assets/images/icons/vk-svgrepo-com.svg',
+            'bitrix' => '/assets/images/icons/bitrix24-svgrepo-com.svg',
+            default => '/assets/images/icons/no-photo-svgrepo-com.svg',
+        };
     }
 }

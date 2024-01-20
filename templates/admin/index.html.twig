@@ -10,6 +10,9 @@
     <br>
 
     <div class="jj__main_wrapper jj__main_wrapper--line">
+        {# -------------------------------------------------------------------------------------------------------- #}
+        {# --------------------------------------------------Боты-------------------------------------------------- #}
+        {# -------------------------------------------------------------------------------------------------------- #}
         <div class="jj__wrapper jj__wrapper-50">
             <div class="jj__h">
                 <h2>Боты</h2>
@@ -33,9 +36,9 @@
                             <section>
                                 <span>Состояние:</span>
                                 {% if bot.botActive is not empty %}
-                                    <span class="bot__item-text_item--state-green">Активен</span>
+                                    <span class="jj__color-green">Активен</span>
                                 {% else %}
-                                    <span class="bot__item-text_item--state-red">Не активен</span>
+                                    <span class="jj__color-red">Не активен</span>
                                 {% endif %}
                             </section>
                             <section>
@@ -68,6 +71,9 @@
             </div>
         </div>
 
+        {# -------------------------------------------------------------------------------------------------------- #}
+        {# -------------------------------------------------нарии-------------------------------------------------- #}
+        {# -------------------------------------------------------------------------------------------------------- #}
         <div class="jj__wrapper jj__wrapper-50">
             <div class="jj__h">
                 <h2>Сценарии</h2>
@@ -84,6 +90,9 @@
     </div>
 
     <div class="jj__main_wrapper jj__main_wrapper--line">
+        {# -------------------------------------------------------------------------------------------------------- #}
+        {# ------------------------------------------------События------------------------------------------------- #}
+        {# -------------------------------------------------------------------------------------------------------- #}
         <div class="jj__wrapper jj__wrapper-30">
             <div class="jj__h">
                 <h2>События</h2>
@@ -113,6 +122,9 @@
             </div>
         </div>
 
+        {# -------------------------------------------------------------------------------------------------------- #}
+        {# -------------------------------------------------Сессии------------------------------------------------- #}
+        {# -------------------------------------------------------------------------------------------------------- #}
         <div class="jj__wrapper jj__wrapper-30">
             <div class="jj__h">
                 <h2>Сессии</h2>
@@ -148,6 +160,9 @@
             </div>
         </div>
 
+        {# -------------------------------------------------------------------------------------------------------- #}
+        {# -------------------------------------------------Команды------------------------------------------------- #}
+        {# -------------------------------------------------------------------------------------------------------- #}
         <div class="jj__wrapper jj__wrapper-30">
             <div class="jj__h">
                 <h2>Команды</h2>
@@ -178,6 +193,9 @@
         </div>
     </div>
 
+    {# -------------------------------------------------------------------------------------------------------- #}
+    {# ------------------------------------------------Истории------------------------------------------------- #}
+    {# -------------------------------------------------------------------------------------------------------- #}
     <div class="jj__main_wrapper">
         <div class="jj__wrapper">
             <div class="jj__h">
@@ -192,35 +210,41 @@
                 {% endif %}
 
                 {% for historyItem in histories %}
-                    <div class="jj__item">
+                    <div class="jj__item
+                        {% if historyItem.status == 'error' %}
+                            jj__border-status--fail
+                        {% elseif historyItem.status == 'success' %}
+                            jj__border-status--success
+                        {% endif %}
+                        ">
                         <div class="jj__item_name">{{ historyItem.createdAt|date('Y-m-d h:i:s') }}</div>
 
                         <div class="jj__item_data jj__item_data--line">
-                            <section>
+                            <section class="jj__item_field--history-status">
                                 <span>Статус:</span>
                                 {% if historyItem.status == 'error' %}
-                                    Провалено
+                                    <span class="jj__color-red"> Провалено </span>
                                 {% elseif historyItem.status == 'success' %}
-                                    Успешно
+                                    <span class="jj__color-green"> Успешно </span>
                                 {% endif %}
                             </section>
-                            <section>
+                            <section class="jj__item_field--history-type">
                                 <span>Тип:</span> {{ historyItem.type }}
                             </section>
                             {% if historyItem.sender is defined %}
-                                <section>
-                                    <span>Откуда:</span> {{ historyItem.sender }}
+                                <section class="jj__icon-soc--wrapper jj__item_field--history-sender">
+                                    <span>Откуда:</span> {{ historyItem.sender.name }} <img class="jj__icon-soc" src="{{ historyItem.sender.icon }}" alt="{{ historyItem.sender.name }}">
                                 </section>
                             {% endif %}
 
                             {% if historyItem.recipient is defined %}
-                                <section>
-                                    <span>Куда:</span> {{ historyItem.recipient }}
+                                <section class="jj__icon-soc--wrapper jj__item_field--history-recipient">
+                                    <span>Куда:</span> {{ historyItem.recipient.name }} <img class="jj__icon-soc" src="{{ historyItem.recipient.icon }}" alt="{{ historyItem.recipient.name }}">
                                 </section>
                             {% endif %}
 
                             {% if historyItem.errorMessage  is defined %}
-                                <section>
+                                <section class="jj__item_field--history-error">
                                     <span>Контекст ошибки:</span> {{ historyItem.errorMessage }}
                                 </section>
                             {% endif %}
