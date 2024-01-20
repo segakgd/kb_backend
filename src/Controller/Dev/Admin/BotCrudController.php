@@ -19,7 +19,9 @@ class BotCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id'),
+            IdField::new('id')
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
             TextField::new('type'),
             TextField::new('token'),
             TextField::new('name'),

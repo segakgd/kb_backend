@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     response: Response::HTTP_OK,
     description: 'Выводим скидки и промокоды для главной страницы скидок и промокодов',
     content: new Model(
-        type: ViewAllPromotionsRespDto::class,
+        type: ViewAllPromotionsRespDto::class, // todo тут должна быть коллекция
     ),
 )]
 class ViewAllController extends AbstractController
