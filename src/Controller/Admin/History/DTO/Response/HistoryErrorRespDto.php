@@ -25,7 +25,7 @@ class HistoryErrorRespDto
         return $this->context;
     }
 
-    public function addContext(HistoryErrorRespDtoInterface $context): self
+    public function addContext(array $context): self
     {
         $this->context[] = $context;
 

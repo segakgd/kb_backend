@@ -425,10 +425,10 @@ h1, h2 {
 
 .jj__icon-soc{
     position: absolute;
-    width: 30px;
-    height: 30px;
-    top: -8px;
-    left: 5px;
+    width: 25px;
+    height: 25px;
+    top: -4px;
+    left: 7px;
 }
 
 .jj__border-status--success{

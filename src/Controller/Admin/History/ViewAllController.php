@@ -8,10 +8,7 @@ use App\Controller\Admin\History\DTO\Response\HistoryErrorRespDto;
 use App\Controller\Admin\History\DTO\Response\HistoryRespDto;
 use App\Entity\History\History;
 use App\Entity\User\Project;
-use App\Exception\History\HistoryException;
 use App\Service\Admin\History\HistoryServiceInterface;
-use DateTimeImmutable;
-use Exception;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -66,42 +63,6 @@ class ViewAllController extends AbstractController
         }
 
         $history = $this->historyService->findAll($project->getId());
-
-        throw new HistoryException(
-            $project->getId(),
-            'message',
-            'new',
-            'vk',
-            'bitrix',
-            new HistoryErrorRespDto()
-        );
-
-        throw new HistoryException(
-            $project->getId(),
-            'message',
-            'process',
-            'telegram',
-            'flexbe',
-            new HistoryErrorRespDto()
-        );
-
-        throw new HistoryException(
-            $project->getId(),
-            'message',
-            'success',
-            'vk',
-            'amoCRM',
-            new HistoryErrorRespDto()
-        );
-
-        throw new HistoryException(
-            $project->getId(),
-            'message',
-            'succes',
-            'telegram',
-            'bitrix',
-            new HistoryErrorRespDto()
-        );
 
         $response = $this->mapToResponse($history);
 

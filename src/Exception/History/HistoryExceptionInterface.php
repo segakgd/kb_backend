@@ -9,15 +9,13 @@ interface HistoryExceptionInterface
 {
     public function getProjectId(): int;
 
-    public function getMessages(): string;
-
     public function getType(): string;
 
     public function getStatus(): string;
 
-    public function getSender(): string;
+    public function getSender(): ?string;
 
-    public function getRecipient(): string;
+    public function getRecipient(): ?string;
 
     public function getError(): HistoryErrorRespDto;
 

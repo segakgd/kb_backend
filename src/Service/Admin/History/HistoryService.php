@@ -52,8 +52,8 @@ class HistoryService implements HistoryServiceInterface
         int $projectId,
         string $type,
         string $status,
-        string $sender,
-        string $recipient,
+        ?string $sender,
+        ?string $recipient,
         HistoryErrorRespDto $error,
         DateTimeImmutable $createdAt
     ): History {
