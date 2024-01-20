@@ -197,7 +197,7 @@
     {# ------------------------------------------------Истории------------------------------------------------- #}
     {# -------------------------------------------------------------------------------------------------------- #}
     <div class="jj__main_wrapper">
-        <div class="jj__wrapper">
+        <div class="jj__wrapper" id="history__wrapper">
             <div class="jj__h">
                 <h2>Истории</h2>
             </div>
@@ -514,4 +514,10 @@
     {#            </div>#}
     {#        </div>#}
     {#    </div>#}
+
+
+    <script>
+        const objDiv = document.getElementById("history__wrapper");
+        objDiv.scrollTop = objDiv.scrollHeight;
+    </script>
 {% endblock %}
