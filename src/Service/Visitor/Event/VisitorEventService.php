@@ -141,6 +141,7 @@ class VisitorEventService
             ->setType($type)
             ->setBehaviorScenario($scenario->getId())
             ->setActionAfter($scenario->getActionAfter() ?? null)
+            ->setProjectId($scenario->getProjectId())
         ;
 
         $this->visitorEventRepository->saveAndFlush($visitorEvent);

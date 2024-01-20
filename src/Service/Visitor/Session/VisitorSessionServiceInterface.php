@@ -11,7 +11,13 @@ interface VisitorSessionServiceInterface
 
     public function identifyByChannel(int $channelId, string $channel): ?VisitorSession;
 
-    public function createVisitorSession(Visitor $visitor, string $visitorName, int $chatId, string $chanel): VisitorSession;
+    public function createVisitorSession(
+        Visitor $visitor,
+        string $visitorName,
+        int $chatId,
+        string $chanel,
+        int $projectId,
+    ): VisitorSession;
 
     public function rewriteVisitorEvent(VisitorSession $visitorSession, int $visitorEventId): void;
 }

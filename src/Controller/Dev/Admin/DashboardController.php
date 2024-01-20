@@ -5,6 +5,7 @@ namespace App\Controller\Dev\Admin;
 use App\Entity\Scenario\ScenarioTemplate;
 use App\Entity\User\Bot;
 use App\Entity\Visitor\VisitorEvent;
+use App\Entity\Visitor\VisitorSession;
 use App\Service\Admin\DashboardService;
 use App\Service\Common\Project\ProjectServiceInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
@@ -46,6 +47,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Боты', 'fa fa-file-text', Bot::class);
         yield MenuItem::linkToCrud('Сценарии', 'fa fa-file-text', ScenarioTemplate::class);
         yield MenuItem::linkToCrud('События', 'fa fa-file-text', VisitorEvent::class);
+        yield MenuItem::linkToCrud('Сессии', 'fa fa-file-text', VisitorSession::class);
     }
 
     public function configureAssets(): Assets

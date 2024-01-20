@@ -41,9 +41,6 @@ class ScenarioTemplateCrudController extends AbstractCrudController
     {
         if (!$entityInstance instanceof ScenarioTemplate) return;
 
-//        dd($entityInstance);
-        // {"name":"/command1","type":"command","content":{"message":"Что делаешь?","replyMarkup":[{"text":"Ничего"},{"text":"Что-то"}]},"actionAfter":[{"type":"message","value":{"text":"Дополнительное сообщение"}},{"type":"message","value":{"text":"Дополнительное сообщение"}}],"sub":[{"name":"Хорошо","type":"message","content":{"message":"Хорошо что всё хорошо"}},{"name":"Плохо","type":"message","content":{"message":"Плохо что всё плохо"}}]}
-
         parent::persistEntity($entityManager, $entityInstance);
     }
 }

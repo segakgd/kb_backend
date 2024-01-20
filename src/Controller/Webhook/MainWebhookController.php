@@ -55,7 +55,8 @@ class MainWebhookController extends AbstractController
                 $visitor,
                 $visitorName,
                 $chatId,
-                'telegram'
+                'telegram',
+                $projectId
             );
         }
 
