@@ -3,6 +3,7 @@
 namespace App\Service\Admin;
 
 use App\Entity\History\History;
+use App\Entity\Scenario\ScenarioTemplate;
 use App\Entity\User\Bot;
 use App\Entity\User\Project;
 use App\Entity\Visitor\VisitorEvent;
@@ -10,6 +11,7 @@ use App\Entity\Visitor\VisitorSession;
 use App\Service\Admin\Bot\BotServiceInterface;
 use App\Service\Admin\History\HistoryService;
 use App\Service\Admin\History\HistoryServiceInterface;
+use App\Service\Admin\Scenario\ScenarioTemplateService;
 use App\Service\Visitor\Event\VisitorEventService;
 use App\Service\Visitor\Session\VisitorSessionServiceInterface;
 
@@ -20,6 +22,7 @@ class DashboardService
         private readonly BotServiceInterface $botService,
         private readonly VisitorSessionServiceInterface $visitorSessionService,
         private readonly VisitorEventService $visitorEventService,
+        private readonly ScenarioTemplateService $scenarioTemplateService,
     ) {
     }
 
@@ -31,16 +34,34 @@ class DashboardService
         $bots = $this->botService->findAll($projectId);
         $sessions = $this->visitorSessionService->findAll($projectId);
         $events = $this->visitorEventService->findAllByProjectId($projectId);
+        $scenarioTemplate = $this->scenarioTemplateService->getAllByProjectId($projectId);
 
         return [
             'projectId' => $projectId,
             'histories' => $this->prepareHistory($histories),
             'bots' => $this->prepareBots($bots, $project),
-            'scenario' => [],
+            'scenario' => $this->prepareScenario($scenarioTemplate),
             'commands' => $this->getCommands(),
             'sessions' => $this->prepareSessions($sessions),
             'events' => $this->prepareEvents($events),
         ];
+    }
+
+    public function prepareScenario(array $scenarios): array
+    {
+        $prepareScenarios = [];
+
+        /** @var ScenarioTemplate $scenario */
+        foreach ($scenarios as $scenario){
+            $prepareScenario = [
+                'id' => $scenario->getId(),
+                'name' => $scenario->getName(),
+            ];
+
+            $prepareScenarios[] = $prepareScenario;
+        }
+
+        return $prepareScenarios;
     }
 
     private function prepareEvents(array $events): array
@@ -96,10 +117,15 @@ class DashboardService
     {
         return [
             [
-                'commandName' => 'Обработать события',
+                'commandName' => '⛳️️ Обработать события',
                 'commandCode' => 'kb:tg:handler_events',
                 'commandDescription' => 'Обрабатывает события находящиеся в очереди со статусом new',
-            ]
+            ],
+            [
+                'commandName' => '🚨 Отчистить кэш',
+                'commandCode' => 'cache:clear',
+                'commandDescription' => 'Чистим кеш в проде',
+            ],
         ];
     }
 

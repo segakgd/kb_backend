@@ -29,8 +29,6 @@ class ScenarioTemplateCrudController extends AbstractCrudController
                 ->hideWhenUpdating(),
             TextField::new('name'),
             IntegerField::new('projectId'),
-            ArrayField::new('scenario')
-                ->hideWhenUpdating(),
         ];
     }
 

@@ -5,6 +5,7 @@ namespace App\Controller\Admin\Scenario;
 use App\Controller\Admin\Promotion\DTO\Request\PromotionReqDto;
 use App\Controller\Admin\Scenario\DTO\Request\ScenarioReqDto;
 use App\Entity\User\Project;
+use App\Service\Admin\Scenario\ScenarioTemplateService;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,6 +32,7 @@ class CreateController extends AbstractController
     public function __construct(
         private readonly ValidatorInterface $validator,
         private readonly SerializerInterface $serializer,
+        private readonly ScenarioTemplateService $scenarioTemplateService,
     ) {
     }
 
@@ -48,7 +50,7 @@ class CreateController extends AbstractController
             return $this->json(['message' => $errors->get(0)->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
-        // todo ... тут мы должны обратиться к сервису или менеджеру ...
+        $this->scenarioTemplateService->create($requestDto, $project->getId());
 
         return new JsonResponse('', Response::HTTP_NO_CONTENT);
     }

@@ -2,6 +2,7 @@
 
 namespace App\Repository\Scenario;
 
+use App\Entity\History\History;
 use App\Entity\Scenario\ScenarioTemplate;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,5 +20,17 @@ class ScenarioTemplateRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ScenarioTemplate::class);
+    }
+
+    public function saveAndFlush(ScenarioTemplate $entity): void
+    {
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
+    }
+
+    public function remove(ScenarioTemplate $entity): void
+    {
+        $this->getEntityManager()->remove($entity);
+        $this->getEntityManager()->flush();
     }
 }

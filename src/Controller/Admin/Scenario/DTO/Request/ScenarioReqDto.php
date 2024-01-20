@@ -4,18 +4,18 @@ namespace App\Controller\Admin\Scenario\DTO\Request;
 
 class ScenarioReqDto
 {
-    private readonly ?int $id;
+    private readonly string $name;
 
     private readonly array $scenario;
 
-    public function getId(): ?int
+    public function getName(): string
     {
-        return $this->id;
+        return $this->name;
     }
 
-    public function setId(?int $id): void
+    public function setName(string $name): void
     {
-        $this->id = $id;
+        $this->name = $name;
     }
 
     public function getScenario(): array
