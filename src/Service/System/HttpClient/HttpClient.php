@@ -5,11 +5,16 @@ namespace App\Service\System\HttpClient;
 use App\Service\System\HttpClient\Request\RequestInterface;
 use App\Service\System\HttpClient\Response\Response;
 use App\Service\System\HttpClient\Response\ResponseInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class HttpClient implements HttpClientInterface
 {
     public const METHOD_POST = 'POST';
     public const METHOD_GET = 'GET';
+
+    public function __construct(private readonly SerializerInterface $serializer)
+    {
+    }
 
     public function request(RequestInterface $request): ResponseInterface
     {
@@ -17,10 +22,20 @@ class HttpClient implements HttpClientInterface
         $scenario = $request->getScenario();
 
         $uri = "https://api.telegram.org/bot$token/$scenario";
-        $responseArray = $this->curlRequest($uri, $request->getData(), $request->getMethod());
+        $responseArray = $this->curlRequest($uri, $request->getData() ?? [], $request->getMethod());
 
         $code = $responseArray['ok'] === true ? 200 : 400;
         $description = $responseArray['description'] ?? '';
+
+        $result = $responseArray['result'] ?? '';
+        $result['code'] = $code;
+        $result['description'] = $description;
+
+        $responseClassName = $request->getResponseClassName();
+
+        if ($responseClassName){
+            return $this->serializer->denormalize($result, $responseClassName, 'json');
+        }
 
         return new Response($code, $description);
     }

@@ -2,8 +2,7 @@
 
 namespace App\Service\System\Handler\Items;
 
-use App\Dto\Core\Telegram\Invoice\InvoiceDto;
-use App\Dto\Core\Telegram\Message\MessageDto;
+use App\Dto\Core\Telegram\Request\Message\MessageDto;
 use App\Entity\Visitor\VisitorEvent;
 use App\Repository\Scenario\ScenarioRepository;
 use App\Repository\Visitor\VisitorSessionRepository;

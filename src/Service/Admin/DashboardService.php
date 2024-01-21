@@ -12,12 +12,14 @@ use App\Service\Admin\Bot\BotServiceInterface;
 use App\Service\Admin\History\HistoryService;
 use App\Service\Admin\History\HistoryServiceInterface;
 use App\Service\Admin\Scenario\ScenarioTemplateService;
+use App\Service\Integration\Telegram\TelegramService;
 use App\Service\Visitor\Event\VisitorEventService;
 use App\Service\Visitor\Session\VisitorSessionServiceInterface;
 
 class DashboardService
 {
     public function __construct(
+        private readonly TelegramService $telegramService,
         private readonly HistoryServiceInterface $historyService,
         private readonly BotServiceInterface $botService,
         private readonly VisitorSessionServiceInterface $visitorSessionService,
@@ -137,6 +139,8 @@ class DashboardService
 
         /** @var Bot $bot */
         foreach ($bots as $bot){
+            $webhookBotInfo = $this->telegramService->getWebhookInfo($bot->getToken());
+
             $prepareBot = [
                 'projectName' => $projectName,
                 'botId' => $bot->getId(),
@@ -145,6 +149,11 @@ class DashboardService
                 'botToken' => $bot->getToken(),
                 'botActive' => $bot->isActive(),
                 'webhookUri' => $bot->getWebhookUri() ?? '',
+                'webhookInfo' => [
+                    'pendingUpdateCount' => $webhookBotInfo->getPendingUpdateCount(),
+                    'lastErrorDate' => $webhookBotInfo->getLastErrorDate() ?? null,
+                    'lastErrorMessage' => $webhookBotInfo->getLastErrorMessage() ?? null,
+                ],
             ];
 
             $prepareBots[] = $prepareBot;

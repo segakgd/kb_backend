@@ -4,7 +4,7 @@ namespace App\Service\System\HttpClient\Request;
 
 class Request implements RequestInterface
 {
-    private array $data;
+    private ?array $data = null;
 
     private string $scenario;
 
@@ -12,12 +12,14 @@ class Request implements RequestInterface
 
     private string $method;
 
-    public function getData(): array
+    private ?string $responseClassName;
+
+    public function getData(): ?array
     {
         return $this->data;
     }
 
-    public function setData(array $data): self
+    public function setData(?array $data): self
     {
         $this->data = $data;
 
@@ -56,6 +58,18 @@ class Request implements RequestInterface
     public function setMethod(string $method): self
     {
         $this->method = $method;
+
+        return $this;
+    }
+
+    public function getResponseClassName(): ?string
+    {
+        return $this->responseClassName;
+    }
+
+    public function setResponseClassName(?string $responseClassName): self
+    {
+        $this->responseClassName = $responseClassName;
 
         return $this;
     }

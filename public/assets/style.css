@@ -377,6 +377,7 @@ h1, h2 {
 .jj__item_name{
     display: flex;
     font-weight: 500;
+    font-size: 15px;
 }
 
 .jj__item_data{

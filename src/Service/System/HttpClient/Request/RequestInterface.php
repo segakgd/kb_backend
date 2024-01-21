@@ -4,9 +4,9 @@ namespace App\Service\System\HttpClient\Request;
 
 interface RequestInterface
 {
-    public function getData(): array;
+    public function getData(): ?array;
 
-    public function setData(array $data): self;
+    public function setData(?array $data): self;
 
     public function getScenario(): string;
 
@@ -19,4 +19,8 @@ interface RequestInterface
     public function getMethod(): string;
 
     public function setMethod(string $method): self;
+
+    public function getResponseClassName(): ?string;
+
+    public function setResponseClassName(?string $responseClassName): self;
 }
