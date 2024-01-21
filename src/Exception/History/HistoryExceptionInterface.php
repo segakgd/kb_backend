@@ -3,7 +3,6 @@
 namespace App\Exception\History;
 
 use App\Controller\Admin\History\DTO\Response\HistoryErrorRespDto;
-use DateTimeImmutable;
 
 interface HistoryExceptionInterface
 {
@@ -18,6 +17,4 @@ interface HistoryExceptionInterface
     public function getRecipient(): ?string;
 
     public function getError(): HistoryErrorRespDto;
-
-    public function getCreatedAt(): DateTimeImmutable;
 }

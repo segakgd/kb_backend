@@ -4,13 +4,10 @@ namespace App\Exception\History;
 
 use App\Controller\Admin\History\DTO\Response\HistoryErrorRespDto;
 use App\Service\Admin\History\HistoryService;
-use DateTimeImmutable;
 use Exception;
 
 class HistoryException extends Exception implements HistoryExceptionInterface
 {
-    public DateTimeImmutable $createdAt;
-
     public function __construct(
         private readonly int $projectId,
         private readonly string $type,
@@ -18,8 +15,6 @@ class HistoryException extends Exception implements HistoryExceptionInterface
         private readonly ?string $sender = null,
         private readonly ?string $recipient = null,
     ) {
-        $this->createdAt = new DateTimeImmutable();
-
         parent::__construct();
     }
 
@@ -51,10 +46,5 @@ class HistoryException extends Exception implements HistoryExceptionInterface
     public function getError(): HistoryErrorRespDto
     {
         return $this->error;
-    }
-
-    public function getCreatedAt(): DateTimeImmutable
-    {
-        return $this->createdAt;
     }
 }
