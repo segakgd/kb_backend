@@ -2,7 +2,7 @@
 
 namespace App\EventSubscriber;
 
-use App\Dto\Core\Telegram\Webhook\WebhookDto;
+use App\Dto\Core\Telegram\Request\Webhook\WebhookDto;
 use App\Event\InitWebhookBotEvent;
 use App\Repository\User\BotRepository;
 use App\Service\Integration\Telegram\TelegramServiceInterface;

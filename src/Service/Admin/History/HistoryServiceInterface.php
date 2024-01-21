@@ -4,7 +4,6 @@ namespace App\Service\Admin\History;
 
 use App\Controller\Admin\History\DTO\Response\HistoryErrorRespDto;
 use App\Entity\History\History;
-use DateTimeImmutable;
 
 interface HistoryServiceInterface
 {
@@ -14,9 +13,8 @@ interface HistoryServiceInterface
         int $projectId,
         string $type,
         string $status,
-        string $sender,
-        string $recipient,
-        HistoryErrorRespDto $error,
-        DateTimeImmutable $createdAt
+        ?string $sender = null,
+        ?string $recipient = null,
+        ?HistoryErrorRespDto $error = null,
     ): History;
 }

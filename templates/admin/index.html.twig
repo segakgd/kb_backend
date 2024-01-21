@@ -50,6 +50,26 @@
                             <section>
                                 <span>Вебхук:</span> {{bot.webhookUri}}
                             </section>
+
+                            <hr>
+
+                            {% if bot.webhookInfo.pendingUpdateCount is not null %}
+                                <section>
+                                    <span>Количество обновлений, ожидающих доставки:</span> {{bot.webhookInfo.pendingUpdateCount}}
+                                </section>
+                            {% endif %}
+
+                            {% if bot.webhookInfo.lastErrorDate is not null %}
+                                <section class="jj__color-red">
+                                    <span>Дата ошибки:</span> {{bot.webhookInfo.lastErrorDate}}
+                                </section>
+                            {% endif %}
+
+                            {% if bot.webhookInfo.lastErrorMessage is not null %}
+                                <section class="jj__color-red">
+                                    <span>Сообщение об ошибки:</span> {{bot.webhookInfo.lastErrorMessage}}
+                                </section>
+                            {% endif %}
                         </div>
                         <div class="jj__item_data jj__item_data--line">
                             <section>
@@ -88,12 +108,33 @@
 
                 {% for scenarioItem in scenario %}
                     <div class="jj__item">
-                        <div class="jj__item_name">Событие #{{ scenarioItem.id }}</div>
+                        <div class="jj__item_name">Сценарий #{{ scenarioItem.id }}</div>
 
                         <div class="jj__item_data jj__item_data--line">
                             <section>
                                 <span>Название:</span> {{ scenarioItem.name }}
                             </section>
+                        </div>
+
+                        <hr>
+
+                        <div class="jj__item_data jj__item_data--line">
+                            {% for bot in bots %}
+                                <section>
+                                    <form action="/dev/project/{{ projectId }}/scenario/{{ scenarioItem.id }}/apply/" method="GET">
+                                        <label>
+                                            Подключить бот:
+                                            <select name="botId">
+                                                <option value="{{ bot.botId }}">{{ bot.botName }}</option>
+                                            </select>
+                                            к сценарию
+                                        </label>
+                                        <button>
+                                            Подключить
+                                        </button>
+                                    </form>
+                                </section>
+                            {% endfor %}
                         </div>
                     </div>
                 {% endfor %}
@@ -244,18 +285,22 @@
                                 <span>Тип:</span> {{ historyItem.type }}
                             </section>
                             {% if historyItem.sender is defined %}
-                                <section class="jj__icon-soc--wrapper jj__item_field--history-sender">
-                                    <span>Откуда:</span> {{ historyItem.sender.name }} <img class="jj__icon-soc" src="{{ historyItem.sender.icon }}" alt="{{ historyItem.sender.name }}">
-                                </section>
+                                {% if historyItem.sender.name is not null %}
+                                    <section class="jj__icon-soc--wrapper jj__item_field--history-sender">
+                                        <span>Откуда:</span> {{ historyItem.sender.name }} <img class="jj__icon-soc" src="{{ historyItem.sender.icon }}" alt="{{ historyItem.sender.name }}">
+                                    </section>
+                                {% endif %}
                             {% endif %}
 
                             {% if historyItem.recipient is defined %}
-                                <section class="jj__icon-soc--wrapper jj__item_field--history-recipient">
-                                    <span>Куда:</span> {{ historyItem.recipient.name }} <img class="jj__icon-soc" src="{{ historyItem.recipient.icon }}" alt="{{ historyItem.recipient.name }}">
-                                </section>
+                                {% if historyItem.recipient.name is not null %}
+                                    <section class="jj__icon-soc--wrapper jj__item_field--history-recipient">
+                                        <span>Куда:</span> {{ historyItem.recipient.name }} <img class="jj__icon-soc" src="{{ historyItem.recipient.icon }}" alt="{{ historyItem.recipient.name }}">
+                                    </section>
+                                {% endif %}
                             {% endif %}
 
-                            {% if historyItem.errorMessage  is defined %}
+                            {% if historyItem.errorMessage is defined %}
                                 <section class="jj__item_field--history-error">
                                     <span>Контекст ошибки:</span> {{ historyItem.errorMessage }}
                                 </section>
@@ -267,266 +312,8 @@
         </div>
     </div>
 
-
     <br>
     <br>
-
-
-    {#    <div class="kb__container">#}
-    {#        <div class="kb__wrapper">#}
-    {#            <div>#}
-    {#                <h2>Боты</h2>#}
-    {#            </div>#}
-
-    {#            <div class="bot__wrapper">#}
-    {#                {% if bots is empty %}#}
-    {#                    <div class="kb__block-without-data">#}
-    {#                        Данных нет#}
-    {#                    </div>#}
-    {#                {% endif %}#}
-
-    {#                {% for bot in bots %}#}
-    {#                    <div class="bot__item">#}
-    {#                        <div class="bot__item_name">Название бота: {{ bot.botName }}</div>#}
-
-    {#                        <div class="bot__item_block">#}
-    {#                            <div class="bot__item-text">#}
-    {#                                <div class="bot__item-text_item">#}
-    {#                                    <span>Проект:</span> {{ bot.projectName }}#}
-    {#                                </div>#}
-    {#                                <div class="bot__item-text_item">#}
-    {#                                    <span>Состояние:</span>#}
-    {#                                    {% if bot.botActive is not empty %}#}
-    {#                                        <span class="bot__item-text_item--state-green">Активен</span>#}
-    {#                                    {% else %}#}
-    {#                                        <span class="bot__item-text_item--state-red">Не активен</span>#}
-    {#                                    {% endif %}#}
-    {#                                </div>#}
-    {#                                <div class="bot__item-text_item">#}
-    {#                                    <span>Тип:</span> {{ bot.botType }}#}
-    {#                                </div>#}
-    {#                                <div class="bot__item-text_item">#}
-    {#                                    <span>Токен:</span> {{ bot.botToken }}#}
-    {#                                </div>#}
-    {#                                <div class="bot__item-text_item">#}
-    {#                                    <span>Вебхук:</span> {{bot.webhookUri}}#}
-    {#                                </div>#}
-    {#                            </div>#}
-    {#                            <div class="bot__item-buttons">#}
-    {#                                <div class="bot__item-button bot__item-button--blue">#}
-    {#                                                                        <a href="#">установить вебхук</a>#}
-    {#                                </div>#}
-
-    {#                                <div class="bot__item-button bot__item-button--blue">#}
-    {#                                                                        <a href="#">установить вебхук</a>#}
-    {#                                </div>#}
-
-    {#                                <div class="bot__item-button bot__item-button--blue">#}
-    {#                                    <a href="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/webhook/activate/">установить вебхук</a>#}
-    {#                                </div>#}
-
-    {#                                {% if bot.botActive is not empty %}#}
-    {#                                    <div class="bot__item-button bot__item-button--red">#}
-    {#                                        <a href="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/deactivate/">Отключить бота</a>#}
-    {#                                    </div>#}
-    {#                                {% else %}#}
-    {#                                    <div class="bot__item-button bot__item-button--green">#}
-    {#                                        <a href="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/activate/">Включить бота</a>#}
-    {#                                    </div>#}
-    {#                                {% endif %}#}
-    {#                            </div>#}
-    {#                        </div>#}
-    {#                    </div>#}
-    {#                {% endfor %}#}
-    {#            </div>#}
-    {#        </div>#}
-
-    {#        <div class="kb__wrapper">#}
-    {#            <div>#}
-    {#                <h2>Сценарии</h2>#}
-    {#            </div>#}
-
-    {#            <div class="scenario__wrapper">#}
-    {#                {% if scenario is empty %}#}
-    {#                    <div class="kb__block-without-data">#}
-    {#                        Данных нет#}
-    {#                    </div>#}
-    {#                {% endif %}#}
-    {#            </div>#}
-    {#        </div>#}
-    {#    </div>#}
-
-    {#    <div class="kb__container">#}
-    {#        <div class="kb__wrapper">#}
-    {#            <div>#}
-    {#                <h2>Команды</h2>#}
-    {#            </div>#}
-
-    {#            <div class="command__wrapper">#}
-    {#                {% if commands is empty %}#}
-    {#                    <div class="kb__block-without-data">#}
-    {#                        Данных нет#}
-    {#                    </div>#}
-    {#                {% endif %}#}
-
-    {#                {% for command in commands %}#}
-    {#                    <div class="kb-min-block__item">#}
-    {#                        <div class="kb-min-block__item_name">Название команды: {{ command.commandName }}</div>#}
-
-    {#                        <div class="kb-min-block__item_block">#}
-    {#                            <div class="kb-min-block__item-text">#}
-    {#                                <div class="kb-min-block__item-text_item">#}
-    {#                                    <span>Описание:</span> {{ command.commandDescription }}#}
-    {#                                </div>#}
-    {#                            </div>#}
-    {#                            <div class="kb-min-block__item-buttons">#}
-    {#                                <div class="kb-min-block__item-button kb-min-block__item-button--green">#}
-    {#                                    <a href="/dev/project/{{ projectId }}/command/{{ command.commandCode }}/start/">Запустить команду</a>#}
-    {#                                </div>#}
-    {#                            </div>#}
-    {#                        </div>#}
-    {#                    </div>#}
-    {#                {% endfor %}#}
-    {#            </div>#}
-    {#        </div>#}
-
-    {#        <div class="kb__wrapper">#}
-    {#            <div>#}
-    {#                <h2>Сессии</h2>#}
-    {#            </div>#}
-
-    {#            <div class="sessions__wrapper">#}
-    {#                {% if sessions is empty %}#}
-    {#                    <div class="kb__block-without-data">#}
-    {#                        Данных нет#}
-    {#                    </div>#}
-    {#                {% endif %}#}
-
-    {#                {% for session in sessions %}#}
-    {#                    <div class="kb-min-block__item">#}
-    {#                        <div class="kb-min-block__item_name">Название сессии: {{ session.sessionName }}</div>#}
-
-    {#                        <div class="kb-min-block__item_block">#}
-    {#                            <div class="kb-min-block__item-text">#}
-    {#                                <div class="kb-min-block__item-text_item">#}
-    {#                                    <span>Канал:</span> {{ session.sessionChannel }}#}
-    {#                                </div>#}
-    {#                                {% if session.sessionVisitorEvent is defined %}#}
-    {#                                    <div class="kb-min-block__item-text_item">#}
-    {#                                        <span>Тип события:</span> {{ session.sessionVisitorEvent.type }}#}
-    {#                                    </div>#}
-    {#                                    <div class="kb-min-block__item-text_item">#}
-    {#                                        <span>Статус события:</span> {{ session.sessionVisitorEvent.status }}#}
-    {#                                    </div>#}
-    {#                                {% endif %}#}
-    {#                            </div>#}
-    {#                        </div>#}
-    {#                    </div>#}
-    {#                {% endfor %}#}
-    {#            </div>#}
-    {#        </div>#}
-
-    {#        <div class="kb__wrapper">#}
-    {#            <div>#}
-    {#                <h2>События</h2>#}
-    {#            </div>#}
-
-    {#            <div class="event__wrapper">#}
-    {#                {% if events is empty %}#}
-    {#                    <div class="kb__block-without-data">#}
-    {#                        Данных нет#}
-    {#                    </div>#}
-    {#                {% endif %}#}
-
-    {#                {% for event in events %}#}
-    {#                    <div class="kb-min-block__item">#}
-    {#                        <div class="kb-min-block__item_name">Событие #{{ event.id }}</div>#}
-
-    {#                        <div class="kb-min-block__item_block">#}
-    {#                            <div class="kb-min-block__item-text">#}
-    {#                                <div class="kb-min-block__item-text_item">#}
-    {#                                    <span>Тип события:</span> {{ event.type }}#}
-    {#                                </div>#}
-    {#                                <div class="kb-min-block__item-text_item">#}
-    {#                                    <span>Статус события:</span> {{ event.status }}#}
-    {#                                </div>#}
-    {#                            </div>#}
-    {#                        </div>#}
-    {#                    </div>#}
-    {#                {% endfor %}#}
-    {#            </div>#}
-    {#        </div>#}
-    {#    </div>#}
-
-    {#    <div class="kb__container">#}
-    {#        <div class="kb__wrapper">#}
-    {#            <div>#}
-    {#                <h2>Истории</h2>#}
-    {#            </div>#}
-    {#            <div class="history__wrapper" id="history__wrapper">#}
-    {#                {% if histories is empty %}#}
-    {#                    <div class="kb__block-without-data">#}
-    {#                        Данных нет#}
-    {#                    </div>#}
-    {#                {% endif %}#}
-
-    {#                {% for historyItem in histories %}#}
-    {#                    <div class="history__item#}
-    {#                        {% if historyItem.status == 'error' %}#}
-    {#                            history__item-error#}
-    {#                        {% endif %}#}
-    {#                    ">#}
-    {#                        <div class="history__item-w"><div class="history__line history__date">{{ historyItem.createdAt|date('Y-m-d h:i:s') }}</div></div>#}
-    {#                        <div class="history__item-w">#}
-    {#                            <div class="history__item-name">Статус</div>#}
-    {#                            <div class="history__line history__status#}
-    {#                            {% if historyItem.status == 'error' %}#}
-    {#                                history__status_fail#}
-    {#                            {% elseif historyItem.status == 'success' %}#}
-    {#                                history__status_success#}
-    {#                            {% endif %}#}
-    {#                            ">#}
-    {#                                {% if historyItem.status == 'error' %}#}
-    {#                                    Провалено#}
-    {#                                {% elseif historyItem.status == 'success' %}#}
-    {#                                    Успешно#}
-    {#                                {% endif %}#}
-    {#                            </div>#}
-    {#                        </div>#}
-    {#                        <div class="history__item-w">#}
-    {#                            <div class="history__item-name">Тип:</div>#}
-    {#                            <div class="history__line history__type">{{ historyItem.type }}</div>#}
-    {#                        </div>#}
-
-    {#                        {% if historyItem.sender is defined %}#}
-    {#                            <div class="history__item-w"><div class="history__item-name">Откуда:</div>#}
-    {#                                <div class="history__line history__sender">#}
-    {#                                    {{ historyItem.sender }}#}
-    {#                                </div>#}
-    {#                            </div>#}
-    {#                        {% endif %}#}
-
-    {#                        {% if historyItem.recipient is defined %}#}
-    {#                            <div class="history__item-w"><div class="history__item-name">Куда:</div>#}
-    {#                                <div class="history__line history__sender">#}
-    {#                                    {{ historyItem.recipient }}#}
-    {#                                </div>#}
-    {#                            </div>#}
-    {#                        {% endif %}#}
-
-    {#                        {% if historyItem.errorMessage  is defined %}#}
-    {#                            <div class="history__item-w"><div class="history__item-name">Контекст ошибки:</div>#}
-    {#                                <div class="history__line history__text_error">#}
-    {#                                    {{ historyItem.errorMessage }}#}
-    {#                                </div>#}
-    {#                            </div>#}
-    {#                        {% endif %}#}
-    {#                    </div>#}
-    {#                {% endfor %}#}
-    {#            </div>#}
-    {#        </div>#}
-    {#    </div>#}
-
 
     <script>
         const objDiv = document.getElementById("history__wrapper");

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dto\Core\Telegram\Message;
+namespace App\Dto\Core\Telegram\Request\Message;
 
 class MessageDto
 {

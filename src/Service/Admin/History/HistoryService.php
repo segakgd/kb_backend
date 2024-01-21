@@ -15,8 +15,6 @@ class HistoryService implements HistoryServiceInterface
 
     public const HISTORY_STATUS_SUCCESS = 'success';
 
-    public const HISTORY_STATUS_PROCESS = 'process';
-
     public const HISTORY_TYPE_NEW_LEAD = 'new_lead';
 
     public const HISTORY_TYPE_SEND_MESSAGE_TO_CHANNEL = 'send_message_to_channel';
@@ -25,13 +23,18 @@ class HistoryService implements HistoryServiceInterface
 
     public const HISTORY_TYPE_LOGIN = 'login';
 
+    public const HISTORY_TYPES = [
+        self::HISTORY_TYPE_NEW_LEAD,
+        self::HISTORY_TYPE_SEND_MESSAGE_TO_CHANNEL,
+        self::HISTORY_TYPE_SEND_MESSAGE_TO_TELEGRAM_CHANNEL,
+        self::HISTORY_TYPE_LOGIN,
+    ];
+
     public const HISTORY_SENDER_TELEGRAM = 'telegram';
 
-    public const HISTORY_SENDER_VK = 'vk';
-
-    public const HISTORY_RECIPIENT_BITRIX = 'bitrix';
-
-    public const HISTORY_RECIPIENT_FLEXBE = 'flexbe';
+    public const HISTORY_SENDERS = [
+        self::HISTORY_SENDER_TELEGRAM,
+    ];
 
     public function __construct(
         private readonly HistoryRepository $historyRepositoryRepository,
@@ -52,12 +55,10 @@ class HistoryService implements HistoryServiceInterface
         int $projectId,
         string $type,
         string $status,
-        string $sender,
-        string $recipient,
-        HistoryErrorRespDto $error,
-        DateTimeImmutable $createdAt
+        ?string $sender = null,
+        ?string $recipient = null,
+        ?HistoryErrorRespDto $error = null,
     ): History {
-        $error = $this->serializer->normalize($error);
 
         $history = (new History())
             ->setProjectId($projectId)
@@ -65,12 +66,27 @@ class HistoryService implements HistoryServiceInterface
             ->setStatus($status)
             ->setSender($sender)
             ->setRecipient($recipient)
-            ->setError($error)
-            ->setCreatedAt($createdAt)
+            ->setCreatedAt(new DateTimeImmutable())
         ;
+
+        if ($error){
+            $error = $this->serializer->normalize($error);
+
+            $history->setError($error);
+        }
 
         $this->historyRepositoryRepository->saveAndFlush($history);
 
         return $history;
+    }
+
+    public static function notExistType(string $type): bool
+    {
+        return !in_array($type, self::HISTORY_TYPES);
+    }
+
+    public static function notExistSender(string $sender): bool
+    {
+        return !in_array($sender, self::HISTORY_SENDERS);
     }
 }

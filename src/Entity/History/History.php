@@ -23,10 +23,10 @@ class History
     #[ORM\Column(length: 255)]
     private ?string $status = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $sender = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $recipient = null;
 
     #[ORM\Column]
@@ -81,7 +81,7 @@ class History
         return $this->sender;
     }
 
-    public function setSender(string $sender): static
+    public function setSender(?string $sender): static
     {
         $this->sender = $sender;
 
@@ -93,7 +93,7 @@ class History
         return $this->recipient;
     }
 
-    public function setRecipient(string $recipient): static
+    public function setRecipient(?string $recipient): static
     {
         $this->recipient = $recipient;
 

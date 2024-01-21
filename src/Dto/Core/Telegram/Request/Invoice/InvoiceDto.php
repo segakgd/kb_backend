@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dto\Core\Telegram\Invoice;
+namespace App\Dto\Core\Telegram\Request\Invoice;
 
 class InvoiceDto
 {
