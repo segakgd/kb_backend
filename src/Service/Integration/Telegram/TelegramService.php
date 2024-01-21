@@ -82,7 +82,6 @@ class TelegramService implements TelegramServiceInterface
             ->setScenario($scenario)
             ->setToken($token)
             ->setData($data)
-            ->setResponseClassName($responseClassName)
-        ;
+            ->setResponseClassName($responseClassName);
     }
 }

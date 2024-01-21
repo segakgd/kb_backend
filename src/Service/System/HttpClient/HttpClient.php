@@ -33,7 +33,7 @@ class HttpClient implements HttpClientInterface
 
         $responseClassName = $request->getResponseClassName();
 
-        if ($responseClassName){
+        if ($responseClassName) {
             return $this->serializer->denormalize($result, $responseClassName, 'json');
         }
 
@@ -52,7 +52,7 @@ class HttpClient implements HttpClientInterface
             $response = curl_exec($ch);
 
             curl_close($ch);
-        } elseif ($method === self::METHOD_POST){
+        } elseif ($method === self::METHOD_POST) {
             $ch = curl_init($uri);
 
             curl_setopt($ch, CURLOPT_POST, 1);

@@ -11,6 +11,8 @@ use Exception;
 class HistoryErrorService // todo можно перевести в разряд хелперов
 {
     /**
+     * Types @see HistoryService::HISTORY_TYPES
+     *
      * @throws Exception
      */
     public static function errorSystem(string $message, int $projectId, string $type, ?string $sender = null): void
