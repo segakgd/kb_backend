@@ -49,7 +49,7 @@ class DashboardService
         ];
     }
 
-    public function prepareScenario(array $scenarios): array
+    private function prepareScenario(array $scenarios): array
     {
         $prepareScenarios = [];
 
@@ -77,12 +77,13 @@ class DashboardService
                 'type' => $event->getType(),
                 'status' => $event->getStatus(),
                 'createdAt' => $event->getCreatedAt(),
+                'error' => $event->getError(),
             ];
 
             $prepareEvents[] = $prepareEvent;
         }
 
-        return $prepareEvents;
+        return array_reverse($prepareEvents); // todo не очень норм использовать array_reverse
     }
 
     private function prepareSessions(array $sessions): array

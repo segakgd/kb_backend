@@ -162,13 +162,29 @@
                     <div class="jj__item">
                         <div class="jj__item_name">Событие #{{ event.id }}</div>
 
-                        <div class="jj__item_data jj__item_data--line">
+                        <div class="jj__item_data">
                             <section>
                                 <span>Тип события:</span> {{ event.type }}
                             </section>
+
                             <section>
-                                <span>Статус события:</span> {{ event.status }}
+                                <span>Статус события:</span>
+                                {% if event.status == 'fail' %}
+                                    <span class="jj__color-red"> Провалено </span>
+                                {% elseif event.status == 'done' %}
+                                    <span class="jj__color-green"> Успешно </span>
+                                {% elseif event.status == 'new' %}
+                                    <span class="jj__color-blue"> Новое </span>
+                                {% else %}
+                                    {{ event.status }}
+                                {% endif %}
                             </section>
+
+                            {% if event.error is not null %}
+                                <section class="jj__color-red">
+                                    <span>Ошибка:</span> {{ event.error }}
+                                </section>
+                            {% endif %}
                         </div>
                     </div>
                 {% endfor %}

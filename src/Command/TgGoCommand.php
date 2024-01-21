@@ -4,6 +4,8 @@ namespace App\Command;
 
 use App\Entity\Visitor\VisitorEvent;
 use App\Repository\Visitor\VisitorEventRepository;
+use App\Service\Admin\History\HistoryService;
+use App\Service\Common\History\HistoryErrorService;
 use App\Service\System\Handler\ActionHandler;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -54,8 +56,15 @@ class TgGoCommand extends Command
             $this->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_DONE);
 
         } catch (Throwable $throwable){
+            $visitorEvent->setError($throwable->getMessage());
 
             $this->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_FAIL);
+
+//            HistoryErrorService::errorSystem(
+//                $throwable->getMessage(),
+//                $visitorEvent->getProjectId(),
+//                HistoryService::HISTORY_TYPE_SEND_MESSAGE_TO_CHANNEL
+//            );
 
             $io->error($throwable->getMessage());
 
