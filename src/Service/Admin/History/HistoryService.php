@@ -59,7 +59,6 @@ class HistoryService implements HistoryServiceInterface
         ?string $recipient = null,
         ?HistoryErrorRespDto $error = null,
     ): History {
-        $error = $this->serializer->normalize($error);
 
         $history = (new History())
             ->setProjectId($projectId)
@@ -67,9 +66,14 @@ class HistoryService implements HistoryServiceInterface
             ->setStatus($status)
             ->setSender($sender)
             ->setRecipient($recipient)
-            ->setError($error)
             ->setCreatedAt(new DateTimeImmutable())
         ;
+
+        if ($error){
+            $error = $this->serializer->normalize($error);
+
+            $history->setError($error);
+        }
 
         $this->historyRepositoryRepository->saveAndFlush($history);
 
