@@ -3,6 +3,7 @@
 namespace App\Entity\Scenario;
 
 use App\Repository\Scenario\ScenarioRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ScenarioRepository::class)]
@@ -33,6 +34,12 @@ class Scenario
 
     #[ORM\Column(length: 50)]
     private ?string $groupType = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $botId = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?DateTimeImmutable $deletedAt = null;
 
     public function getId(): ?int
     {
@@ -119,6 +126,37 @@ class Scenario
     public function setGroupType(string $groupType): static
     {
         $this->groupType = $groupType;
+
+        return $this;
+    }
+
+    public function getBotId(): ?int
+    {
+        return $this->botId;
+    }
+
+    public function setBotId(?int $botId): static
+    {
+        $this->botId = $botId;
+
+        return $this;
+    }
+
+    public function getDeletedAt(): ?DateTimeImmutable
+    {
+        return $this->deletedAt;
+    }
+
+    public function setDeletedAt(?DateTimeImmutable $deletedAt): static
+    {
+        $this->deletedAt = $deletedAt;
+
+        return $this;
+    }
+
+    public function markAtDeleted(): static
+    {
+        $this->deletedAt = new DateTimeImmutable();
 
         return $this;
     }

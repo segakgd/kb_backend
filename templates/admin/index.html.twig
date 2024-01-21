@@ -115,6 +115,27 @@
                                 <span>Название:</span> {{ scenarioItem.name }}
                             </section>
                         </div>
+
+                        <hr>
+
+                        <div class="jj__item_data jj__item_data--line">
+                            {% for bot in bots %}
+                                <section>
+                                    <form action="/dev/project/{{ projectId }}/scenario/{{ scenarioItem.id }}/apply/" method="GET">
+                                        <label>
+                                            Подключить бот:
+                                            <select name="botId">
+                                                <option value="{{ bot.botId }}">{{ bot.botName }}</option>
+                                            </select>
+                                            к сценарию
+                                        </label>
+                                        <button>
+                                            Подключить
+                                        </button>
+                                    </form>
+                                </section>
+                            {% endfor %}
+                        </div>
                     </div>
                 {% endfor %}
             </div>

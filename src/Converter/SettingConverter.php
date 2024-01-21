@@ -15,15 +15,29 @@ class SettingConverter
     /**
      * @throws Exception
      */
-    public function convert(array $settings, int $projectId, int $ownerId = null): array
+    public function convert(array $settings, int $projectId, int $botId, int $ownerId = null): array
+    {
+        // todo при конвертации лучше использовать транзакции
+        $this->scenarioService->markAsRemoveScenario($projectId, $botId);
+
+        return $this->convertItems($settings, $projectId, $botId, $ownerId );
+    }
+
+    public function convertItems(array $settings, int $projectId, int $botId, int $ownerId = null): array
     {
         $result = [];
 
         foreach ($settings as $settingItem) {
-            $scenario = $this->scenarioService->createScenario($settingItem, $settingItem['name'], $projectId, 'group' . $projectId, $ownerId); // todo название группы не очень
+            $scenario = $this->scenarioService->createScenario(
+                $settingItem,
+                $projectId,
+                'group' . $projectId,  // todo название группы не очень... а вообще нужны группы?
+                $botId,
+                $ownerId,
+            );
 
             if (isset($settingItem['sub'])){
-                $resultSud = $this->convert($settingItem['sub'], $projectId, $scenario->getId());
+                $resultSud = $this->convertItems($settingItem['sub'], $projectId, $botId, $scenario->getId());
 
                 $result = array_merge($result, $resultSud);
             }

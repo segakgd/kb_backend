@@ -411,6 +411,23 @@ h1, h2 {
     margin-top: 10px;
 }
 
+.jj__item_data section button{
+    border: 0;
+    box-shadow: var(--button-shadow);
+    cursor: pointer;
+    text-decoration: none;
+    transition: 80ms cubic-bezier(.33,1,.68,1);
+    transition-property: box-shadow;
+    white-space: nowrap;
+    background-color: #5368d5;
+    color: #fff;
+    display: block;
+    padding: 5px 15px;
+    width: fit-content;
+    border-radius: 6px;
+    margin-top: 10px;
+}
+
 .jj__color-red{
     color: #e85574;
 }

@@ -2,6 +2,8 @@
 
 namespace App\Controller\Dev;
 
+use App\Converter\SettingConverter;
+use App\Entity\Scenario\ScenarioTemplate;
 use App\Entity\User\Project;
 use App\Event\InitWebhookBotEvent;
 use App\Service\Admin\Bot\BotServiceInterface;
@@ -11,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,7 +22,8 @@ class EventsDashboardController extends AbstractDashboardController
     public function __construct(
         private readonly BotServiceInterface $botService,
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly KernelInterface $kernel
+        private readonly KernelInterface $kernel,
+        private readonly SettingConverter $settingConverter,
     ) {
     }
 
@@ -44,11 +48,27 @@ class EventsDashboardController extends AbstractDashboardController
     {
         $bot = $this->botService->findOne($botId, $project->getId());
 
-        if (!$bot){
+        if (!$bot) {
             throw new Exception('Бота не существует');
         }
 
         $this->eventDispatcher->dispatch(new InitWebhookBotEvent($bot));
+
+        return new RedirectResponse('/admin');
+    }
+
+    /**
+     * @throws Exception
+     */
+    #[Route('/dev/project/{project}/scenario/{scenarioTemplate}/apply/', name: '???', methods: ['GET'])]
+    public function applyScenarioToBot(
+        Request $request,
+        Project $project,
+        ScenarioTemplate $scenarioTemplate,
+    ): RedirectResponse {
+        $botId = $request->query->get('botId') ?? throw new Exception('Нет параметра botId');
+
+        $this->settingConverter->convert([$scenarioTemplate->getScenario()], $project->getId(), $botId);
 
         return new RedirectResponse('/admin');
     }
