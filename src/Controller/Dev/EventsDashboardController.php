@@ -5,6 +5,7 @@ namespace App\Controller\Dev;
 use App\Converter\SettingConverter;
 use App\Entity\Scenario\ScenarioTemplate;
 use App\Entity\User\Project;
+use App\Entity\Visitor\VisitorEvent;
 use App\Event\InitWebhookBotEvent;
 use App\Service\Admin\Bot\BotServiceInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -58,9 +59,36 @@ class EventsDashboardController extends AbstractDashboardController
     }
 
     /**
+     * Command start @see TgGoCommand
+     *
      * @throws Exception
      */
-    #[Route('/dev/project/{project}/scenario/{scenarioTemplate}/apply/', name: '???', methods: ['GET'])]
+    #[Route('/dev/project/{project}/event/{event}/restart/', name: 'restart_one_fail_event', methods: ['GET'])]
+    public function restartOneFailEvent(Project $project, VisitorEvent $event): RedirectResponse
+    {
+        $application = new Application($this->kernel);
+        $application->setAutoExit(false);
+
+        $input = new ArrayInput(
+            [
+                'command' => 'kb:tg:handler_events',
+                'visitorEventId' => $event->getId(),
+            ]
+        );
+
+//        dd($input->getArguments());
+//
+//        $input->setArgument('visitorEventId', $event->getId());
+
+        $application->run($input);
+
+        return new RedirectResponse('/admin');
+    }
+
+    /**
+     * @throws Exception
+     */
+    #[Route('/dev/project/{project}/scenario/{scenarioTemplate}/apply/', name: 'apply_scenario_to_bot', methods: ['GET'])]
     public function applyScenarioToBot(
         Request $request,
         Project $project,

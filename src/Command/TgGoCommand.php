@@ -9,6 +9,7 @@ use App\Service\Common\History\HistoryErrorService;
 use App\Service\System\Handler\ActionHandler;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -28,15 +29,28 @@ class TgGoCommand extends Command
         parent::__construct($name);
     }
 
+    protected function configure(): void
+    {
+        $this
+            ->addArgument('visitorEventId', InputArgument::OPTIONAL, 'Обрабатываем конкретный евент')
+        ;
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
-        $visitorEvent = $this->visitorEventRepository->findOneBy(
-            [
-                'status' => VisitorEvent::STATUS_NEW,
-            ]
-        );
+        $visitorEventId = $input->getArgument('visitorEventId');
+
+        if ($visitorEventId){
+            $visitorEvent = $this->visitorEventRepository->find($visitorEventId);
+        } else {
+            $visitorEvent = $this->visitorEventRepository->findOneBy(
+                [
+                    'status' => VisitorEvent::STATUS_NEW,
+                ]
+            );
+        }
 
         if (!$visitorEvent){
             return Command::SUCCESS;
@@ -56,6 +70,8 @@ class TgGoCommand extends Command
             $this->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_DONE);
 
         } catch (Throwable $throwable){
+            dd($throwable);
+
             $visitorEvent->setError($throwable->getMessage());
 
             $this->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_FAIL);

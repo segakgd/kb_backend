@@ -7,6 +7,7 @@ use App\Entity\Visitor\VisitorEvent;
 use App\Repository\Scenario\ScenarioRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Integration\Telegram\TelegramService;
+use Exception;
 
 class CommandHandler
 {
@@ -17,16 +18,24 @@ class CommandHandler
     ) {
     }
 
+    /**
+     * @throws Exception
+     */
     public function handle(VisitorEvent $visitorEvent): bool
     {
         $behaviorScenarioId = $visitorEvent->getBehaviorScenario();
 
         $behaviorScenario = $this->behaviorScenarioRepository->find($behaviorScenarioId);
+
         $behaviorScenarioContent = $behaviorScenario->getContent();
 
         $visitorSession = $this->visitorSessionRepository->findByEventId($visitorEvent->getId());
 
-//        if ($behaviorScenarioContent['product']){
+        if (!$visitorSession){
+            throw new Exception('Сессии этого собития не существует не существует или у сессии уже другое событие'); // todo при таком раскладе можно удалить событие
+        }
+
+        //        if ($behaviorScenarioContent['product']){
 //            $invoiceDto = (new InvoiceDto())
 //                ->setChatId($visitorSession->getChannelId())
 //                ->setTitle($behaviorScenarioContent['product']['name'] ?? 'asdasd sa')

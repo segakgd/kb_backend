@@ -204,9 +204,13 @@ class MessageDto
         ];
 
         if (!empty($this->getReplyMarkup())){
-            $normalize['reply_markup'] = json_encode([
-                'keyboard' => $this->getReplyMarkup(),
-            ]);
+            $normalize['reply_markup'] = json_encode(
+                [
+                    'keyboard' => [
+                        $this->getReplyMarkup()
+                    ],
+                ]
+            );
         }
 
         return $normalize;

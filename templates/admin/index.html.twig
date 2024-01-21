@@ -171,6 +171,7 @@
                                 <span>Статус события:</span>
                                 {% if event.status == 'fail' %}
                                     <span class="jj__color-red"> Провалено </span>
+                                    <a class="jj__a-inline" href="/dev/project/{{ projectId }}/event/{{ event.id }}/restart/">Перезапустить</a>
                                 {% elseif event.status == 'done' %}
                                     <span class="jj__color-green"> Успешно </span>
                                 {% elseif event.status == 'new' %}

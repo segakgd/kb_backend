@@ -18,6 +18,7 @@ class BehaviorScenarioService
             [
                 'type' => $type,
                 'name' => $name,
+                'deletedAt' => null,
             ]
         );
     }

@@ -18,6 +18,8 @@ class TelegramService implements TelegramServiceInterface
     ) {
     }
 
+    // todo если ожидать тут бота, то многие проблемы решит это, т.к у бота есть и id проекта и токены
+
     /**
      * @return GetWebhookInfoDto
      */
