@@ -325,6 +325,59 @@ h1, h2 {
     width: 49%;
 }
 
+
+@media (max-width:800px){
+    .jj__main_wrapper--line {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .jj__wrapper-50 {
+        width: 80%;
+    }
+
+    .jj__wrapper-30 {
+        width: 80%;
+    }
+}
+
+@media (max-width:550px){
+    .jj__main_wrapper--line {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .jj__wrapper-50 {
+        width: 90%;
+    }
+
+    .jj__wrapper-30 {
+        width: 90%;
+    }
+}
+
+@media (max-width:450px){
+    .jj__main_wrapper--line {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .jj__wrapper-50 {
+        width: 100%;
+    }
+
+    .jj__wrapper-30 {
+        width: 100%;
+    }
+}
+
+
+
+
+
+
+
+
 .jj__h {
     padding: 10px 0 20px 0;
 }

@@ -17,6 +17,8 @@ class HistoryService implements HistoryServiceInterface
 
     public const HISTORY_TYPE_NEW_LEAD = 'new_lead';
 
+    public const HISTORY_TYPE_WEBHOOK = 'webhook';
+
     public const HISTORY_TYPE_SEND_MESSAGE_TO_CHANNEL = 'send_message_to_channel';
 
     public const HISTORY_TYPE_SEND_MESSAGE_TO_TELEGRAM_CHANNEL = 'send_message_to_telegram_channel';
@@ -28,6 +30,7 @@ class HistoryService implements HistoryServiceInterface
         self::HISTORY_TYPE_SEND_MESSAGE_TO_CHANNEL,
         self::HISTORY_TYPE_SEND_MESSAGE_TO_TELEGRAM_CHANNEL,
         self::HISTORY_TYPE_LOGIN,
+        self::HISTORY_TYPE_WEBHOOK,
     ];
 
     public const HISTORY_SENDER_TELEGRAM = 'telegram';
@@ -42,12 +45,16 @@ class HistoryService implements HistoryServiceInterface
     ) {
     }
 
-    public function findAll(int $projectId): array
+    public function findAll(int $projectId, ?int $limit = null): array
     {
         return $this->historyRepositoryRepository->findBy(
             [
-                'projectId' => $projectId
-            ]
+                'projectId' => $projectId,
+            ],
+            [
+                'id' => 'DESC'
+            ],
+            $limit
         );
     }
 

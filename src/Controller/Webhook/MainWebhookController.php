@@ -4,6 +4,8 @@ namespace App\Controller\Webhook;
 
 use App\Dto\Webhook\Telegram\TelegramWebhookDto;
 use App\Repository\User\ProjectEntityRepository;
+use App\Service\Admin\History\HistoryService;
+use App\Service\Common\History\HistoryEventService;
 use App\Service\Visitor\Event\VisitorEventService;
 use App\Service\Visitor\Session\VisitorSessionService;
 use App\Service\Visitor\VisitorServiceInterface;
@@ -13,6 +15,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Throwable;
 
 class MainWebhookController extends AbstractController
 {
@@ -22,6 +25,7 @@ class MainWebhookController extends AbstractController
         private readonly VisitorEventService $visitorEventService,
         private readonly VisitorServiceInterface $visitorService,
         private readonly ProjectEntityRepository $projectEntityRepository,
+        private readonly HistoryEventService $historyEventService,
     ) {
     }
 
@@ -37,36 +41,48 @@ class MainWebhookController extends AbstractController
             return new JsonResponse();
         }
 
-        $webhookData = $this->serializer->deserialize(
-            $request->getContent(),
-            TelegramWebhookDto::class,
-            'json'
-        );
-
-        $chatId = $webhookData->getWebhookChatId();
-        $visitorName = $webhookData->getVisitorName();
-
-        $visitorSession = $this->visitorSessionService->identifyByChannel($chatId, $channel);
-
-        if (!$visitorSession){
-            $visitor = $this->visitorService->createVisitor();
-
-            $visitorSession = $this->visitorSessionService->createVisitorSession(
-                $visitor,
-                $visitorName,
-                $chatId,
-                'telegram',
-                $projectId
+        try {
+            $webhookData = $this->serializer->deserialize(
+                $request->getContent(),
+                TelegramWebhookDto::class,
+                'json'
             );
+
+            $chatId = $webhookData->getWebhookChatId();
+            $visitorName = $webhookData->getVisitorName();
+
+            $visitorSession = $this->visitorSessionService->identifyByChannel($chatId, $channel);
+
+            if (!$visitorSession){
+                $visitor = $this->visitorService->createVisitor();
+
+                $visitorSession = $this->visitorSessionService->createVisitorSession(
+                    $visitor,
+                    $visitorName,
+                    $chatId,
+                    'telegram',
+                    $projectId
+                );
+            }
+
+            // определяем событие
+            $this->visitorEventService->createVisitorEventForSession(
+                $visitorSession,
+                $webhookData->getWebhookType(),
+                $webhookData->getWebhookContent()
+            );
+        } catch (Throwable $exception) {
+            $this->historyEventService->errorSystem(
+                $exception->getMessage(),
+                $projectId,
+                HistoryService::HISTORY_TYPE_WEBHOOK,
+            );
+
+            return new JsonResponse('ok', 200);
         }
 
-        // определяем событие
-        $this->visitorEventService->createVisitorEventForSession(
-            $visitorSession,
-            $webhookData->getWebhookType(),
-            $webhookData->getWebhookContent()
-        );
+        $this->historyEventService->webhookSuccess($projectId);
 
-        return new JsonResponse();
+        return new JsonResponse('ok', 200);
     }
 }

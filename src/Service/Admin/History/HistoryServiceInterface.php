@@ -7,7 +7,7 @@ use App\Entity\History\History;
 
 interface HistoryServiceInterface
 {
-    public function findAll(int $projectId): array;
+    public function findAll(int $projectId, ?int $limit = null): array;
 
     public function add(
         int $projectId,

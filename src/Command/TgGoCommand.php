@@ -7,6 +7,7 @@ use App\Repository\Visitor\VisitorEventRepository;
 use App\Service\Admin\History\HistoryService;
 use App\Service\Common\History\HistoryErrorService;
 use App\Service\System\Handler\ActionHandler;
+use App\Service\Visitor\Event\VisitorEventService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -22,7 +23,7 @@ use Throwable;
 class TgGoCommand extends Command
 {
     public function __construct(
-        private readonly VisitorEventRepository $visitorEventRepository, // todo использовать сервис
+        private readonly VisitorEventService $visitorEventService,
         private readonly ActionHandler $actionHandler,
         string $name = null
     ) {
@@ -43,13 +44,9 @@ class TgGoCommand extends Command
         $visitorEventId = $input->getArgument('visitorEventId');
 
         if ($visitorEventId){
-            $visitorEvent = $this->visitorEventRepository->find($visitorEventId);
+            $visitorEvent = $this->visitorEventService->findOneById($visitorEventId);
         } else {
-            $visitorEvent = $this->visitorEventRepository->findOneBy(
-                [
-                    'status' => VisitorEvent::STATUS_NEW,
-                ]
-            );
+            $visitorEvent = $this->visitorEventService->findOneByStatus(VisitorEvent::STATUS_NEW);
         }
 
         if (!$visitorEvent){
@@ -67,14 +64,12 @@ class TgGoCommand extends Command
 //                $this->updateChatEventStatus($chatEvent, ChatEvent::STATUS_DONE);
 //            }
 
-            $this->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_DONE);
+            $this->visitorEventService->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_DONE);
 
         } catch (Throwable $throwable){
-            dd($throwable);
-
             $visitorEvent->setError($throwable->getMessage());
 
-            $this->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_FAIL);
+            $this->visitorEventService->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_FAIL);
 
 //            HistoryErrorService::errorSystem(
 //                $throwable->getMessage(),
@@ -88,12 +83,5 @@ class TgGoCommand extends Command
         }
 
         return Command::SUCCESS;
-    }
-
-    protected function updateChatEventStatus(VisitorEvent $chatEvent, string $status): void
-    {
-        $chatEvent->setStatus($status);
-
-        $this->visitorEventRepository->saveAndFlush($chatEvent);
     }
 }

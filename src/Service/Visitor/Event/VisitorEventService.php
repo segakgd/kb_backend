@@ -39,6 +39,22 @@ class VisitorEventService
         return $this->visitorEventRepository->find($id);
     }
 
+    public function findOneByStatus(string $status): ?VisitorEvent
+    {
+        return $this->visitorEventRepository->findOneBy(
+            [
+                'status' => $status,
+            ]
+        );
+    }
+
+    public function updateChatEventStatus(VisitorEvent $chatEvent, string $status): void
+    {
+        $chatEvent->setStatus($status);
+
+        $this->visitorEventRepository->saveAndFlush($chatEvent);
+    }
+
     /**
      * @throws Exception
      */

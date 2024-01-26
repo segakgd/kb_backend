@@ -32,7 +32,7 @@ class DashboardService
     {
         $projectId = $project->getId();
 
-        $histories = $this->historyService->findAll($projectId);
+        $histories = $this->historyService->findAll($projectId, 10);
         $bots = $this->botService->findAll($projectId);
         $sessions = $this->visitorSessionService->findAll($projectId);
         $events = $this->visitorEventService->findAllByProjectId($projectId);
@@ -129,6 +129,11 @@ class DashboardService
                 'commandCode' => 'cache:clear',
                 'commandDescription' => 'Чистим кеш в проде',
             ],
+            [
+                'commandName' => '😵🐙 Обработать события (бесконечно)',
+                'commandCode' => 'kb:tg:events:handler',
+                'commandDescription' => 'Обрабатывает бесконечно до первой ошибки',
+            ],
         ];
     }
 
@@ -184,13 +189,13 @@ class DashboardService
             ];
 
             if ($history->getStatus() === HistoryService::HISTORY_STATUS_ERROR){
-                $prepareHistory['errorMessage'] = $this->getNormalizedErrorMessage();
+                $prepareHistory['errorMessage'] = $this->getNormalizedErrorMessage($history->getError());
             }
 
             $prepareHistories[] = $prepareHistory;
         }
 
-        return $prepareHistories;
+        return array_reverse($prepareHistories); // todo не очень норм использовать array_reverse
     }
 
     private function getNormalizedType(string $type): string
@@ -200,12 +205,13 @@ class DashboardService
             HistoryService::HISTORY_TYPE_SEND_MESSAGE_TO_CHANNEL => 'отправка данных в сторонний сервис (интеграции)',
             HistoryService::HISTORY_TYPE_SEND_MESSAGE_TO_TELEGRAM_CHANNEL => 'отправка уведомлений в telegram',
             HistoryService::HISTORY_TYPE_LOGIN => 'вход в систему',
+            HistoryService::HISTORY_TYPE_WEBHOOK => 'Вебхук',
         };
     }
 
-    private function getNormalizedErrorMessage(): string
+    private function getNormalizedErrorMessage(array $error): string
     {
-        return 'Пока что для примера просто оставлю это сообщение.';
+        return $error['context'][0]['message'] ?? ''; // todo колхоз
     }
 
     private function getIconUri($name): string
