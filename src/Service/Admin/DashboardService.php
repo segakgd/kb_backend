@@ -96,7 +96,7 @@ class DashboardService
             $visitorEvent = null;
 
             if ($session->getVisitorEvent()){
-                $visitorEvent = $this->visitorEventService->findOneById($session->getVisitorEvent());
+                $visitorEvent = $this->visitorEventRepository->findOneById($session->getVisitorEvent());
             }
 
             $prepareSession = [
