@@ -21,36 +21,6 @@ class VisitorEventService
     ) {
     }
 
-    public function findAllByProjectId(int $projectId): array
-    {
-        return $this->visitorEventRepository->findBy(
-            [
-                'projectId' => $projectId
-            ]
-        );
-    }
-
-    public function findOneById(int $id): ?VisitorEvent
-    {
-        return $this->visitorEventRepository->find($id);
-    }
-
-    public function findOneByStatus(string $status): ?VisitorEvent
-    {
-        return $this->visitorEventRepository->findOneBy(
-            [
-                'status' => $status,
-            ]
-        );
-    }
-
-    public function updateChatEventStatus(VisitorEvent $chatEvent, string $status): void
-    {
-        $chatEvent->setStatus($status);
-
-        $this->visitorEventRepository->saveAndFlush($chatEvent);
-    }
-
     /**
      * @throws Exception
      */
@@ -69,7 +39,7 @@ class VisitorEventService
         $this->rewriteChatEventByScenario($visitorEvent, $visitorSession, $type, $content);
     }
 
-    public function getVisitorEventIsExist(?int $visitorEventId): ?VisitorEvent
+    private function getVisitorEventIsExist(?int $visitorEventId): ?VisitorEvent
     {
         if (!$visitorEventId) {
             return null;
@@ -91,6 +61,7 @@ class VisitorEventService
         $scenario = $this->behaviorScenarioService->getScenarioByNameAndType($type, $content);
 
         if (null === $scenario) {
+            // todo нужно отправить что-то дефолтное
             throw new Exception('Не существует ни одного сценария');
         }
 

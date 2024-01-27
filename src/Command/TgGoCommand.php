@@ -23,7 +23,7 @@ use Throwable;
 class TgGoCommand extends Command
 {
     public function __construct(
-        private readonly VisitorEventService $visitorEventService,
+        private readonly VisitorEventRepository $visitorEventRepository,
         private readonly ActionHandler $actionHandler,
         string $name = null
     ) {
@@ -44,9 +44,9 @@ class TgGoCommand extends Command
         $visitorEventId = $input->getArgument('visitorEventId');
 
         if ($visitorEventId){
-            $visitorEvent = $this->visitorEventService->findOneById($visitorEventId);
+            $visitorEvent = $this->visitorEventRepository->findOneById($visitorEventId);
         } else {
-            $visitorEvent = $this->visitorEventService->findOneByStatus(VisitorEvent::STATUS_NEW);
+            $visitorEvent = $this->visitorEventRepository->findOneByStatus(VisitorEvent::STATUS_NEW);
         }
 
         if (!$visitorEvent){

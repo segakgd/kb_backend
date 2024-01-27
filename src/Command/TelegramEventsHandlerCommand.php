@@ -3,6 +3,8 @@
 namespace App\Command;
 
 use App\Entity\Visitor\VisitorEvent;
+use App\Repository\Visitor\VisitorEventRepository;
+use App\Repository\Visitor\VisitorRepository;
 use App\Service\System\Handler\ActionHandler;
 use App\Service\Visitor\Event\VisitorEventService;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -22,7 +24,7 @@ use function sleep;
 class TelegramEventsHandlerCommand extends Command
 {
     public function __construct(
-        private readonly VisitorEventService $visitorEventService,
+        private readonly VisitorEventRepository $visitorEventRepository,
         private readonly ActionHandler $actionHandler,
         string $name = null
     ) {
@@ -37,18 +39,18 @@ class TelegramEventsHandlerCommand extends Command
 
         for (;;)
         {
-            $visitorEvent = $this->visitorEventService->findOneByStatus(VisitorEvent::STATUS_NEW);
+            $visitorEvent = $this->visitorEventRepository->findOneByStatus(VisitorEvent::STATUS_NEW);
 
             if ($visitorEvent){
                 try {
                     $this->actionHandler->handle($visitorEvent);
 
-                    $this->visitorEventService->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_DONE);
+                    $this->visitorEventRepository->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_DONE);
 
                 } catch (Throwable $throwable){
                     $visitorEvent->setError($throwable->getMessage());
 
-                    $this->visitorEventService->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_FAIL);
+                    $this->visitorEventRepository->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_FAIL);
 
                     $io->error($throwable->getMessage());
 

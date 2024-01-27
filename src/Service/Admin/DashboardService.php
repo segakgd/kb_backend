@@ -8,6 +8,7 @@ use App\Entity\User\Bot;
 use App\Entity\User\Project;
 use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
+use App\Repository\Visitor\VisitorEventRepository;
 use App\Service\Admin\Bot\BotServiceInterface;
 use App\Service\Admin\History\HistoryService;
 use App\Service\Admin\History\HistoryServiceInterface;
@@ -23,7 +24,7 @@ class DashboardService
         private readonly HistoryServiceInterface $historyService,
         private readonly BotServiceInterface $botService,
         private readonly VisitorSessionServiceInterface $visitorSessionService,
-        private readonly VisitorEventService $visitorEventService,
+        private readonly VisitorEventRepository $visitorEventRepository,
         private readonly ScenarioTemplateService $scenarioTemplateService,
     ) {
     }
@@ -35,7 +36,7 @@ class DashboardService
         $histories = $this->historyService->findAll($projectId, 10);
         $bots = $this->botService->findAll($projectId);
         $sessions = $this->visitorSessionService->findAll($projectId);
-        $events = $this->visitorEventService->findAllByProjectId($projectId);
+        $events = $this->visitorEventRepository->findAllByProjectId($projectId);
         $scenarioTemplate = $this->scenarioTemplateService->getAllByProjectId($projectId);
 
         return [
