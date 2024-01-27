@@ -195,7 +195,7 @@ class DashboardService
             $prepareHistories[] = $prepareHistory;
         }
 
-        return array_reverse($prepareHistories); // todo не очень норм использовать array_reverse
+        return $prepareHistories;
     }
 
     private function getNormalizedType(string $type): string
