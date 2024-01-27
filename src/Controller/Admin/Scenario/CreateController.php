@@ -2,7 +2,6 @@
 
 namespace App\Controller\Admin\Scenario;
 
-use App\Controller\Admin\Promotion\DTO\Request\PromotionReqDto;
 use App\Controller\Admin\Scenario\DTO\Request\ScenarioReqDto;
 use App\Entity\User\Project;
 use App\Service\Admin\Scenario\ScenarioTemplateService;

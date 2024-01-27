@@ -21,6 +21,36 @@ class VisitorEventRepository extends ServiceEntityRepository
         parent::__construct($registry, VisitorEvent::class);
     }
 
+    public function findAllByProjectId(int $projectId): array
+    {
+        return $this->findBy(
+            [
+                'projectId' => $projectId
+            ]
+        );
+    }
+
+    public function findOneById(int $id): ?VisitorEvent
+    {
+        return $this->find($id);
+    }
+
+    public function findOneByStatus(string $status): ?VisitorEvent
+    {
+        return $this->findOneBy(
+            [
+                'status' => $status,
+            ]
+        );
+    }
+
+    public function updateChatEventStatus(VisitorEvent $chatEvent, string $status): void
+    {
+        $chatEvent->setStatus($status);
+
+        $this->saveAndFlush($chatEvent);
+    }
+
     public function saveAndFlush(VisitorEvent $entity): void
     {
         $this->getEntityManager()->persist($entity);

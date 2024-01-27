@@ -4,9 +4,13 @@ namespace App\Command;
 
 use App\Entity\Visitor\VisitorEvent;
 use App\Repository\Visitor\VisitorEventRepository;
+use App\Service\Admin\History\HistoryService;
+use App\Service\Common\History\HistoryErrorService;
 use App\Service\System\Handler\ActionHandler;
+use App\Service\Visitor\Event\VisitorEventService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -19,22 +23,31 @@ use Throwable;
 class TgGoCommand extends Command
 {
     public function __construct(
-        private readonly VisitorEventRepository $visitorEventRepository, // todo использовать сервис
+        private readonly VisitorEventRepository $visitorEventRepository,
         private readonly ActionHandler $actionHandler,
         string $name = null
     ) {
         parent::__construct($name);
     }
 
+    protected function configure(): void
+    {
+        $this
+            ->addArgument('visitorEventId', InputArgument::OPTIONAL, 'Обрабатываем конкретный евент')
+        ;
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
-        $visitorEvent = $this->visitorEventRepository->findOneBy(
-            [
-                'status' => VisitorEvent::STATUS_NEW,
-            ]
-        );
+        $visitorEventId = $input->getArgument('visitorEventId');
+
+        if ($visitorEventId){
+            $visitorEvent = $this->visitorEventRepository->findOneById($visitorEventId);
+        } else {
+            $visitorEvent = $this->visitorEventRepository->findOneByStatus(VisitorEvent::STATUS_NEW);
+        }
 
         if (!$visitorEvent){
             return Command::SUCCESS;
@@ -51,11 +64,18 @@ class TgGoCommand extends Command
 //                $this->updateChatEventStatus($chatEvent, ChatEvent::STATUS_DONE);
 //            }
 
-            $this->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_DONE);
+            $this->visitorEventService->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_DONE);
 
         } catch (Throwable $throwable){
+            $visitorEvent->setError($throwable->getMessage());
 
-            $this->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_FAIL);
+            $this->visitorEventService->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_FAIL);
+
+//            HistoryErrorService::errorSystem(
+//                $throwable->getMessage(),
+//                $visitorEvent->getProjectId(),
+//                HistoryService::HISTORY_TYPE_SEND_MESSAGE_TO_CHANNEL
+//            );
 
             $io->error($throwable->getMessage());
 
@@ -63,12 +83,5 @@ class TgGoCommand extends Command
         }
 
         return Command::SUCCESS;
-    }
-
-    protected function updateChatEventStatus(VisitorEvent $chatEvent, string $status): void
-    {
-        $chatEvent->setStatus($status);
-
-        $this->visitorEventRepository->saveAndFlush($chatEvent);
     }
 }

@@ -32,9 +32,6 @@ class Scenario
     #[ORM\Column]
     private ?int $projectId = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $groupType = null;
-
     #[ORM\Column(nullable: true)]
     private ?int $botId = null;
 
@@ -114,18 +111,6 @@ class Scenario
     public function setProjectId(int $projectId): static
     {
         $this->projectId = $projectId;
-
-        return $this;
-    }
-
-    public function getGroupType(): ?string
-    {
-        return $this->groupType;
-    }
-
-    public function setGroupType(string $groupType): static
-    {
-        $this->groupType = $groupType;
 
         return $this;
     }

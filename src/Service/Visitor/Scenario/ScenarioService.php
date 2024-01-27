@@ -19,7 +19,6 @@ class ScenarioService implements ScenarioServiceInterface
     public function createScenario(
         array $settingItem, // todo не самое лучшее рещение использовать массив для $settingItem, но пока оставил так. (надо будет переделать)
         int $projectId,
-        string $groupType,
         int $botId,
         ?int $ownerId = null,
     ): Scenario {
@@ -40,7 +39,6 @@ class ScenarioService implements ScenarioServiceInterface
             ->setName($settingItem['name'])
             ->setContent($settingItem['content'])
             ->setActionAfter($settingItem['actionAfter'] ?? null)
-            ->setGroupType($groupType)
             ->setProjectId($projectId)
             ->setBotId($botId)
         ;
@@ -54,7 +52,57 @@ class ScenarioService implements ScenarioServiceInterface
         return $step;
     }
 
-    public function markAsRemoveScenario(int $projectId, int $botId)
+    // todo нужно ещё учитывать bot id
+    public function getScenarioByNameAndType(string $type, string $name): ?Scenario
+    {
+        return $this->scenarioRepository->findOneBy(
+            [
+                'type' => $type,
+                'name' => $name,
+                'deletedAt' => null,
+            ]
+        );
+    }
+
+    // todo нужно ещё учитывать bot id
+    public function getDefaultScenario(): ?Scenario
+    {
+        return $this->scenarioRepository->findOneBy(
+            [
+                'name' => 'default', // в константу
+                'deletedAt' => null,
+            ]
+        );
+    }
+
+    public function getScenarioByOwnerId(int $ownerBehaviorScenarioId): ?Scenario
+    {
+        return $this->scenarioRepository->findOneBy(
+            [
+                'ownerStepId' => $ownerBehaviorScenarioId,
+            ]
+        );
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function generateDefaultScenario(int $projectId, int $botId): Scenario
+    {
+        return $this->createScenario(
+            [
+                "name" => "default",
+                "type" => "message",
+                "content" => [
+                    "message"=>"Не знаю что вам ответить",
+                ],
+            ],
+            $projectId,
+            $botId,
+        );
+    }
+
+    public function markAsRemoveScenario(int $projectId, int $botId): void
     {
         $scenarios = $this->scenarioRepository->findBy(
             [

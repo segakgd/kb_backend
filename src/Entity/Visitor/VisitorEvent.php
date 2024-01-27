@@ -45,6 +45,9 @@ class VisitorEvent
     #[ORM\Column(nullable: true)]
     private ?int $projectId = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $error = null;
+
     public function __construct()
     {
         if ($this->createdAt === null){
@@ -142,6 +145,18 @@ class VisitorEvent
     public function setProjectId(?int $projectId): static
     {
         $this->projectId = $projectId;
+
+        return $this;
+    }
+
+    public function getError(): ?string
+    {
+        return $this->error;
+    }
+
+    public function setError(?string $error): static
+    {
+        $this->error = $error;
 
         return $this;
     }

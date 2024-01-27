@@ -20,6 +20,8 @@ class SettingConverter
         // todo при конвертации лучше использовать транзакции
         $this->scenarioService->markAsRemoveScenario($projectId, $botId);
 
+        $this->scenarioService->generateDefaultScenario($projectId, $botId);
+
         return $this->convertItems($settings, $projectId, $botId, $ownerId );
     }
 
@@ -31,7 +33,6 @@ class SettingConverter
             $scenario = $this->scenarioService->createScenario(
                 $settingItem,
                 $projectId,
-                'group' . $projectId,  // todo название группы не очень... а вообще нужны группы?
                 $botId,
                 $ownerId,
             );

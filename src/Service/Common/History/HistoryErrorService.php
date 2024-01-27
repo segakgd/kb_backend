@@ -8,6 +8,7 @@ use App\Exception\History\HistoryExceptionInterface;
 use App\Service\Admin\History\HistoryService;
 use Exception;
 
+// todo ну по факту не удачное решение... т.к не всегда ок рабоатать именно с исключениями... нужно подумать...
 class HistoryErrorService // todo можно перевести в разряд хелперов
 {
     /**

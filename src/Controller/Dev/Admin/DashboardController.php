@@ -7,7 +7,6 @@ use App\Entity\User\Bot;
 use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
 use App\Service\Admin\DashboardService;
-use App\Service\Common\History\HistoryErrorService;
 use App\Service\Common\Project\ProjectServiceInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
