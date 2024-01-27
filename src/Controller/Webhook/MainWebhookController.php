@@ -3,7 +3,9 @@
 namespace App\Controller\Webhook;
 
 use App\Dto\Webhook\Telegram\TelegramWebhookDto;
+use App\Repository\User\BotRepository;
 use App\Repository\User\ProjectEntityRepository;
+use App\Service\Admin\Bot\BotServiceInterface;
 use App\Service\Admin\History\HistoryService;
 use App\Service\Common\History\HistoryEventService;
 use App\Service\Visitor\Event\VisitorEventService;
@@ -26,6 +28,7 @@ class MainWebhookController extends AbstractController
         private readonly VisitorServiceInterface $visitorService,
         private readonly ProjectEntityRepository $projectEntityRepository,
         private readonly HistoryEventService $historyEventService,
+        private readonly BotRepository $botRepository,
     ) {
     }
 
@@ -40,6 +43,12 @@ class MainWebhookController extends AbstractController
         if (!$project){
             return new JsonResponse();
         }
+
+        $bot = $this->botRepository->findOneBy(
+            [
+                'projectId' => $projectId,
+            ]
+        );
 
         try {
             $webhookData = $this->serializer->deserialize(
@@ -69,7 +78,8 @@ class MainWebhookController extends AbstractController
             $this->visitorEventService->createVisitorEventForSession(
                 $visitorSession,
                 $webhookData->getWebhookType(),
-                $webhookData->getWebhookContent()
+                $webhookData->getWebhookContent(),
+                $bot->getId(),
             );
         } catch (Throwable $exception) {
             $this->historyEventService->errorSystem(

@@ -7,7 +7,7 @@ use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
 use App\Repository\Visitor\VisitorEventRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
-use App\Service\Admin\Scenario\BehaviorScenarioService;
+use App\Service\Visitor\Scenario\ScenarioService;
 use App\Service\Visitor\Session\VisitorSessionServiceInterface;
 use Exception;
 
@@ -17,15 +17,19 @@ class VisitorEventService
         private readonly VisitorEventRepository $visitorEventRepository,
         private readonly VisitorSessionRepository $visitorSessionRepository,
         private readonly VisitorSessionServiceInterface $visitorSessionService,
-        private readonly BehaviorScenarioService $behaviorScenarioService,
+        private readonly ScenarioService $scenarioService,
     ) {
     }
 
     /**
      * @throws Exception
      */
-    public function createVisitorEventForSession(VisitorSession $visitorSession, string $type, string $content): void
-    {
+    public function createVisitorEventForSession(
+        VisitorSession $visitorSession,
+        string $type,
+        string $content,
+        int $botId,
+    ): void {
         $visitorEventId = $visitorSession->getVisitorEvent();
 
         $visitorEvent = $this->getVisitorEventIsExist($visitorEventId);
@@ -36,7 +40,7 @@ class VisitorEventService
             return;
         }
 
-        $this->rewriteChatEventByScenario($visitorEvent, $visitorSession, $type, $content);
+        $this->rewriteChatEventByScenario($visitorEvent, $visitorSession, $type, $content, $botId);
     }
 
     private function getVisitorEventIsExist(?int $visitorEventId): ?VisitorEvent
@@ -58,11 +62,10 @@ class VisitorEventService
      */
     private function createVisitorEventByScenario(VisitorSession $visitorSession, string $type, string $content): void
     {
-        $scenario = $this->behaviorScenarioService->getScenarioByNameAndType($type, $content);
+        $scenario = $this->scenarioService->getScenarioByNameAndType($type, $content);
 
         if (null === $scenario) {
-            // todo нужно отправить что-то дефолтное
-            throw new Exception('Не существует ни одного сценария');
+            $scenario = $this->scenarioService->getDefaultScenario();
         }
 
         $visitorEvent = $this->createChatEvent($scenario, $type);
@@ -86,21 +89,25 @@ class VisitorEventService
         return $visitorEvent;
     }
 
+    /**
+     * @throws Exception
+     */
     private function rewriteChatEventByScenario(
         VisitorEvent $visitorEvent,
         VisitorSession $visitorSession,
         string $type,
         string $content,
+        int $botId,
     ): void {
-        $scenario = $this->behaviorScenarioService->getScenarioByNameAndType($type, $content);
+        $scenario = $this->scenarioService->getScenarioByNameAndType($type, $content);
 
         if (!$scenario) { // todo что тут проиходит?
             $ownerBehaviorScenarioId = $visitorEvent->getBehaviorScenario();
-            $scenario = $this->behaviorScenarioService->getScenarioByOwnerId($ownerBehaviorScenarioId);
+            $scenario = $this->scenarioService->getScenarioByOwnerId($ownerBehaviorScenarioId);
         }
 
         if (!$scenario) { // todo как сюда дойти? оО
-            $scenario = $this->behaviorScenarioService->generateDefaultScenario();
+            $scenario = $this->scenarioService->generateDefaultScenario($visitorEvent->getProjectId(), $botId);
         }
 
         // один и тот же сценарий, нет смысла перезатирать

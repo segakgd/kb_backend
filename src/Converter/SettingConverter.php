@@ -20,7 +20,7 @@ class SettingConverter
         // todo при конвертации лучше использовать транзакции
         $this->scenarioService->markAsRemoveScenario($projectId, $botId);
 
-        $this->createDefault($projectId, $botId);
+        $this->scenarioService->generateDefaultScenario($projectId, $botId);
 
         return $this->convertItems($settings, $projectId, $botId, $ownerId );
     }
@@ -33,7 +33,6 @@ class SettingConverter
             $scenario = $this->scenarioService->createScenario(
                 $settingItem,
                 $projectId,
-                'group' . $projectId,  // todo название группы не очень... а вообще нужны группы?
                 $botId,
                 $ownerId,
             );
@@ -46,21 +45,5 @@ class SettingConverter
         }
 
         return $result;
-    }
-
-    private function createDefault(int $projectId, int $botId): void
-    {
-        $this->scenarioService->createScenario(
-            [
-                "name" => "default",
-                "type" => "message",
-                "content" => [
-                    "message"=>"Не знаю что вам ответить",
-                ],
-            ],
-            $projectId,
-            'group' . $projectId,  // todo название группы не очень... а вообще нужны группы?
-            $botId,
-        );
     }
 }

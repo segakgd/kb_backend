@@ -14,7 +14,6 @@ use App\Service\Admin\History\HistoryService;
 use App\Service\Admin\History\HistoryServiceInterface;
 use App\Service\Admin\Scenario\ScenarioTemplateService;
 use App\Service\Integration\Telegram\TelegramService;
-use App\Service\Visitor\Event\VisitorEventService;
 use App\Service\Visitor\Session\VisitorSessionServiceInterface;
 
 class DashboardService

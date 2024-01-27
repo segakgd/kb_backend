@@ -13,7 +13,7 @@ class MessageHandler
 {
     public function __construct(
         private readonly TelegramService $telegramService,
-        private readonly ScenarioRepository $behaviorScenarioRepository,
+        private readonly ScenarioRepository $scenarioRepository,
         private readonly VisitorSessionRepository $visitorSessionRepository,
     ) {
     }
@@ -24,7 +24,7 @@ class MessageHandler
     public function handle(VisitorEvent $visitorEvent): bool
     {
         $behaviorScenarioId = $visitorEvent->getBehaviorScenario();
-        $behaviorScenario = $this->behaviorScenarioRepository->find($behaviorScenarioId);
+        $behaviorScenario = $this->scenarioRepository->find($behaviorScenarioId);
 
         if (!$behaviorScenario){
             throw new Exception('Не существует сценария');

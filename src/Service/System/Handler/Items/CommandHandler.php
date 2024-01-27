@@ -13,7 +13,7 @@ class CommandHandler
 {
     public function __construct(
         private readonly TelegramService $telegramService,
-        private readonly ScenarioRepository $behaviorScenarioRepository,
+        private readonly ScenarioRepository $scenarioRepository,
         private readonly VisitorSessionRepository $visitorSessionRepository,
     ) {
     }
@@ -25,7 +25,7 @@ class CommandHandler
     {
         $behaviorScenarioId = $visitorEvent->getBehaviorScenario();
 
-        $behaviorScenario = $this->behaviorScenarioRepository->find($behaviorScenarioId);
+        $behaviorScenario = $this->scenarioRepository->find($behaviorScenarioId);
 
         $behaviorScenarioContent = $behaviorScenario->getContent();
 

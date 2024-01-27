@@ -9,7 +9,6 @@ interface ScenarioServiceInterface
     public function createScenario(
         array $settingItem,
         int $projectId,
-        string $groupType,
         int $botId,
         ?int $ownerId = null,
     ): Scenario;
