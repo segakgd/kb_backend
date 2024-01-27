@@ -28,7 +28,6 @@ class MainWebhookController extends AbstractController
         private readonly VisitorServiceInterface $visitorService,
         private readonly ProjectEntityRepository $projectEntityRepository,
         private readonly HistoryEventService $historyEventService,
-        private readonly BotRepository $botRepository,
     ) {
     }
 
@@ -43,12 +42,6 @@ class MainWebhookController extends AbstractController
         if (!$project){
             return new JsonResponse();
         }
-
-        $bot = $this->botRepository->findOneBy(
-            [
-                'projectId' => $projectId,
-            ]
-        );
 
         try {
             $webhookData = $this->serializer->deserialize(
@@ -79,7 +72,6 @@ class MainWebhookController extends AbstractController
                 $visitorSession,
                 $webhookData->getWebhookType(),
                 $webhookData->getWebhookContent(),
-                $bot->getId(),
             );
         } catch (Throwable $exception) {
             $this->historyEventService->errorSystem(

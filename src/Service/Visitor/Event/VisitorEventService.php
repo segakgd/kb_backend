@@ -28,7 +28,6 @@ class VisitorEventService
         VisitorSession $visitorSession,
         string $type,
         string $content,
-        int $botId,
     ): void {
         $visitorEventId = $visitorSession->getVisitorEvent();
 
@@ -40,7 +39,7 @@ class VisitorEventService
             return;
         }
 
-        $this->rewriteChatEventByScenario($visitorEvent, $visitorSession, $type, $content, $botId);
+        $this->rewriteChatEventByScenario($visitorEvent, $visitorSession, $type, $content);
     }
 
     private function getVisitorEventIsExist(?int $visitorEventId): ?VisitorEvent
@@ -97,7 +96,6 @@ class VisitorEventService
         VisitorSession $visitorSession,
         string $type,
         string $content,
-        int $botId,
     ): void {
         $scenario = $this->scenarioService->getScenarioByNameAndType($type, $content);
 
@@ -106,8 +104,8 @@ class VisitorEventService
             $scenario = $this->scenarioService->getScenarioByOwnerId($ownerBehaviorScenarioId);
         }
 
-        if (!$scenario) { // todo как сюда дойти? оО
-            $scenario = $this->scenarioService->generateDefaultScenario($visitorEvent->getProjectId(), $botId);
+        if (!$scenario) {
+            $scenario = $this->scenarioService->getDefaultScenario();
         }
 
         // один и тот же сценарий, нет смысла перезатирать
