@@ -34,7 +34,6 @@ class VisitorSessionService implements VisitorSessionServiceInterface
     }
 
     public function createVisitorSession(
-        Visitor $visitor,
         string $visitorName,
         int $chatId,
         string $chanel,
@@ -44,7 +43,6 @@ class VisitorSessionService implements VisitorSessionServiceInterface
             ->setName($visitorName)
             ->setChannel($chanel)
             ->setChannelId($chatId)
-            ->setVisitorId($visitor->getId())
             ->setProjectId($projectId)
             ->setCreatedAt(new DateTimeImmutable())
         ;

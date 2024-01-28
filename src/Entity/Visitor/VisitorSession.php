@@ -24,8 +24,6 @@ class VisitorSession
     #[ORM\Column]
     private ?int $channelId = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $visitorId = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $visitorEvent = null;
@@ -46,11 +44,6 @@ class VisitorSession
     public function getId(): int
     {
         return $this->id;
-    }
-
-    public function getVisitorId(): int
-    {
-        return $this->visitorId;
     }
 
     public function getName(): ?string
@@ -85,13 +78,6 @@ class VisitorSession
     public function setChannelId(int $channelId): static
     {
         $this->channelId = $channelId;
-
-        return $this;
-    }
-
-    public function setVisitorId(int $visitorId): self
-    {
-        $this->visitorId = $visitorId;
 
         return $this;
     }

@@ -3,14 +3,11 @@
 namespace App\Controller\Webhook;
 
 use App\Dto\Webhook\Telegram\TelegramWebhookDto;
-use App\Repository\User\BotRepository;
 use App\Repository\User\ProjectEntityRepository;
-use App\Service\Admin\Bot\BotServiceInterface;
 use App\Service\Admin\History\HistoryService;
 use App\Service\Common\History\HistoryEventService;
 use App\Service\Visitor\Event\VisitorEventService;
 use App\Service\Visitor\Session\VisitorSessionService;
-use App\Service\Visitor\VisitorServiceInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,7 +22,6 @@ class MainWebhookController extends AbstractController
         private readonly SerializerInterface $serializer,
         private readonly VisitorSessionService $visitorSessionService,
         private readonly VisitorEventService $visitorEventService,
-        private readonly VisitorServiceInterface $visitorService,
         private readonly ProjectEntityRepository $projectEntityRepository,
         private readonly HistoryEventService $historyEventService,
     ) {
@@ -37,6 +33,8 @@ class MainWebhookController extends AbstractController
     #[Route('/webhook/{projectId}/{channel}/', name: 'app_webhook_handler', methods: ['POST'])]
     public function addWebhookAction(Request $request, int $projectId, string $channel): JsonResponse
     {
+        // todo нужно прокинуть в запрос botId
+
         $project = $this->projectEntityRepository->find($projectId);
 
         if (!$project){
@@ -56,10 +54,7 @@ class MainWebhookController extends AbstractController
             $visitorSession = $this->visitorSessionService->identifyByChannel($chatId, $channel);
 
             if (!$visitorSession){
-                $visitor = $this->visitorService->createVisitor();
-
                 $visitorSession = $this->visitorSessionService->createVisitorSession(
-                    $visitor,
                     $visitorName,
                     $chatId,
                     'telegram',

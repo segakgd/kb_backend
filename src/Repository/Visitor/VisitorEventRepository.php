@@ -51,6 +51,20 @@ class VisitorEventRepository extends ServiceEntityRepository
         $this->saveAndFlush($chatEvent);
     }
 
+    public function getVisitorEventIsExist(?int $visitorEventId): ?VisitorEvent
+    {
+        if (!$visitorEventId) {
+            return null;
+        }
+
+        return $this->findOneBy(
+            [
+                'id' => $visitorEventId,
+                'status' => 'new',
+            ]
+        );
+    }
+
     public function saveAndFlush(VisitorEvent $entity): void
     {
         $this->getEntityManager()->persist($entity);

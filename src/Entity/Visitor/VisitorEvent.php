@@ -28,7 +28,7 @@ class VisitorEvent
     private ?string $type = null;
 
     #[ORM\Column]
-    private ?int $behaviorScenario = null;
+    private ?int $behaviorScenario = null; // todo переименовать
 
     #[ORM\Column(nullable: true)]
     private ?array $actionBefore = [];

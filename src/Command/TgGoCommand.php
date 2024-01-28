@@ -64,12 +64,12 @@ class TgGoCommand extends Command
 //                $this->updateChatEventStatus($chatEvent, ChatEvent::STATUS_DONE);
 //            }
 
-            $this->visitorEventService->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_DONE);
+            $this->visitorEventRepository->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_DONE);
 
         } catch (Throwable $throwable){
             $visitorEvent->setError($throwable->getMessage());
 
-            $this->visitorEventService->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_FAIL);
+            $this->visitorEventRepository->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_FAIL);
 
 //            HistoryErrorService::errorSystem(
 //                $throwable->getMessage(),

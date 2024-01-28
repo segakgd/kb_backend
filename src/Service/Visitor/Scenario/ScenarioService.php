@@ -16,6 +16,31 @@ class ScenarioService implements ScenarioServiceInterface
     /**
      * @throws Exception
      */
+    public function getScenario(
+        string $type,
+        string $content,
+        ?int $ownerBehaviorScenarioId = null,
+    ): Scenario {
+        $scenario = $this->getScenarioByNameAndType($type, $content);
+
+        if (null === $scenario && $ownerBehaviorScenarioId) {
+            $scenario = $this->getScenarioByOwnerId($ownerBehaviorScenarioId);
+        }
+
+        if (null === $scenario) {
+            $scenario = $this->getDefaultScenario();
+        }
+
+        if (null === $scenario) {
+            throw new Exception('Нет сценария по умолчанию');
+        }
+
+        return $scenario;
+    }
+
+    /**
+     * @throws Exception
+     */
     public function createScenario(
         array $settingItem, // todo не самое лучшее рещение использовать массив для $settingItem, но пока оставил так. (надо будет переделать)
         int $projectId,

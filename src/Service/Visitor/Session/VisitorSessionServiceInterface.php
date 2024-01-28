@@ -12,7 +12,6 @@ interface VisitorSessionServiceInterface
     public function identifyByChannel(int $channelId, string $channel): ?VisitorSession;
 
     public function createVisitorSession(
-        Visitor $visitor,
         string $visitorName,
         int $chatId,
         string $chanel,

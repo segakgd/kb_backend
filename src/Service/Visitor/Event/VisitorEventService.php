@@ -31,7 +31,7 @@ class VisitorEventService
     ): void {
         $visitorEventId = $visitorSession->getVisitorEvent();
 
-        $visitorEvent = $this->getVisitorEventIsExist($visitorEventId);
+        $visitorEvent = $this->visitorEventRepository->getVisitorEventIsExist($visitorEventId);
 
         if (!$visitorEvent) {
             $this->createVisitorEventByScenario($visitorSession, $type, $content);
@@ -42,32 +42,14 @@ class VisitorEventService
         $this->rewriteChatEventByScenario($visitorEvent, $visitorSession, $type, $content);
     }
 
-    private function getVisitorEventIsExist(?int $visitorEventId): ?VisitorEvent
-    {
-        if (!$visitorEventId) {
-            return null;
-        }
-
-        return $this->visitorEventRepository->findOneBy(
-            [
-                'id' => $visitorEventId,
-                'status' => 'new',
-            ]
-        );
-    }
-
     /**
      * @throws Exception
      */
     private function createVisitorEventByScenario(VisitorSession $visitorSession, string $type, string $content): void
     {
-        $scenario = $this->scenarioService->getScenarioByNameAndType($type, $content);
+        $scenario = $this->scenarioService->getScenario($type, $content);
 
-        if (null === $scenario) {
-            $scenario = $this->scenarioService->getDefaultScenario();
-        }
-
-        $visitorEvent = $this->createChatEvent($scenario, $type);
+        $visitorEvent = $this->createEvent($scenario, $type);
         $visitorEventId = $visitorEvent->getId();
 
         $visitorSession->setVisitorEvent($visitorEventId);
@@ -75,7 +57,7 @@ class VisitorEventService
         $this->visitorSessionRepository->save($visitorSession);
     }
 
-    private function createChatEvent(Scenario $scenario, string $type): VisitorEvent
+    private function createEvent(Scenario $scenario, string $type): VisitorEvent
     {
         $visitorEvent = (new VisitorEvent())
             ->setType($type)
@@ -97,16 +79,7 @@ class VisitorEventService
         string $type,
         string $content,
     ): void {
-        $scenario = $this->scenarioService->getScenarioByNameAndType($type, $content);
-
-        if (!$scenario) { // todo что тут проиходит?
-            $ownerBehaviorScenarioId = $visitorEvent->getBehaviorScenario();
-            $scenario = $this->scenarioService->getScenarioByOwnerId($ownerBehaviorScenarioId);
-        }
-
-        if (!$scenario) {
-            $scenario = $this->scenarioService->getDefaultScenario();
-        }
+        $scenario = $this->scenarioService->getScenario($type, $content, $visitorEvent->getBehaviorScenario());
 
         // один и тот же сценарий, нет смысла перезатирать
         if ($visitorEvent->getBehaviorScenario() === $scenario->getId()) {
@@ -114,7 +87,7 @@ class VisitorEventService
         }
 
         $oldEventId = $visitorSession->getVisitorEvent();
-        $visitorEvent = $this->createChatEvent($scenario, $type);
+        $visitorEvent = $this->createEvent($scenario, $type);
 
         $this->visitorSessionService->rewriteVisitorEvent($visitorSession, $visitorEvent->getId());
         $this->visitorEventRepository->removeById($oldEventId);
