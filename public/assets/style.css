@@ -317,6 +317,10 @@ h1, h2 {
     overflow: auto;
 }
 
+.jj__wrapper-h-auto {
+    height: auto;
+}
+
 .jj__wrapper-30 {
     width: 32%;
 }

@@ -10,6 +10,32 @@
     <br>
 
     <div class="jj__main_wrapper jj__main_wrapper--line">
+        <div class="jj__wrapper jj__wrapper-50 jj__wrapper-h-auto">
+            <div class="jj__h">
+                <h2>Сообщения в телегу</h2>
+            </div>
+
+            <div class="jj__items">
+                {% for bot in bots %}
+                    <section>
+                        <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                            <label>
+                                Сообщение в бот {{ bot.botId }}:
+                            </label>
+                            <input type="text" name="message">
+                            <button>
+                                Отправить
+                            </button>
+                        </form>
+                    </section>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="jj__main_wrapper jj__main_wrapper--line">
         {# -------------------------------------------------------------------------------------------------------- #}
         {# --------------------------------------------------Боты-------------------------------------------------- #}
         {# -------------------------------------------------------------------------------------------------------- #}

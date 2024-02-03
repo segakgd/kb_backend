@@ -156,7 +156,7 @@ class DashboardService
                 'botActive' => $bot->isActive(),
                 'webhookUri' => $bot->getWebhookUri() ?? '',
                 'webhookInfo' => [
-                    'pendingUpdateCount' => $webhookBotInfo->getPendingUpdateCount(),
+                    'pendingUpdateCount' => $webhookBotInfo->getPendingUpdateCount() ?? 0,
                     'lastErrorDate' => $webhookBotInfo->getLastErrorDate() ?? null,
                     'lastErrorMessage' => $webhookBotInfo->getLastErrorMessage() ?? null,
                 ],
