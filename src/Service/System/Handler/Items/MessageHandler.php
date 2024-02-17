@@ -23,27 +23,51 @@ class MessageHandler
      */
     public function handle(VisitorEvent $visitorEvent): bool
     {
-        $behaviorScenarioId = $visitorEvent->getBehaviorScenario();
-        $behaviorScenario = $this->scenarioRepository->find($behaviorScenarioId);
+        $scenario = $this->scenarioRepository->findOneBy(
+            [
+                'UUID' => $visitorEvent->getScenarioUUID(),
+            ]
+        );
 
-        if (!$behaviorScenario){
+        if (!$scenario) {
             throw new Exception('Не существует сценария');
         }
 
-        $behaviorScenarioContent = $behaviorScenario->getContent();
         $visitorSession = $this->visitorSessionRepository->findByEventId($visitorEvent->getId());
+        $scenarioSteps = $scenario->getSteps();
 
-        $messageDto = (new MessageDto())
-            ->setChatId($visitorSession->getChatId())
-            ->setText($behaviorScenarioContent['message'])
-        ;
+        foreach ($scenarioSteps as $scenarioStep) {
+            $messageDto = (new MessageDto())
+                ->setChatId($visitorSession->getChatId())
+                ->setText($scenarioStep['message']);
 
-        if(!empty($behaviorScenarioContent['replyMarkup'])){
-            $messageDto->setReplyMarkup($behaviorScenarioContent['replyMarkup']);
+            if (!empty($scenarioStep['keyboard'])) {
+                $replyMarkups = $this->keyboard($scenarioStep);
+
+                if (!empty($replyMarkups)) {
+                    $messageDto->setReplyMarkup($replyMarkups);
+                }
+            }
+
+            $this->telegramService->sendMessage(
+                $messageDto,
+                '6722125407:AAEDDnc7qpbaZpZg-wpfXQ5h7Yp5mhJND0U'
+            ); // todo токен брать из настрек
         }
 
-        $this->telegramService->sendMessage($messageDto, '6722125407:AAEDDnc7qpbaZpZg-wpfXQ5h7Yp5mhJND0U'); // todo токен брать из настрек
-
         return true;
+    }
+
+    private function keyboard(array $scenarioStep): array
+    {
+        $replyMarkups = [];
+
+        foreach ($scenarioStep['keyboard']['replyMarkup'] as $key => $replyMarkup) {
+            foreach ($replyMarkup as $keyItem => $replyMarkupItem) {
+                $replyMarkups[$key][$keyItem]['text'] = $replyMarkupItem['text'];
+            }
+        }
+
+        return $replyMarkups;
     }
 }
