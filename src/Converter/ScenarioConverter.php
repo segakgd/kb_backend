@@ -34,6 +34,9 @@ class ScenarioConverter
 
             $scenarios = $this->convertToEntity($scenario->getScenarios(), $projectId, $botId);
 
+            $this->entityManager->flush();
+            $this->entityManager->commit();
+
         } catch (Throwable $exception) {
             $this->entityManager->rollback();
 
@@ -67,6 +70,9 @@ class ScenarioConverter
 
             $scenarioEntities[] = $scenarioEntity;
 
+            $this->entityManager->persist($scenarioEntity);
+            $this->entityManager->flush($scenarioEntity);
+
 //            $scenario->
 
 //            $step = (new Scenario())
@@ -81,7 +87,8 @@ class ScenarioConverter
 //            dd($scenario);
         }
 
-        dd($scenarioEntities);
+
+//        dd($scenarioEntities);
 
         return $scenarioEntities;
     }

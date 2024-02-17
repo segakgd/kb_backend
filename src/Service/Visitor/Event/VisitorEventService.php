@@ -31,6 +31,12 @@ class VisitorEventService
     ): void {
         $visitorEventId = $visitorSession->getVisitorEvent();
 
+        // в сессии ничего нету - создаём исходя из того что присалали на бота.
+        // если это команда, то ищем из числа команд, ??? если нет то из доступных сообщений ???
+        //
+        // если мы знаем что присылали в прошлый раз, в сессии стоит prev, при этом, в нынешнее событие обработано
+        // мы можем найти доступные варианты ответа на нужное нам сообщение
+
         $visitorEvent = $this->visitorEventRepository->getVisitorEventIsExist($visitorEventId);
 
         if (!$visitorEvent) {
@@ -39,15 +45,21 @@ class VisitorEventService
             return;
         }
 
+        // todo обновляем кэш >>>
+        $visitorSession->setCacheByKey('prevEvent', $visitorEventId);
+        // todo обновляем кэш <<<
+
         $this->rewriteChatEventByScenario($visitorEvent, $visitorSession, $type, $content);
     }
 
     /**
+     * todo по сути, мы тут идём из main-a
+     *
      * @throws Exception
      */
     private function createVisitorEventByScenario(VisitorSession $visitorSession, string $type, string $content): void
     {
-        $scenario = $this->scenarioService->getScenario($type, $content);
+        $scenario = $this->scenarioService->findScenarioByNameAndType($type, $content);
 
         $visitorEvent = $this->createEvent($scenario, $type);
         $visitorEventId = $visitorEvent->getId();
@@ -61,8 +73,7 @@ class VisitorEventService
     {
         $visitorEvent = (new VisitorEvent())
             ->setType($type)
-            ->setBehaviorScenario($scenario->getId())
-            ->setActionAfter($scenario->getActionAfter() ?? null)
+            ->setScenarioUUID($scenario->getUUID())
             ->setProjectId($scenario->getProjectId());
 
         $this->visitorEventRepository->saveAndFlush($visitorEvent);
@@ -79,10 +90,10 @@ class VisitorEventService
         string $type,
         string $content,
     ): void {
-        $scenario = $this->scenarioService->getScenario($type, $content, $visitorEvent->getBehaviorScenario());
+        $scenario = $this->scenarioService->findScenarioByNameAndType($type, $content);
 
         // один и тот же сценарий, нет смысла перезатирать
-        if ($visitorEvent->getBehaviorScenario() === $scenario->getId()) {
+        if ($visitorEvent->getScenarioUUID() === $scenario->getUUID()) {
             return;
         }
 

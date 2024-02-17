@@ -60,7 +60,7 @@ class CommandHandler
 //
 //        } else {
             $messageDto = (new MessageDto())
-                ->setChatId($visitorSession->getChannelId())
+                ->setChatId($visitorSession->getChatId())
                 ->setText($behaviorScenarioContent['message'])
             ;
 

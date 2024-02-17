@@ -16,16 +16,31 @@ class ScenarioService implements ScenarioServiceInterface
     /**
      * @throws Exception
      */
-    public function getScenario(
-        string $type,
-        string $content,
-        ?int $ownerBehaviorScenarioId = null,
-    ): Scenario {
-        $scenario = $this->getScenarioByNameAndType($type, $content);
+    public function findScenarioByUUID(string $uuid): Scenario
+    {
+        $scenario = $this->scenarioRepository->findOneBy(
+            [
+                'UUID' => $uuid,
+            ]
+        );
 
-        if (null === $scenario && $ownerBehaviorScenarioId) {
-            $scenario = $this->getScenarioByOwnerId($ownerBehaviorScenarioId);
+        if (null === $scenario) {
+            $scenario = $this->getDefaultScenario();
         }
+
+        if (null === $scenario) {
+            throw new Exception('Нет сценария по умолчанию');
+        }
+
+        return $scenario;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function findScenarioByNameAndType(string $type, string $content): Scenario
+    {
+        $scenario = $this->getScenarioByNameAndType($type, $content);
 
         if (null === $scenario) {
             $scenario = $this->getDefaultScenario();
@@ -62,15 +77,9 @@ class ScenarioService implements ScenarioServiceInterface
         $step = (new Scenario())
             ->setType($settingItem['type'])
             ->setName($settingItem['name'])
-//            ->setContent($settingItem['content'])
-//            ->setActionAfter($settingItem['actionAfter'] ?? null)
             ->setProjectId($projectId)
             ->setBotId($botId)
         ;
-
-        if ($ownerId){
-            $step->setOwnerStepId($ownerId);
-        }
 
         $this->scenarioRepository->saveAndFlush($step);
 
@@ -96,15 +105,6 @@ class ScenarioService implements ScenarioServiceInterface
             [
                 'name' => 'default', // в константу
                 'deletedAt' => null,
-            ]
-        );
-    }
-
-    public function getScenarioByOwnerId(int $ownerBehaviorScenarioId): ?Scenario
-    {
-        return $this->scenarioRepository->findOneBy(
-            [
-                'ownerStepId' => $ownerBehaviorScenarioId,
             ]
         );
     }

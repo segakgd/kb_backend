@@ -73,15 +73,20 @@ class EventsDashboardController extends AbstractDashboardController
             'json'
         );
 
+        if (!$this->botService->isActive($botId)) {
+            throw new Exception('Не активный бот');
+        }
+
         $chatId = $webhookData->getWebhookChatId();
         $visitorName = $webhookData->getVisitorName();
 
-        $visitorSession = $this->visitorSessionService->identifyByChannel($chatId, 'telegram');
+        $visitorSession = $this->visitorSessionService->identifyByChannel($chatId, $botId, 'telegram');
 
         if (!$visitorSession) {
             $visitorSession = $this->visitorSessionService->createVisitorSession(
                 $visitorName,
                 $chatId,
+                $botId,
                 'telegram',
                 $project->getId()
             );

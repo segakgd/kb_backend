@@ -34,7 +34,7 @@ class MessageHandler
         $visitorSession = $this->visitorSessionRepository->findByEventId($visitorEvent->getId());
 
         $messageDto = (new MessageDto())
-            ->setChatId($visitorSession->getChannelId())
+            ->setChatId($visitorSession->getChatId())
             ->setText($behaviorScenarioContent['message'])
         ;
 

@@ -26,12 +26,13 @@ class VisitorSessionService implements VisitorSessionServiceInterface
         );
     }
 
-    public function identifyByChannel(int $channelId, string $channel): ?VisitorSession
+    public function identifyByChannel(int $chatId, int $botId, string $channel): ?VisitorSession
     {
         return $this->visitorSessionRepository->findOneBy(
             [
+                'chatId' => $chatId,
+                'botId' => $botId,
                 'channel' => $channel,
-                'channelId' => $channelId,
             ]
         );
     }
@@ -39,6 +40,7 @@ class VisitorSessionService implements VisitorSessionServiceInterface
     public function createVisitorSession(
         string $visitorName,
         int $chatId,
+        int $botId,
         string $chanel,
         int $projectId,
     ): VisitorSession {
@@ -53,7 +55,8 @@ class VisitorSessionService implements VisitorSessionServiceInterface
         $visitorSession = (new VisitorSession())
             ->setName($visitorName)
             ->setChannel($chanel)
-            ->setChannelId($chatId)
+            ->setChatId($chatId)
+            ->setBotId($botId)
             ->setProjectId($projectId)
             ->setCache($cache)
             ->setCreatedAt(new DateTimeImmutable())

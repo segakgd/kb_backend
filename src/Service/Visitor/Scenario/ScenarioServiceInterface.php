@@ -6,10 +6,9 @@ use App\Entity\Scenario\Scenario;
 
 interface ScenarioServiceInterface
 {
-    public function getScenario(
+    public function findScenarioByNameAndType(
         string $type,
         string $content,
-        ?int $ownerBehaviorScenarioId = null,
     ): Scenario;
 
     public function createScenario(

@@ -22,10 +22,6 @@ class VisitorSession
     #[ORM\Column(length: 30)]
     private ?string $channel = null;
 
-    #[ORM\Column]
-    private ?int $channelId = null;
-
-
     #[ORM\Column(nullable: true)]
     private ?int $visitorEvent = null;
 
@@ -37,6 +33,12 @@ class VisitorSession
 
     #[ORM\Column(type: Types::JSON)]
     private array $cache = [];
+
+    #[ORM\Column]
+    private ?int $botId = null;
+
+    #[ORM\Column]
+    private ?int $chatId = null;
 
     public function __construct()
     {
@@ -70,18 +72,6 @@ class VisitorSession
     public function setChannel(string $channel): static
     {
         $this->channel = $channel;
-
-        return $this;
-    }
-
-    public function getChannelId(): ?int
-    {
-        return $this->channelId;
-    }
-
-    public function setChannelId(int $channelId): static
-    {
-        $this->channelId = $channelId;
 
         return $this;
     }
@@ -130,6 +120,39 @@ class VisitorSession
     public function setCache(array $cache): static
     {
         $this->cache = $cache;
+
+        return $this;
+    }
+
+    public function setCacheByKey(string $key, string|int $value): static
+    {
+        if (key_exists($key, $this->cache)){
+            $this->cache[$key] = $value;
+        }
+
+        return $this;
+    }
+
+    public function getBotId(): ?int
+    {
+        return $this->botId;
+    }
+
+    public function setBotId(int $botId): static
+    {
+        $this->botId = $botId;
+
+        return $this;
+    }
+
+    public function getChatId(): ?int
+    {
+        return $this->chatId;
+    }
+
+    public function setChatId(int $chatId): static
+    {
+        $this->chatId = $chatId;
 
         return $this;
     }
