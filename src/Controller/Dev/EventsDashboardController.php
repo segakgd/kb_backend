@@ -2,7 +2,7 @@
 
 namespace App\Controller\Dev;
 
-use App\Converter\SettingConverter;
+use App\Converter\ScenarioConverter;
 use App\Dto\Scenario\WrapperScenarioDto;
 use App\Dto\Webhook\Telegram\TelegramWebhookDto;
 use App\Entity\Scenario\ScenarioTemplate;
@@ -29,7 +29,7 @@ class EventsDashboardController extends AbstractDashboardController
         private readonly BotServiceInterface $botService,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly KernelInterface $kernel,
-        private readonly SettingConverter $settingConverter,
+        private readonly ScenarioConverter $settingConverter,
         private readonly SerializerInterface $serializer,
         private readonly VisitorSessionService $visitorSessionService,
         private readonly VisitorEventService $visitorEventService,

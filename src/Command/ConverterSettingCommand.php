@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Converter\SettingConverter;
+use App\Converter\ScenarioConverter;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -67,7 +67,7 @@ class ConverterSettingCommand extends Command
     ];
 
     public function __construct(
-        private readonly SettingConverter $settingConverter,
+        private readonly ScenarioConverter $settingConverter,
         string $name = null
     ) {
         parent::__construct($name);

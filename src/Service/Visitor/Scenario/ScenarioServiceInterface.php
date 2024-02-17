@@ -19,5 +19,5 @@ interface ScenarioServiceInterface
         ?int $ownerId = null,
     ): Scenario;
 
-    public function markAsRemoveScenario(int $projectId, int $botId);
+    public function markAllAsRemoveScenario(int $projectId, int $botId);
 }

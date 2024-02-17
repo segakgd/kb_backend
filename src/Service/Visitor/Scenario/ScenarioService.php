@@ -127,7 +127,7 @@ class ScenarioService implements ScenarioServiceInterface
         );
     }
 
-    public function markAsRemoveScenario(int $projectId, int $botId): void
+    public function markAllAsRemoveScenario(int $projectId, int $botId): void
     {
         $scenarios = $this->scenarioRepository->findBy(
             [
