@@ -20,8 +20,6 @@ class ScenarioDto
     #[Assert\Choice(self::AVAILABLE_TYPE)]
     private string $type;
 
-    private ?string $description = null;
-
     /** @var array<ScenarioStepDto> */
     private array $steps = [];
 
@@ -73,24 +71,19 @@ class ScenarioDto
         return $this;
     }
 
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): static
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
     public function getSteps(): array
     {
         return $this->steps;
     }
 
-    public function addSteps(ScenarioStepDto $step): static // addSteps -> addStep
+    public function setSteps(array $steps): static
+    {
+        $this->steps = $steps;
+
+        return $this;
+    }
+
+    public function addStep(ScenarioStepDto $step): static
     {
         $this->steps[] = $step;
 

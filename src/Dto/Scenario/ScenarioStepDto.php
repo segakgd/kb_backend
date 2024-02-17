@@ -2,8 +2,6 @@
 
 namespace App\Dto\Scenario;
 
-// booking
-// contacts
 class ScenarioStepDto
 {
     private ?string $message = null;
@@ -15,9 +13,7 @@ class ScenarioStepDto
 
     private ScenarioAttachedDto $attached;
 
-    private ?array $check = null;
-
-    private bool $isFinish = false; // todo не нравится название
+    private bool $finish = false;
 
     public function getMessage(): ?string
     {
@@ -55,6 +51,13 @@ class ScenarioStepDto
         return $this;
     }
 
+    public function setChain(?array $chain): static
+    {
+        $this->chain = $chain;
+
+        return $this;
+    }
+
     public function getAttached(): ScenarioAttachedDto
     {
         return $this->attached;
@@ -67,26 +70,14 @@ class ScenarioStepDto
         return $this;
     }
 
-    public function getCheck(): ?array
+    public function finish(): bool
     {
-        return $this->check;
+        return $this->finish;
     }
 
-    public function addCheck(string $check): static
+    public function setFinish(bool $finish): static
     {
-        $this->check[] = $check;
-
-        return $this;
-    }
-
-    public function isFinish(): bool
-    {
-        return $this->isFinish;
-    }
-
-    public function setIsFinish(bool $isFinish): static
-    {
-        $this->isFinish = $isFinish;
+        $this->finish = $finish;
 
         return $this;
     }

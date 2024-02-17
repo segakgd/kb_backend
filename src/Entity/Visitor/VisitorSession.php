@@ -4,6 +4,7 @@ namespace App\Entity\Visitor;
 
 use App\Repository\Visitor\VisitorSessionRepository;
 use DateTimeImmutable;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /** Сессия пользователя */
@@ -33,6 +34,9 @@ class VisitorSession
 
     #[ORM\Column(nullable: true)]
     private ?int $projectId = null;
+
+    #[ORM\Column(type: Types::JSON)]
+    private array $cache = [];
 
     public function __construct()
     {
@@ -114,6 +118,18 @@ class VisitorSession
     public function setProjectId(?int $projectId): static
     {
         $this->projectId = $projectId;
+
+        return $this;
+    }
+
+    public function getCache(): array
+    {
+        return $this->cache;
+    }
+
+    public function setCache(array $cache): static
+    {
+        $this->cache = $cache;
 
         return $this;
     }

@@ -3,14 +3,13 @@
 namespace App\Controller\Dev;
 
 use App\Converter\SettingConverter;
+use App\Dto\Scenario\WrapperScenarioDto;
 use App\Dto\Webhook\Telegram\TelegramWebhookDto;
 use App\Entity\Scenario\ScenarioTemplate;
 use App\Entity\User\Project;
 use App\Entity\Visitor\VisitorEvent;
 use App\Event\InitWebhookBotEvent;
-use App\Repository\User\ProjectEntityRepository;
 use App\Service\Admin\Bot\BotServiceInterface;
-use App\Service\Common\History\HistoryEventService;
 use App\Service\Visitor\Event\VisitorEventService;
 use App\Service\Visitor\Session\VisitorSessionService;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -79,7 +78,7 @@ class EventsDashboardController extends AbstractDashboardController
 
         $visitorSession = $this->visitorSessionService->identifyByChannel($chatId, 'telegram');
 
-        if (!$visitorSession){
+        if (!$visitorSession) {
             $visitorSession = $this->visitorSessionService->createVisitorSession(
                 $visitorName,
                 $chatId,
@@ -164,7 +163,17 @@ class EventsDashboardController extends AbstractDashboardController
     ): RedirectResponse {
         $botId = $request->query->get('botId') ?? throw new Exception('Нет параметра botId');
 
-        $this->settingConverter->convert([$scenarioTemplate->getScenario()], $project->getId(), $botId);
+        $scenarios = $scenarioTemplate->getScenario()[0];
+        $scenarios = [
+            'scenarios' => $scenarios,
+        ];
+
+        $scenario = $this->serializer->denormalize(
+            $scenarios,
+            WrapperScenarioDto::class
+        );
+
+        $this->settingConverter->convert($scenario, $project->getId(), $botId);
 
         return new RedirectResponse('/admin');
     }

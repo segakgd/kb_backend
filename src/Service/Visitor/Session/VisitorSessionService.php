@@ -2,15 +2,18 @@
 
 namespace App\Service\Visitor\Session;
 
-use App\Entity\Visitor\Visitor;
+use App\Dto\SessionCache\SessionCacheCartDto;
+use App\Dto\SessionCache\SessionCacheDto;
 use App\Entity\Visitor\VisitorSession;
 use App\Repository\Visitor\VisitorSessionRepository;
 use DateTimeImmutable;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class VisitorSessionService implements VisitorSessionServiceInterface
 {
     public function __construct(
         private readonly VisitorSessionRepository $visitorSessionRepository,
+        private readonly SerializerInterface $serializer,
     ) {
     }
 
@@ -39,11 +42,20 @@ class VisitorSessionService implements VisitorSessionServiceInterface
         string $chanel,
         int $projectId,
     ): VisitorSession {
+        $cacheDto = (new SessionCacheDto())
+            ->setCart(
+                (new SessionCacheCartDto())
+            )
+        ;
+
+        $cache = $this->serializer->normalize($cacheDto);
+
         $visitorSession = (new VisitorSession())
             ->setName($visitorName)
             ->setChannel($chanel)
             ->setChannelId($chatId)
             ->setProjectId($projectId)
+            ->setCache($cache)
             ->setCreatedAt(new DateTimeImmutable())
         ;
 

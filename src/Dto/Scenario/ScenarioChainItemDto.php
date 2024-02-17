@@ -2,32 +2,52 @@
 
 namespace App\Dto\Scenario;
 
-//
-// BookingMonth = 'booking.month';
-//
-// BookingDay = 'booking.day';
-//
-// BookingTime = 'booking.time';
-//
-// ContactAddress = 'contact.address';
-//
-// ContactFirstName = 'contact.firstName';
-//
-// ContactLastName = 'contact.lastName';
-//
-// ContactMiddleName = 'contact.middleName';
-//
 class ScenarioChainItemDto
 {
-    private string $target; // booking.month
+    private const TARGETS = [
+        'booking.month',
+        'booking.day',
+        'booking.time',
+        'contact.address',
+        'contact.firstName',
+        'contact.lastName',
+        'contact.middleName',
+        'lead.products',
 
-    // run - запустить какой-то процесс(к примеру процесс оплаты товаров)
-    // show - показать
-    // save - сохранить
-    // brake.if - выходим из цепочки
-    // allowed.if - разрешён если выаолняется какой-то action с каким-то значением
+        'shop.products.category',
+        'shop.products.popular',
+        'shop.products.promotion',
+        'shop.products',
+        'shop.product',
+    ];
 
-    private string $action; // show save brake.if
+    // cart.order
+    // cart.contact
+    // cart.shipping
+    // cart.products
+    // cart
+    // cart.pay
+
+
+    // or.not.empty
+    // not.empty
+    // empty
+
+    private const ACTIONS = [
+        'show',
+        'save', // todo а нужен ли? edit подразумевает в себе созранение
+        'run',
+        'brake.if',
+        'allowed.if',
+    ];
+
+
+
+    private string $target; // contact.lastName
+
+    private string $action;
+
+    private array $requirements;
 
     private bool $isFinish = false;
 
@@ -53,6 +73,16 @@ class ScenarioChainItemDto
         $this->action = $action;
 
         return $this;
+    }
+
+    public function getRequirements(): array
+    {
+        return $this->requirements;
+    }
+
+    public function setRequirements(array $requirements): void
+    {
+        $this->requirements = $requirements;
     }
 
     public function isFinish(): bool

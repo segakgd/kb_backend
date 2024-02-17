@@ -8,6 +8,7 @@ use App\Dto\Scenario\ScenarioChainItemDto;
 use App\Dto\Scenario\ScenarioDto;
 use App\Dto\Scenario\ScenarioKeyboardDto;
 use App\Dto\Scenario\ScenarioStepDto;
+use App\Fake\LeadScenario;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,6 +19,7 @@ class MainController extends AbstractController
 {
     public function __construct(
         private readonly SerializerInterface $serializer,
+        private readonly LeadScenario $leadScenario,
     ) {
     }
 
@@ -33,21 +35,23 @@ class MainController extends AbstractController
         $scenario = [
             "name" => "Цепочка событий",
             "scenario" => [
-                $this->getLeadScenario(),
-                $this->getBookingScenario(),
-                $this->getScenarioPhone(),
-                $this->getScenarioName(),
-                $this->getDownloadDoc(),
-                $this->getLink()
+                $this->leadScenario->create(),
+//                $this->getLeadScenario(),
+//                $this->getBookingScenario(),
+//                $this->getScenarioPhone(),
+//                $this->getScenarioName(),
+//                $this->getDownloadDoc(),
+//                $this->getLink()
             ]
         ];
 
         dd($scenario, $this->serializer->serialize($scenario, 'json'));
 
         return new JsonResponse(
-            $this->serializer->serialize($scenario, 'json')
+            $this->serializer->normalize($scenario, 'json')
         );
     }
+
 
     private function getLeadScenario(): array
     {
@@ -56,8 +60,7 @@ class MainController extends AbstractController
                 ->setUUID('8e261302-d5d7-4dd0-a621-4253a01da31e')
                 ->setName('Сценарий оформления заказа')
                 ->setType('message')
-                ->setDescription('Оформление заказа для интернет магазина')
-                ->addSteps(
+                ->addStep(
                     (new ScenarioStepDto())
                         ->setMessage(
                             'Добро пожаловать в нашем шопе. Хотите приобрести товар? Выберите одну из категорий:'
@@ -98,8 +101,7 @@ class MainController extends AbstractController
                 ->setUUID('8e261312-0001-4dd0-a627-4253a01da39e')
                 ->setName('Товары по категориям')
                 ->setType('message')
-                ->setDescription('')
-                ->addSteps(
+                ->addStep(
                     (new ScenarioStepDto())
                         ->addChain(
                             (new ScenarioChainDto)
@@ -147,8 +149,7 @@ class MainController extends AbstractController
                 ->setUUID('8e261312-0002-4dd0-a627-4253a01da39e')
                 ->setName('Популярные товары')
                 ->setType('message')
-                ->setDescription('')
-                ->addSteps(
+                ->addStep(
                     (new ScenarioStepDto())
                         ->addChain(
                             (new ScenarioChainDto)
@@ -196,8 +197,7 @@ class MainController extends AbstractController
                 ->setUUID('8e261312-0003-4dd0-a627-4253a01da39e')
                 ->setName('Акционные товары')
                 ->setType('message')
-                ->setDescription('')
-                ->addSteps(
+                ->addStep(
                     (new ScenarioStepDto())
                         ->addChain(
                             (new ScenarioChainDto)
@@ -245,8 +245,7 @@ class MainController extends AbstractController
                 ->setUUID('8e261312-0004-4dd0-a627-4253a01da39e')
                 ->setName('Моя корзина')
                 ->setType('message')
-                ->setDescription('')
-                ->addSteps(
+                ->addStep(
                     (new ScenarioStepDto())
                         ->addChain(
                             (new ScenarioChainDto)
@@ -293,7 +292,9 @@ class MainController extends AbstractController
                             (new ScenarioChainDto)
                                 ->addBefore(
                                     (new ScenarioChainItemDto)
-                                        ->setAction('allowed.if') // разрешён если выполняется shipping.type в каком-то значении
+                                        ->setAction(
+                                            'allowed.if'
+                                        ) // разрешён если выполняется shipping.type в каком-то значении
                                         ->setTarget('shipping.type')
                                 )
                                 ->addNow(
@@ -340,8 +341,7 @@ class MainController extends AbstractController
                 ->setUUID('17f3e9db-5d98-416d-80f7-c5f0902abeb6')
                 ->setName('Бронирование')
                 ->setType('message')
-                ->setDescription('Мой самый главный сценарий')
-                ->addSteps(
+                ->addStep(
                     (new ScenarioStepDto())
                         ->addChain(
                             (new ScenarioChainDto)
@@ -408,10 +408,8 @@ class MainController extends AbstractController
                                         ->setTarget('contact.firstName') // Ваше имя...
                                 )
                         )
-                        ->addCheck('booking')
-                        ->addCheck('contacts')
                 )
-                ->addSteps(
+                ->addStep(
                     (new ScenarioStepDto())
                         ->setMessage('Оформить?')
                         ->setKeyboard(
@@ -446,8 +444,7 @@ class MainController extends AbstractController
             ->setUUID('8e261302-d5d7-4dd0-a627-4253a01da39e')
             ->setName('Да')
             ->setType('message')
-            ->setDescription('')
-            ->addSteps($step);
+            ->addStep($step);
     }
 
     private function getBookingScenario3(): ScenarioDto
@@ -459,8 +456,7 @@ class MainController extends AbstractController
             ->setUUID('78bc86e3-b0f9-4ebe-bbb4-1c3e093e19a2')
             ->setName('Нет')
             ->setType('message')
-            ->setDescription('')
-            ->addSteps($step);
+            ->addStep($step);
     }
 
     public function getScenarioPhone(): array
@@ -470,8 +466,7 @@ class MainController extends AbstractController
                 ->setUUID('8e261302-d5d7-4dd0-a627-4253a01da31e')
                 ->setName('Сценарий оформления заявки(телефон)')
                 ->setType('message')
-                ->setDescription('')
-                ->addSteps(
+                ->addStep(
                     (new ScenarioStepDto())
                         ->addChain(
                             (new ScenarioChainDto)
@@ -497,8 +492,7 @@ class MainController extends AbstractController
                 ->setUUID('8e261302-d5d7-4dd0-a627-4254a01da31e')
                 ->setName('Сценарий оформления заявки(фио)')
                 ->setType('message')
-                ->setDescription('')
-                ->addSteps(
+                ->addStep(
                     (new ScenarioStepDto())
                         ->addChain(
                             (new ScenarioChainDto)
@@ -550,8 +544,7 @@ class MainController extends AbstractController
                 ->setUUID('8e261302-d5d7-2dd0-a627-4254a01da31e')
                 ->setName('Сценарий скачивания документа')
                 ->setType('message')
-                ->setDescription('')
-                ->addSteps(
+                ->addStep(
                     (new ScenarioStepDto())
                         ->setMessage('О! Какой документ ты хочешь скачать?')
                         ->setKeyboard(
@@ -584,8 +577,7 @@ class MainController extends AbstractController
                 ->setUUID('8e261312-d5d7-4dd0-a627-4253a01da39e')
                 ->setName('Рассказ о котике в txt')
                 ->setType('message')
-                ->setDescription('')
-                ->addSteps(
+                ->addStep(
                     (new ScenarioStepDto())
                         ->setMessage('Ваш документ')
                         ->setAttached(
@@ -597,8 +589,7 @@ class MainController extends AbstractController
                 ->setUUID('8e261322-d5d7-4dd0-a627-4253a01da39e')
                 ->setName('Рассказ о котике в docx')
                 ->setType('message')
-                ->setDescription('')
-                ->addSteps(
+                ->addStep(
                     (new ScenarioStepDto())
                         ->setMessage('Ваш документ')
                         ->setAttached(
@@ -610,8 +601,7 @@ class MainController extends AbstractController
                 ->setUUID('8e261332-d5d7-4dd0-a627-4253a01da39e')
                 ->setName('Фото котика')
                 ->setType('message')
-                ->setDescription('')
-                ->addSteps(
+                ->addStep(
                     (new ScenarioStepDto())
                         ->setMessage('Ваше вото котика')
                         ->setAttached(
@@ -623,8 +613,7 @@ class MainController extends AbstractController
                 ->setUUID('78bc84e3-b0f9-4ebe-bbb4-1c3e093e19a2')
                 ->setName('Видео котика')
                 ->setType('message')
-                ->setDescription('')
-                ->addSteps(
+                ->addStep(
                     (new ScenarioStepDto())
                         ->setMessage('Ваше видео котика')
                         ->setAttached(
@@ -642,8 +631,7 @@ class MainController extends AbstractController
                 ->setUUID('4e261302-d5d7-2dd0-a627-4254a01da31e')
                 ->setName('Сценарий получения ссылки')
                 ->setType('message')
-                ->setDescription('')
-                ->addSteps(
+                ->addStep(
                     (new ScenarioStepDto())
                         ->setMessage('Ооо ты хочешь ссылку на тот самый ресурс? 🍁')
                         ->setKeyboard(
@@ -664,8 +652,7 @@ class MainController extends AbstractController
                 ->setUUID('8e261312-d5d7-4dd0-a627-4253a01da39e')
                 ->setName('Ну да, хочу')
                 ->setType('message')
-                ->setDescription('')
-                ->addSteps(
+                ->addStep(
                     (new ScenarioStepDto())
                         ->setMessage('А 18 тебе есть? 🍭')
                         ->setKeyboard(
@@ -690,8 +677,7 @@ class MainController extends AbstractController
                 ->setUUID('8e261312-d5d7-4dd0-a627-4253a02da39e')
                 ->setName('Да, мне есть 18')
                 ->setType('message')
-                ->setDescription('')
-                ->addSteps(
+                ->addStep(
                     (new ScenarioStepDto())
                         ->setMessage('Вот твоя ссылка бро! 🍒')
                         ->setKeyboard(
@@ -716,8 +702,7 @@ class MainController extends AbstractController
                 ->setUUID('8e261312-d5d7-4dd0-a627-4253a03da39e')
                 ->setName('Нет, нету')
                 ->setType('message')
-                ->setDescription('')
-                ->addSteps(
+                ->addStep(
                     (new ScenarioStepDto())
                         ->setMessage('Тогда ничем не могу помочь 🌚')
                         ->setKeyboard(
