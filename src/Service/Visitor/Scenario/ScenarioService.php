@@ -62,8 +62,8 @@ class ScenarioService implements ScenarioServiceInterface
         $step = (new Scenario())
             ->setType($settingItem['type'])
             ->setName($settingItem['name'])
-            ->setContent($settingItem['content'])
-            ->setActionAfter($settingItem['actionAfter'] ?? null)
+//            ->setContent($settingItem['content'])
+//            ->setActionAfter($settingItem['actionAfter'] ?? null)
             ->setProjectId($projectId)
             ->setBotId($botId)
         ;

@@ -11,7 +11,7 @@ class ScenarioStepDto
     /** @var array|null<ScenarioChainDto>  */
     private ?array $chain = null;
 
-    private ScenarioAttachedDto $attached;
+    private ?ScenarioAttachedDto $attached = null;
 
     private bool $finish = false;
 
@@ -58,12 +58,12 @@ class ScenarioStepDto
         return $this;
     }
 
-    public function getAttached(): ScenarioAttachedDto
+    public function getAttached(): ?ScenarioAttachedDto
     {
         return $this->attached;
     }
 
-    public function setAttached(ScenarioAttachedDto $attached): static
+    public function setAttached(?ScenarioAttachedDto $attached): static
     {
         $this->attached = $attached;
 

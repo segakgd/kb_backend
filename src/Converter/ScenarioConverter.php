@@ -2,10 +2,13 @@
 
 namespace App\Converter;
 
+use App\Dto\Scenario\ScenarioDto;
 use App\Dto\Scenario\WrapperScenarioDto;
+use App\Entity\Scenario\Scenario;
 use App\Service\Visitor\Scenario\ScenarioServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Symfony\Component\Serializer\SerializerInterface;
 use Throwable;
 
 class ScenarioConverter
@@ -13,49 +16,73 @@ class ScenarioConverter
     public function __construct(
         private readonly ScenarioServiceInterface $scenarioService,
         private readonly EntityManagerInterface $entityManager,
+        private readonly SerializerInterface $serializer,
     ) {
     }
 
     /**
      * @throws Exception
+     * @throws Throwable
      */
-    public function convert(WrapperScenarioDto $scenario, int $projectId, int $botId, int $ownerId = null): array
+    public function convert(WrapperScenarioDto $scenario, int $projectId, int $botId): array
     {
-        $scenarios = [];
-
         try {
             $this->entityManager->beginTransaction();
 
             $this->scenarioService->markAllAsRemoveScenario($projectId, $botId);
-            $this->scenarioService->generateDefaultScenario($projectId, $botId); // todo переделать дефолтную
+//            $this->scenarioService->generateDefaultScenario($projectId, $botId); // todo переделать дефолтную
 
-            $scenarios = $this->convertToEntity($scenario->getScenarios(), $projectId, $botId, $ownerId);
-        } catch (Throwable) {
+            $scenarios = $this->convertToEntity($scenario->getScenarios(), $projectId, $botId);
+
+        } catch (Throwable $exception) {
             $this->entityManager->rollback();
+
+            throw $exception;
         }
 
         return $scenarios;
     }
 
-    public function convertToEntity(array $settings, int $projectId, int $botId, int $ownerId = null): array
+    public function convertToEntity(array $scenarios, int $projectId, int $botId): array
     {
-        $result = [];
+        $scenarioEntities = [];
 
-        foreach ($settings as $settingItem) {
-            $scenario = $this->scenarioService->createScenario(
-                $settingItem,
-                $projectId,
-                $botId,
-                $ownerId,
-            );
+        foreach ($scenarios as $scenario) {
+            /** @var ScenarioDto $scenario */
 
-            if (isset($settingItem['sub'])) {
-                $resultSud = $this->convertToEntity($settingItem['sub'], $projectId, $botId, $scenario->getId());
 
-                $result = array_merge($result, $resultSud);
+            $scenarioEntity = (new Scenario())
+                ->setUUID($scenario->getUUID())
+//                ->setOwnerUUID()
+                ->setName($scenario->getName())
+                ->setType($scenario->getType())
+                ->setBotId($botId)
+                ->setProjectId($projectId);
+
+            foreach ($scenario->getSteps() as $scenarioStep) {
+                $scenarioStepArray = $this->serializer->normalize($scenarioStep);
+
+                $scenarioEntity->addStep($scenarioStepArray);
             }
+
+            $scenarioEntities[] = $scenarioEntity;
+
+//            $scenario->
+
+//            $step = (new Scenario())
+//                ->setType($settingItem['type'])
+//                ->setName($settingItem['name'])
+//                ->setContent($settingItem['content'])
+//                ->setActionAfter($settingItem['actionAfter'] ?? null)
+//                ->setProjectId($projectId)
+//                ->setBotId($botId)
+//            ;
+
+//            dd($scenario);
         }
 
-        return $result;
+        dd($scenarioEntities);
+
+        return $scenarioEntities;
     }
 }
