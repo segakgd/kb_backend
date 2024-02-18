@@ -4,6 +4,7 @@ namespace App\Dto\Scenario;
 
 class ScenarioChainDto
 {
+    // todo а вообще зачем деление на before, now и after?
     private ?array $before = null;
 
     private ?array $now = null;

@@ -29,6 +29,8 @@ class MessageHandler
             ]
         );
 
+//        dd($scenario, $visitorEvent);
+
         if (!$scenario) {
             throw new Exception('Не существует сценария');
         }
@@ -39,7 +41,11 @@ class MessageHandler
         foreach ($scenarioSteps as $scenarioStep) {
             $messageDto = (new MessageDto())
                 ->setChatId($visitorSession->getChatId())
-                ->setText($scenarioStep['message']);
+            ;
+
+            if ($scenarioStep['message']) {
+                $messageDto->setText($scenarioStep['message']);
+            }
 
             if (!empty($scenarioStep['keyboard'])) {
                 $replyMarkups = $this->keyboard($scenarioStep);
@@ -48,6 +54,18 @@ class MessageHandler
                     $messageDto->setReplyMarkup($replyMarkups);
                 }
             }
+
+//            if (!empty($scenarioStep['chain'])) {
+//                foreach ($scenarioStep['chain'] as $chainItem) {
+//                    dd($chainItem);
+//                }
+//
+//                dd($scenarioStep['chain']);
+//            }
+//
+//            if (!empty($scenarioStep['attached'])) {
+//                dd($scenarioStep['attached']);
+//            }
 
             $this->telegramService->sendMessage(
                 $messageDto,
