@@ -6,6 +6,6 @@ class ShopProductsChain
 {
     public function handle(): void
     {
-
+        dd('ShopProductsChain');
     }
 }

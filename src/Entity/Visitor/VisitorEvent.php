@@ -13,7 +13,7 @@ class VisitorEvent
 
     public const STATUS_NEW = 'new';
 
-    public const WAITING_ACTION = 'waiting_action';
+    public const STATUS_AWAIT = 'await';
 
     public const STATUS_DONE = 'done';
 

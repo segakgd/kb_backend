@@ -22,8 +22,8 @@ class ActionHandler
     {
         // todo не увеорен что это хорошее решение...
         return match ($visitorEvent->getType()) {
-            'command' => $this->commandHandler->handle($visitorEvent),
             'message' => $this->messageHandler->handle($visitorEvent),
+            'command' => $this->commandHandler->handle($visitorEvent),
             default => false
         };
     }
