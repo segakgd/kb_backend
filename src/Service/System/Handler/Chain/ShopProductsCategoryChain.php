@@ -6,19 +6,44 @@ use App\Dto\Core\Telegram\Request\Message\MessageDto;
 
 class ShopProductsCategoryChain
 {
-    public function handle(string $action, MessageDto $messageDto, ?string $content = null): void
+    public function handle(MessageDto $messageDto, ?string $content = null): bool
     {
-        if ($action === 'show') {
-            $this->show($messageDto);
+        if ($this->checkCondition($content)) {
+            $messageDto->setText('Вы выбрали категорию ' . $content . 'отличный выбор! В теперь давайте выберим товар:');
+
+            $replyMarkups = [
+                [
+                    [
+                        'text' => 'предыдущий'
+                    ],
+                    [
+                        'text' => 'подробнее о товаре'
+                    ],
+                    [
+                        'text' => 'следующий'
+                    ],
+                ],
+                [
+                    [
+                        'text' => 'добавить в корзину'
+                    ],
+                    [
+                        'text' => 'вернуться в главное меню'
+                    ],
+                ],
+            ];
+
+            $messageDto->setReplyMarkup($replyMarkups);
+
+            return true;
         }
 
-        if ($action === 'save') {
-            $this->save($messageDto, $content);
-        }
-    }
+        if ($this->checkSystemCondition($content)) {
+            $messageDto->setText('Давайте представим что вы вернулись в главное меню');
 
-    private function show(MessageDto $messageDto): void
-    {
+            return false;
+        }
+
         $replyMarkups = [
             [
                 [
@@ -35,37 +60,36 @@ class ShopProductsCategoryChain
             ],
         ];
 
-        $messageDto->setText('Отлично, 😜 выберите одну из категорий 🤘');
+        $messageDto->setText('Не понимаю что вы от меня хотите, повторите...');
         $messageDto->setReplyMarkup($replyMarkups);
+
+        return false;
     }
 
-    private function save(MessageDto $messageDto, string $content): void
+    private function checkCondition(string $content): bool
     {
-        // todo типа сохраняем $content
-
-        $replyMarkups = [
-            [
-                [
-                    'text' => 'предыдущий'
-                ],
-                [
-                    'text' => 'подробнее о товаре'
-                ],
-                [
-                    'text' => 'следубщий'
-                ],
-            ],
-            [
-                [
-                    'text' => 'добавить в корзину'
-                ],
-                [
-                    'text' => 'вернуться в главное меню'
-                ],
-            ],
+        $awaitsForNextChain = [
+            'магнитолы',
+            'динамики',
         ];
 
-        $messageDto->setText('Вы выбрали ' . $content . ' отличный выбор, давайте подробнее рассмотрим');
-        $messageDto->setReplyMarkup($replyMarkups);
+        if (in_array($content, $awaitsForNextChain)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private function checkSystemCondition(string $content): bool
+    {
+        $awaitsSystem = [
+            'вернуться в главное меню',
+        ];
+
+        if (in_array($content, $awaitsSystem)) {
+            return true;
+        }
+
+        return false;
     }
 }

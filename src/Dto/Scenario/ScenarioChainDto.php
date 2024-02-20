@@ -43,7 +43,7 @@ class ScenarioChainDto
 
     private string $target; // contact.lastName
 
-    private string $action;
+//    private string $action;
 
     private array $requirements;
 
@@ -61,17 +61,17 @@ class ScenarioChainDto
         return $this;
     }
 
-    public function getAction(): string
-    {
-        return $this->action;
-    }
-
-    public function setAction(string $action): static
-    {
-        $this->action = $action;
-
-        return $this;
-    }
+//    public function getAction(): string
+//    {
+//        return $this->action;
+//    }
+//
+//    public function setAction(string $action): static
+//    {
+//        $this->action = $action;
+//
+//        return $this;
+//    }
 
     public function getRequirements(): array
     {

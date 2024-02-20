@@ -73,14 +73,20 @@ class MessageHandler
 
         $chains = $cache['event']['chains'];
 
+        // подумай в рамках ооп, создай сущность которая будех зранить значения нунешнего шага и всё такое...
+
         foreach ($chains as $key => $chain) {
             if ($chain['finished'] === false) {
-                $this->chainHandler->handleByType($chain['target'], $chain['action'], $messageDto, $content);
-
-                $chains[$key]['finished'] = true;
+                $isHandle = $this->chainHandler->handleByType($chain['target'], $messageDto, $content);
 
                 if (count($chains) === ($key + 1)) {
                     $cache['event']['status'] = 'finished';
+                }
+
+                if ($isHandle) {
+                    $chains[$key]['finished'] = true;
+
+                    continue;
                 }
 
                 break;

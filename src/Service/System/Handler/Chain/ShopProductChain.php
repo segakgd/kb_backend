@@ -4,7 +4,7 @@ namespace App\Service\System\Handler\Chain;
 
 class ShopProductChain
 {
-    public function handle(): void
+    public function handle(): bool
     {
         dd('ShopProductChain');
     }
