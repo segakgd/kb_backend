@@ -92,6 +92,46 @@ class EventsDashboardController extends AbstractDashboardController
             );
         }
 
+//        $cache = $visitorSession->getCache();
+//
+//        $cache['event']['status'] = 'process';
+//        $cache['event']['chains'] = [
+//            [
+//                'target' => 'shop.products.category',
+//                'action' => 'show',
+//                'finished' => true,
+//            ],
+//            [
+//                'target' => 'shop.products.category',
+//                'action' => 'save',
+//                'finished' => false,
+//            ],
+//            [
+//                'target' => 'shop.products',
+//                'action' => 'show',
+//                'finished' => false,
+//            ],
+//            [
+//                'target' => 'shop.products',
+//                'action' => 'save',
+//                'finished' => false,
+//            ],
+//            [
+//                'target' => 'shop.product',
+//                'action' => 'show',
+//                'finished' => false,
+//            ],
+//            [
+//                'target' => 'shop.product',
+//                'action' => 'save',
+//                'finished' => false,
+//            ],
+//        ];
+//
+//        $cache['event']['statusChain'] = 'process';
+//
+//        $visitorSession->setCache($cache);
+
         // определяем событие
         $this->visitorEventService->createVisitorEventForSession(
             $visitorSession,

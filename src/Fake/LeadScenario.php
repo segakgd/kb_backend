@@ -3,7 +3,6 @@
 namespace App\Fake;
 
 use App\Dto\Scenario\ScenarioChainDto;
-use App\Dto\Scenario\ScenarioChainItemDto;
 use App\Dto\Scenario\ScenarioDto;
 use App\Dto\Scenario\ScenarioKeyboardDto;
 use App\Dto\Scenario\ScenarioStepDto;
@@ -82,42 +81,33 @@ class LeadScenario
                 (new ScenarioStepDto())
                     ->addChain(
                         (new ScenarioChainDto())
-                            ->addNow(
-                                (new ScenarioChainItemDto)
-                                    ->setAction('show')
-                                    ->setTarget('shop.products.category')
-                            )
-                            ->addAfter(
-                                (new ScenarioChainItemDto)
-                                    ->setAction('save')
-                                    ->setTarget('shop.products.category')
-                            )
+                            ->setAction('show')
+                            ->setTarget('shop.products.category')
                     )
                     ->addChain(
                         (new ScenarioChainDto())
-                            ->addNow(
-                                (new ScenarioChainItemDto)
-                                    ->setAction('show')
-                                    ->setTarget('shop.products')
-                            )
-                            ->addAfter(
-                                (new ScenarioChainItemDto)
-                                    ->setAction('save')
-                                    ->setTarget('shop.products')
-                            )
+                            ->setAction('save')
+                            ->setTarget('shop.products.category')
                     )
                     ->addChain(
                         (new ScenarioChainDto())
-                            ->addNow(
-                                (new ScenarioChainItemDto)
-                                    ->setAction('show')
-                                    ->setTarget('shop.product')
-                            )
-                            ->addAfter(
-                                (new ScenarioChainItemDto)
-                                    ->setAction('save')
-                                    ->setTarget('shop.product')
-                            )
+                            ->setAction('show')
+                            ->setTarget('shop.products')
+                    )
+                    ->addChain(
+                        (new ScenarioChainDto())
+                            ->setAction('save')
+                            ->setTarget('shop.products')
+                    )
+                    ->addChain(
+                        (new ScenarioChainDto())
+                            ->setAction('show')
+                            ->setTarget('shop.product')
+                    )
+                    ->addChain(
+                        (new ScenarioChainDto())
+                            ->setAction('save')
+                            ->setTarget('shop.product')
                     )
             );
     }
@@ -132,42 +122,33 @@ class LeadScenario
                 (new ScenarioStepDto())
                     ->addChain(
                         (new ScenarioChainDto())
-                            ->addNow(
-                                (new ScenarioChainItemDto)
-                                    ->setAction('show')
-                                    ->setTarget('shop.products.popular')
-                            )
-                            ->addAfter(
-                                (new ScenarioChainItemDto)
-                                    ->setAction('save')
-                                    ->setTarget('shop.products.popular')
-                            )
+                            ->setAction('show')
+                            ->setTarget('shop.products.popular')
                     )
                     ->addChain(
                         (new ScenarioChainDto())
-                            ->addNow(
-                                (new ScenarioChainItemDto)
-                                    ->setAction('show')
-                                    ->setTarget('shop.products')
-                            )
-                            ->addAfter(
-                                (new ScenarioChainItemDto)
-                                    ->setAction('save')
-                                    ->setTarget('shop.products')
-                            )
+                            ->setAction('save')
+                            ->setTarget('shop.products.popular')
                     )
                     ->addChain(
                         (new ScenarioChainDto())
-                            ->addNow(
-                                (new ScenarioChainItemDto)
-                                    ->setAction('show')
-                                    ->setTarget('shop.product')
-                            )
-                            ->addAfter(
-                                (new ScenarioChainItemDto)
-                                    ->setAction('save')
-                                    ->setTarget('shop.product')
-                            )
+                            ->setAction('show')
+                            ->setTarget('shop.products')
+                    )
+                    ->addChain(
+                        (new ScenarioChainDto())
+                            ->setAction('save')
+                            ->setTarget('shop.products')
+                    )
+                    ->addChain(
+                        (new ScenarioChainDto())
+                            ->setAction('show')
+                            ->setTarget('shop.product')
+                    )
+                    ->addChain(
+                        (new ScenarioChainDto())
+                            ->setAction('save')
+                            ->setTarget('shop.product')
                     )
             );
     }
@@ -182,42 +163,33 @@ class LeadScenario
                 (new ScenarioStepDto())
                     ->addChain(
                         (new ScenarioChainDto())
-                            ->addNow(
-                                (new ScenarioChainItemDto)
-                                    ->setAction('show')
-                                    ->setTarget('shop.products.promotion')
-                            )
-                            ->addAfter(
-                                (new ScenarioChainItemDto)
-                                    ->setAction('save')
-                                    ->setTarget('shop.products.promotion')
-                            )
+                            ->setAction('show')
+                            ->setTarget('shop.products.promotion')
                     )
                     ->addChain(
                         (new ScenarioChainDto())
-                            ->addNow(
-                                (new ScenarioChainItemDto)
-                                    ->setAction('show')
-                                    ->setTarget('shop.products')
-                            )
-                            ->addAfter(
-                                (new ScenarioChainItemDto)
-                                    ->setAction('save')
-                                    ->setTarget('shop.products')
-                            )
+                            ->setAction('save')
+                            ->setTarget('shop.products.promotion')
                     )
                     ->addChain(
                         (new ScenarioChainDto())
-                            ->addNow(
-                                (new ScenarioChainItemDto)
-                                    ->setAction('show')
-                                    ->setTarget('shop.product')
-                            )
-                            ->addAfter(
-                                (new ScenarioChainItemDto)
-                                    ->setAction('save')
-                                    ->setTarget('shop.product')
-                            )
+                            ->setAction('show')
+                            ->setTarget('shop.products')
+                    )
+                    ->addChain(
+                        (new ScenarioChainDto())
+                            ->setAction('save')
+                            ->setTarget('shop.products')
+                    )
+                    ->addChain(
+                        (new ScenarioChainDto())
+                            ->setAction('show')
+                            ->setTarget('shop.product')
+                    )
+                    ->addChain(
+                        (new ScenarioChainDto())
+                            ->setAction('save')
+                            ->setTarget('shop.product')
                     )
             );
     }
@@ -337,29 +309,23 @@ class LeadScenario
                 (new ScenarioStepDto())
                     ->addChain(
                         (new ScenarioChainDto())
-                            ->addNow(
-                                (new ScenarioChainItemDto)
-                                    ->setAction('edit')
-                                    ->setTarget('cart.contact')
-                            )
-                            ->addAfter(
-                                (new ScenarioChainItemDto)
-                                    ->setAction('save')
-                                    ->setTarget('cart.contact')
-                            )
+                            ->setAction('edit')
+                            ->setTarget('cart.contact')
                     )
                     ->addChain(
                         (new ScenarioChainDto())
-                            ->addNow(
-                                (new ScenarioChainItemDto)
-                                    ->setAction('edit')
-                                    ->setTarget('cart.shipping')
-                            )
-                            ->addAfter(
-                                (new ScenarioChainItemDto)
-                                    ->setAction('save')
-                                    ->setTarget('cart.shipping')
-                            )
+                            ->setAction('save')
+                            ->setTarget('cart.contact')
+                    )
+                    ->addChain(
+                        (new ScenarioChainDto())
+                            ->setAction('edit')
+                            ->setTarget('cart.shipping')
+                    )
+                    ->addChain(
+                        (new ScenarioChainDto())
+                            ->setAction('save')
+                            ->setTarget('cart.shipping')
                     )
             );
     }
@@ -374,11 +340,8 @@ class LeadScenario
                 (new ScenarioStepDto())
                     ->addChain(
                         (new ScenarioChainDto())
-                            ->addNow(
-                                (new ScenarioChainItemDto)
-                                    ->setAction('edit')
-                                    ->setTarget('cart.shipping')
-                            )
+                            ->setAction('edit')
+                            ->setTarget('cart.shipping')
                     )
             );
     }
@@ -393,11 +356,8 @@ class LeadScenario
                 (new ScenarioStepDto())
                     ->addChain(
                         (new ScenarioChainDto())
-                            ->addNow(
-                                (new ScenarioChainItemDto)
-                                    ->setAction('edit')
-                                    ->setTarget('cart.contact')
-                            )
+                            ->setAction('edit')
+                            ->setTarget('cart.contact')
                     )
             );
     }
@@ -412,11 +372,8 @@ class LeadScenario
                 (new ScenarioStepDto())
                     ->addChain(
                         (new ScenarioChainDto())
-                            ->addNow(
-                                (new ScenarioChainItemDto)
-                                    ->setAction('edit')
-                                    ->setTarget('cart.product')
-                            )
+                            ->setAction('edit')
+                            ->setTarget('cart.product')
                     )
             );
     }
@@ -431,11 +388,8 @@ class LeadScenario
                 (new ScenarioStepDto())
                     ->addChain(
                         (new ScenarioChainDto())
-                            ->addNow(
-                                (new ScenarioChainItemDto)
-                                    ->setAction('delete')
-                                    ->setTarget('cart')
-                            )
+                            ->setAction('delete')
+                            ->setTarget('cart')
                     )
             );
     }
@@ -450,11 +404,8 @@ class LeadScenario
                 (new ScenarioStepDto())
                     ->addChain(
                         (new ScenarioChainDto())
-                            ->addNow(
-                                (new ScenarioChainItemDto)
-                                    ->setAction('run')
-                                    ->setTarget('cart.pay')
-                            )
+                            ->setAction('run')
+                            ->setTarget('cart.pay')
                     )
             );
     }

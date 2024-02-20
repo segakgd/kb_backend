@@ -51,7 +51,7 @@ class VisitorEventRepository extends ServiceEntityRepository
         $this->saveAndFlush($chatEvent);
     }
 
-    public function getVisitorEventIsExist(?int $visitorEventId): ?VisitorEvent
+    public function getVisitorEventIfExist(?int $visitorEventId): ?VisitorEvent
     {
         if (!$visitorEventId) {
             return null;
@@ -60,7 +60,7 @@ class VisitorEventRepository extends ServiceEntityRepository
         return $this->findOneBy(
             [
                 'id' => $visitorEventId,
-                'status' => 'new',
+                'status' => ['new', 'await'],
             ]
         );
     }

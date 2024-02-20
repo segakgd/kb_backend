@@ -21,9 +21,6 @@ class ActionHandler
     public function handle(VisitorEvent $visitorEvent): bool
     {
         // todo не увеорен что это хорошее решение...
-
-//        dd($visitorEvent);
-
         return match ($visitorEvent->getType()) {
             'command' => $this->commandHandler->handle($visitorEvent),
             'message' => $this->messageHandler->handle($visitorEvent),

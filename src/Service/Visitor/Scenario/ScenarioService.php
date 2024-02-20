@@ -2,14 +2,17 @@
 
 namespace App\Service\Visitor\Scenario;
 
+use App\Dto\Scenario\ScenarioStepDto;
 use App\Entity\Scenario\Scenario;
 use App\Repository\Scenario\ScenarioRepository;
 use Exception;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class ScenarioService implements ScenarioServiceInterface
 {
     public function __construct(
         private readonly ScenarioRepository $scenarioRepository,
+        private readonly SerializerInterface $serializer,
     ) {
     }
 
@@ -35,70 +38,6 @@ class ScenarioService implements ScenarioServiceInterface
         return $scenario;
     }
 
-    /**
-     * @throws Exception
-     */
-    public function findScenarioByNameAndType(string $type, string $content): Scenario
-    {
-        $scenario = $this->getScenarioByNameAndType($type, $content);
-
-        if (null === $scenario) {
-            $scenario = $this->getDefaultScenario();
-        }
-
-        if (null === $scenario) {
-            throw new Exception('Нет сценария по умолчанию');
-        }
-
-        return $scenario;
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function createScenario(
-        array $settingItem, // todo не самое лучшее рещение использовать массив для $settingItem, но пока оставил так. (надо будет переделать)
-        int $projectId,
-        int $botId,
-        ?int $ownerId = null,
-    ): Scenario {
-        if (!isset($settingItem['type'])){
-            throw new Exception('Не передан type');
-        }
-
-        if (!isset($settingItem['name'])){
-            throw new Exception('Не передан name');
-        }
-
-        if (!isset($settingItem['content'])){
-            throw new Exception('Не передан content');
-        }
-
-        $step = (new Scenario())
-            ->setType($settingItem['type'])
-            ->setName($settingItem['name'])
-            ->setProjectId($projectId)
-            ->setBotId($botId)
-        ;
-
-        $this->scenarioRepository->saveAndFlush($step);
-
-        return $step;
-    }
-
-    // todo нужно ещё учитывать bot id
-    public function getScenarioByNameAndType(string $type, string $name): ?Scenario
-    {
-        return $this->scenarioRepository->findOneBy(
-            [
-                'type' => $type,
-                'name' => $name,
-                'deletedAt' => null,
-            ]
-        );
-    }
-
-    // todo нужно ещё учитывать bot id
     public function getDefaultScenario(): ?Scenario
     {
         return $this->scenarioRepository->findOneBy(
@@ -112,19 +51,57 @@ class ScenarioService implements ScenarioServiceInterface
     /**
      * @throws Exception
      */
-    public function generateDefaultScenario(int $projectId, int $botId): Scenario
+    public function findScenarioByNameAndType(string $type, string $content): Scenario
     {
-        return $this->createScenario(
+        $scenario = $this->getScenarioByNameAndType($type, $content);
+
+        if (null === $scenario) {
+            $scenario = $this->getDefaultScenario();
+        }
+
+        if (null === $scenario) {
+            $scenario = $this->getScenarioByNameAndType('message', 'default');
+        }
+
+        if (null === $scenario) {
+            throw new Exception('Нет сценария по умолчанию');
+        }
+
+        return $scenario;
+    }
+
+    public function getScenarioByNameAndType(string $type, string $name): ?Scenario
+    {
+        return $this->scenarioRepository->findOneBy(
             [
-                "name" => "default",
-                "type" => "message",
-                "content" => [
-                    "message"=>"Не знаю что вам ответить",
-                ],
-            ],
-            $projectId,
-            $botId,
+                'type' => $type,
+                'name' => $name,
+                'deletedAt' => null,
+            ]
         );
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function generateDefaultScenario(int $projectId, int $botId): Scenario // todo использовать!!
+    {
+        $step = (new ScenarioStepDto())
+            ->setMessage('Не знаю что вам ответить');
+
+        $step = (new Scenario())
+            ->setUUID(uuid_create())
+            ->setType('message')
+            ->setName('default')
+            ->setProjectId($projectId)
+            ->setBotId($botId)
+            ->addStep(
+                $this->serializer->normalize($step)
+            );
+
+        $this->scenarioRepository->saveAndFlush($step);
+
+        return $step;
     }
 
     public function markAllAsRemoveScenario(int $projectId, int $botId): void
@@ -136,7 +113,7 @@ class ScenarioService implements ScenarioServiceInterface
             ]
         );
 
-        foreach ($scenarios as $scenario){
+        foreach ($scenarios as $scenario) {
             $scenario->markAtDeleted();
 
             $this->scenarioRepository->saveAndFlush($scenario);

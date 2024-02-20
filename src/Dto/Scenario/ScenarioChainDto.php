@@ -4,45 +4,93 @@ namespace App\Dto\Scenario;
 
 class ScenarioChainDto
 {
-    // todo а вообще зачем деление на before, now и after?
-    private ?array $before = null;
+    private const TARGETS = [
+        'booking.month',
+        'booking.day',
+        'booking.time',
+        'contact.address',
+        'contact.firstName',
+        'contact.lastName',
+        'contact.middleName',
+        'lead.products',
 
-    private ?array $now = null;
+        'shop.products.category',
+        'shop.products.popular',
+        'shop.products.promotion',
+        'shop.products',
+        'shop.product',
+    ];
 
-    private ?array $after = null;
+    // cart.order
+    // cart.contact
+    // cart.shipping
+    // cart.products
+    // cart
+    // cart.pay
 
-    public function getBefore(): ?array
+
+    // or.not.empty
+    // not.empty
+    // empty
+
+    private const ACTIONS = [
+        'show',
+        'save', // todo а нужен ли? edit подразумевает в себе созранение
+        'run',
+        'brake.if',
+        'allowed.if',
+    ];
+
+    private string $target; // contact.lastName
+
+    private string $action;
+
+    private array $requirements;
+
+    private bool $isFinish = false;
+
+    public function getTarget(): string
     {
-        return $this->before;
+        return $this->target;
     }
 
-    public function addBefore(?ScenarioChainItemDto $before): static
+    public function setTarget(string $target): static
     {
-        $this->before[] = $before;
+        $this->target = $target;
 
         return $this;
     }
 
-    public function getNow(): ?array
+    public function getAction(): string
     {
-        return $this->now;
+        return $this->action;
     }
 
-    public function addNow(?ScenarioChainItemDto $now): static
+    public function setAction(string $action): static
     {
-        $this->now[] = $now;
+        $this->action = $action;
 
         return $this;
     }
 
-    public function getAfter(): ?array
+    public function getRequirements(): array
     {
-        return $this->after;
+        return $this->requirements;
     }
 
-    public function addAfter(?ScenarioChainItemDto $after): static
+    public function setRequirements(array $requirements): void
     {
-        $this->after[] = $after;
+        $this->requirements = $requirements;
+    }
+
+    public function isFinish(): bool
+    {
+        return $this->isFinish;
+    }
+
+    public function setIsFinish(bool $isFinish): static
+    {
+        $this->isFinish = $isFinish;
 
         return $this;
     }
