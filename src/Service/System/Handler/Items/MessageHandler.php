@@ -73,7 +73,7 @@ class MessageHandler
 
         $chains = $cache['event']['chains'];
 
-        // подумай в рамках ооп, создай сущность которая будех зранить значения нунешнего шага и всё такое...
+        // todo подумай в рамках ооп, создай сущность которая будех зранить значения нунешнего шага и всё такое...
 
         foreach ($chains as $key => $chain) {
             if ($chain['finished'] === false) {
@@ -85,8 +85,6 @@ class MessageHandler
 
                 if ($isHandle) {
                     $chains[$key]['finished'] = true;
-
-                    continue;
                 }
 
                 break;

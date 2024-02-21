@@ -20,8 +20,9 @@ class ChainHandler
 
     public function handleByType(string $target, MessageDto $messageDto, ?string $content = null): bool
     {
+//        dd($target);
         return match ($target) {
-            'show.shop.products.category' => $this->showShopProductsCategoryChain->handle($messageDto, $content),
+            'show.shop.products.category' => $this->showShopProductsCategoryChain->handle($messageDto),
             'shop.products.category' => $this->shopProductsCategoryChain->handle($messageDto, $content),
             'shop.products' => $this->shopProductsChain->handle($messageDto, $content),
             'shop.product' => $this->shopProductChain->handle(),

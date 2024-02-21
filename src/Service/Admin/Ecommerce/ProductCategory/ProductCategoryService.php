@@ -4,5 +4,12 @@ namespace App\Service\Admin\Ecommerce\ProductCategory;
 
 class ProductCategoryService implements ProductCategoryServiceInterface
 {
-    // todo реальзация
+    public function getAvailableCategory(): array
+    {
+        return [
+            'магнитолы',
+            'динамики',
+            'чайники',
+        ];
+    }
 }

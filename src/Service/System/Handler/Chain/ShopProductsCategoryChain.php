@@ -3,35 +3,23 @@
 namespace App\Service\System\Handler\Chain;
 
 use App\Dto\Core\Telegram\Request\Message\MessageDto;
+use App\Service\Admin\Ecommerce\ProductCategory\ProductCategoryService;
+use App\Service\System\Helper;
 
 class ShopProductsCategoryChain
 {
+    public function __construct(private readonly ProductCategoryService $categoryService)
+    {
+    }
+
     public function handle(MessageDto $messageDto, ?string $content = null): bool
     {
         if ($this->checkCondition($content)) {
-            $messageDto->setText('Вы выбрали категорию ' . $content . 'отличный выбор! В теперь давайте выберим товар:');
+            $messageDto->setText(
+                'Вы выбрали категорию ' . $content . 'отличный выбор! В теперь давайте выберим товар:'
+            );
 
-            $replyMarkups = [
-                [
-                    [
-                        'text' => 'предыдущий'
-                    ],
-                    [
-                        'text' => 'подробнее о товаре'
-                    ],
-                    [
-                        'text' => 'следующий'
-                    ],
-                ],
-                [
-                    [
-                        'text' => 'добавить в корзину'
-                    ],
-                    [
-                        'text' => 'вернуться в главное меню'
-                    ],
-                ],
-            ];
+            $replyMarkups = Helper::getProductNav();
 
             $messageDto->setReplyMarkup($replyMarkups);
 
@@ -44,23 +32,13 @@ class ShopProductsCategoryChain
             return false;
         }
 
-        $replyMarkups = [
-            [
-                [
-                    'text' => 'магнитолы'
-                ],
-                [
-                    'text' => 'динамики'
-                ],
-            ],
-            [
-                [
-                    'text' => 'вернуться в главное меню'
-                ],
-            ],
-        ];
+        $availableCategory = $this->categoryService->getAvailableCategory();
 
-        $messageDto->setText('Не понимаю что вы от меня хотите, повторите...');
+        $replyMarkups = Helper::getProductCategoryNav($availableCategory);
+
+        $messageDto->setText(
+            'Не понимаю вашего сообщения, выберите доступную категорию товара или вернитесь в глваное меню'
+        );
         $messageDto->setReplyMarkup($replyMarkups);
 
         return false;
@@ -68,12 +46,9 @@ class ShopProductsCategoryChain
 
     private function checkCondition(string $content): bool
     {
-        $awaitsForNextChain = [
-            'магнитолы',
-            'динамики',
-        ];
+        $availableCategory = $this->categoryService->getAvailableCategory();
 
-        if (in_array($content, $awaitsForNextChain)) {
+        if (in_array($content, $availableCategory)) {
             return true;
         }
 
