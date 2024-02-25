@@ -129,11 +129,6 @@ class DashboardService
                 'commandCode' => 'cache:clear',
                 'commandDescription' => 'Чистим кеш в проде',
             ],
-            [
-                'commandName' => '😵🐙 Обработать события (бесконечно)',
-                'commandCode' => 'kb:tg:events:handler',
-                'commandDescription' => 'Обрабатывает бесконечно до первой ошибки',
-            ],
         ];
     }
 

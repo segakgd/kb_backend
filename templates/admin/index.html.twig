@@ -3,7 +3,9 @@
 
 {% block content_title %}The Title of the Page{% endblock %}
 {% block page_actions %}
-    <a class="btn btn-primary" href="#">Some Action</a>
+    {% for command in commands %}
+        <a class="btn btn-primary" href="/dev/project/{{ projectId }}/command/{{ command.commandCode }}/start/">{{ command.commandName }}</a>
+    {% endfor %}
 {% endblock %}
 
 {% block main %}
@@ -144,25 +146,24 @@
                             </section>
                         </div>
 
-                        <hr>
-
                         <div class="jj__item_data jj__item_data--line">
-                            {% for bot in bots %}
-                                <section>
-                                    <form action="/dev/project/{{ projectId }}/scenario/{{ scenarioItem.id }}/apply/" method="GET">
-                                        <label>
-                                            Подключить бот:
-                                            <select name="botId">
+                            <section>
+                                <form action="/dev/project/{{ projectId }}/scenario/{{ scenarioItem.id }}/apply/" method="GET">
+                                    <label>
+                                        Подключить бот:
+                                        <select name="botId">
+                                            {% for bot in bots %}
                                                 <option value="{{ bot.botId }}">{{ bot.botName }}</option>
-                                            </select>
-                                            к сценарию
-                                        </label>
-                                        <button>
-                                            Подключить
-                                        </button>
-                                    </form>
-                                </section>
-                            {% endfor %}
+                                            {% endfor %}
+                                        </select>
+                                        к сценарию
+                                    </label>
+
+                                    <button>
+                                        Подключить
+                                    </button>
+                                </form>
+                            </section>
                         </div>
                     </div>
                 {% endfor %}
@@ -251,7 +252,7 @@
                                     <span>Тип события:</span> {{ session.sessionVisitorEvent.type }}
                                 </section>
                                 <section>
-                                    <span>Статус события:</span> {{ session.sessionVisitorEvent.status }}
+                                    <span>Статус последнего события:</span> {{ session.sessionVisitorEvent.status }}
                                 </section>
                             {% endif %}
                         </div>
@@ -260,44 +261,11 @@
             </div>
         </div>
 
+
         {# -------------------------------------------------------------------------------------------------------- #}
-        {# -------------------------------------------------Команды------------------------------------------------- #}
+        {# ------------------------------------------------Истории------------------------------------------------- #}
         {# -------------------------------------------------------------------------------------------------------- #}
-        <div class="jj__wrapper jj__wrapper-30">
-            <div class="jj__h">
-                <h2>Команды</h2>
-            </div>
-
-            <div class="jj__items">
-                {% if commands is empty %}
-                    <div class="jj__items-without-data">
-                        Данных нет
-                    </div>
-                {% endif %}
-
-                {% for command in commands %}
-                    <div class="jj__item">
-                        <div class="jj__item_name">{{ command.commandName }}</div>
-
-                        <div class="jj__item_data">
-                            <section>
-                                <span>Описание:</span> {{ command.commandDescription }}
-                            </section>
-                            <section>
-                                <a href="/dev/project/{{ projectId }}/command/{{ command.commandCode }}/start/">Запустить команду</a>
-                            </section>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-
-    {# -------------------------------------------------------------------------------------------------------- #}
-    {# ------------------------------------------------Истории------------------------------------------------- #}
-    {# -------------------------------------------------------------------------------------------------------- #}
-    <div class="jj__main_wrapper">
-        <div class="jj__wrapper" id="history__wrapper">
+        <div class="jj__wrapper jj__wrapper-30" id="history__wrapper">
             <div class="jj__h">
                 <h2>Истории</h2>
             </div>

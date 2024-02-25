@@ -124,6 +124,16 @@ class VisitorSession
         return $this;
     }
 
+    public function getCacheContent(): ?string
+    {
+        return $this->cache['content'] ?? null;
+    }
+
+    public function getCacheStatusEvent(): ?string
+    {
+        return $this->cache['event']['status'] ?? null;
+    }
+
     public function setCacheByKey(string $key, string|int $value): static
     {
         if (key_exists($key, $this->cache)){
