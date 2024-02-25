@@ -427,6 +427,15 @@ h1, h2 {
 .jj__item_data section span {
 }
 
+.jj__item_data section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.jj__item_data section ul li {
+    color: #969292;
+}
+
 .jj__item_data section a {
     border: 0;
     box-shadow: var(--button-shadow);
@@ -470,18 +479,22 @@ h1, h2 {
 
 .jj__color-red {
     color: #e85574;
+    font-weight: 500;
 }
 
 .jj__color-green {
     color: #059669;
+    font-weight: 500;
 }
 
 .jj__color-blue {
     color: #5368d5;
+    font-weight: 500;
 }
 
 .jj__color-yellow {
     color: #d5c453;
+    font-weight: 500;
 }
 
 .jj__icon-soc--wrapper {

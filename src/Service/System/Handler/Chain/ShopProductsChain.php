@@ -2,9 +2,9 @@
 
 namespace App\Service\System\Handler\Chain;
 
+use App\Helper;
 use App\Service\Admin\Ecommerce\Product\ProductService;
 use App\Service\System\Handler\PreMessageDto;
-use App\Service\System\Helper;
 
 class ShopProductsChain
 {

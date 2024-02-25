@@ -42,7 +42,6 @@ class ChainHandler
 
         $cache['event']['chains'] = $chains;
 
-
         return $preMessageDto;
     }
 

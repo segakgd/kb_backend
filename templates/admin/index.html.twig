@@ -212,6 +212,25 @@
                                 {% endif %}
                             </section>
 
+                            {% if event.chains is not null %}
+                                <section>
+                                    Шаги:
+                                    <ul>
+                                        {% for chain in event.chains %}
+                                            <li>
+                                                {{ chain.name }}
+
+                                                {% if chain.status == 1 %}
+                                                    <span class="jj__color-green">Пройдено</span>
+                                                {% else %}
+                                                    <span class="jj__color-red">Не пройдено</span>
+                                                {% endif %}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </section>
+                            {% endif %}
+
                             {% if event.error is not null %}
                                 <section class="jj__color-red">
                                     <span>Последняя ошибка:</span> {{ event.error }}
