@@ -59,8 +59,8 @@ class Helper
     public static function translate(string $key): string
     {
         return match ($key) {
-            'show.shop.products.category' => 'Выбор категории продуктов',
-            'shop.products.category' => 'Выбор продукта в категории',
+            'show.shop.products.category' => 'Приветственное сообщение, показываем доступные категории',
+            'shop.products.category' => 'Показываем товары по выбранной категории',
             'shop.products' => 'Выбор бродукта',
             'shop.product' => 'продукт',
             default => $key,

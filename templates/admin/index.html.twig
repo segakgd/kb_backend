@@ -1,7 +1,7 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
 
-{% block content_title %}The Title of the Page{% endblock %}
+{% block content_title %}Dashboard{% endblock %}
 {% block page_actions %}
     {% for command in commands %}
         <a class="btn btn-primary" href="/dev/project/{{ projectId }}/command/{{ command.commandCode }}/start/">{{ command.commandName }}</a>

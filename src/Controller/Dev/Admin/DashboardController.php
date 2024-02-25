@@ -2,6 +2,9 @@
 
 namespace App\Controller\Dev\Admin;
 
+use App\Entity\Ecommerce\Product;
+use App\Entity\Ecommerce\ProductCategory;
+use App\Entity\Ecommerce\ProductVariant;
 use App\Entity\Scenario\ScenarioTemplate;
 use App\Entity\User\Bot;
 use App\Entity\Visitor\VisitorEvent;
@@ -48,6 +51,9 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Сценарии', 'fa fa-file-text', ScenarioTemplate::class);
         yield MenuItem::linkToCrud('События', 'fa fa-file-text', VisitorEvent::class);
         yield MenuItem::linkToCrud('Сессии', 'fa fa-file-text', VisitorSession::class);
+        yield MenuItem::linkToCrud('Категории продуктов', 'fa fa-file-text', ProductCategory::class);
+        yield MenuItem::linkToCrud('Варианты продуктов', 'fa fa-file-text', ProductVariant::class);
+        yield MenuItem::linkToCrud('Продукты', 'fa fa-file-text', Product::class);
     }
 
     public function configureAssets(): Assets

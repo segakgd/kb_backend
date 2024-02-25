@@ -16,7 +16,7 @@ class ShopProductsCategoryChain
     {
         if ($this->checkCondition($content)) {
             $preMessageDto->setMessage(
-                'Вы выбрали категорию ' . $content . 'отличный выбор! В теперь давайте выберим товар:'
+                'Вы выбрали категорию ' . $content . ' отличный выбор! В теперь давайте выберим товар:'
             );
 
             $replyMarkups = Helper::getProductNav();
