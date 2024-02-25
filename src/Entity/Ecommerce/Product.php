@@ -33,6 +33,9 @@ class Product
     #[ORM\Column(nullable: true)]
     private ?DateTimeImmutable $updatedAt = null;
 
+    #[ORM\Column(length: 100, nullable: true)] // todo убрать nullable: true
+    private ?string $name = null;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -137,6 +140,18 @@ class Product
     public function setUpdatedAt(DateTimeImmutable $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): static
+    {
+        $this->name = $name;
 
         return $this;
     }

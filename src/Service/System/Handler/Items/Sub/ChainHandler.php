@@ -33,7 +33,7 @@ class ChainHandler
                 }
 
                 if ($isHandle) {
-                    $chains[$key]['finished'] = true;
+//                    $chains[$key]['finished'] = true;
                 }
 
                 break;

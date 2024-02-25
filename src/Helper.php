@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Entity\Ecommerce\ProductVariant;
+
 class Helper
 {
     public static function getProductCategoryNav(array $availableCategories): array
@@ -61,9 +63,32 @@ class Helper
         return match ($key) {
             'show.shop.products.category' => 'Приветственное сообщение, показываем доступные категории',
             'shop.products.category' => 'Показываем товары по выбранной категории',
-            'shop.products' => 'Выбор бродукта',
-            'shop.product' => 'продукт',
+            'shop.products' => 'Товары по выбранной катигории',
+            'shop.product' => 'Просмотр конкретного продукта',
             default => $key,
         };
+    }
+
+    public static function renderProductMessage(array $product): string
+    {
+        $name = $product['name'];
+
+        $message = "Название: $name \n\n";
+
+        $variants = $product['variants'];
+
+        /** @var ProductVariant $variant */
+        foreach ($variants as $variant) {
+            $name = $variant['name'];
+            $price = $variant['amount'];
+            $count = $variant['availableCount'];
+
+            $message .= "Вариант: $name \n";
+            $message .= "Цена: $price \n";
+            $message .= "Доступное количество: $count \n";
+            $message .= "\n";
+        }
+
+        return $message;
     }
 }

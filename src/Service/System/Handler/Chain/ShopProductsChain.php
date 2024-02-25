@@ -8,8 +8,9 @@ use App\Service\System\Handler\PreMessageDto;
 
 class ShopProductsChain
 {
-    public function __construct(private readonly ProductService $productService)
-    {
+    public function __construct(
+        private readonly ProductService $productService,
+    ) {
     }
 
     public function handle(PreMessageDto $preMessageDto, ?string $content = null): bool
@@ -22,9 +23,9 @@ class ShopProductsChain
             $products = $this->productService->getProducts();
 
             return match ($content) {
-                'предыдущий' => $this->prev($preMessageDto, $products[0]),
-                'подробнее о товаре' => $this->aboutProduct($preMessageDto, $products[0]),
-                'следующий' => $this->next($preMessageDto, $products[1]),
+                'предыдущий' => $this->prev($preMessageDto, $products),
+                'подробнее о товаре' => $this->aboutProduct($preMessageDto),
+                'следующий' => $this->next($preMessageDto, $products),
                 'вернуться в главное меню' => $this->gotoMain($preMessageDto),
                 default => false
             };
@@ -40,13 +41,12 @@ class ShopProductsChain
 
     private function prev(PreMessageDto $preMessageDto, array $product): bool
     {
-        $name = $product['name'];
-        $amount = $product['amount'];
-        $availableCount = $product['availableCount'];
+        $prev = $product['paginate']['prev'];
+        $prev = $prev - 1;
 
-        $message = "Название: $name \n";
-        $message .= "Доступное количество $availableCount \n";
-        $message .= "Цена $amount \n";
+        $product = $product['products'][$prev];
+
+        $message = Helper::renderProductMessage($product);
 
         $photo = $product['mainImage'];
 
@@ -56,7 +56,7 @@ class ShopProductsChain
         return false;
     }
 
-    private function aboutProduct(PreMessageDto $preMessageDto, array $product): bool
+    private function aboutProduct(PreMessageDto $preMessageDto): bool
     {
         $preMessageDto->setMessage('aboutProduct');
 
@@ -65,13 +65,12 @@ class ShopProductsChain
 
     private function next(PreMessageDto $preMessageDto, array $product): bool
     {
-        $name = $product['name'];
-        $amount = $product['amount'];
-        $availableCount = $product['availableCount'];
+        $next = $product['paginate']['next'];
+        $next = $next + 1;
 
-        $message = "Название: $name \n";
-        $message .= "Доступное количество $availableCount \n";
-        $message .= "Цена $amount \n";
+        $product = $product['products'][$next];
+
+        $message = Helper::renderProductMessage($product);
 
         $photo = $product['mainImage'];
 
