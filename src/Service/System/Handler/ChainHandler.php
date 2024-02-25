@@ -2,7 +2,6 @@
 
 namespace App\Service\System\Handler;
 
-use App\Dto\Core\Telegram\Request\Message\MessageDto;
 use App\Service\System\Handler\Chain\ShopProductChain;
 use App\Service\System\Handler\Chain\ShopProductsCategoryChain;
 use App\Service\System\Handler\Chain\ShopProductsChain;
@@ -18,13 +17,12 @@ class ChainHandler
     ) {
     }
 
-    public function handleByType(string $target, MessageDto $messageDto, ?string $content = null): bool
+    public function handleByType(string $target, PreMessageDto $preMessageDto, ?string $content = null): bool
     {
-//        dd($target);
         return match ($target) {
-            'show.shop.products.category' => $this->showShopProductsCategoryChain->handle($messageDto),
-            'shop.products.category' => $this->shopProductsCategoryChain->handle($messageDto, $content),
-            'shop.products' => $this->shopProductsChain->handle($messageDto, $content),
+            'show.shop.products.category' => $this->showShopProductsCategoryChain->handle($preMessageDto),
+            'shop.products.category' => $this->shopProductsCategoryChain->handle($preMessageDto, $content),
+            'shop.products' => $this->shopProductsChain->handle($preMessageDto, $content),
             'shop.product' => $this->shopProductChain->handle(),
             default => '',
         };

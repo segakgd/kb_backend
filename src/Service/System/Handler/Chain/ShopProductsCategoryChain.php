@@ -2,8 +2,8 @@
 
 namespace App\Service\System\Handler\Chain;
 
-use App\Dto\Core\Telegram\Request\Message\MessageDto;
 use App\Service\Admin\Ecommerce\ProductCategory\ProductCategoryService;
+use App\Service\System\Handler\PreMessageDto;
 use App\Service\System\Helper;
 
 class ShopProductsCategoryChain
@@ -12,22 +12,22 @@ class ShopProductsCategoryChain
     {
     }
 
-    public function handle(MessageDto $messageDto, ?string $content = null): bool
+    public function handle(PreMessageDto $preMessageDto, ?string $content = null): bool
     {
         if ($this->checkCondition($content)) {
-            $messageDto->setText(
+            $preMessageDto->setMessage(
                 'Вы выбрали категорию ' . $content . 'отличный выбор! В теперь давайте выберим товар:'
             );
 
             $replyMarkups = Helper::getProductNav();
 
-            $messageDto->setReplyMarkup($replyMarkups);
+            $preMessageDto->setKeyBoard($replyMarkups);
 
             return true;
         }
 
         if ($this->checkSystemCondition($content)) {
-            $messageDto->setText('Давайте представим что вы вернулись в главное меню');
+            $preMessageDto->setMessage('Давайте представим что вы вернулись в главное меню');
 
             return false;
         }
@@ -36,10 +36,10 @@ class ShopProductsCategoryChain
 
         $replyMarkups = Helper::getProductCategoryNav($availableCategory);
 
-        $messageDto->setText(
+        $preMessageDto->setMessage(
             'Не понимаю вашего сообщения, выберите доступную категорию товара или вернитесь в глваное меню'
         );
-        $messageDto->setReplyMarkup($replyMarkups);
+        $preMessageDto->setKeyBoard($replyMarkups);
 
         return false;
     }

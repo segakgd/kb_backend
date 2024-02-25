@@ -2,8 +2,8 @@
 
 namespace App\Service\System\Handler\Chain;
 
-use App\Dto\Core\Telegram\Request\Message\MessageDto;
 use App\Service\Admin\Ecommerce\ProductCategory\ProductCategoryService;
+use App\Service\System\Handler\PreMessageDto;
 use App\Service\System\Helper;
 
 class ShowShopProductsCategoryChain
@@ -12,14 +12,14 @@ class ShowShopProductsCategoryChain
     {
     }
 
-    public function handle(MessageDto $messageDto): bool
+    public function handle(PreMessageDto $preMessageDto): bool
     {
         $availableCategory = $this->categoryService->getAvailableCategory();
 
         $replyMarkups = Helper::getProductCategoryNav($availableCategory);
 
-        $messageDto->setText('Отлично, 😜 выберите одну из категорий 🤘');
-        $messageDto->setReplyMarkup($replyMarkups);
+        $preMessageDto->setMessage('Отлично, 😜 выберите одну из категорий 🤘');
+        $preMessageDto->setKeyBoard($replyMarkups);
 
         return true;
     }

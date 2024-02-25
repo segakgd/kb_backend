@@ -420,6 +420,7 @@ h1, h2 {
 }
 
 .jj__item_data section {
+    word-break: break-word;
     padding: 0 10px 0 0;
 }
 
@@ -477,6 +478,10 @@ h1, h2 {
 
 .jj__color-blue {
     color: #5368d5;
+}
+
+.jj__color-yellow {
+    color: #d5c453;
 }
 
 .jj__icon-soc--wrapper {

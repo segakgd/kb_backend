@@ -2,8 +2,8 @@
 
 namespace App\Service\System\Handler\Chain;
 
-use App\Dto\Core\Telegram\Request\Message\MessageDto;
 use App\Service\Admin\Ecommerce\Product\ProductService;
+use App\Service\System\Handler\PreMessageDto;
 use App\Service\System\Helper;
 
 class ShopProductsChain
@@ -12,57 +12,78 @@ class ShopProductsChain
     {
     }
 
-    public function handle(MessageDto $messageDto, ?string $content = null): bool
+    public function handle(PreMessageDto $preMessageDto, ?string $content = null): bool
     {
         $replyMarkups = Helper::getProductNav();
 
         if ($this->checkSystemCondition($content)) {
-            $messageDto->setReplyMarkup($replyMarkups);
+            $preMessageDto->setKeyBoard($replyMarkups);
 
             $products = $this->productService->getProducts();
-            $product = $products[0];
 
             return match ($content) {
-                'предыдущий' => $this->prev($messageDto, $product),
-                'подробнее о товаре' => $this->aboutProduct($messageDto, $product),
-                'следующий' => $this->next($messageDto, $product),
-                'вернуться в главное меню' => $this->gotoMain($messageDto),
+                'предыдущий' => $this->prev($preMessageDto, $products[0]),
+                'подробнее о товаре' => $this->aboutProduct($preMessageDto, $products[0]),
+                'следующий' => $this->next($preMessageDto, $products[1]),
+                'вернуться в главное меню' => $this->gotoMain($preMessageDto),
                 default => false
             };
         }
 
-        $messageDto->setText(
+        $preMessageDto->setMessage(
             'Не понимаю о чем вы... мб вам выбрать доступные варианты из меню? К примеру, вы можете посмотреть более подробную информациюю о товаре.'
         );
-        $messageDto->setReplyMarkup($replyMarkups);
+        $preMessageDto->setKeyBoard($replyMarkups);
 
         return false;
     }
 
-    private function prev(MessageDto $messageDto, array $product): bool
+    private function prev(PreMessageDto $preMessageDto, array $product): bool
     {
-        $messageDto->setText('prev');
+        $name = $product['name'];
+        $amount = $product['amount'];
+        $availableCount = $product['availableCount'];
+
+        $message = "Название: $name \n";
+        $message .= "Доступное количество $availableCount \n";
+        $message .= "Цена $amount \n";
+
+        $photo = $product['mainImage'];
+
+        $preMessageDto->setMessage($message);
+        $preMessageDto->setPhoto($photo);
 
         return false;
     }
 
-    private function aboutProduct(MessageDto $messageDto, array $product): bool
+    private function aboutProduct(PreMessageDto $preMessageDto, array $product): bool
     {
-        $messageDto->setText('prev');
+        $preMessageDto->setMessage('aboutProduct');
 
         return false;
     }
 
-    private function next(MessageDto $messageDto, array $product): bool
+    private function next(PreMessageDto $preMessageDto, array $product): bool
     {
-        $messageDto->setText('prev');
+        $name = $product['name'];
+        $amount = $product['amount'];
+        $availableCount = $product['availableCount'];
+
+        $message = "Название: $name \n";
+        $message .= "Доступное количество $availableCount \n";
+        $message .= "Цена $amount \n";
+
+        $photo = $product['mainImage'];
+
+        $preMessageDto->setMessage($message);
+        $preMessageDto->setPhoto($photo);
 
         return false;
     }
 
-    private function gotoMain(MessageDto $messageDto): bool
+    private function gotoMain(PreMessageDto $preMessageDto): bool
     {
-        $messageDto->setText('prev');
+        $preMessageDto->setMessage('gotoMain');
 
         return false;
     }

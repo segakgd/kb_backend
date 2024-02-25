@@ -204,6 +204,8 @@
                                     <span class="jj__color-green"> Успешно </span>
                                 {% elseif event.status == 'new' %}
                                     <span class="jj__color-blue"> Новое </span>
+                                {% elseif event.status == 'await' %}
+                                    <span class="jj__color-yellow"> Ожидает пользователя </span>
                                 {% else %}
                                     {{ event.status }}
                                 {% endif %}
@@ -211,7 +213,7 @@
 
                             {% if event.error is not null %}
                                 <section class="jj__color-red">
-                                    <span>Ошибка:</span> {{ event.error }}
+                                    <span>Последняя ошибка:</span> {{ event.error }}
                                 </section>
                             {% endif %}
                         </div>
