@@ -7,11 +7,13 @@ use App\Repository\Scenario\ScenarioRepository;
 use App\Repository\User\BotRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Integration\Telegram\TelegramService;
+use App\Service\System\Handler\Dto\CacheDto;
 use App\Service\System\Handler\Items\Sub\ChainHandler;
 use App\Service\System\Handler\Items\Sub\ScenarioHandler;
 use App\Service\System\Handler\PreMessageDto;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class MessageHandler
 {
@@ -23,6 +25,7 @@ class MessageHandler
         private readonly ScenarioHandler $scenarioHandler,
         private readonly EntityManagerInterface $entityManager,
         private readonly BotRepository $botRepository,
+        private readonly SerializerInterface $serializer,
     ) {
     }
 
@@ -48,6 +51,9 @@ class MessageHandler
 
         $cache = $visitorSession->getCache();
 
+        /** @var CacheDto $cacheDto */
+        $cacheDto = $this->serializer->denormalize($cache, CacheDto::class);
+
         $status = $visitorSession->getCacheStatusEvent();
         $content = $visitorSession->getCacheContent();
 
@@ -56,7 +62,7 @@ class MessageHandler
         ;
 
         if ($status === 'process') {
-            $preMessageDto = $this->chainHandler->handle($preMessageDto, $cache, $content);
+            $preMessageDto = $this->chainHandler->handle($preMessageDto, $cache, $content, $cacheDto);
 
             $visitorSession->setCache($cache);
         } else {
@@ -64,6 +70,9 @@ class MessageHandler
         }
 
         $this->send($preMessageDto, $token, $visitorSession);
+
+        $cache = $this->serializer->normalize($cacheDto);
+        $visitorSession->setCache($cache);
 
         $this->entityManager->persist($scenario);
         $this->entityManager->persist($visitorSession);

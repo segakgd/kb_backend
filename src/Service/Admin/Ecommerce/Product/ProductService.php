@@ -2,6 +2,7 @@
 
 namespace App\Service\Admin\Ecommerce\Product;
 
+use App\Helper;
 use App\Repository\Ecommerce\ProductCategoryEntityRepository;
 
 class ProductService implements ProductServiceInterface
@@ -11,15 +12,16 @@ class ProductService implements ProductServiceInterface
     ) {
     }
 
-    public function getProducts(): array
-    {
-        $productCategoryName = 'магнитолы';
-        $pageNow = 2;
-        $nowProductId = 1;
+    // todo типизация
 
+    /**
+     * @throws \Exception
+     */
+    public function getProductsByCategory($pageNow, $categoryName): array // todo переделать в $categoryId (хранить id совместно с названием)
+    {
         $productCategory = $this->productCategoryEntityRepository->findOneBy(
             [
-                'name' => $productCategoryName,
+                'name' => $categoryName,
             ]
         );
 
@@ -47,17 +49,12 @@ class ProductService implements ProductServiceInterface
         }
 
         $total = count($products);
-        $prevPage = ($pageNow > 1) ? $pageNow - 1: null;
-        $nextPage = ($pageNow < $total) ? $pageNow + 1: null;
+
+        $paginate = Helper::buildPaginate($pageNow, $total);
 
         return [
             'products' => $products,
-            'paginate' => [
-                'prev' => $prevPage,
-                'now' => $pageNow,
-                'next' => $nextPage,
-                'total' => $total,
-            ]
+            'paginate' => $paginate,
         ];
     }
 }

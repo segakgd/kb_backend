@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Entity\Ecommerce\ProductVariant;
+use Exception;
 
 class Helper
 {
@@ -26,6 +27,26 @@ class Helper
         ];
     }
 
+    /**
+     * @throws Exception
+     */
+    public static function buildPaginate(int $page, int $maxPage): array
+    {
+        if ($maxPage < $page) {
+            throw new Exception('max page < page');
+        }
+
+        $prevPage = ($page > 1) ? $page - 1: null;
+        $nextPage = ($page < $maxPage) ? $page + 1: null;
+
+        return [
+            'prev' => $prevPage,
+            'now' => $page,
+            'next' => $nextPage,
+            'total' => $maxPage,
+        ];
+    }
+
     public static function getAvailableProductNavItems(): array
     {
         return [
@@ -36,9 +57,9 @@ class Helper
         ];
     }
 
-    public static function getProductNav(): array
+    public static function getProductNav(?array $paginate = null): array
     {
-        return [
+        $nav = [
             [
                 [
                     'text' => 'предыдущий'
@@ -56,6 +77,44 @@ class Helper
                 ],
             ],
         ];
+
+        if (is_array($paginate) && !isset($paginate['prev'])) {
+            $nav = [
+                [
+                    [
+                        'text' => 'подробнее о товаре'
+                    ],
+                    [
+                        'text' => 'следующий'
+                    ],
+                ],
+                [
+                    [
+                        'text' => 'вернуться в главное меню'
+                    ],
+                ],
+            ];
+        }
+
+        if (is_array($paginate) && !isset($paginate['next'])) {
+            $nav = [
+                [
+                    [
+                        'text' => 'предыдущий'
+                    ],
+                    [
+                        'text' => 'подробнее о товаре'
+                    ],
+                ],
+                [
+                    [
+                        'text' => 'вернуться в главное меню'
+                    ],
+                ],
+            ];
+        }
+
+        return $nav;
     }
 
     public static function translate(string $key): string

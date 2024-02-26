@@ -6,6 +6,7 @@ use App\Service\System\Handler\Chain\ShopProductChain;
 use App\Service\System\Handler\Chain\ShopProductsCategoryChain;
 use App\Service\System\Handler\Chain\ShopProductsChain;
 use App\Service\System\Handler\Chain\ShowShopProductsCategoryChain;
+use App\Service\System\Handler\Dto\CacheDto;
 use App\Service\System\Handler\PreMessageDto;
 
 class ChainHandler
@@ -18,7 +19,7 @@ class ChainHandler
     ) {
     }
 
-    public function handle(PreMessageDto $preMessageDto, array &$cache, string $content): PreMessageDto
+    public function handle(PreMessageDto $preMessageDto, array &$cache, string $content, CacheDto $cacheDto): PreMessageDto
     {
         $chains = $cache['event']['chains'];
 
@@ -26,7 +27,7 @@ class ChainHandler
 
         foreach ($chains as $key => $chain) {
             if ($chain['finished'] === false) {
-                $isHandle = $this->handleByType($chain['target'], $preMessageDto, $content);
+                $isHandle = $this->handleByType($chain['target'], $preMessageDto, $content, $cacheDto);
 
                 if (count($chains) === ($key + 1)) {
                     $cache['event']['status'] = 'finished';
@@ -45,12 +46,12 @@ class ChainHandler
         return $preMessageDto;
     }
 
-    private function handleByType(string $target, PreMessageDto $preMessageDto, ?string $content = null): bool
+    private function handleByType(string $target, PreMessageDto $preMessageDto, ?string $content = null, CacheDto $cacheDto): bool
     {
         return match ($target) {
             'show.shop.products.category' => $this->showShopProductsCategoryChain->handle($preMessageDto),
             'shop.products.category' => $this->shopProductsCategoryChain->handle($preMessageDto, $content),
-            'shop.products' => $this->shopProductsChain->handle($preMessageDto, $content),
+            'shop.products' => $this->shopProductsChain->handle($preMessageDto, $content, $cacheDto),
             'shop.product' => $this->shopProductChain->handle(),
             default => '',
         };
