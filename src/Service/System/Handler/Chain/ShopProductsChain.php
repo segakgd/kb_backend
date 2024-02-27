@@ -2,10 +2,12 @@
 
 namespace App\Service\System\Handler\Chain;
 
+use App\Entity\Ecommerce\Product;
 use App\Helper;
 use App\Service\Admin\Ecommerce\Product\ProductService;
 use App\Service\System\Handler\Dto\CacheDto;
 use App\Service\System\Handler\PreMessageDto;
+use Exception;
 
 class ShopProductsChain
 {
@@ -14,19 +16,29 @@ class ShopProductsChain
     ) {
     }
 
-    public function handle(PreMessageDto $preMessageDto, ?string $content = null, CacheDto $cacheDto): bool
+    /**
+     * @throws Exception
+     */
+    public function handle(PreMessageDto $preMessageDto, CacheDto $cacheDto): bool
     {
+        $content = $cacheDto->getContent();
 
         if ($this->checkSystemCondition($content)) {
             $event = $cacheDto->getEvent();
             $paginate = $event['paginate'];
 
-            $products = $this->productService->getProductsByCategory($paginate['now'], 'магнитолы');
-
+//            $result = match ($content) {
+//                'предыдущий' => 'product.prev',
+//                'следующий' => 'product.next',
+//                'подробнее о товаре' => $this->aboutProduct($preMessageDto),
+//                'вернуться в главное меню' => $this->gotoMain($preMessageDto),
+//                default => false
+//            };
+//
             $result = match ($content) {
-                'предыдущий' => $this->prev($preMessageDto, $products, $paginate),
+                'предыдущий' => $this->prev($preMessageDto, $paginate),
                 'подробнее о товаре' => $this->aboutProduct($preMessageDto),
-                'следующий' => $this->next($preMessageDto, $products, $paginate),
+                'следующий' => $this->next($preMessageDto, $paginate),
                 'вернуться в главное меню' => $this->gotoMain($preMessageDto),
                 default => false
             };
@@ -34,10 +46,6 @@ class ShopProductsChain
 
 //            dd($paginate['now'], $products['paginate']['total']);
 //            dd(Helper::buildPaginate($paginate['now'], $products['paginate']['total']));
-            $replyMarkups = Helper::getProductNav(
-
-            );
-            $preMessageDto->setKeyBoard($replyMarkups);
 
             $event['paginate'] = $paginate;
 
@@ -56,39 +64,61 @@ class ShopProductsChain
         return false;
     }
 
-    private function prev(PreMessageDto $preMessageDto, array $product, array &$paginate): bool
+    /**
+     * @throws Exception
+     */
+    private function prev(PreMessageDto $preMessageDto, array &$paginate): bool
     {
-        $prev = $product['paginate']['prev'];
+        $products = $this->productService->getProductsByCategory($paginate['now'], 'магнитолы', 'product.prev');
 
-        $paginate['now'] = $prev;
+        $paginate['now'] = $products['paginate']['now'];
 
-        $key = $prev - 1;
-        $product = $product['products'][$key];
+        $product = $products['items'][0];
 
         $message = Helper::renderProductMessage($product);
 
-        $photo = $product['mainImage'];
+        $photo = 'https://sopranoclub.ru/images/190-epichnyh-anime-artov/file48822.jpg';
 
         $preMessageDto->setMessage($message);
         $preMessageDto->setPhoto($photo);
+
+//        dd($products);
+        if ($products['paginate']['prev'] === null){
+            $replyMarkups = Helper::getProductNav(['next' => true]);
+        } else {
+            $replyMarkups = Helper::getProductNav();
+        }
+
+        $preMessageDto->setKeyBoard($replyMarkups);
 
         return false;
     }
 
-    private function next(PreMessageDto $preMessageDto, array $product, array &$paginate): bool
+    /**
+     * @throws Exception
+     */
+    private function next(PreMessageDto $preMessageDto, array &$paginate): bool
     {
-        $next = $product['paginate']['next'];
-        $paginate['now'] = $next;
+        $products = $this->productService->getProductsByCategory($paginate['now'], 'магнитолы', 'product.next');
 
-        $key = $next - 1;
-        $product = $product['products'][$key];
+        $paginate['now'] = $products['paginate']['now'];
+
+        $product = $products['items'][0];
 
         $message = Helper::renderProductMessage($product);
 
-        $photo = $product['mainImage'];
+        $photo = 'https://sopranoclub.ru/images/190-epichnyh-anime-artov/file48822.jpg';
 
         $preMessageDto->setMessage($message);
         $preMessageDto->setPhoto($photo);
+
+        if ($products['paginate']['next'] === null){
+            $replyMarkups = Helper::getProductNav(['prev' => true]);
+        } else {
+            $replyMarkups = Helper::getProductNav();
+        }
+
+        $preMessageDto->setKeyBoard($replyMarkups);
 
         return false;
     }

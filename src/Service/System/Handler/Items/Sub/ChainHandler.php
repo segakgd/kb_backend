@@ -8,6 +8,7 @@ use App\Service\System\Handler\Chain\ShopProductsChain;
 use App\Service\System\Handler\Chain\ShowShopProductsCategoryChain;
 use App\Service\System\Handler\Dto\CacheDto;
 use App\Service\System\Handler\PreMessageDto;
+use Exception;
 
 class ChainHandler
 {
@@ -46,12 +47,15 @@ class ChainHandler
         return $preMessageDto;
     }
 
+    /**
+     * @throws Exception
+     */
     private function handleByType(string $target, PreMessageDto $preMessageDto, ?string $content = null, CacheDto $cacheDto): bool
     {
         return match ($target) {
             'show.shop.products.category' => $this->showShopProductsCategoryChain->handle($preMessageDto),
             'shop.products.category' => $this->shopProductsCategoryChain->handle($preMessageDto, $content),
-            'shop.products' => $this->shopProductsChain->handle($preMessageDto, $content, $cacheDto),
+            'shop.products' => $this->shopProductsChain->handle($preMessageDto, $cacheDto),
             'shop.product' => $this->shopProductChain->handle(),
             default => '',
         };

@@ -9,6 +9,8 @@ use App\Dto\Scenario\ScenarioDto;
 use App\Dto\Scenario\ScenarioKeyboardDto;
 use App\Dto\Scenario\ScenarioStepDto;
 use App\Fake\LeadScenario;
+use App\Repository\Ecommerce\ProductCategoryEntityRepository;
+use App\Repository\Ecommerce\ProductEntityRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,6 +22,7 @@ class MainController extends AbstractController
     public function __construct(
         private readonly SerializerInterface $serializer,
         private readonly LeadScenario $leadScenario,
+        private readonly ProductEntityRepository $productCategoryEntityRepository,
     ) {
     }
 

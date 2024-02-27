@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Entity\Ecommerce\Product;
 use App\Entity\Ecommerce\ProductVariant;
 use Exception;
 
@@ -128,19 +129,20 @@ class Helper
         };
     }
 
-    public static function renderProductMessage(array $product): string
+    public static function renderProductMessage(Product $product): string
     {
-        $name = $product['name'];
+        $name = $product->getName();
 
         $message = "Название: $name \n\n";
 
-        $variants = $product['variants'];
+        $variants = $product->getVariants();
 
         /** @var ProductVariant $variant */
         foreach ($variants as $variant) {
-            $name = $variant['name'];
-            $price = $variant['amount'];
-            $count = $variant['availableCount'];
+            $name = $variant->getName();
+            $price = $variant->getPrice();
+            $price = $price['price'];
+            $count = $variant->getCount();
 
             $message .= "Вариант: $name \n";
             $message .= "Цена: $price \n";

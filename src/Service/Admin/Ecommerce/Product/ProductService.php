@@ -2,59 +2,34 @@
 
 namespace App\Service\Admin\Ecommerce\Product;
 
-use App\Helper;
-use App\Repository\Ecommerce\ProductCategoryEntityRepository;
+use App\Repository\Ecommerce\ProductEntityRepository;
+use Exception;
 
 class ProductService implements ProductServiceInterface
 {
     public function __construct(
-        private readonly ProductCategoryEntityRepository $productCategoryEntityRepository,
+        private readonly ProductEntityRepository $entityRepository,
     ) {
     }
 
     // todo типизация
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public function getProductsByCategory($pageNow, $categoryName): array // todo переделать в $categoryId (хранить id совместно с названием)
+    public function getProductsByCategory($pageNow, $categoryName, $key): array // todo переделать в $categoryId (хранить id совместно с названием)
     {
-        $productCategory = $this->productCategoryEntityRepository->findOneBy(
-            [
-                'name' => $categoryName,
-            ]
-        );
+        $paginator = [];
 
-        $products = [];
-
-        foreach ($productCategory->getProducts() as $product) {
-            $variants = [];
-
-            foreach ($product->getVariants() as $productVariant) {
-                $price = $productVariant->getPrice();
-
-                $variants[] = [
-                    'name' => $productVariant->getName(),
-                    'amount' => $price['price'],
-                    'availableCount' => $productVariant->getCount(),
-                ];
-            }
-
-            $products[] = [
-                'id' => $product->getId(),
-                'name' => $product->getName(),
-                'mainImage' => 'https://sopranoclub.ru/images/190-epichnyh-anime-artov/file48822.jpg',
-                'variants' => $variants
-            ];
+        if ('product.next' === $key) {
+            $paginator = $this->entityRepository->findProductsByCategoryName($categoryName, $pageNow + 1);
         }
 
-        $total = count($products);
+        if ('product.prev' === $key) {
+            $paginator = $this->entityRepository->findProductsByCategoryName($categoryName, $pageNow - 1);
+        }
 
-        $paginate = Helper::buildPaginate($pageNow, $total);
 
-        return [
-            'products' => $products,
-            'paginate' => $paginate,
-        ];
+        return $paginator;
     }
 }
