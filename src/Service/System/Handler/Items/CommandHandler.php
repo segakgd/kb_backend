@@ -9,6 +9,7 @@ use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Integration\Telegram\TelegramService;
 use Exception;
 
+/** @deprecated временно */
 class CommandHandler
 {
     public function __construct(
