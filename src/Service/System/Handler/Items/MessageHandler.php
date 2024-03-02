@@ -11,6 +11,7 @@ use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Integration\Telegram\TelegramService;
 use App\Service\System\Handler\Contract;
 use App\Service\System\Handler\Dto\Cache\CacheDto;
+use App\Service\System\Handler\Dto\Contract\ContractMessageDto;
 use App\Service\System\Handler\Items\Sub\ChainHandler;
 use App\Service\System\Handler\Items\Sub\ScenarioHandler;
 use Doctrine\ORM\EntityManagerInterface;
@@ -88,17 +89,18 @@ class MessageHandler
     {
         $messages = $contract->getMessages();
 
+        /** @var ContractMessageDto $message */
         foreach ($messages as $message) {
             if ($message->getPhoto()) {
                 $this->telegramService->sendPhoto(
-                    $message->getPhoto(),
+                    $message,
                     $token,
                     $visitorSession->getChatId()
                 );
             }
-            if ($message->getMessages()) {
+            if ($message->getMessage()) {
                 $this->telegramService->sendMessage(
-                    $message->getMessages(),
+                    $message,
                     $token,
                     $visitorSession->getChatId()
                 );

@@ -202,9 +202,6 @@ class Helper
             $contractMessage->setKeyBoard($keyBoard);
         }
 
-        return (new ContractMessageDto())
-            ->setMessage($message)
-            ->setPhoto($photo)
-            ->setKeyBoard($keyBoard);
+        return $contractMessage;
     }
 }
