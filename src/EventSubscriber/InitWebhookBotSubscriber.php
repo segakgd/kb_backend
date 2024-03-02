@@ -37,7 +37,7 @@ class InitWebhookBotSubscriber implements EventSubscriberInterface
         }
 
         $webhookDto = (new WebhookDto())
-            ->setUrl($uri)
+            ->setUrl('https://webhook.site/5264a79a-1e4d-45d1-bb92-4cb2d099f1d3')
         ;
 
         $this->telegramService->setWebhook($webhookDto, $dot->getToken());

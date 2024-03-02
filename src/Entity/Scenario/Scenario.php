@@ -14,26 +14,26 @@ class Scenario
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 25)]
-    private ?string $type = null;
+    #[ORM\Column(length: 36)]
+    private ?string $UUID = null;
+
+    #[ORM\Column(length: 36, nullable: true)]
+    private ?string $ownerUUID = null;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column]
-    private array $content = [];
-
-    #[ORM\Column(nullable: true)]
-    private ?int $ownerStepId = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?array $actionAfter = [];
+    #[ORM\Column(length: 25)]
+    private ?string $type = null;
 
     #[ORM\Column]
     private ?int $projectId = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $botId = null;
+
+    #[ORM\Column]
+    private array $steps = [];
 
     #[ORM\Column(nullable: true)]
     private ?DateTimeImmutable $deletedAt = null;
@@ -67,38 +67,45 @@ class Scenario
         return $this;
     }
 
-    public function getOwnerStepId(): ?int
+    public function getUUID(): ?string
     {
-        return $this->ownerStepId;
+        return $this->UUID;
     }
 
-    public function setOwnerStepId(int $ownerStepId): self
+    public function setUUID(string $UUID): static
     {
-        $this->ownerStepId = $ownerStepId;
+        $this->UUID = $UUID;
 
         return $this;
     }
 
-    public function getContent(): array
+    public function getOwnerUUID(): ?string
     {
-        return $this->content;
+        return $this->ownerUUID;
     }
 
-    public function setContent(array $content): self
+    public function setOwnerUUID(?string $ownerUUID): static
     {
-        $this->content = $content;
+        $this->ownerUUID = $ownerUUID;
 
         return $this;
     }
 
-    public function getActionAfter(): ?array
+    public function getSteps(): array
     {
-        return $this->actionAfter;
+        return $this->steps;
     }
 
-    public function setActionAfter(?array $actionAfter): self
+    public function setSteps(array $steps): static
     {
-        $this->actionAfter = $actionAfter;
+        $this->steps = $steps;
+
+        return $this;
+    }
+
+    public function addStep(array $step): static
+    {
+        $this->steps[] = $step;
 
         return $this;
     }

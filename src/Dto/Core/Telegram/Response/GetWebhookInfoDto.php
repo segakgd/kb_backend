@@ -10,7 +10,7 @@ class GetWebhookInfoDto extends Response // todo перенести в App\Servi
 
     private bool $has_custom_certificate;
 
-    private int $pending_update_count;
+    private ?int $pending_update_count = null;
 
     private ?int $max_connections = null;
 
@@ -44,7 +44,7 @@ class GetWebhookInfoDto extends Response // todo перенести в App\Servi
         $this->has_custom_certificate = $has_custom_certificate;
     }
 
-    public function getPendingUpdateCount(): int
+    public function getPendingUpdateCount(): ?int
     {
         return $this->pending_update_count;
     }

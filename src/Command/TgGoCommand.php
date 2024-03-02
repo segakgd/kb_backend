@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Entity\Visitor\VisitorEvent;
 use App\Repository\Visitor\VisitorEventRepository;
+use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Admin\History\HistoryService;
 use App\Service\Common\History\HistoryErrorService;
 use App\Service\System\Handler\ActionHandler;
@@ -24,6 +25,7 @@ class TgGoCommand extends Command
 {
     public function __construct(
         private readonly VisitorEventRepository $visitorEventRepository,
+        private readonly VisitorSessionRepository $visitorSessionRepository,
         private readonly ActionHandler $actionHandler,
         string $name = null
     ) {
@@ -58,18 +60,19 @@ class TgGoCommand extends Command
 
             $this->actionHandler->handle($visitorEvent);
 
-//            if ($chatEvent->issetActions()){
-//                $this->updateChatEventStatus($chatEvent, ChatEvent::WAITING_ACTION);
-//            } else {
-//                $this->updateChatEventStatus($chatEvent, ChatEvent::STATUS_DONE);
-//            }
+            $visitorSession = $this->visitorSessionRepository->findByEventId($visitorEvent->getId());
+            $cache = $visitorSession->getCache();
 
-            $this->visitorEventService->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_DONE);
+            if ($cache['event']['status'] === 'process') {
+                $this->visitorEventRepository->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_AWAIT);
+            } else {
+                $this->visitorEventRepository->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_DONE);
+            }
 
         } catch (Throwable $throwable){
             $visitorEvent->setError($throwable->getMessage());
 
-            $this->visitorEventService->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_FAIL);
+            $this->visitorEventRepository->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_FAIL);
 
 //            HistoryErrorService::errorSystem(
 //                $throwable->getMessage(),

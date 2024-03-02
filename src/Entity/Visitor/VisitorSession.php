@@ -4,6 +4,7 @@ namespace App\Entity\Visitor;
 
 use App\Repository\Visitor\VisitorSessionRepository;
 use DateTimeImmutable;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /** Сессия пользователя */
@@ -21,12 +22,6 @@ class VisitorSession
     #[ORM\Column(length: 30)]
     private ?string $channel = null;
 
-    #[ORM\Column]
-    private ?int $channelId = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $visitorId = null;
-
     #[ORM\Column(nullable: true)]
     private ?int $visitorEvent = null;
 
@@ -35,6 +30,15 @@ class VisitorSession
 
     #[ORM\Column(nullable: true)]
     private ?int $projectId = null;
+
+    #[ORM\Column(type: Types::JSON)]
+    private array $cache = [];
+
+    #[ORM\Column]
+    private ?int $botId = null;
+
+    #[ORM\Column]
+    private ?int $chatId = null;
 
     public function __construct()
     {
@@ -46,11 +50,6 @@ class VisitorSession
     public function getId(): int
     {
         return $this->id;
-    }
-
-    public function getVisitorId(): int
-    {
-        return $this->visitorId;
     }
 
     public function getName(): ?string
@@ -73,25 +72,6 @@ class VisitorSession
     public function setChannel(string $channel): static
     {
         $this->channel = $channel;
-
-        return $this;
-    }
-
-    public function getChannelId(): ?int
-    {
-        return $this->channelId;
-    }
-
-    public function setChannelId(int $channelId): static
-    {
-        $this->channelId = $channelId;
-
-        return $this;
-    }
-
-    public function setVisitorId(int $visitorId): self
-    {
-        $this->visitorId = $visitorId;
 
         return $this;
     }
@@ -128,6 +108,61 @@ class VisitorSession
     public function setProjectId(?int $projectId): static
     {
         $this->projectId = $projectId;
+
+        return $this;
+    }
+
+    public function getCache(): array
+    {
+        return $this->cache;
+    }
+
+    public function setCache(array $cache): static
+    {
+        $this->cache = $cache;
+
+        return $this;
+    }
+
+    public function getCacheContent(): ?string
+    {
+        return $this->cache['content'] ?? null;
+    }
+
+    public function getCacheStatusEvent(): ?string
+    {
+        return $this->cache['event']['status'] ?? null;
+    }
+
+    public function setCacheByKey(string $key, string|int $value): static
+    {
+        if (key_exists($key, $this->cache)){
+            $this->cache[$key] = $value;
+        }
+
+        return $this;
+    }
+
+    public function getBotId(): ?int
+    {
+        return $this->botId;
+    }
+
+    public function setBotId(int $botId): static
+    {
+        $this->botId = $botId;
+
+        return $this;
+    }
+
+    public function getChatId(): ?int
+    {
+        return $this->chatId;
+    }
+
+    public function setChatId(int $chatId): static
+    {
+        $this->chatId = $chatId;
 
         return $this;
     }

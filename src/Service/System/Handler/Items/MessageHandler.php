@@ -2,12 +2,20 @@
 
 namespace App\Service\System\Handler\Items;
 
-use App\Dto\Core\Telegram\Request\Message\MessageDto;
 use App\Entity\Visitor\VisitorEvent;
+use App\Entity\Visitor\VisitorSession;
+use App\Helper;
 use App\Repository\Scenario\ScenarioRepository;
+use App\Repository\User\BotRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Integration\Telegram\TelegramService;
+use App\Service\System\Handler\Contract;
+use App\Service\System\Handler\Dto\Cache\CacheDto;
+use App\Service\System\Handler\Items\Sub\ChainHandler;
+use App\Service\System\Handler\Items\Sub\ScenarioHandler;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class MessageHandler
 {
@@ -15,6 +23,11 @@ class MessageHandler
         private readonly TelegramService $telegramService,
         private readonly ScenarioRepository $scenarioRepository,
         private readonly VisitorSessionRepository $visitorSessionRepository,
+        private readonly ChainHandler $chainHandler,
+        private readonly ScenarioHandler $scenarioHandler,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly BotRepository $botRepository,
+        private readonly SerializerInterface $serializer,
     ) {
     }
 
@@ -23,27 +36,83 @@ class MessageHandler
      */
     public function handle(VisitorEvent $visitorEvent): bool
     {
-        $behaviorScenarioId = $visitorEvent->getBehaviorScenario();
-        $behaviorScenario = $this->scenarioRepository->find($behaviorScenarioId);
+        $bot = $this->botRepository->find(10);
+        $token = $bot->getToken();
 
-        if (!$behaviorScenario){
+        $scenario = $this->scenarioRepository->findOneBy(
+            [
+                'UUID' => $visitorEvent->getScenarioUUID(),
+            ]
+        );
+
+        if (!$scenario) {
             throw new Exception('Не существует сценария');
         }
 
-        $behaviorScenarioContent = $behaviorScenario->getContent();
         $visitorSession = $this->visitorSessionRepository->findByEventId($visitorEvent->getId());
 
-        $messageDto = (new MessageDto())
-            ->setChatId($visitorSession->getChannelId())
-            ->setText($behaviorScenarioContent['message'])
-        ;
+        $cache = $visitorSession->getCache();
 
-        if(!empty($behaviorScenarioContent['replyMarkup'])){
-            $messageDto->setReplyMarkup($behaviorScenarioContent['replyMarkup']);
+        /** @var CacheDto $cacheDto */
+        $cacheDto = $this->serializer->denormalize($cache, CacheDto::class);
+
+        $status = $visitorSession->getCacheStatusEvent();
+        $content = $visitorSession->getCacheContent();
+
+        $contract = $this->createDefaultContract();
+
+        if ($status === 'process') {
+            $contract = $this->chainHandler->handle($contract, $cache, $content, $cacheDto);
+
+            $visitorSession->setCache($cache);
+        } else {
+            $contract = $this->scenarioHandler->handle($contract, $scenario);
         }
 
-        $this->telegramService->sendMessage($messageDto, '6722125407:AAEDDnc7qpbaZpZg-wpfXQ5h7Yp5mhJND0U'); // todo токен брать из настрек
+        $this->sendMessages($contract, $token, $visitorSession);
+
+        $cache = $this->serializer->normalize($cacheDto);
+        $visitorSession->setCache($cache);
+
+        $this->entityManager->persist($scenario);
+        $this->entityManager->persist($visitorSession);
+        $this->entityManager->flush();
 
         return true;
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function sendMessages(Contract $contract, string $token, VisitorSession $visitorSession): void
+    {
+        $messages = $contract->getMessages();
+
+        foreach ($messages as $message) {
+            if ($message->getPhoto()) {
+                $this->telegramService->sendPhoto(
+                    $message->getPhoto(),
+                    $token,
+                    $visitorSession->getChatId()
+                );
+            }
+            if ($message->getMessages()) {
+                $this->telegramService->sendMessage(
+                    $message->getMessages(),
+                    $token,
+                    $visitorSession->getChatId()
+                );
+            } else {
+                throw new Exception('not found message');
+            }
+        }
+    }
+
+    private function createDefaultContract(): Contract
+    {
+        $contractMessage = Helper::createContractMessage('Дефолтное сообщение...');
+
+        return (new Contract())
+            ->addMessage($contractMessage);
     }
 }

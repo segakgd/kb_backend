@@ -2,28 +2,61 @@
 
 namespace App\Dto\Scenario;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 class ScenarioDto
 {
+    private const AVAILABLE_TYPE = [
+        'message',
+        'command',
+    ];
+
+    private string $UUID;
+
+    private ?string $ownerUUID = null;
+
     private string $name;
 
+    #[Assert\Choice(self::AVAILABLE_TYPE)]
     private string $type;
 
-    private ScenarioContextDto $content;
+    /** @var array<ScenarioStepDto> */
+    private array $steps = [];
 
-    private array $actionAfter;
+    public function getUUID(): string
+    {
+        return $this->UUID;
+    }
 
-    private array $actionBefore;
+    public function setUUID(string $UUID): static
+    {
+        $this->UUID = $UUID;
 
-    private array $sub;
+        return $this;
+    }
+
+    public function getOwnerUUID(): ?string
+    {
+        return $this->ownerUUID;
+    }
+
+    public function setOwnerUUID(?string $ownerUUID): static
+    {
+        $this->ownerUUID = $ownerUUID;
+
+        return $this;
+    }
 
     public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName(string $name): void
+    public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
     }
 
     public function getType(): string
@@ -31,48 +64,29 @@ class ScenarioDto
         return $this->type;
     }
 
-    public function setType(string $type): void
+    public function setType(string $type): static
     {
         $this->type = $type;
+
+        return $this;
     }
 
-    public function getContent(): ScenarioContextDto
+    public function getSteps(): array
     {
-        return $this->content;
+        return $this->steps;
     }
 
-    public function setContent(ScenarioContextDto $content): void
+    public function setSteps(array $steps): static
     {
-        $this->content = $content;
+        $this->steps = $steps;
+
+        return $this;
     }
 
-    public function getActionAfter(): array
+    public function addStep(ScenarioStepDto $step): static
     {
-        return $this->actionAfter;
-    }
+        $this->steps[] = $step;
 
-    public function addActionAfter(ScenarioActionDto $actionAfter): void
-    {
-        $this->actionAfter[] = $actionAfter;
-    }
-
-    public function getActionBefore(): array
-    {
-        return $this->actionBefore;
-    }
-
-    public function addActionBefore(ScenarioActionDto $actionBefore): void
-    {
-        $this->actionBefore[] = $actionBefore;
-    }
-
-    public function getSub(): array
-    {
-        return $this->sub;
-    }
-
-    public function addSub(ScenarioDto $sub): void
-    {
-        $this->sub[] = $sub;
+        return $this;
     }
 }

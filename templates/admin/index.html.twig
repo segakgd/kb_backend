@@ -1,19 +1,168 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
 
-{% block content_title %}The Title of the Page{% endblock %}
+{% block content_title %}Dashboard{% endblock %}
 {% block page_actions %}
-    <a class="btn btn-primary" href="#">Some Action</a>
+    {% for command in commands %}
+        <a class="btn btn-primary" href="/dev/project/{{ projectId }}/command/{{ command.commandCode }}/start/">{{ command.commandName }}</a>
+    {% endfor %}
 {% endblock %}
 
 {% block main %}
     <br>
 
     <div class="jj__main_wrapper jj__main_wrapper--line">
+        <div class="jj__wrapper jj__wrapper-50 jj__wrapper-h-auto">
+            <div class="jj__h">
+                <h2>Эмуляция сообщения в телегу</h2>
+            </div>
+
+            <div class="jj__items">
+                {% for bot in bots %}
+                    <section>
+                        <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                            <label>
+                                Сообщение в бот {{ bot.botId }}:
+                            </label>
+                            <label>
+                                <input type="text" name="message">
+                            </label>
+                            <button>
+                                Отправить
+                            </button>
+                        </form>
+                    </section>
+
+                    <br>
+                    <br>
+
+                    <section>
+                        <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                            <label>
+                                Cледующий:
+                            </label>
+                            <label>
+                                <input type="text" name="message" value="следующий">
+                            </label>
+                            <button>
+                                Отправить
+                            </button>
+                        </form>
+                    </section>
+
+                    <br>
+                    <br>
+
+                    <section>
+                        <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                            <label>
+                                Предыдущий:
+                            </label>
+                            <label>
+                                <input type="text" name="message" value="предыдущий">
+                            </label>
+                            <button>
+                                Отправить
+                            </button>
+                        </form>
+                    </section>
+
+                    <br>
+                    <br>
+
+                    <section>
+                        <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                            <label>
+                                Добавить в корзину:
+                            </label>
+                            <label>
+                                <input type="text" name="message" value="добавить в корзину">
+                            </label>
+                            <button>
+                                Отправить
+                            </button>
+                        </form>
+                    </section>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="jj__main_wrapper jj__main_wrapper--line">
+        {# -------------------------------------------------------------------------------------------------------- #}
+        {# ------------------------------------------------События------------------------------------------------- #}
+        {# -------------------------------------------------------------------------------------------------------- #}
+        <div class="jj__wrapper jj__wrapper-30">
+            <div class="jj__h">
+                <h2>События</h2>
+            </div>
+
+            <div class="jj__items">
+                {% if events is empty %}
+                    <div class="jj__items-without-data">
+                        Данных нет
+                    </div>
+                {% endif %}
+
+                {% for event in events %}
+                    <div class="jj__item">
+                        <div class="jj__item_name">Событие #{{ event.id }}</div>
+
+                        <div class="jj__item_data">
+                            <section>
+                                <span>Тип события:</span> {{ event.type }}
+                            </section>
+
+                            <section>
+                                <span>Статус события:</span>
+                                {% if event.status == 'fail' %}
+                                    <span class="jj__color-red"> Провалено </span>
+                                    <a class="jj__a-inline" href="/dev/project/{{ projectId }}/event/{{ event.id }}/restart/">Перезапустить</a>
+                                {% elseif event.status == 'done' %}
+                                    <span class="jj__color-green"> Успешно </span>
+                                {% elseif event.status == 'new' %}
+                                    <span class="jj__color-blue"> Новое </span>
+                                {% elseif event.status == 'await' %}
+                                    <span class="jj__color-yellow"> Ожидает пользователя </span>
+                                {% else %}
+                                    {{ event.status }}
+                                {% endif %}
+                            </section>
+
+                            {% if event.chains is not null %}
+                                <section>
+                                    Шаги:
+                                    <ul>
+                                        {% for chain in event.chains %}
+                                            <li>
+                                                {% if chain.status == 1 %}
+                                                    <span class="jj__color-green">Пройдено</span>
+                                                {% else %}
+                                                    <span class="jj__color-red">Не пройдено</span>
+                                                {% endif %}
+
+                                                {{ chain.name }}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </section>
+                            {% endif %}
+
+                            {% if event.error is not null %}
+                                <section class="jj__color-red">
+                                    <span>Последняя ошибка:</span> {{ event.error }}
+                                </section>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
         {# -------------------------------------------------------------------------------------------------------- #}
         {# --------------------------------------------------Боты-------------------------------------------------- #}
         {# -------------------------------------------------------------------------------------------------------- #}
-        <div class="jj__wrapper jj__wrapper-50">
+        <div class="jj__wrapper jj__wrapper-65">
             <div class="jj__h">
                 <h2>Боты</h2>
             </div>
@@ -90,107 +239,9 @@
                 {% endfor %}
             </div>
         </div>
-
-        {# -------------------------------------------------------------------------------------------------------- #}
-        {# -------------------------------------------------нарии-------------------------------------------------- #}
-        {# -------------------------------------------------------------------------------------------------------- #}
-        <div class="jj__wrapper jj__wrapper-50">
-            <div class="jj__h">
-                <h2>Сценарии</h2>
-            </div>
-
-            <div class="jj__items">
-                {% if scenario is empty %}
-                    <div class="jj__items-without-data">
-                        Данных нет
-                    </div>
-                {% endif %}
-
-                {% for scenarioItem in scenario %}
-                    <div class="jj__item">
-                        <div class="jj__item_name">Сценарий #{{ scenarioItem.id }}</div>
-
-                        <div class="jj__item_data jj__item_data--line">
-                            <section>
-                                <span>Название:</span> {{ scenarioItem.name }}
-                            </section>
-                        </div>
-
-                        <hr>
-
-                        <div class="jj__item_data jj__item_data--line">
-                            {% for bot in bots %}
-                                <section>
-                                    <form action="/dev/project/{{ projectId }}/scenario/{{ scenarioItem.id }}/apply/" method="GET">
-                                        <label>
-                                            Подключить бот:
-                                            <select name="botId">
-                                                <option value="{{ bot.botId }}">{{ bot.botName }}</option>
-                                            </select>
-                                            к сценарию
-                                        </label>
-                                        <button>
-                                            Подключить
-                                        </button>
-                                    </form>
-                                </section>
-                            {% endfor %}
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
     </div>
 
     <div class="jj__main_wrapper jj__main_wrapper--line">
-        {# -------------------------------------------------------------------------------------------------------- #}
-        {# ------------------------------------------------События------------------------------------------------- #}
-        {# -------------------------------------------------------------------------------------------------------- #}
-        <div class="jj__wrapper jj__wrapper-30">
-            <div class="jj__h">
-                <h2>События</h2>
-            </div>
-
-            <div class="jj__items">
-                {% if events is empty %}
-                    <div class="jj__items-without-data">
-                        Данных нет
-                    </div>
-                {% endif %}
-
-                {% for event in events %}
-                    <div class="jj__item">
-                        <div class="jj__item_name">Событие #{{ event.id }}</div>
-
-                        <div class="jj__item_data">
-                            <section>
-                                <span>Тип события:</span> {{ event.type }}
-                            </section>
-
-                            <section>
-                                <span>Статус события:</span>
-                                {% if event.status == 'fail' %}
-                                    <span class="jj__color-red"> Провалено </span>
-                                    <a class="jj__a-inline" href="/dev/project/{{ projectId }}/event/{{ event.id }}/restart/">Перезапустить</a>
-                                {% elseif event.status == 'done' %}
-                                    <span class="jj__color-green"> Успешно </span>
-                                {% elseif event.status == 'new' %}
-                                    <span class="jj__color-blue"> Новое </span>
-                                {% else %}
-                                    {{ event.status }}
-                                {% endif %}
-                            </section>
-
-                            {% if event.error is not null %}
-                                <section class="jj__color-red">
-                                    <span>Ошибка:</span> {{ event.error }}
-                                </section>
-                            {% endif %}
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
 
         {# -------------------------------------------------------------------------------------------------------- #}
         {# -------------------------------------------------Сессии------------------------------------------------- #}
@@ -221,7 +272,7 @@
                                     <span>Тип события:</span> {{ session.sessionVisitorEvent.type }}
                                 </section>
                                 <section>
-                                    <span>Статус события:</span> {{ session.sessionVisitorEvent.status }}
+                                    <span>Статус последнего события:</span> {{ session.sessionVisitorEvent.status }}
                                 </section>
                             {% endif %}
                         </div>
@@ -230,44 +281,11 @@
             </div>
         </div>
 
+
         {# -------------------------------------------------------------------------------------------------------- #}
-        {# -------------------------------------------------Команды------------------------------------------------- #}
+        {# ------------------------------------------------Истории------------------------------------------------- #}
         {# -------------------------------------------------------------------------------------------------------- #}
-        <div class="jj__wrapper jj__wrapper-30">
-            <div class="jj__h">
-                <h2>Команды</h2>
-            </div>
-
-            <div class="jj__items">
-                {% if commands is empty %}
-                    <div class="jj__items-without-data">
-                        Данных нет
-                    </div>
-                {% endif %}
-
-                {% for command in commands %}
-                    <div class="jj__item">
-                        <div class="jj__item_name">{{ command.commandName }}</div>
-
-                        <div class="jj__item_data">
-                            <section>
-                                <span>Описание:</span> {{ command.commandDescription }}
-                            </section>
-                            <section>
-                                <a href="/dev/project/{{ projectId }}/command/{{ command.commandCode }}/start/">Запустить команду</a>
-                            </section>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-
-    {# -------------------------------------------------------------------------------------------------------- #}
-    {# ------------------------------------------------Истории------------------------------------------------- #}
-    {# -------------------------------------------------------------------------------------------------------- #}
-    <div class="jj__main_wrapper">
-        <div class="jj__wrapper" id="history__wrapper">
+        <div class="jj__wrapper jj__wrapper-30" id="history__wrapper">
             <div class="jj__h">
                 <h2>Истории</h2>
             </div>
@@ -327,5 +345,55 @@
                 {% endfor %}
             </div>
         </div>
+
+        {# -------------------------------------------------------------------------------------------------------- #}
+        {# -------------------------------------------------нарии-------------------------------------------------- #}
+        {# -------------------------------------------------------------------------------------------------------- #}
+        <div class="jj__wrapper jj__wrapper-30">
+            <div class="jj__h">
+                <h2>Сценарии</h2>
+            </div>
+
+            <div class="jj__items">
+                {% if scenario is empty %}
+                    <div class="jj__items-without-data">
+                        Данных нет
+                    </div>
+                {% endif %}
+
+                {% for scenarioItem in scenario %}
+                    <div class="jj__item">
+                        <div class="jj__item_name">Сценарий #{{ scenarioItem.id }}</div>
+
+                        <div class="jj__item_data jj__item_data--line">
+                            <section>
+                                <span>Название:</span> {{ scenarioItem.name }}
+                            </section>
+                        </div>
+
+                        <div class="jj__item_data jj__item_data--line">
+                            <section>
+                                <form action="/dev/project/{{ projectId }}/scenario/{{ scenarioItem.id }}/apply/" method="GET">
+                                    <label>
+                                        Подключить бот:
+                                        <select name="botId">
+                                            {% for bot in bots %}
+                                                <option value="{{ bot.botId }}">{{ bot.botName }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        к сценарию
+                                    </label>
+
+                                    <button>
+                                        Подключить
+                                    </button>
+                                </form>
+                            </section>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
+
 {% endblock %}

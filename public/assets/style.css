@@ -317,12 +317,20 @@ h1, h2 {
     overflow: auto;
 }
 
+.jj__wrapper-h-auto {
+    height: auto;
+}
+
 .jj__wrapper-30 {
     width: 32%;
 }
 
 .jj__wrapper-50 {
     width: 49%;
+}
+
+.jj__wrapper-65 {
+    width: 66%;
 }
 
 
@@ -416,10 +424,20 @@ h1, h2 {
 }
 
 .jj__item_data section {
+    word-break: break-word;
     padding: 0 10px 0 0;
 }
 
 .jj__item_data section span {
+}
+
+.jj__item_data section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.jj__item_data section ul li {
+    color: #969292;
 }
 
 .jj__item_data section a {
@@ -465,14 +483,22 @@ h1, h2 {
 
 .jj__color-red {
     color: #e85574;
+    font-weight: 500;
 }
 
 .jj__color-green {
     color: #059669;
+    font-weight: 500;
 }
 
 .jj__color-blue {
     color: #5368d5;
+    font-weight: 500;
+}
+
+.jj__color-yellow {
+    color: #d5c453;
+    font-weight: 500;
 }
 
 .jj__icon-soc--wrapper {

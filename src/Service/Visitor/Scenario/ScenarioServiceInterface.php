@@ -6,12 +6,10 @@ use App\Entity\Scenario\Scenario;
 
 interface ScenarioServiceInterface
 {
-    public function createScenario(
-        array $settingItem,
-        int $projectId,
-        int $botId,
-        ?int $ownerId = null,
+    public function findScenarioByNameAndType(
+        string $type,
+        string $content,
     ): Scenario;
 
-    public function markAsRemoveScenario(int $projectId, int $botId);
+    public function markAllAsRemoveScenario(int $projectId, int $botId);
 }

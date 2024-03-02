@@ -8,7 +8,9 @@ use App\Entity\User\Bot;
 use App\Entity\User\Project;
 use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
+use App\Helper;
 use App\Repository\Visitor\VisitorEventRepository;
+use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Admin\Bot\BotServiceInterface;
 use App\Service\Admin\History\HistoryService;
 use App\Service\Admin\History\HistoryServiceInterface;
@@ -23,6 +25,7 @@ class DashboardService
         private readonly HistoryServiceInterface $historyService,
         private readonly BotServiceInterface $botService,
         private readonly VisitorSessionServiceInterface $visitorSessionService,
+        private readonly VisitorSessionRepository $visitorSessionRepository,
         private readonly VisitorEventRepository $visitorEventRepository,
         private readonly ScenarioTemplateService $scenarioTemplateService,
     ) {
@@ -72,11 +75,33 @@ class DashboardService
 
         /** @var VisitorEvent $event */
         foreach ($events as $event){
+            $visitorSession = $this->visitorSessionRepository->findOneBy(
+                [
+                    'visitorEvent' => $event->getId()
+                ]
+            );
+
+            $chains = [];
+
+            if ($visitorSession) {
+                $cache = $visitorSession->getCache();
+                $cacheEvent = $cache['event'];
+                $cacheChains = $cacheEvent['chains'];
+
+                foreach ($cacheChains as $cacheChain) {
+                    $chains[] = [
+                        'name' => Helper::translate($cacheChain['target']),
+                        'status' => $cacheChain['finished'],
+                    ];
+                }
+            }
+
             $prepareEvent = [
                 'id' => $event->getId(),
                 'type' => $event->getType(),
                 'status' => $event->getStatus(),
                 'createdAt' => $event->getCreatedAt(),
+                'chains' => $chains,
                 'error' => $event->getError(),
             ];
 
@@ -129,11 +154,6 @@ class DashboardService
                 'commandCode' => 'cache:clear',
                 'commandDescription' => 'Чистим кеш в проде',
             ],
-            [
-                'commandName' => '😵🐙 Обработать события (бесконечно)',
-                'commandCode' => 'kb:tg:events:handler',
-                'commandDescription' => 'Обрабатывает бесконечно до первой ошибки',
-            ],
         ];
     }
 
@@ -156,7 +176,7 @@ class DashboardService
                 'botActive' => $bot->isActive(),
                 'webhookUri' => $bot->getWebhookUri() ?? '',
                 'webhookInfo' => [
-                    'pendingUpdateCount' => $webhookBotInfo->getPendingUpdateCount(),
+                    'pendingUpdateCount' => $webhookBotInfo->getPendingUpdateCount() ?? 0,
                     'lastErrorDate' => $webhookBotInfo->getLastErrorDate() ?? null,
                     'lastErrorMessage' => $webhookBotInfo->getLastErrorMessage() ?? null,
                 ],

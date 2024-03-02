@@ -9,6 +9,7 @@ use App\Repository\Visitor\VisitorEventRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Visitor\Scenario\ScenarioService;
 use App\Service\Visitor\Session\VisitorSessionServiceInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 
 class VisitorEventService
@@ -18,6 +19,7 @@ class VisitorEventService
         private readonly VisitorSessionRepository $visitorSessionRepository,
         private readonly VisitorSessionServiceInterface $visitorSessionService,
         private readonly ScenarioService $scenarioService,
+        private readonly EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -31,10 +33,37 @@ class VisitorEventService
     ): void {
         $visitorEventId = $visitorSession->getVisitorEvent();
 
-        $visitorEvent = $this->getVisitorEventIsExist($visitorEventId);
+        // в сессии ничего нету - создаём исходя из того что присалали на бота.
+        // если это команда, то ищем из числа команд, ??? если нет то из доступных сообщений ???
+        //
+        // если мы знаем что присылали в прошлый раз, в сессии стоит prev, при этом, в нынешнее событие обработано
+        // мы можем найти доступные варианты ответа на нужное нам сообщение
+
+        $visitorEvent = $this->visitorEventRepository->getVisitorEventIfExist($visitorEventId);
 
         if (!$visitorEvent) {
+            dd('Пытаемя создать новое событие');
             $this->createVisitorEventByScenario($visitorSession, $type, $content);
+
+            return;
+        }
+
+        // todo обновляем кэш >>>
+        $visitorSession->setCacheByKey('prevEvent', $visitorEventId);
+        // todo обновляем кэш <<<
+
+        $cache = $visitorSession->getCache();
+
+        if ($cache['event']['status'] === 'process') {
+            $cache['content'] = $content;
+
+            $visitorSession->setCache($cache);
+            $visitorEvent->setStatus('new');
+
+            $this->entityManager->persist($visitorSession);
+            $this->entityManager->persist($visitorEvent);
+
+            $this->entityManager->flush();
 
             return;
         }
@@ -42,32 +71,16 @@ class VisitorEventService
         $this->rewriteChatEventByScenario($visitorEvent, $visitorSession, $type, $content);
     }
 
-    private function getVisitorEventIsExist(?int $visitorEventId): ?VisitorEvent
-    {
-        if (!$visitorEventId) {
-            return null;
-        }
-
-        return $this->visitorEventRepository->findOneBy(
-            [
-                'id' => $visitorEventId,
-                'status' => 'new',
-            ]
-        );
-    }
-
     /**
+     * todo по сути, мы тут идём из main-a
+     *
      * @throws Exception
      */
     private function createVisitorEventByScenario(VisitorSession $visitorSession, string $type, string $content): void
     {
-        $scenario = $this->scenarioService->getScenarioByNameAndType($type, $content);
+        $scenario = $this->scenarioService->findScenarioByNameAndType($type, $content);
 
-        if (null === $scenario) {
-            $scenario = $this->scenarioService->getDefaultScenario();
-        }
-
-        $visitorEvent = $this->createChatEvent($scenario, $type);
+        $visitorEvent = $this->createEvent($scenario, $type);
         $visitorEventId = $visitorEvent->getId();
 
         $visitorSession->setVisitorEvent($visitorEventId);
@@ -75,12 +88,11 @@ class VisitorEventService
         $this->visitorSessionRepository->save($visitorSession);
     }
 
-    private function createChatEvent(Scenario $scenario, string $type): VisitorEvent
+    private function createEvent(Scenario $scenario, string $type): VisitorEvent
     {
         $visitorEvent = (new VisitorEvent())
             ->setType($type)
-            ->setBehaviorScenario($scenario->getId())
-            ->setActionAfter($scenario->getActionAfter() ?? null)
+            ->setScenarioUUID($scenario->getUUID())
             ->setProjectId($scenario->getProjectId());
 
         $this->visitorEventRepository->saveAndFlush($visitorEvent);
@@ -97,24 +109,15 @@ class VisitorEventService
         string $type,
         string $content,
     ): void {
-        $scenario = $this->scenarioService->getScenarioByNameAndType($type, $content);
-
-        if (!$scenario) { // todo что тут проиходит?
-            $ownerBehaviorScenarioId = $visitorEvent->getBehaviorScenario();
-            $scenario = $this->scenarioService->getScenarioByOwnerId($ownerBehaviorScenarioId);
-        }
-
-        if (!$scenario) {
-            $scenario = $this->scenarioService->getDefaultScenario();
-        }
+        $scenario = $this->scenarioService->findScenarioByNameAndType($type, $content);
 
         // один и тот же сценарий, нет смысла перезатирать
-        if ($visitorEvent->getBehaviorScenario() === $scenario->getId()) {
+        if ($visitorEvent->getScenarioUUID() === $scenario->getUUID()) {
             return;
         }
 
         $oldEventId = $visitorSession->getVisitorEvent();
-        $visitorEvent = $this->createChatEvent($scenario, $type);
+        $visitorEvent = $this->createEvent($scenario, $type);
 
         $this->visitorSessionService->rewriteVisitorEvent($visitorSession, $visitorEvent->getId());
         $this->visitorEventRepository->removeById($oldEventId);

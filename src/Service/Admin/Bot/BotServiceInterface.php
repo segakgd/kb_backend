@@ -19,4 +19,6 @@ interface BotServiceInterface
     public function updateStatus(int $botId, int $projectId, bool $status): Bot;
 
     public function remove(int $botId, int $projectId): void;
+
+    public function isActive(int $botId): bool;
 }
