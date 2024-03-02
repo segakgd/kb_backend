@@ -4,7 +4,7 @@ namespace App\Service\System\Handler\Chain;
 
 use App\Helper;
 use App\Service\Admin\Ecommerce\ProductCategory\ProductCategoryService;
-use App\Service\System\Handler\PreMessageDto;
+use App\Service\System\Handler\Contract;
 
 class ShowShopProductsCategoryChain
 {
@@ -12,14 +12,17 @@ class ShowShopProductsCategoryChain
     {
     }
 
-    public function handle(PreMessageDto $preMessageDto): bool
+    public function handle(Contract $contract): bool
     {
         $availableCategory = $this->categoryService->getAvailableCategory();
 
-        $replyMarkups = Helper::getProductCategoryNav($availableCategory);
+        $contractMessage = Helper::createContractMessage(
+            'Отлично, 😜 выберите одну из категорий 🤘',
+            null,
+            Helper::getProductCategoryNav($availableCategory)
+        );
 
-        $preMessageDto->setMessage('Отлично, 😜 выберите одну из категорий 🤘');
-        $preMessageDto->setKeyBoard($replyMarkups);
+        $contract->addMessage($contractMessage);
 
         return true;
     }

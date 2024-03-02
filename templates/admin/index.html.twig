@@ -32,6 +32,57 @@
                             </button>
                         </form>
                     </section>
+
+                    <br>
+                    <br>
+
+                    <section>
+                        <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                            <label>
+                                Cледующий:
+                            </label>
+                            <label>
+                                <input type="text" name="message" value="следующий">
+                            </label>
+                            <button>
+                                Отправить
+                            </button>
+                        </form>
+                    </section>
+
+                    <br>
+                    <br>
+
+                    <section>
+                        <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                            <label>
+                                Предыдущий:
+                            </label>
+                            <label>
+                                <input type="text" name="message" value="предыдущий">
+                            </label>
+                            <button>
+                                Отправить
+                            </button>
+                        </form>
+                    </section>
+
+                    <br>
+                    <br>
+
+                    <section>
+                        <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                            <label>
+                                Добавить в корзину:
+                            </label>
+                            <label>
+                                <input type="text" name="message" value="добавить в корзину">
+                            </label>
+                            <button>
+                                Отправить
+                            </button>
+                        </form>
+                    </section>
                 {% endfor %}
             </div>
         </div>

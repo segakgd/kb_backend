@@ -3,35 +3,39 @@
 namespace App\Service\System\Handler\Items\Sub;
 
 use App\Entity\Scenario\Scenario;
-use App\Service\System\Handler\PreMessageDto;
+use App\Helper;
+use App\Service\System\Handler\Contract;
 
 class ScenarioHandler
 {
-    public function handle(PreMessageDto $preMessageDto, Scenario $scenario): PreMessageDto
+    public function handle(Contract $contract, Scenario $scenario): Contract
     {
         $scenarioSteps = $scenario->getSteps();
 
+        // todo вот тут будет проблема, будет выбран последний шаг!
         foreach ($scenarioSteps as $scenarioStep) {
-            // todo вот тут будет проблема, будет выбран последний шаг!
+            $contractMessage = Helper::createContractMessage('');
 
             if ($scenarioStep['message']) {
-                $preMessageDto->setMessage($scenarioStep['message']);
+                $contractMessage->setMessage($scenarioStep['message']);
             }
 
             if (!empty($scenarioStep['keyboard'])) {
                 $replyMarkups = $this->keyboard($scenarioStep);
 
                 if (!empty($replyMarkups)) {
-                    $preMessageDto->setKeyBoard($replyMarkups);
+                    $contractMessage->setKeyBoard($replyMarkups);
                 }
             }
 
             if (!empty($scenarioStep['attached'])) {
                 dd('сработали attached', $scenarioStep['attached']);
             }
+
+            $contract->addMessage($contractMessage);
         }
 
-        return $preMessageDto;
+        return $contract;
     }
 
     private function keyboard(array $scenarioStep): array

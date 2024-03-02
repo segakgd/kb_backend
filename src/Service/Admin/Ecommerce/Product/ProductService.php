@@ -2,6 +2,7 @@
 
 namespace App\Service\Admin\Ecommerce\Product;
 
+use App\Entity\Ecommerce\Product;
 use App\Repository\Ecommerce\ProductEntityRepository;
 use Exception;
 
@@ -12,12 +13,15 @@ class ProductService implements ProductServiceInterface
     ) {
     }
 
-    // todo типизация
+    public function find(int $productId): ?Product
+    {
+        return $this->entityRepository->find($productId);
+    }
 
     /**
      * @throws Exception
      */
-    public function getProductsByCategory($pageNow, $categoryName, $key): array // todo переделать в $categoryId (хранить id совместно с названием)
+    public function getProductsByCategory(int $pageNow, string $categoryName, string $key): array // todo переделать в $categoryId (хранить id совместно с названием)
     {
         $paginator = [];
 
@@ -28,7 +32,6 @@ class ProductService implements ProductServiceInterface
         if ('product.prev' === $key) {
             $paginator = $this->entityRepository->findProductsByCategoryName($categoryName, $pageNow - 1);
         }
-
 
         return $paginator;
     }

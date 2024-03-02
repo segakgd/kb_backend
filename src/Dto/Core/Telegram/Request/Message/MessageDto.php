@@ -201,6 +201,7 @@ class MessageDto
         $normalize = [
             'chat_id' => $this->getChatId(),
             'text' => $this->getText(),
+            'parse_mode' => $this->getParseMode(),
         ];
 
         if (!empty($this->getReplyMarkup())){

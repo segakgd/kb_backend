@@ -205,6 +205,7 @@ class PhotoDto
             'chat_id' => $this->getChatId(),
             'photo' => $this->getPhoto(),
             'caption' => $this->getCaption(),
+            'parse_mode' => $this->getParseMode(),
         ];
 
         if (!empty($this->getReplyMarkup())){

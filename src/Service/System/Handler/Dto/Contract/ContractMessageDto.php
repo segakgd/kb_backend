@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Service\System\Handler;
+namespace App\Service\System\Handler\Dto\Contract;
 
-class PreMessageDto
+class ContractMessageDto
 {
     private string $message = '';
 
@@ -39,8 +39,10 @@ class PreMessageDto
         return $this->keyBoard;
     }
 
-    public function setKeyBoard(?array $keyBoard): void
+    public function setKeyBoard(?array $keyBoard): static
     {
         $this->keyBoard = $keyBoard;
+
+        return $this;
     }
 }

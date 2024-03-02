@@ -4,7 +4,7 @@ namespace App\Service\System\Handler\Chain;
 
 use App\Helper;
 use App\Service\Admin\Ecommerce\ProductCategory\ProductCategoryService;
-use App\Service\System\Handler\PreMessageDto;
+use App\Service\System\Handler\Contract;
 
 class ShopProductsCategoryChain
 {
@@ -12,22 +12,24 @@ class ShopProductsCategoryChain
     {
     }
 
-    public function handle(PreMessageDto $preMessageDto, ?string $content = null): bool
+    public function handle(Contract $contract, ?string $content = null): bool
     {
+        $contractMessage = Helper::createContractMessage('');
+
         if ($this->checkCondition($content)) {
-            $preMessageDto->setMessage(
+            $contractMessage->setMessage(
                 'Вы выбрали категорию ' . $content . ' отличный выбор! В теперь давайте выберим товар:'
             );
 
             $replyMarkups = Helper::getProductNav();
 
-            $preMessageDto->setKeyBoard($replyMarkups);
+            $contractMessage->setKeyBoard($replyMarkups);
 
             return true;
         }
 
         if ($this->checkSystemCondition($content)) {
-            $preMessageDto->setMessage('Давайте представим что вы вернулись в главное меню');
+            $contractMessage->setMessage('Давайте представим что вы вернулись в главное меню');
 
             return false;
         }
@@ -36,10 +38,12 @@ class ShopProductsCategoryChain
 
         $replyMarkups = Helper::getProductCategoryNav($availableCategory);
 
-        $preMessageDto->setMessage(
+        $contractMessage->setMessage(
             'Не понимаю вашего сообщения, выберите доступную категорию товара или вернитесь в глваное меню'
         );
-        $preMessageDto->setKeyBoard($replyMarkups);
+        $contractMessage->setKeyBoard($replyMarkups);
+
+        $contract->addMessage($contractMessage);
 
         return false;
     }

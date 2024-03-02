@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\System\Handler\Dto;
+namespace App\Service\System\Handler\Dto\Cache;
 
 class CacheDto
 {

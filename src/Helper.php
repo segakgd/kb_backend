@@ -4,6 +4,8 @@ namespace App;
 
 use App\Entity\Ecommerce\Product;
 use App\Entity\Ecommerce\ProductVariant;
+use App\Service\System\Handler\Dto\Contract\ContractMessageDto;
+use Doctrine\Common\Collections\Collection;
 use Exception;
 
 class Helper
@@ -37,8 +39,8 @@ class Helper
             throw new Exception('max page < page');
         }
 
-        $prevPage = ($page > 1) ? $page - 1: null;
-        $nextPage = ($page < $maxPage) ? $page + 1: null;
+        $prevPage = ($page > 1) ? $page - 1 : null;
+        $nextPage = ($page < $maxPage) ? $page + 1 : null;
 
         return [
             'prev' => $prevPage,
@@ -52,9 +54,39 @@ class Helper
     {
         return [
             'предыдущий',
-            'подробнее о товаре',
+            'добавить в корзину',
             'следующий',
             'вернуться в главное меню',
+        ];
+    }
+
+    public static function getVariantsNav(Collection $variants): array
+    {
+        $nav = [];
+
+        /** @var ProductVariant $variant */
+        foreach ($variants as $variant) {
+            $nav[] = [
+                [
+                    'text' => $variant->getName()
+                ],
+            ];
+        }
+
+        return $nav;
+    }
+
+    public static function getGoToNav(): array
+    {
+        return [
+            [
+                [
+                    'text' => 'вернуться обратно'
+                ],
+                [
+                    'text' => 'вернуться в главное меню'
+                ],
+            ],
         ];
     }
 
@@ -66,7 +98,7 @@ class Helper
                     'text' => 'предыдущий'
                 ],
                 [
-                    'text' => 'подробнее о товаре'
+                    'text' => 'добавить в корзину'
                 ],
                 [
                     'text' => 'следующий'
@@ -83,7 +115,7 @@ class Helper
             $nav = [
                 [
                     [
-                        'text' => 'подробнее о товаре'
+                        'text' => 'добавить в корзину'
                     ],
                     [
                         'text' => 'следующий'
@@ -104,7 +136,7 @@ class Helper
                         'text' => 'предыдущий'
                     ],
                     [
-                        'text' => 'подробнее о товаре'
+                        'text' => 'добавить в корзину'
                     ],
                 ],
                 [
@@ -133,7 +165,7 @@ class Helper
     {
         $name = $product->getName();
 
-        $message = "Название: $name \n\n";
+        $message = "ℹ️ Название: $name \n\n";
 
         $variants = $product->getVariants();
 
@@ -151,5 +183,28 @@ class Helper
         }
 
         return $message;
+    }
+
+    public static function createContractMessage(
+        string $message,
+        ?string $photo = null,
+        ?array $keyBoard = null,
+    ): ContractMessageDto {
+        $contractMessage = (new ContractMessageDto())
+            ->setMessage($message)
+        ;
+
+        if ($photo) {
+            $contractMessage->setPhoto($photo);
+        }
+
+        if ($keyBoard) {
+            $contractMessage->setKeyBoard($keyBoard);
+        }
+
+        return (new ContractMessageDto())
+            ->setMessage($message)
+            ->setPhoto($photo)
+            ->setKeyBoard($keyBoard);
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Entity\Visitor;
 
 use App\Repository\Visitor\VisitorSessionRepository;
-use App\Service\System\Handler\Dto\CacheDto;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;

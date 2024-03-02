@@ -6,8 +6,8 @@ use App\Service\System\Handler\Chain\ShopProductChain;
 use App\Service\System\Handler\Chain\ShopProductsCategoryChain;
 use App\Service\System\Handler\Chain\ShopProductsChain;
 use App\Service\System\Handler\Chain\ShowShopProductsCategoryChain;
-use App\Service\System\Handler\Dto\CacheDto;
-use App\Service\System\Handler\PreMessageDto;
+use App\Service\System\Handler\Contract;
+use App\Service\System\Handler\Dto\Cache\CacheDto;
 use Exception;
 
 class ChainHandler
@@ -20,7 +20,10 @@ class ChainHandler
     ) {
     }
 
-    public function handle(PreMessageDto $preMessageDto, array &$cache, string $content, CacheDto $cacheDto): PreMessageDto
+    /**
+     * @throws Exception
+     */
+    public function handle(Contract $contract, array &$cache, string $content, CacheDto $cacheDto): Contract
     {
         $chains = $cache['event']['chains'];
 
@@ -28,14 +31,22 @@ class ChainHandler
 
         foreach ($chains as $key => $chain) {
             if ($chain['finished'] === false) {
-                $isHandle = $this->handleByType($chain['target'], $preMessageDto, $content, $cacheDto);
+                $isHandle = $this->handleByType($chain['target'], $contract, $cacheDto, $content);
 
                 if (count($chains) === ($key + 1)) {
                     $cache['event']['status'] = 'finished';
                 }
 
                 if ($isHandle) {
-//                    $chains[$key]['finished'] = true;
+                    $chains[$key]['finished'] = true;
+                }
+
+                $goto = $contract->getGoto();
+
+                if ($goto === Contract::GOTO_NEXT) {
+                    $chains[$key]['finished'] = true;
+
+                    continue;
                 }
 
                 break;
@@ -44,18 +55,18 @@ class ChainHandler
 
         $cache['event']['chains'] = $chains;
 
-        return $preMessageDto;
+        return $contract;
     }
 
     /**
      * @throws Exception
      */
-    private function handleByType(string $target, PreMessageDto $preMessageDto, ?string $content = null, CacheDto $cacheDto): bool
+    private function handleByType(string $target, Contract $contract, CacheDto $cacheDto, ?string $content = null): bool
     {
         return match ($target) {
-            'show.shop.products.category' => $this->showShopProductsCategoryChain->handle($preMessageDto),
-            'shop.products.category' => $this->shopProductsCategoryChain->handle($preMessageDto, $content),
-            'shop.products' => $this->shopProductsChain->handle($preMessageDto, $cacheDto),
+            'show.shop.products.category' => $this->showShopProductsCategoryChain->handle($contract),
+            'shop.products.category' => $this->shopProductsCategoryChain->handle($contract, $content),
+            'shop.products' => $this->shopProductsChain->handle($contract, $cacheDto),
             'shop.product' => $this->shopProductChain->handle(),
             default => '',
         };

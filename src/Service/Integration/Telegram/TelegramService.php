@@ -7,7 +7,7 @@ use App\Dto\Core\Telegram\Request\Message\MessageDto;
 use App\Dto\Core\Telegram\Request\Message\PhotoDto;
 use App\Dto\Core\Telegram\Request\Webhook\WebhookDto;
 use App\Dto\Core\Telegram\Response\GetWebhookInfoDto;
-use App\Service\System\Handler\PreMessageDto;
+use App\Service\System\Handler\Contract;
 use App\Service\System\HttpClient\HttpClient;
 use App\Service\System\HttpClient\HttpClientInterface;
 use App\Service\System\HttpClient\Request\Request;
@@ -38,7 +38,7 @@ class TelegramService implements TelegramServiceInterface
         return $this->httpClient->request($request);
     }
 
-    public function sendPhoto(PreMessageDto $preMessageDto, string $token, int $chatId): void
+    public function sendPhoto(Contract $preMessageDto, string $token, int $chatId): void
     {
         $message = $preMessageDto->getMessage();
         $replyMarkup = $preMessageDto->getKeyBoard();
@@ -50,6 +50,7 @@ class TelegramService implements TelegramServiceInterface
         $photoDto->setPhoto($photo);
         $photoDto->setCaption($message);
         $photoDto->setReplyMarkup($replyMarkup);
+        $photoDto->setParseMode('MarkdownV2');
 
         $request = $this->buildRequest(
             HttpClient::METHOD_POST,
@@ -61,7 +62,7 @@ class TelegramService implements TelegramServiceInterface
         $this->httpClient->request($request);
     }
 
-    public function sendMessage(PreMessageDto $preMessageDto, string $token, int $chatId): void
+    public function sendMessage(Contract $preMessageDto, string $token, int $chatId): void
     {
         $message = $preMessageDto->getMessage();
         $replyMarkup = $preMessageDto->getKeyBoard();
@@ -71,6 +72,7 @@ class TelegramService implements TelegramServiceInterface
 
         $messageDto->setText($message);
         $messageDto->setReplyMarkup($replyMarkup);
+        $messageDto->setParseMode('MarkdownV2');
 
         $request = $this->buildRequest(
             HttpClient::METHOD_POST,

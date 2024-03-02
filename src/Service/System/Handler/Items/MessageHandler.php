@@ -3,14 +3,16 @@
 namespace App\Service\System\Handler\Items;
 
 use App\Entity\Visitor\VisitorEvent;
+use App\Entity\Visitor\VisitorSession;
+use App\Helper;
 use App\Repository\Scenario\ScenarioRepository;
 use App\Repository\User\BotRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Integration\Telegram\TelegramService;
-use App\Service\System\Handler\Dto\CacheDto;
+use App\Service\System\Handler\Contract;
+use App\Service\System\Handler\Dto\Cache\CacheDto;
 use App\Service\System\Handler\Items\Sub\ChainHandler;
 use App\Service\System\Handler\Items\Sub\ScenarioHandler;
-use App\Service\System\Handler\PreMessageDto;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -57,19 +59,17 @@ class MessageHandler
         $status = $visitorSession->getCacheStatusEvent();
         $content = $visitorSession->getCacheContent();
 
-        $preMessageDto = (new PreMessageDto())
-            ->setMessage('Дефолтное сообщение...')
-        ;
+        $contract = $this->createDefaultContract();
 
         if ($status === 'process') {
-            $preMessageDto = $this->chainHandler->handle($preMessageDto, $cache, $content, $cacheDto);
+            $contract = $this->chainHandler->handle($contract, $cache, $content, $cacheDto);
 
             $visitorSession->setCache($cache);
         } else {
-            $preMessageDto = $this->scenarioHandler->handle($preMessageDto, $scenario);
+            $contract = $this->scenarioHandler->handle($contract, $scenario);
         }
 
-        $this->send($preMessageDto, $token, $visitorSession);
+        $this->sendMessages($contract, $token, $visitorSession);
 
         $cache = $this->serializer->normalize($cacheDto);
         $visitorSession->setCache($cache);
@@ -81,20 +81,38 @@ class MessageHandler
         return true;
     }
 
-    private function send($preMessageDto, $token, $visitorSession): void
+    /**
+     * @throws Exception
+     */
+    private function sendMessages(Contract $contract, string $token, VisitorSession $visitorSession): void
     {
-        if ($preMessageDto->getPhoto()) {
-            $this->telegramService->sendPhoto(
-                $preMessageDto,
-                $token,
-                $visitorSession->getChatId()
-            );
-        } else {
-            $this->telegramService->sendMessage(
-                $preMessageDto,
-                $token,
-                $visitorSession->getChatId()
-            );
+        $messages = $contract->getMessages();
+
+        foreach ($messages as $message) {
+            if ($message->getPhoto()) {
+                $this->telegramService->sendPhoto(
+                    $message->getPhoto(),
+                    $token,
+                    $visitorSession->getChatId()
+                );
+            }
+            if ($message->getMessages()) {
+                $this->telegramService->sendMessage(
+                    $message->getMessages(),
+                    $token,
+                    $visitorSession->getChatId()
+                );
+            } else {
+                throw new Exception('not found message');
+            }
         }
+    }
+
+    private function createDefaultContract(): Contract
+    {
+        $contractMessage = Helper::createContractMessage('Дефолтное сообщение...');
+
+        return (new Contract())
+            ->addMessage($contractMessage);
     }
 }
