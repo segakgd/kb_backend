@@ -7,6 +7,8 @@ use App\Service\System\HttpClient\Response\Response;
 use App\Service\System\HttpClient\Response\ResponseInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
+use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
+
 class HttpClient implements HttpClientInterface
 {
     public const METHOD_POST = 'POST';
@@ -33,6 +35,10 @@ class HttpClient implements HttpClientInterface
         $result['description'] = $description;
 
         $responseClassName = $request->getResponseClassName();
+
+        if ($code == 400 && env('APP_ENV') == 'dev') {
+            dd('HTTP error!', $result, $request);
+        }
 
         if ($responseClassName) {
             return $this->serializer->denormalize($result, $responseClassName, 'json');

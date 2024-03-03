@@ -64,6 +64,8 @@ class TelegramService implements TelegramServiceInterface
 
     public function sendMessage(ContractMessageDto $contractMessageDto, string $token, int $chatId): void
     {
+        // БАГ! при отправке в реживе setParseMode = MarkdownV2, с сообщением в котором есть многоточие - случается 400я - нтелега не может распарсить
+
         $message = $contractMessageDto->getMessage();
         $replyMarkup = $contractMessageDto->getKeyBoard();
 
@@ -72,7 +74,6 @@ class TelegramService implements TelegramServiceInterface
 
         $messageDto->setText($message);
         $messageDto->setReplyMarkup($replyMarkup);
-        $messageDto->setParseMode('MarkdownV2');
 
         $request = $this->buildRequest(
             HttpClient::METHOD_POST,

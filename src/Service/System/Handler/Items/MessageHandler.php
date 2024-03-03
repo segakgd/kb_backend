@@ -42,17 +42,7 @@ class MessageHandler
         $bot = $this->botRepository->find(10);
         $token = $bot->getToken();
 
-        $this->scenarioService->findScenarioByUUID($visitorEvent->getScenarioUUID());
-
-        $scenario = $this->scenarioRepository->findOneBy(
-            [
-                'UUID' => $visitorEvent->getScenarioUUID(),
-            ]
-        );
-
-        if (!$scenario) {
-            throw new Exception('Не существует сценария');
-        }
+        $scenario = $this->scenarioService->findScenarioByUUID($visitorEvent->getScenarioUUID());
 
         $visitorSession = $this->visitorSessionRepository->findByEventId($visitorEvent->getId());
 

@@ -22,7 +22,7 @@ class MessageDto
     /*
      * Mode for parsing entities in the message text.
      */
-    private ?string $parse_mode;
+    private ?string $parse_mode = null;
 
     /*
      * A JSON-serialized list of special entities that appear in message text, which can be specified instead of parse_mode
@@ -64,18 +64,6 @@ class MessageDto
      */
     private $reply_markup;
 
-    public function getChatId(): int|string
-    {
-        return $this->chat_id;
-    }
-
-    public function setChatId(int|string $chat_id): self
-    {
-        $this->chat_id = $chat_id;
-
-        return $this;
-    }
-
     public function getMessageThreadId(): ?int
     {
         return $this->message_thread_id;
@@ -84,30 +72,6 @@ class MessageDto
     public function setMessageThreadId(?int $message_thread_id): self
     {
         $this->message_thread_id = $message_thread_id;
-
-        return $this;
-    }
-
-    public function getText(): string
-    {
-        return $this->text;
-    }
-
-    public function setText(string $text): self
-    {
-        $this->text = $text;
-
-        return $this;
-    }
-
-    public function getParseMode(): ?string
-    {
-        return $this->parse_mode;
-    }
-
-    public function setParseMode(?string $parse_mode): self
-    {
-        $this->parse_mode = $parse_mode;
 
         return $this;
     }
@@ -184,6 +148,64 @@ class MessageDto
         return $this;
     }
 
+    public function getArray(): array
+    {
+        $normalize = [
+            'chat_id' => $this->getChatId(),
+            'text' => $this->getText(),
+        ];
+
+        if ($this->parse_mode) {
+            $normalize['parse_mode'] = $this->getParseMode();
+        }
+
+        if (!empty($this->getReplyMarkup())) {
+            $normalize['reply_markup'] = json_encode(
+                [
+                    'keyboard' => $this->getReplyMarkup(),
+                ]
+            );
+        }
+
+        return $normalize;
+    }
+
+    public function getChatId(): int|string
+    {
+        return $this->chat_id;
+    }
+
+    public function setChatId(int|string $chat_id): self
+    {
+        $this->chat_id = $chat_id;
+
+        return $this;
+    }
+
+    public function getText(): string
+    {
+        return $this->text;
+    }
+
+    public function setText(string $text): self
+    {
+        $this->text = $text;
+
+        return $this;
+    }
+
+    public function getParseMode(): ?string
+    {
+        return $this->parse_mode;
+    }
+
+    public function setParseMode(?string $parse_mode): self
+    {
+        $this->parse_mode = $parse_mode;
+
+        return $this;
+    }
+
     public function getReplyMarkup()
     {
         return $this->reply_markup;
@@ -196,30 +218,11 @@ class MessageDto
         return $this;
     }
 
-    public function getArray(): array
-    {
-        $normalize = [
-            'chat_id' => $this->getChatId(),
-            'text' => $this->getText(),
-            'parse_mode' => $this->getParseMode(),
-        ];
-
-        if (!empty($this->getReplyMarkup())){
-            $normalize['reply_markup'] = json_encode(
-                [
-                    'keyboard' => $this->getReplyMarkup(),
-                ]
-            );
-        }
-
-        return $normalize;
-    }
-
     private function keyboardNormalize($keyboards): array
     {
         $result = [];
 
-        foreach ($keyboards as $keyboard){
+        foreach ($keyboards as $keyboard) {
             $result[] = [
                 [
                     'text' => $keyboard['text']
