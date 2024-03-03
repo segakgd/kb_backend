@@ -88,6 +88,8 @@ class MainWebhookController extends AbstractController
                 );
             }
 
+            // писать в кеш uuid
+
             // определяем событие
             $this->visitorEventService->createVisitorEventForSession(
                 $visitorSession,

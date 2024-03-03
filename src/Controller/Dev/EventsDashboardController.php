@@ -92,6 +92,8 @@ class EventsDashboardController extends AbstractDashboardController
             );
         }
 
+//        todo писать в кеш uuid
+
 //        $cache = $visitorSession->getCache();
 //
 //        $cache['event']['status'] = 'process';

@@ -14,6 +14,8 @@ use App\Service\System\Handler\Dto\Cache\CacheDto;
 use App\Service\System\Handler\Dto\Contract\ContractMessageDto;
 use App\Service\System\Handler\Items\Sub\ChainHandler;
 use App\Service\System\Handler\Items\Sub\ScenarioHandler;
+use App\Service\Visitor\Scenario\ScenarioService;
+use App\Service\Visitor\Scenario\ScenarioServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -22,6 +24,7 @@ class MessageHandler
 {
     public function __construct(
         private readonly TelegramService $telegramService,
+        private readonly ScenarioService $scenarioService,
         private readonly ScenarioRepository $scenarioRepository,
         private readonly VisitorSessionRepository $visitorSessionRepository,
         private readonly ChainHandler $chainHandler,
@@ -39,6 +42,8 @@ class MessageHandler
     {
         $bot = $this->botRepository->find(10);
         $token = $bot->getToken();
+
+        $this->scenarioService->findScenarioByUUID($visitorEvent->getScenarioUUID());
 
         $scenario = $this->scenarioRepository->findOneBy(
             [

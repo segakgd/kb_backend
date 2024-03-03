@@ -16,6 +16,16 @@ class ScenarioService implements ScenarioServiceInterface
     ) {
     }
 
+    public function getAllByProjectId(string $projectId): array
+    {
+        return $this->scenarioRepository->findBy(
+            [
+                'projectId' => $projectId,
+                'deletedAt' => null,
+            ]
+        );
+    }
+
     /**
      * @throws Exception
      */

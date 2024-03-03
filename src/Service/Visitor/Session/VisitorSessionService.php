@@ -26,6 +26,11 @@ class VisitorSessionService implements VisitorSessionServiceInterface
         );
     }
 
+    public function findById(int $id): VisitorSession
+    {
+        return $this->visitorSessionRepository->find($id);
+    }
+
     public function identifyByChannel(int $chatId, int $botId, string $channel): ?VisitorSession
     {
         return $this->visitorSessionRepository->findOneBy(
