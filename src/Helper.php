@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Dto\SessionCache\Cache\CacheDto;
 use App\Entity\Ecommerce\Product;
 use App\Entity\Ecommerce\ProductVariant;
 use App\Service\System\Handler\Dto\Contract\ContractMessageDto;
@@ -10,6 +11,11 @@ use Exception;
 
 class Helper
 {
+    public static function createSessionCache(): CacheDto
+    {
+        return (new CacheDto);
+    }
+
     public static function getProductCategoryNav(array $availableCategories): array
     {
         $navCategory = [];

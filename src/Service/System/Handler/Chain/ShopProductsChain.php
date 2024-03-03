@@ -2,11 +2,11 @@
 
 namespace App\Service\System\Handler\Chain;
 
+use App\Dto\SessionCache\Cache\CacheDto;
 use App\Entity\Ecommerce\Product;
 use App\Helper;
 use App\Service\Admin\Ecommerce\Product\ProductService;
 use App\Service\System\Handler\Contract;
-use App\Service\System\Handler\Dto\Cache\CacheDto;
 use Exception;
 
 class ShopProductsChain

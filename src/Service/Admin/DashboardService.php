@@ -287,6 +287,11 @@ class DashboardService
         }
 
         $session = $this->visitorSessionService->findById(1);
+
+        if (!$session) {
+            return [];
+        }
+
         $cache = $session->getCache();
 
         if (isset($cache['eventUUID'])) {
@@ -294,7 +299,7 @@ class DashboardService
 
             foreach ($cache['event']['chains'] as $chainCache) {
                 foreach ($botSteps[$cache['eventUUID']]['chains'] as $key => $chain) {
-                    if ($chainCache['target'] === $chain['target']){
+                    if ($chainCache['target'] === $chain['target']) {
                         $botSteps[$cache['eventUUID']]['chains'][$key]['finish'] = $chainCache['finished'];
                     }
                 }

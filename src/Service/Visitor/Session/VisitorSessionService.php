@@ -2,9 +2,10 @@
 
 namespace App\Service\Visitor\Session;
 
-use App\Dto\SessionCache\SessionCacheCartDto;
-use App\Dto\SessionCache\SessionCacheDto;
+use App\Dto\SessionCache\Cache\CacheCartDto;
+use App\Dto\SessionCache\Cache\CacheDto;
 use App\Entity\Visitor\VisitorSession;
+use App\Helper;
 use App\Repository\Visitor\VisitorSessionRepository;
 use DateTimeImmutable;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -26,7 +27,7 @@ class VisitorSessionService implements VisitorSessionServiceInterface
         );
     }
 
-    public function findById(int $id): VisitorSession
+    public function findById(int $id): ?VisitorSession
     {
         return $this->visitorSessionRepository->find($id);
     }
@@ -49,11 +50,7 @@ class VisitorSessionService implements VisitorSessionServiceInterface
         string $chanel,
         int $projectId,
     ): VisitorSession {
-        $cacheDto = (new SessionCacheDto())
-            ->setCart(
-                (new SessionCacheCartDto())
-            )
-        ;
+        $cacheDto = Helper::createSessionCache();
 
         $cache = $this->serializer->normalize($cacheDto);
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Dto\SessionCache;
+namespace App\Dto\SessionCache\Cache;
 
-class SessionCacheCartDto
+class CacheCartDto
 {
     private array $contacts = [];
 

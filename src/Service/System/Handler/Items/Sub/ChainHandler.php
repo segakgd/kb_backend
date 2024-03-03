@@ -2,12 +2,12 @@
 
 namespace App\Service\System\Handler\Items\Sub;
 
+use App\Dto\SessionCache\Cache\CacheDto;
 use App\Service\System\Handler\Chain\ShopProductChain;
 use App\Service\System\Handler\Chain\ShopProductsCategoryChain;
 use App\Service\System\Handler\Chain\ShopProductsChain;
 use App\Service\System\Handler\Chain\ShowShopProductsCategoryChain;
 use App\Service\System\Handler\Contract;
-use App\Service\System\Handler\Dto\Cache\CacheDto;
 use Exception;
 
 class ChainHandler

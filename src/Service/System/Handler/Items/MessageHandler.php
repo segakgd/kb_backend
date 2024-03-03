@@ -2,6 +2,7 @@
 
 namespace App\Service\System\Handler\Items;
 
+use App\Dto\SessionCache\Cache\CacheDto;
 use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
 use App\Helper;
@@ -10,12 +11,10 @@ use App\Repository\User\BotRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Integration\Telegram\TelegramService;
 use App\Service\System\Handler\Contract;
-use App\Service\System\Handler\Dto\Cache\CacheDto;
 use App\Service\System\Handler\Dto\Contract\ContractMessageDto;
 use App\Service\System\Handler\Items\Sub\ChainHandler;
 use App\Service\System\Handler\Items\Sub\ScenarioHandler;
 use App\Service\Visitor\Scenario\ScenarioService;
-use App\Service\Visitor\Scenario\ScenarioServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Serializer\SerializerInterface;
