@@ -92,178 +92,6 @@
     </div>
 
     <div class="jj__main_wrapper jj__main_wrapper--line">
-        <div class="jj__wrapper jj__wrapper-h-auto">
-            <div class="jj__h">
-                <h2>События бота</h2>
-            </div>
-
-            <br>
-            <br>
-
-            {% for botStep in botSteps %}
-                <ul class="event-progress_wr">
-
-                    {% if botStep.status is not empty %}
-                        {% if botStep.status == 'await' %}
-                            await
-                        {% endif %}
-                    {% endif %}
-
-
-                    <li class="event-progress_event" data-title="{{ botStep.name }}">
-                        <p>event - {{ botStep.name }}</p>
-
-
-                        {% if botStep.sub is not empty %}
-                            <ul class="event-progress_wr">
-                                {% for botStep1 in botStep.sub %}
-
-                                    {% if botStep1.status is not empty %}
-                                        {% if botStep1.status == 'await' %}
-                                        <li class="event-progress_event await" data-title="{{ botStep1.name }}">
-                                        {% else %}
-                                            <li class="event-progress_event" data-title="{{ botStep1.name }}">
-                                        {% endif %}
-                                    {% else %}
-                                        <li class="event-progress_event" data-title="{{ botStep1.name }}">
-                                    {% endif %}
-
-                                    <p>event - {{ botStep1.name }}</p>
-
-                                    {% if botStep1.sub is not empty %}
-                                        <ul class="event-progress_wr">
-                                            {% for botStep2 in botStep1.sub %}
-                                                <li class="event-progress_event" data-title="{{ botStep2.name }}">
-                                                    <p>event - {{ botStep2.name }}</p>
-                                                </li>
-
-                                                {% if botStep2.status is not empty %}
-                                                    {% if botStep2.status == 'await' %}
-                                                        await
-                                                    {% endif %}
-                                                {% endif %}
-
-
-                                                {% if botStep2.chain is not empty %}
-                                                    <ul class="event-progress_event-chain-wr">
-                                                        {% for botsub3 in botStep2.chain %}
-                                                            {% if botsub3.finish == 'true' %}
-                                                                <li class="event-progress_event-chain success"
-                                                                    data-title="{{ botsub3.target }}">
-                                                                    <p>chain - {{ botsub3.target }}</p>
-                                                                </li>
-                                                            {% else %}
-                                                                <li class="event-progress_event-chain"
-                                                                    data-title="{{ botsub3.target }}">
-                                                                    <p>chain - {{ botsub3.target }}</p>
-                                                                </li>
-                                                            {% endif %}
-                                                        {% endfor %}
-                                                    </ul>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </ul>
-                                    {% endif %}
-
-                                    {% if botStep1.chain is not empty %}
-                                        <ul class="event-progress_event-chain-wr">
-                                            {% for botsub2 in botStep1.chain %}
-                                                {% if botsub2.finish == 'true' %}
-                                                    <li class="event-progress_event-chain success"
-                                                        data-title="{{ botsub2.target }}">
-                                                        <p>chain - {{ botsub2.target }}</p>
-                                                    </li>
-                                                {% else %}
-                                                    <li class="event-progress_event-chain"
-                                                        data-title="{{ botsub2.target }}">
-                                                        <p>chain - {{ botsub2.target }}</p>
-                                                    </li>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </ul>
-                                    {% endif %}
-
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-
-
-                        {% if botStep.chain is not empty %}
-                            <ul class="event-progress_event-chain-wr">
-                                {% for botsub1 in botStep.chain %}
-                                    {% if botsub1.finish == 'true' %}
-                                        <li class="event-progress_event-chain success"
-                                            data-title="{{ botsub1.target }}">
-                                            <p>chain - {{ botsub1.target }}</p>
-                                        </li>
-                                    {% else %}
-                                        <li class="event-progress_event-chain"
-                                            data-title="{{ botsub1.target }}">
-                                            <p>chain - {{ botsub1.target }}</p>
-                                        </li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-                    </li>
-
-
-                    {#                    <li class="event-progress_event success" data-title="Сценарий оформления заказа">#}
-                    {#                        <p>event</p>#}
-                    {#                        <ul class="event-progress_event-chain-wr">#}
-                    {#                            <li class="event-progress_event-chain fall" data-title="Товары по выбранной категории">#}
-                    {#                                <p>chain</p>#}
-                    {#                            </li>#}
-                    {#                            <li class="event-progress_event-chain await" data-title="Выбор варианта товара">#}
-                    {#                                <p>chain</p>#}
-                    {#                            </li>#}
-                    {#                        </ul>#}
-                    {#                    </li>#}
-                </ul>
-            {% endfor %}
-
-
-            {#            <ul class="event-progress_wr"> #}
-            {#                <li class="event-progress_event success" data-title="Сценарий оформления заказа"> #}
-            {#                    <p>event</p> #}
-            {#                    <ul class="event-progress_event-chain-wr"> #}
-            {#                        <li class="event-progress_event-chain fall" data-title="Товары по выбранной категории"> #}
-            {#                            <p>chain</p> #}
-            {#                        </li> #}
-            {#                        <li class="event-progress_event-chain await" data-title="Выбор варианта товара"> #}
-            {#                            <p>chain</p> #}
-            {#                        </li> #}
-            {#                    </ul> #}
-            {#                </li> #}
-            {#                <li class="event-progress_event" data-title="Товары по категориям"> #}
-            {#                    <p>event</p> #}
-            {#                </li> #}
-            {#                <li class="event-progress_event" data-title="Популярные товары"> #}
-            {#                    <p>event</p> #}
-            {#                </li> #}
-            {#                <li class="event-progress_event" data-title="Акционные товары"> #}
-            {#                    <p>event</p> #}
-            {#                </li> #}
-            {#            </ul> #}
-
-            <br>
-            <br>
-
-
-            {#            Моя корзина #}
-            {#            Оформить заказ #}
-            {#            Изменить доставку #}
-            {#            Изменить контакты #}
-            {#            Изменить продукты #}
-            {#            Удалить заказ #}
-            {#            Оплатить #}
-
-
-        </div>
-    </div>
-
-    <div class="jj__main_wrapper jj__main_wrapper--line">
         {# -------------------------------------------------------------------------------------------------------- #}
         {# ------------------------------------------------События------------------------------------------------- #}
         {# -------------------------------------------------------------------------------------------------------- #}
@@ -417,6 +245,178 @@
                     </div>
                 {% endfor %}
             </div>
+        </div>
+    </div>
+
+    <div class="jj__main_wrapper jj__main_wrapper--line">
+        <div class="jj__wrapper jj__wrapper-h-auto">
+            <div class="jj__h">
+                <h2>События бота</h2>
+            </div>
+
+            <br>
+            <br>
+
+            {% for botStep in botSteps %}
+                <ul class="event-progress_wr">
+
+                    {% if botStep.status is not empty %}
+                        {% if botStep.status == 'await' %}
+                            await
+                        {% endif %}
+                    {% endif %}
+
+
+                    <li class="event-progress_event" data-title="{{ botStep.name }}">
+                        <p>{{ botStep.name }}</p>
+
+
+                        {% if botStep.sub is not empty %}
+                            <ul class="event-progress_wr">
+                                {% for botStep1 in botStep.sub %}
+
+                                    {% if botStep1.status is not empty %}
+                                        {% if botStep1.status == 'await' %}
+                                        <li class="event-progress_event await" data-title="{{ botStep1.name }}">
+                                        {% else %}
+                                            <li class="event-progress_event" data-title="{{ botStep1.name }}">
+                                        {% endif %}
+                                    {% else %}
+                                        <li class="event-progress_event" data-title="{{ botStep1.name }}">
+                                    {% endif %}
+
+                                    <p>{{ botStep1.name }}</p>
+
+                                    {% if botStep1.sub is not empty %}
+                                        <ul class="event-progress_wr">
+                                            {% for botStep2 in botStep1.sub %}
+                                                <li class="event-progress_event" data-title="{{ botStep2.name }}">
+                                                    <p>{{ botStep2.name }}</p>
+                                                </li>
+
+                                                {% if botStep2.status is not empty %}
+                                                    {% if botStep2.status == 'await' %}
+                                                        await
+                                                    {% endif %}
+                                                {% endif %}
+
+
+                                                {% if botStep2.chain is not empty %}
+                                                    <ul class="event-progress_event-chain-wr">
+                                                        {% for botsub3 in botStep2.chain %}
+                                                            {% if botsub3.finish == 'true' %}
+                                                                <li class="event-progress_event-chain success"
+                                                                    data-title="{{ botsub3.target }}">
+                                                                    <p>{{ botsub3.target }}</p>
+                                                                </li>
+                                                            {% else %}
+                                                                <li class="event-progress_event-chain"
+                                                                    data-title="{{ botsub3.target }}">
+                                                                    <p>{{ botsub3.target }}</p>
+                                                                </li>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </ul>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+
+                                    {% if botStep1.chain is not empty %}
+                                        <ul class="event-progress_event-chain-wr">
+                                            {% for botsub2 in botStep1.chain %}
+                                                {% if botsub2.finish == 'true' %}
+                                                    <li class="event-progress_event-chain success"
+                                                        data-title="{{ botsub2.target }}">
+                                                        <p>{{ botsub2.target }}</p>
+                                                    </li>
+                                                {% else %}
+                                                    <li class="event-progress_event-chain"
+                                                        data-title="{{ botsub2.target }}">
+                                                        <p>{{ botsub2.target }}</p>
+                                                    </li>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+
+
+                        {% if botStep.chain is not empty %}
+                            <ul class="event-progress_event-chain-wr">
+                                {% for botsub1 in botStep.chain %}
+                                    {% if botsub1.finish == 'true' %}
+                                        <li class="event-progress_event-chain success"
+                                            data-title="{{ botsub1.target }}">
+                                            <p>{{ botsub1.target }}</p>
+                                        </li>
+                                    {% else %}
+                                        <li class="event-progress_event-chain"
+                                            data-title="{{ botsub1.target }}">
+                                            <p>{{ botsub1.target }}</p>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </li>
+
+
+                    {#                    <li class="event-progress_event success" data-title="Сценарий оформления заказа">#}
+                    {#                        <p>event</p>#}
+                    {#                        <ul class="event-progress_event-chain-wr">#}
+                    {#                            <li class="event-progress_event-chain fall" data-title="Товары по выбранной категории">#}
+                    {#                                <p>chain</p>#}
+                    {#                            </li>#}
+                    {#                            <li class="event-progress_event-chain await" data-title="Выбор варианта товара">#}
+                    {#                                <p>chain</p>#}
+                    {#                            </li>#}
+                    {#                        </ul>#}
+                    {#                    </li>#}
+                </ul>
+            {% endfor %}
+
+
+            {#            <ul class="event-progress_wr"> #}
+            {#                <li class="event-progress_event success" data-title="Сценарий оформления заказа"> #}
+            {#                    <p>event</p> #}
+            {#                    <ul class="event-progress_event-chain-wr"> #}
+            {#                        <li class="event-progress_event-chain fall" data-title="Товары по выбранной категории"> #}
+            {#                            <p>chain</p> #}
+            {#                        </li> #}
+            {#                        <li class="event-progress_event-chain await" data-title="Выбор варианта товара"> #}
+            {#                            <p>chain</p> #}
+            {#                        </li> #}
+            {#                    </ul> #}
+            {#                </li> #}
+            {#                <li class="event-progress_event" data-title="Товары по категориям"> #}
+            {#                    <p>event</p> #}
+            {#                </li> #}
+            {#                <li class="event-progress_event" data-title="Популярные товары"> #}
+            {#                    <p>event</p> #}
+            {#                </li> #}
+            {#                <li class="event-progress_event" data-title="Акционные товары"> #}
+            {#                    <p>event</p> #}
+            {#                </li> #}
+            {#            </ul> #}
+
+            <br>
+            <br>
+
+
+            {#            Моя корзина #}
+            {#            Оформить заказ #}
+            {#            Изменить доставку #}
+            {#            Изменить контакты #}
+            {#            Изменить продукты #}
+            {#            Удалить заказ #}
+            {#            Оплатить #}
+
+
         </div>
     </div>
 
