@@ -17,6 +17,7 @@ class Scenario
     #[ORM\Column(length: 36)]
     private ?string $UUID = null;
 
+    /** @deprecated */
     #[ORM\Column(length: 36, nullable: true)]
     private ?string $ownerUUID = null;
 
@@ -79,11 +80,13 @@ class Scenario
         return $this;
     }
 
+    /** @deprecated  */
     public function getOwnerUUID(): ?string
     {
         return $this->ownerUUID;
     }
 
+    /** @deprecated  */
     public function setOwnerUUID(?string $ownerUUID): static
     {
         $this->ownerUUID = $ownerUUID;

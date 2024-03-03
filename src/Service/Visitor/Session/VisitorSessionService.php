@@ -2,8 +2,6 @@
 
 namespace App\Service\Visitor\Session;
 
-use App\Dto\SessionCache\Cache\CacheCartDto;
-use App\Dto\SessionCache\Cache\CacheDto;
 use App\Entity\Visitor\VisitorSession;
 use App\Helper;
 use App\Repository\Visitor\VisitorSessionRepository;

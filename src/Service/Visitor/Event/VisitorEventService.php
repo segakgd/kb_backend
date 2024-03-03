@@ -2,6 +2,7 @@
 
 namespace App\Service\Visitor\Event;
 
+use App\Dto\SessionCache\Cache\CacheDto;
 use App\Entity\Scenario\Scenario;
 use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
@@ -11,6 +12,7 @@ use App\Service\Visitor\Scenario\ScenarioService;
 use App\Service\Visitor\Session\VisitorSessionServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class VisitorEventService
 {
@@ -20,6 +22,7 @@ class VisitorEventService
         private readonly VisitorSessionServiceInterface $visitorSessionService,
         private readonly ScenarioService $scenarioService,
         private readonly EntityManagerInterface $entityManager,
+        private readonly SerializerInterface $serializer,
     ) {
     }
 
@@ -31,33 +34,28 @@ class VisitorEventService
         string $type,
         string $content,
     ): void {
-        $visitorEventId = $visitorSession->getVisitorEvent();
+        /** @var CacheDto $cache */
+        $cache = $this->serializer->denormalize($visitorSession->getCache(), CacheDto::class);
 
-        // в сессии ничего нету - создаём исходя из того что присалали на бота.
-        // если это команда, то ищем из числа команд, ??? если нет то из доступных сообщений ???
-        //
-        // если мы знаем что присылали в прошлый раз, в сессии стоит prev, при этом, в нынешнее событие обработано
-        // мы можем найти доступные варианты ответа на нужное нам сообщение
+        $visitorEvent = null;
+        $eventUUID = $cache->getEventUUID();
 
-        $visitorEvent = $this->visitorEventRepository->getVisitorEventIfExist($visitorEventId);
-
-        if (!$visitorEvent) {
-            dd('Пытаемя создать новое событие');
-            $this->createVisitorEventByScenario($visitorSession, $type, $content);
-
-            return;
+        if ($eventUUID) {
+            $visitorEvent = $this->visitorEventRepository->getVisitorEventIfExistByScenarioUUID($eventUUID);
         }
 
-        // todo обновляем кэш >>>
-        $visitorSession->setCacheByKey('prevEvent', $visitorEventId);
-        // todo обновляем кэш <<<
+        if (!$visitorEvent) {
+            $visitorEvent = $this->createVisitorEventByScenario($visitorSession, $type, $content);
+        }
 
-        $cache = $visitorSession->getCache();
+        $cache->setEventUUID($visitorEvent->getScenarioUUID());
 
-        if ($cache['event']['status'] === 'process') {
-            $cache['content'] = $content;
+        if ($cache->getEvent()->getStatus() === 'process') {
+            $cache->setContent($content);
 
-            $visitorSession->setCache($cache);
+            $cacheNorm = $this->serializer->normalize($cache, CacheDto::class);
+
+            $visitorSession->setCache($cacheNorm);
             $visitorEvent->setStatus('new');
 
             $this->entityManager->persist($visitorSession);
@@ -76,8 +74,11 @@ class VisitorEventService
      *
      * @throws Exception
      */
-    private function createVisitorEventByScenario(VisitorSession $visitorSession, string $type, string $content): void
-    {
+    private function createVisitorEventByScenario(
+        VisitorSession $visitorSession,
+        string $type,
+        string $content
+    ): VisitorEvent {
         $scenario = $this->scenarioService->findScenarioByNameAndType($type, $content);
 
         $visitorEvent = $this->createEvent($scenario, $type);
@@ -86,6 +87,8 @@ class VisitorEventService
         $visitorSession->setVisitorEvent($visitorEventId);
 
         $this->visitorSessionRepository->save($visitorSession);
+
+        return $visitorEvent;
     }
 
     private function createEvent(Scenario $scenario, string $type): VisitorEvent

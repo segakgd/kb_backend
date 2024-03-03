@@ -5,20 +5,27 @@ namespace App\Dto\SessionCache\Cache;
 class CacheEventDto
 {
     /** @deprecated Нужен? */
-    private string $status;
+    private ?string $status = null;
 
-    private array $chains;
+    private array $chains = [];
 
-    private CacheDataDto $data;
+    private ?CacheDataDto $data = null;
+
+    public function __construct()
+    {
+        if (!$this->data) {
+            $this->data = new CacheDataDto;
+        }
+    }
 
     /** @deprecated Нужен? */
-    public function getStatus(): string
+    public function getStatus(): ?string
     {
         return $this->status;
     }
 
     /** @deprecated Нужен? */
-    public function setStatus(string $status): static
+    public function setStatus(?string $status): static
     {
         $this->status = $status;
 

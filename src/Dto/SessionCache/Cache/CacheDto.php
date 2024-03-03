@@ -8,7 +8,7 @@ class CacheDto
 
     private ?CacheCartDto $cart = null;
 
-    private array $event = [];
+    private ?CacheEventDto $event = null;
 
     private ?string $content = null;
 
@@ -16,6 +16,10 @@ class CacheDto
     {
         if (!$this->cart) {
             $this->cart = new CacheCartDto;
+        }
+
+        if (!$this->event) {
+            $this->event = new CacheEventDto;
         }
     }
 
@@ -43,21 +47,14 @@ class CacheDto
         return $this;
     }
 
-    public function getEvent(): array
+    public function getEvent(): CacheEventDto
     {
         return $this->event;
     }
 
-    public function setEvent(array $event): static
+    public function setEvent(CacheEventDto $event): static
     {
         $this->event = $event;
-
-        return $this;
-    }
-
-    public function addEvent(CacheEventDto $cacheEventDto): static
-    {
-        $this->event[] = $cacheEventDto;
 
         return $this;
     }

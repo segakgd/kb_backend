@@ -92,8 +92,6 @@ class EventsDashboardController extends AbstractDashboardController
             );
         }
 
-        dd($visitorSession->getCache());
-
         // определяем событие
         $this->visitorEventService->createVisitorEventForSession(
             $visitorSession,
