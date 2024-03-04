@@ -23,18 +23,18 @@ class ChainHandler
     /**
      * @throws Exception
      */
-    public function handle(Contract $contract, array &$cache, string $content, CacheDto $cacheDto): Contract
+    public function handle(Contract $contract, CacheDto $cacheDto): Contract
     {
-        $chains = $cache['event']['chains'];
+        $chains = $cacheDto->getEvent()->getChains();
+        $content = $cacheDto->getContent();
 
         // todo подумай в рамках ооп, создай сущность которая будех зранить значения нунешнего шага и всё такое...
-
         foreach ($chains as $key => $chain) {
             if ($chain['finished'] === false) {
                 $isHandle = $this->handleByType($chain['target'], $contract, $cacheDto, $content);
 
                 if (count($chains) === ($key + 1)) {
-                    $cache['event']['status'] = 'finished';
+                    $cacheDto->getEvent()->setStatus('finished');
                 }
 
                 if ($isHandle) {
@@ -53,7 +53,7 @@ class ChainHandler
             }
         }
 
-        $cache['event']['chains'] = $chains;
+        $cacheDto->getEvent()->setChains($chains);
 
         return $contract;
     }

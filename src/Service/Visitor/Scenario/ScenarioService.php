@@ -34,6 +34,7 @@ class ScenarioService implements ScenarioServiceInterface
         $scenario = $this->scenarioRepository->findOneBy(
             [
                 'UUID' => $uuid,
+                'deletedAt' => null,
             ]
         );
 
@@ -67,10 +68,6 @@ class ScenarioService implements ScenarioServiceInterface
 
         if (null === $scenario) {
             $scenario = $this->getDefaultScenario();
-        }
-
-        if (null === $scenario) {
-            $scenario = $this->getScenarioByNameAndType('message', 'default');
         }
 
         if (null === $scenario) {

@@ -5,15 +5,12 @@ namespace App\Service\System\Handler\Items;
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
-use App\Helper;
-use App\Repository\Scenario\ScenarioRepository;
 use App\Repository\User\BotRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Integration\Telegram\TelegramService;
 use App\Service\System\Handler\Contract;
 use App\Service\System\Handler\Dto\Contract\ContractMessageDto;
-use App\Service\System\Handler\Items\Sub\ChainHandler;
-use App\Service\System\Handler\Items\Sub\ScenarioHandler;
+use App\Service\System\Handler\Items\Sub\StepHandler;
 use App\Service\Visitor\Scenario\ScenarioService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -24,13 +21,11 @@ class MessageHandler
     public function __construct(
         private readonly TelegramService $telegramService,
         private readonly ScenarioService $scenarioService,
-        private readonly ScenarioRepository $scenarioRepository,
         private readonly VisitorSessionRepository $visitorSessionRepository,
-        private readonly ChainHandler $chainHandler,
-        private readonly ScenarioHandler $scenarioHandler,
         private readonly EntityManagerInterface $entityManager,
         private readonly BotRepository $botRepository,
         private readonly SerializerInterface $serializer,
+        private readonly StepHandler $stepHandler,
     ) {
     }
 
@@ -51,18 +46,20 @@ class MessageHandler
         /** @var CacheDto $cacheDto */
         $cacheDto = $this->serializer->denormalize($cache, CacheDto::class);
 
-        $status = $visitorSession->getCacheStatusEvent();
-        $content = $visitorSession->getCacheContent();
-
         $contract = $this->createDefaultContract();
 
-        if ($status === 'process') {
-            $contract = $this->chainHandler->handle($contract, $cache, $content, $cacheDto);
+        $scenarioSteps = $scenario->getSteps();
 
-            $visitorSession->setCache($cache);
-        } else {
-            $contract = $this->scenarioHandler->handle($contract, $scenario);
+        foreach ($scenarioSteps as $scenarioStep) {
+            $contract = $this->stepHandler->handle(
+                $contract,
+                $cacheDto,
+                $scenarioStep,
+                $scenario->getUUID(),
+            );
         }
+
+        dd($contract, $visitorEvent);
 
         $this->sendMessages($contract, $token, $visitorSession);
 
@@ -74,6 +71,11 @@ class MessageHandler
         $this->entityManager->flush();
 
         return true;
+    }
+
+    private function createDefaultContract(): Contract
+    {
+        return (new Contract());
     }
 
     /**
@@ -102,13 +104,5 @@ class MessageHandler
                 throw new Exception('not found message');
             }
         }
-    }
-
-    private function createDefaultContract(): Contract
-    {
-        $contractMessage = Helper::createContractMessage('Дефолтное сообщение...');
-
-        return (new Contract())
-            ->addMessage($contractMessage);
     }
 }

@@ -70,7 +70,7 @@ class ScenarioStepDto
         return $this;
     }
 
-    public function finish(): bool
+    public function getFinish(): bool
     {
         return $this->finish;
     }

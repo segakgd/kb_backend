@@ -66,6 +66,13 @@ class VisitorEventService
             return;
         }
 
+        $cache = $this->serializer->normalize($cache, 'array');
+
+        $visitorSession->setCache($cache);
+
+        $this->entityManager->persist($visitorSession);
+        $this->entityManager->flush();
+
         $this->rewriteChatEventByScenario($visitorEvent, $visitorSession, $type, $content);
     }
 

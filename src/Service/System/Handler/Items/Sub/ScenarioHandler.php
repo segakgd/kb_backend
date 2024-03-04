@@ -2,38 +2,32 @@
 
 namespace App\Service\System\Handler\Items\Sub;
 
-use App\Entity\Scenario\Scenario;
 use App\Helper;
 use App\Service\System\Handler\Contract;
 
 class ScenarioHandler
 {
-    public function handle(Contract $contract, Scenario $scenario): Contract
+    public function handle(Contract $contract, array $scenarioStep): Contract
     {
-        $scenarioSteps = $scenario->getSteps();
+        $contractMessage = Helper::createContractMessage('');
 
-        // todo вот тут будет проблема, будет выбран последний шаг!
-        foreach ($scenarioSteps as $scenarioStep) {
-            $contractMessage = Helper::createContractMessage('');
-
-            if ($scenarioStep['message']) {
-                $contractMessage->setMessage($scenarioStep['message']);
-            }
-
-            if (!empty($scenarioStep['keyboard'])) {
-                $replyMarkups = $this->keyboard($scenarioStep);
-
-                if (!empty($replyMarkups)) {
-                    $contractMessage->setKeyBoard($replyMarkups);
-                }
-            }
-
-            if (!empty($scenarioStep['attached'])) {
-                dd('сработали attached', $scenarioStep['attached']);
-            }
-
-            $contract->addMessage($contractMessage);
+        if ($scenarioStep['message']) {
+            $contractMessage->setMessage($scenarioStep['message']);
         }
+
+        if (!empty($scenarioStep['keyboard'])) {
+            $replyMarkups = $this->keyboard($scenarioStep);
+
+            if (!empty($replyMarkups)) {
+                $contractMessage->setKeyBoard($replyMarkups);
+            }
+        }
+
+        if (!empty($scenarioStep['attached'])) {
+            dd('сработали attached', $scenarioStep['attached']);
+        }
+
+        $contract->addMessage($contractMessage);
 
         return $contract;
     }

@@ -62,6 +62,7 @@ class ScenarioConverter
                 ->setBotId($botId)
                 ->setProjectId($projectId);
 
+
             foreach ($scenario->getSteps() as $scenarioStep) {
                 $scenarioStepArray = $this->serializer->normalize($scenarioStep);
 
