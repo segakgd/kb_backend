@@ -37,27 +37,33 @@ class ChainHandler
             if ($chain->isNotFinished()) {
                 $isHandle = $this->handleByType($chain->getTarget(), $contract, $cacheDto, $content);
 
-                if (count($chains) === ($key + 1)) {
-                    $cacheDto->getEvent()->setFinished(true);
-                }
-
                 if ($isHandle) {
                     $chain->setFinished(true);
                 }
 
-                $goto = $contract->getGoto();
+                foreach ($chains as $chainsSub) {
+                    /** @var CacheChainDto $chainsSub */
 
-                if ($goto === Contract::GOTO_NEXT) {
-                    $chain->setFinished(true);
+                    if (!$chainsSub->isFinished()) {
+                        $cacheDto->getEvent()->setFinished(false);
 
-                    continue;
+                        break;
+                    }
                 }
+
+//                $goto = $contract->getGoto();
+//
+//                if ($goto === Contract::GOTO_NEXT) {
+//                    $chain->setFinished(true);
+//
+//                    continue;
+//                }
 
                 break;
             }
         }
 
-//        dd($contract);
+//        dd($contract, $chain, $cacheDto->getEvent()->isFinished());
 
         $cacheDto->getEvent()->setChains($chains);
 

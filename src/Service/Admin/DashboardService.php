@@ -286,7 +286,7 @@ class DashboardService
             ];
         }
 
-        $session = $this->visitorSessionService->findById(3);
+        $session = $this->visitorSessionService->findById(5);
 
         if (!$session) {
             return [];

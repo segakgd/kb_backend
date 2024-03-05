@@ -52,7 +52,10 @@ class StepHandler
                 //
                 // если нету ничего, тогда в кеш копируем chain-сы если они есть у сценария
             } else {
+                dd('asd');
+
                 $contract = $this->scenarioHandler->handle($contract, $step);
+                $cacheDto->getEvent()->setFinished(true);
             }
         } catch (Throwable $exception) {
             dd($exception);

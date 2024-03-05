@@ -2,6 +2,7 @@
 
 namespace App\Service\System\Handler\Chain;
 
+use App\Dto\SessionCache\Cache\CacheDataDto;
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Entity\Ecommerce\Product;
 use App\Helper;
@@ -25,21 +26,14 @@ class ShopProductsChain
 
         if ($this->checkSystemCondition($content)) {
             $event = $cacheDto->getEvent();
-            $paginate = $event['paginate']; // todo paginate переименовать
 
-            $result = match ($content) {
-                'предыдущий' => $this->prev($contract, $paginate),
-                'добавить в корзину' => $this->addToCart($contract, $paginate),
-                'следующий' => $this->next($contract, $paginate),
+            return match ($content) {
+                'предыдущий' => $this->prev($contract, $event->getData()),
+                'добавить в корзину' => $this->addToCart($contract, $event->getData()),
+                'следующий' => $this->next($contract, $event->getData()),
                 'вернуться в главное меню' => $this->gotoMain($contract),
                 default => false
             };
-
-            $event['paginate'] = $paginate;
-
-            $cacheDto->setEvent($event);
-
-            return $result;
         }
 
         $replyMarkups = Helper::getProductNav();
@@ -69,17 +63,17 @@ class ShopProductsChain
     /**
      * @throws Exception
      */
-    private function prev(Contract $contract, array &$paginate): bool
+    private function prev(Contract $contract, CacheDataDto $paginate): bool
     {
-        $products = $this->productService->getProductsByCategory($paginate['now'], 'магнитолы', 'product.prev');
+        $products = $this->productService->getProductsByCategory($paginate->getPageNow(), 'магнитолы', 'product.prev');
 
         $contractMessage = Helper::createContractMessage('');
 
         /** @var Product $product */
         $product = $products['items'][0];
 
-        $paginate['now'] = $products['paginate']['now'];
-        $paginate['productId'] = $product->getId();
+        $paginate->setPageNow($products['paginate']['now']);
+        $paginate->setProductId($product->getId());
 
         $message = Helper::renderProductMessage($product);
 
@@ -101,9 +95,9 @@ class ShopProductsChain
         return false;
     }
 
-    private function addToCart(Contract $contract, array $paginate): bool
+    private function addToCart(Contract $contract, CacheDataDto $paginate): bool
     {
-        $productId = $paginate['productId'];
+        $productId = $paginate->getProductId();
         $contractMessage = Helper::createContractMessage('');
 
         $product = $this->productService->find($productId);
@@ -131,16 +125,16 @@ class ShopProductsChain
     /**
      * @throws Exception
      */
-    private function next(Contract $contract, array &$paginate): bool
+    private function next(Contract $contract, CacheDataDto $paginate): bool
     {
-        $products = $this->productService->getProductsByCategory($paginate['now'], 'магнитолы', 'product.next');
+        $products = $this->productService->getProductsByCategory($paginate->getPageNow(), 'магнитолы', 'product.next');
         $contractMessage = Helper::createContractMessage('');
 
         /** @var Product $product */
         $product = $products['items'][0];
 
-        $paginate['now'] = $products['paginate']['now'];
-        $paginate['productId'] = $product->getId();
+        $paginate->setPageNow($products['paginate']['now']);
+        $paginate->setProductId($product->getId());
 
         $message = Helper::renderProductMessage($product);
 

@@ -17,12 +17,12 @@ class CacheEventDto
         }
     }
 
-    public function isFinished(): string
+    public function isFinished(): bool
     {
         return $this->finished;
     }
 
-    public function setFinished(string $finished): static
+    public function setFinished(bool $finished): static
     {
         $this->finished = $finished;
 

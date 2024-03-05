@@ -40,6 +40,8 @@ class VisitorEventService
         $visitorEvent = null;
         $eventUUID = $cache->getEventUUID();
 
+//        dd($eventUUID);
+
         if ($eventUUID) {
             $visitorEvent = $this->visitorEventRepository->getVisitorEventIfExistByScenarioUUID($eventUUID);
         }

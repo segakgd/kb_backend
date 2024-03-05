@@ -21,9 +21,11 @@ class ProductService implements ProductServiceInterface
     /**
      * @throws Exception
      */
-    public function getProductsByCategory(int $pageNow, string $categoryName, string $key): array // todo переделать в $categoryId (хранить id совместно с названием)
+    public function getProductsByCategory(?int $pageNow, string $categoryName, string $key): array // todo переделать в $categoryId (хранить id совместно с названием)
     {
         $paginator = [];
+
+        $pageNow = $pageNow ?: 1;
 
         if ('product.next' === $key) {
             $paginator = $this->entityRepository->findProductsByCategoryName($categoryName, $pageNow + 1);
