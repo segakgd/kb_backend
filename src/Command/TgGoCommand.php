@@ -58,15 +58,12 @@ class TgGoCommand extends Command
         try {
 //            $this->updateChatEventStatus($chatEvent, ChatEvent::STATUS_IN_PROCESS);
 
-            $this->actionHandler->handle($visitorEvent);
+            $statusEvent = $this->actionHandler->handle($visitorEvent);
 
-            $visitorSession = $this->visitorSessionRepository->findByEventId($visitorEvent->getId());
-            $cache = $visitorSession->getCache();
-
-            if ($cache['event']['status'] === 'process') {
-                $this->visitorEventRepository->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_AWAIT);
-            } else {
+            if ($statusEvent) {
                 $this->visitorEventRepository->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_DONE);
+            } else {
+                $this->visitorEventRepository->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_AWAIT);
             }
 
         } catch (Throwable $throwable){

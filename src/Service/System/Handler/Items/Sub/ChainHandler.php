@@ -38,7 +38,7 @@ class ChainHandler
                 $isHandle = $this->handleByType($chain->getTarget(), $contract, $cacheDto, $content);
 
                 if (count($chains) === ($key + 1)) {
-                    $cacheDto->getEvent()->setStatus('finished');
+                    $cacheDto->getEvent()->setFinished(true);
                 }
 
                 if ($isHandle) {
@@ -56,6 +56,8 @@ class ChainHandler
                 break;
             }
         }
+
+//        dd($contract);
 
         $cacheDto->getEvent()->setChains($chains);
 

@@ -51,7 +51,7 @@ class VisitorEventService
         $cache->setEventUUID($visitorEvent->getScenarioUUID());
         $cache->setContent($content);
 
-        if ($cache->getEvent()->getStatus() === 'process') {
+        if (!$cache->getEvent()->isFinished()) {
             $cache->setContent($content);
 
             $cacheNorm = $this->serializer->normalize($cache, CacheDto::class);

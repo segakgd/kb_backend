@@ -27,15 +27,18 @@ class StepHandler
         string $scenarioUUID,
     ): Contract {
         $stepChains = $step['chain'];
+
         try {
             if (!empty($step['chain'])) {
                 // todo проверить, можем ли взять данный step и chain
 
+//                $cacheDto->getEvent()->setChains([]);
                 if (!$cacheDto->getEvent()->isExistChains()) {
-                    $this->enrich($stepChains, $cacheDto);
+                    $this->enrichCache($stepChains, $cacheDto);
                     // Не существует, обогащаем
                 }
 
+//                dd($cacheDto->getEvent()->getChains());
 
 //                $cacheDto->setContent();
 
@@ -65,16 +68,14 @@ class StepHandler
         return $contract;
     }
 
-    private function enrich(array $stepChains, CacheDto $cacheDto): CacheDto
+    private function enrichCache(array $stepChains, CacheDto $cacheDto): void
     {
         foreach ($stepChains as $stepChain) {
             $chain = (new CacheChainDto)
-                ->setTarget(ChainsEnum::from('shop.products'))
+                ->setTarget(ChainsEnum::from($stepChain['target']))
                 ->setFinished($stepChain['finish']);
 
             $cacheDto->getEvent()->addChain($chain);
         }
-
-        return $cacheDto;
     }
 }

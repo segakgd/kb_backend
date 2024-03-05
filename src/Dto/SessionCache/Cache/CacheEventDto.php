@@ -4,8 +4,7 @@ namespace App\Dto\SessionCache\Cache;
 
 class CacheEventDto
 {
-    /** @deprecated Нужен? */
-    private ?string $status = null;
+    private bool $finished = false;
 
     private array $chains = [];
 
@@ -18,16 +17,14 @@ class CacheEventDto
         }
     }
 
-    /** @deprecated Нужен? */
-    public function getStatus(): ?string
+    public function isFinished(): string
     {
-        return $this->status;
+        return $this->finished;
     }
 
-    /** @deprecated Нужен? */
-    public function setStatus(?string $status): static
+    public function setFinished(string $finished): static
     {
-        $this->status = $status;
+        $this->finished = $finished;
 
         return $this;
     }

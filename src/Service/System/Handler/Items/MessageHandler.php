@@ -61,6 +61,8 @@ class MessageHandler
 
         $this->sendMessages($contract, $token, $visitorSession);
 
+        $statusEvent = $cacheDto->getEvent()->isFinished();
+
         $cache = $this->serializer->normalize($cacheDto);
         $visitorSession->setCache($cache);
 
@@ -68,7 +70,7 @@ class MessageHandler
         $this->entityManager->persist($visitorSession);
         $this->entityManager->flush();
 
-        return true;
+        return $statusEvent;
     }
 
     private function createDefaultContract(): Contract

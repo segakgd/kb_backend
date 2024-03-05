@@ -59,7 +59,7 @@ class HistoryService implements HistoryServiceInterface
     }
 
     public function add(
-        int $projectId,
+        ?int $projectId,
         string $type,
         string $status,
         ?string $sender = null,

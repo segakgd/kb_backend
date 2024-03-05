@@ -20,6 +20,8 @@ class CommandHandler
     }
 
     /**
+     * @deprecated
+     *
      * @throws Exception
      */
     public function handle(VisitorEvent $visitorEvent): bool

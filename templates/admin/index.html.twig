@@ -120,6 +120,23 @@
                             </button>
                         </form>
                     </section>
+
+                    <br>
+                    <br>
+
+                    <section>
+                        <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                            <label>
+                                магнитолы:
+                            </label>
+                            <label>
+                                <input type="text" name="message" value="магнитолы">
+                            </label>
+                            <button>
+                                Отправить
+                            </button>
+                        </form>
+                    </section>
                 {% endfor %}
             </div>
         </div>
