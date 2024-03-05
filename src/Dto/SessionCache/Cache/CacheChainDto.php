@@ -27,6 +27,11 @@ class CacheChainDto
         return $this->finished;
     }
 
+    public function isNotFinished(): bool
+    {
+        return !$this->finished;
+    }
+
     public function setFinished(bool $finished): static
     {
         $this->finished = $finished;

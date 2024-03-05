@@ -59,8 +59,6 @@ class MessageHandler
             );
         }
 
-        dd($contract, $visitorEvent);
-
         $this->sendMessages($contract, $token, $visitorSession);
 
         $cache = $this->serializer->normalize($cacheDto);

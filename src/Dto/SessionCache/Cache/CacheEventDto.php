@@ -51,6 +51,11 @@ class CacheEventDto
         return $this;
     }
 
+    public function isExistChains(): bool
+    {
+        return !empty($this->chains);
+    }
+
     public function getData(): CacheDataDto
     {
         return $this->data;

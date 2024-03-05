@@ -49,6 +49,7 @@ class VisitorEventService
         }
 
         $cache->setEventUUID($visitorEvent->getScenarioUUID());
+        $cache->setContent($content);
 
         if ($cache->getEvent()->getStatus() === 'process') {
             $cache->setContent($content);

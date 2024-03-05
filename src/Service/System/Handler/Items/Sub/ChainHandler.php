@@ -2,7 +2,9 @@
 
 namespace App\Service\System\Handler\Items\Sub;
 
+use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Dto\SessionCache\Cache\CacheDto;
+use App\Enum\ChainsEnum;
 use App\Service\System\Handler\Chain\ShopProductChain;
 use App\Service\System\Handler\Chain\ShopProductsCategoryChain;
 use App\Service\System\Handler\Chain\ShopProductsChain;
@@ -29,22 +31,24 @@ class ChainHandler
         $content = $cacheDto->getContent();
 
         // todo подумай в рамках ооп, создай сущность которая будех зранить значения нунешнего шага и всё такое...
+
         foreach ($chains as $key => $chain) {
-            if ($chain['finished'] === false) {
-                $isHandle = $this->handleByType($chain['target'], $contract, $cacheDto, $content);
+            /** @var CacheChainDto $chain */
+            if ($chain->isNotFinished()) {
+                $isHandle = $this->handleByType($chain->getTarget(), $contract, $cacheDto, $content);
 
                 if (count($chains) === ($key + 1)) {
                     $cacheDto->getEvent()->setStatus('finished');
                 }
 
                 if ($isHandle) {
-                    $chains[$key]['finished'] = true;
+                    $chain->setFinished(true);
                 }
 
                 $goto = $contract->getGoto();
 
                 if ($goto === Contract::GOTO_NEXT) {
-                    $chains[$key]['finished'] = true;
+                    $chain->setFinished(true);
 
                     continue;
                 }
@@ -61,14 +65,13 @@ class ChainHandler
     /**
      * @throws Exception
      */
-    private function handleByType(string $target, Contract $contract, CacheDto $cacheDto, ?string $content = null): bool
+    private function handleByType(ChainsEnum $target, Contract $contract, CacheDto $cacheDto, ?string $content = null): bool
     {
         return match ($target) {
-            'show.shop.products.category' => $this->showShopProductsCategoryChain->handle($contract),
-            'shop.products.category' => $this->shopProductsCategoryChain->handle($contract, $content),
-            'shop.products' => $this->shopProductsChain->handle($contract, $cacheDto),
-            'shop.product' => $this->shopProductChain->handle(),
-            default => '',
+            ChainsEnum::ShowShopProductsCategory => $this->showShopProductsCategoryChain->handle($contract),
+            ChainsEnum::ShopProductsCategory => $this->shopProductsCategoryChain->handle($contract, $content),
+            ChainsEnum::ShopProducts => $this->shopProductsChain->handle($contract, $cacheDto),
+            ChainsEnum::ShopProduct => $this->shopProductChain->handle(),
         };
     }
 }
