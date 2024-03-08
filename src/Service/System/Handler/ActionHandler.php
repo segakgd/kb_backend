@@ -3,14 +3,14 @@
 namespace App\Service\System\Handler;
 
 use App\Entity\Visitor\VisitorEvent;
-use App\Service\System\Handler\Items\CommandHandler;
+//use App\Service\System\Handler\Items\CommandHandler;
 use App\Service\System\Handler\Items\MessageHandler;
 use Exception;
 
 class ActionHandler
 {
     public function __construct(
-        private readonly CommandHandler $commandHandler,
+//        private readonly CommandHandler $commandHandler,
         private readonly MessageHandler $messageHandler,
     ) {
     }
@@ -18,11 +18,11 @@ class ActionHandler
     /**
      * @throws Exception
      */
-    public function handle(VisitorEvent $visitorEvent): bool
+    public function handle(VisitorEvent $visitorEvent): string
     {
         return match ($visitorEvent->getType()) {
             'message' => $this->messageHandler->handle($visitorEvent),
-            'command' => $this->commandHandler->handle($visitorEvent),
+//            'command' => $this->commandHandler->handle($visitorEvent),
             default => false
         };
     }

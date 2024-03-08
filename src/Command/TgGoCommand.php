@@ -60,11 +60,7 @@ class TgGoCommand extends Command
 
             $statusEvent = $this->actionHandler->handle($visitorEvent);
 
-            if ($statusEvent) {
-                $this->visitorEventRepository->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_DONE);
-            } else {
-                $this->visitorEventRepository->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_AWAIT);
-            }
+            $this->visitorEventRepository->updateChatEventStatus($visitorEvent, $statusEvent);
 
         } catch (Throwable $throwable){
             $visitorEvent->setError($throwable->getMessage());

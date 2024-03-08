@@ -34,7 +34,7 @@ class MessageHandler
     /**
      * @throws Exception
      */
-    public function handle(VisitorEvent $visitorEvent): bool
+    public function handle(VisitorEvent $visitorEvent): string
     {
         $bot = $this->botRepository->find(10);
         $token = $bot->getToken();
@@ -53,6 +53,8 @@ class MessageHandler
         $scenarioSteps = $scenario->getSteps();
 
         foreach ($scenarioSteps as $scenarioStep) {
+            // todo а если несколько?
+
             $contract = $this->stepHandler->handle(
                 $contract,
                 $cacheDto,
@@ -63,9 +65,7 @@ class MessageHandler
         if ($contract->getGoto()) {
             $scenario = $this->scenarioService->getMainScenario();
 
-            $visitorEvent
-                ->setScenarioUUID($scenario->getUUID())
-            ;
+            $visitorEvent->setScenarioUUID($scenario->getUUID());
 
             $cacheEventDto = (new CacheEventDto())
                 ->setFinished(false)
@@ -86,7 +86,7 @@ class MessageHandler
             $this->entityManager->persist($visitorSession);
             $this->entityManager->flush();
 
-            return false;
+            return VisitorEvent::STATUS_NEW;
         }
 
         $this->sendMessages($contract, $token, $visitorSession);
@@ -99,7 +99,7 @@ class MessageHandler
         $this->entityManager->persist($visitorSession);
         $this->entityManager->flush();
 
-        return $statusEvent;
+        return $statusEvent ? VisitorEvent::STATUS_DONE : VisitorEvent::STATUS_AWAIT;
     }
 
     private function createDefaultContract(): Contract

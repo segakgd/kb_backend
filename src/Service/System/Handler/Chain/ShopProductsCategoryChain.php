@@ -29,9 +29,9 @@ class ShopProductsCategoryChain
         }
 
         if ($this->checkSystemCondition($content)) {
-            $contractMessage->setMessage('Давайте представим что вы вернулись в главное меню');
+            $contract->setGoto(Contract::GOTO_MAIN);
 
-            return false;
+            return true;
         }
 
         $availableCategory = $this->categoryService->getAvailableCategory();
