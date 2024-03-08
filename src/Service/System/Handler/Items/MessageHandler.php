@@ -2,7 +2,9 @@
 
 namespace App\Service\System\Handler\Items;
 
+use App\Dto\SessionCache\Cache\CacheDataDto;
 use App\Dto\SessionCache\Cache\CacheDto;
+use App\Dto\SessionCache\Cache\CacheEventDto;
 use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
 use App\Repository\User\BotRepository;
@@ -55,8 +57,36 @@ class MessageHandler
                 $contract,
                 $cacheDto,
                 $scenarioStep,
-                $scenario->getUUID(),
             );
+        }
+
+        if ($contract->getGoto()) {
+            $scenario = $this->scenarioService->getMainScenario();
+
+            $visitorEvent
+                ->setScenarioUUID($scenario->getUUID())
+            ;
+
+            $cacheEventDto = (new CacheEventDto())
+                ->setFinished(false)
+                ->setChains([])
+                ->setData(
+                    (new CacheDataDto)
+                        ->setProductId(null)
+                        ->setPageNow(null)
+                )
+            ;
+
+            $cacheDto->setEvent($cacheEventDto);
+
+            $cache = $this->serializer->normalize($cacheDto);
+            $visitorSession->setCache($cache);
+
+            $this->entityManager->persist($visitorEvent);
+            $this->entityManager->persist($visitorSession);
+            $this->entityManager->flush();
+
+            return false;
         }
 
         $this->sendMessages($contract, $token, $visitorSession);
@@ -66,7 +96,6 @@ class MessageHandler
         $cache = $this->serializer->normalize($cacheDto);
         $visitorSession->setCache($cache);
 
-        $this->entityManager->persist($scenario);
         $this->entityManager->persist($visitorSession);
         $this->entityManager->flush();
 

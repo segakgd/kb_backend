@@ -47,12 +47,12 @@ class CacheDto
         return $this;
     }
 
-    public function getEvent(): CacheEventDto
+    public function getEvent(): ?CacheEventDto
     {
         return $this->event;
     }
 
-    public function setEvent(CacheEventDto $event): static
+    public function setEvent(?CacheEventDto $event): static
     {
         $this->event = $event;
 

@@ -53,7 +53,17 @@ class ScenarioService implements ScenarioServiceInterface
     {
         return $this->scenarioRepository->findOneBy(
             [
-                'name' => 'default', // в константу
+                'name' => 'default', // todo в константу
+                'deletedAt' => null,
+            ]
+        );
+    }
+
+    public function getMainScenario(): ?Scenario
+    {
+        return $this->scenarioRepository->findOneBy(
+            [
+                'name' => 'main', // todo в константу
                 'deletedAt' => null,
             ]
         );

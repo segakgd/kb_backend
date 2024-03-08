@@ -32,15 +32,22 @@ class ChainHandler
 
         // todo подумай в рамках ооп, создай сущность которая будех зранить значения нунешнего шага и всё такое...
 
-        foreach ($chains as $key => $chain) {
+        foreach ($chains as $chain) {
             /** @var CacheChainDto $chain */
             if ($chain->isNotFinished()) {
                 $isHandle = $this->handleByType($chain->getTarget(), $contract, $cacheDto, $content);
+
+                if ($contract->getGoto() !== null) {
+                    break;
+                }
 
                 if ($isHandle) {
                     $chain->setFinished(true);
                 }
 
+                // todo нужно ли обрабатывать $isHandle === false??
+
+                // todo костыль >>>
                 foreach ($chains as $chainsSub) {
                     /** @var CacheChainDto $chainsSub */
 
@@ -50,14 +57,7 @@ class ChainHandler
                         break;
                     }
                 }
-
-//                $goto = $contract->getGoto();
-//
-//                if ($goto === Contract::GOTO_NEXT) {
-//                    $chain->setFinished(true);
-//
-//                    continue;
-//                }
+                // todo костыль <<<
 
                 break;
             }

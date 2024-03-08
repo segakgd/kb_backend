@@ -24,7 +24,6 @@ class StepHandler
         Contract $contract,
         CacheDto $cacheDto,
         array $step,
-        string $scenarioUUID,
     ): Contract {
         $stepChains = $step['chain'];
 
@@ -52,8 +51,6 @@ class StepHandler
                 //
                 // если нету ничего, тогда в кеш копируем chain-сы если они есть у сценария
             } else {
-                dd('asd');
-
                 $contract = $this->scenarioHandler->handle($contract, $step);
                 $cacheDto->getEvent()->setFinished(true);
             }

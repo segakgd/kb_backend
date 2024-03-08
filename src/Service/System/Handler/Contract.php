@@ -8,9 +8,11 @@ class Contract
 {
     public const GOTO_NEXT = 'next';
 
+    public const GOTO_MAIN = 'main';
+
     private array $messages = [];
 
-    public ?string $goto = null;
+    private ?string $goto = null;
 
     public function getMessages(): array
     {

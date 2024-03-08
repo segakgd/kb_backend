@@ -158,12 +158,8 @@ class ShopProductsChain
 
     private function gotoMain(Contract $contract): bool
     {
-        $contractMessage = Helper::createContractMessage('');
+        $contract->setGoto(Contract::GOTO_MAIN);
 
-        $contractMessage->setMessage('gotoMain');
-
-        $contract->addMessage($contractMessage);
-
-        return false;
+        return true;
     }
 }

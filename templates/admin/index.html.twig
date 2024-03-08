@@ -22,7 +22,7 @@
 
             <div class="jj__items">
                 {% for bot in bots %}
-                    <section>
+                    <section style="width: 100%; padding-bottom: 15px;">
                         <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
                             <label>
                                 Сообщение в бот {{ bot.botId }}:
@@ -36,107 +36,84 @@
                         </form>
                     </section>
 
-                    <br>
-                    <br>
+                    <div style="width: 100%; display: flex; padding-bottom: 15px;">
+                        <section>
+                            <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                                <label>
+                                    <input hidden="hidden" type="text" name="message"
+                                           value="Сценарий оформления заказа">
+                                </label>
+                                <button>
+                                    Сценарий оформления заказа
+                                </button>
+                            </form>
+                        </section>
 
-                    <section>
-                        <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
-                            <label>
-                                Cледующий:
-                            </label>
-                            <label>
-                                <input type="text" name="message" value="следующий">
-                            </label>
-                            <button>
-                                Отправить
-                            </button>
-                        </form>
-                    </section>
+                        <section>
+                            <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                                <label>
+                                    <input hidden="hidden" type="text" name="message" value="Товары по категориям">
+                                </label>
+                                <button>
+                                    Товары по категориям
+                                </button>
+                            </form>
+                        </section>
 
-                    <br>
-                    <br>
+                        <section>
+                            <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                                <label>
+                                    <input hidden="hidden" type="text" name="message" value="магнитолы">
+                                </label>
+                                <button>
+                                    магнитолы
+                                </button>
+                            </form>
+                        </section>
+                    </div>
 
-                    <section>
-                        <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
-                            <label>
-                                Предыдущий:
-                            </label>
-                            <label>
-                                <input type="text" name="message" value="предыдущий">
-                            </label>
-                            <button>
-                                Отправить
-                            </button>
-                        </form>
-                    </section>
-
-                    <br>
-                    <br>
-
-                    <section>
-                        <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
-                            <label>
-                                Добавить в корзину:
-                            </label>
-                            <label>
-                                <input type="text" name="message" value="добавить в корзину">
-                            </label>
-                            <button>
-                                Отправить
-                            </button>
-                        </form>
-                    </section>
-
-                    <br>
-                    <br>
-
-                    <section>
-                        <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
-                            <label>
-                                Сценарий оформления заказа:
-                            </label>
-                            <label>
-                                <input type="text" name="message" value="Сценарий оформления заказа">
-                            </label>
-                            <button>
-                                Отправить
-                            </button>
-                        </form>
-                    </section>
-
-                    <br>
-                    <br>
-
-                    <section>
-                        <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
-                            <label>
-                                Товары по категориям:
-                            </label>
-                            <label>
-                                <input type="text" name="message" value="Товары по категориям">
-                            </label>
-                            <button>
-                                Отправить
-                            </button>
-                        </form>
-                    </section>
-
-                    <br>
-                    <br>
-
-                    <section>
-                        <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
-                            <label>
-                                магнитолы:
-                            </label>
-                            <label>
-                                <input type="text" name="message" value="магнитолы">
-                            </label>
-                            <button>
-                                Отправить
-                            </button>
-                        </form>
-                    </section>
+                    <div style="width: 100%; display: flex;">
+                        <section>
+                            <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                                <label>
+                                    <input hidden="hidden" type="text" name="message" value="следующий">
+                                </label>
+                                <button>
+                                    Cледующий
+                                </button>
+                            </form>
+                        </section>
+                        <section>
+                            <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                                <label>
+                                    <input hidden="hidden" type="text" name="message" value="добавить в корзину">
+                                </label>
+                                <button>
+                                    Добавить в корзину
+                                </button>
+                            </form>
+                        </section>
+                        <section>
+                            <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                                <label>
+                                    <input hidden="hidden" type="text" name="message" value="предыдущий">
+                                </label>
+                                <button>
+                                    Предыдущий
+                                </button>
+                            </form>
+                        </section>
+                        <section>
+                            <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                                <label>
+                                    <input hidden="hidden" type="text" name="message" value="вернуться в главное меню">
+                                </label>
+                                <button>
+                                    вернуться в главное меню
+                                </button>
+                            </form>
+                        </section>
+                    </div>
                 {% endfor %}
             </div>
         </div>
@@ -185,22 +162,25 @@
                             </section>
 
                             {% if event.chains is not null %}
-                                <section>
-                                    Шаги:
-                                    <ul>
-                                        {% for chain in event.chains %}
-                                            <li>
-                                                {% if chain.status == 1 %}
-                                                    <span class="jj__color-green">Пройдено</span>
-                                                {% else %}
-                                                    <span class="jj__color-red">Не пройдено</span>
-                                                {% endif %}
+                                {% if event.chains is not empty %}
+                                    <br>
+                                    <section>
+                                        Шаги:
+                                        <ul>
+                                            {% for chain in event.chains %}
+                                                <li>
+                                                    {% if chain.status == 1 %}
+                                                        <span class="jj__color-green">Пройдено</span>
+                                                    {% else %}
+                                                        <span class="jj__color-red">Не пройдено</span>
+                                                    {% endif %}
 
-                                                {{ chain.name }}
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </section>
+                                                    {{ chain.name }}
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </section>
+                                {% endif %}
                             {% endif %}
 
                             {% if event.error is not null %}
