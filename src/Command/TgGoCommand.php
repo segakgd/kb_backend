@@ -58,9 +58,9 @@ class TgGoCommand extends Command
 
             $bot = $this->botRepository->find(10);
 
-            $statusEvent = $this->messageHandler->handle($visitorEvent, $contract, $bot);
+            $this->messageHandler->handle($visitorEvent, $contract, $bot);
 
-            $this->visitorEventRepository->updateChatEventStatus($visitorEvent, $statusEvent);
+            $this->visitorEventRepository->updateChatEventStatus($visitorEvent, $contract->getStatus());
 
         } catch (Throwable $throwable){
             $visitorEvent->setError($throwable->getMessage());

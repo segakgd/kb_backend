@@ -2,12 +2,12 @@
 
 namespace App\Service\System\Handler;
 
-use App\Dto\SessionCache\Cache\CacheDataDto;
 use App\Dto\SessionCache\Cache\CacheDto;
-use App\Dto\SessionCache\Cache\CacheEventDto;
 use App\Entity\User\Bot;
 use App\Entity\Visitor\VisitorEvent;
+use App\Entity\Visitor\VisitorSession;
 use App\Repository\Visitor\VisitorSessionRepository;
+use App\Service\System\Common\CacheService;
 use App\Service\System\Common\SenderService;
 use App\Service\System\Contract;
 use App\Service\System\Handler\Step\StepHandler;
@@ -25,6 +25,7 @@ class MessageHandler
         private readonly SerializerInterface $serializer,
         private readonly StepHandler $stepHandler,
         private readonly SenderService $senderService,
+        private readonly CacheService $cacheService,
     ) {
     }
 
@@ -34,13 +35,9 @@ class MessageHandler
     public function handle(VisitorEvent $visitorEvent, Contract $contract, Bot $bot): void
     {
         $scenario = $this->scenarioService->findScenarioByUUID($visitorEvent->getScenarioUUID());
-
         $visitorSession = $this->visitorSessionRepository->findByEventId($visitorEvent->getId());
 
-        $cache = $visitorSession->getCache();
-
-        /** @var CacheDto $cacheDto */
-        $cacheDto = $this->serializer->denormalize($cache, CacheDto::class);
+        $cacheDto = $this->getCacheDtoFromSession($visitorSession);
 
         $this->handleSteps($scenario->getSteps(), $contract, $cacheDto);
 
@@ -52,15 +49,15 @@ class MessageHandler
 
         $this->senderService->sendMessages($contract, $bot->getToken(), $visitorSession);
 
-        $statusEvent = $cacheDto->getEvent()->isFinished();
+        $this->insertCacheDtoFromSession($visitorSession, $cacheDto);
 
-        $cache = $this->serializer->normalize($cacheDto);
-        $visitorSession->setCache($cache);
-
+        $this->entityManager->persist($visitorEvent);
         $this->entityManager->persist($visitorSession);
         $this->entityManager->flush();
 
-        $contract->setStatus($statusEvent ? VisitorEvent::STATUS_DONE : VisitorEvent::STATUS_AWAIT);
+        $contract->setStatus(
+            $cacheDto->getEvent()->isFinished() ? VisitorEvent::STATUS_DONE : VisitorEvent::STATUS_AWAIT
+        );
     }
 
     /**
@@ -79,31 +76,38 @@ class MessageHandler
         }
     }
 
-    private function goto($visitorEvent, $cacheDto, $visitorSession, $contract): void
-    {
+    private function goto(
+        VisitorEvent $visitorEvent,
+        CacheDto $cacheDto,
+        VisitorSession $visitorSession,
+        Contract $contract
+    ): void {
         $scenario = $this->scenarioService->getMainScenario();
 
         $visitorEvent->setScenarioUUID($scenario->getUUID());
 
-        $cacheEventDto = (new CacheEventDto())
-            ->setFinished(false)
-            ->setChains([])
-            ->setData(
-                (new CacheDataDto)
-                    ->setProductId(null)
-                    ->setPageNow(null)
-            )
-        ;
+        $cacheDto->setEvent(CacheService::createCacheEventDto());
 
-        $cacheDto->setEvent($cacheEventDto);
-
-        $cache = $this->serializer->normalize($cacheDto);
-        $visitorSession->setCache($cache);
+        $this->insertCacheDtoFromSession($visitorSession, $cacheDto);
 
         $this->entityManager->persist($visitorEvent);
         $this->entityManager->persist($visitorSession);
         $this->entityManager->flush();
 
         $contract->setStatus(VisitorEvent::STATUS_NEW);
+    }
+
+    private function getCacheDtoFromSession(VisitorSession $visitorSession): CacheDto
+    {
+        $cache = $visitorSession->getCache();
+
+        /** @var CacheDto $cacheDto */
+        return $this->serializer->denormalize($cache, CacheDto::class);
+    }
+
+    private function insertCacheDtoFromSession(VisitorSession $visitorSession, CacheDto $cacheDto): void
+    {
+        $cache = $this->serializer->normalize($cacheDto);
+        $visitorSession->setCache($cache);
     }
 }
