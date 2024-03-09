@@ -25,6 +25,8 @@ class ShopProductsCategoryChain
 
             $contractMessage->setKeyBoard($replyMarkups);
 
+            $contract->addMessage($contractMessage);
+
             return true;
         }
 

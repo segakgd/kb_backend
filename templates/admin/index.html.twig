@@ -123,7 +123,7 @@
         {# -------------------------------------------------------------------------------------------------------- #}
         {# ------------------------------------------------События------------------------------------------------- #}
         {# -------------------------------------------------------------------------------------------------------- #}
-        <div class="jj__wrapper jj__wrapper-30">
+        <div class="jj__wrapper jj__wrapper-50">
             <div class="jj__h">
                 <h2>События</h2>
             </div>
@@ -155,7 +155,7 @@
                                 {% elseif event.status == 'new' %}
                                     <span class="jj__color-blue"> Новое </span>
                                 {% elseif event.status == 'await' %}
-                                    <span class="jj__color-yellow"> Ожидает пользователя </span>
+                                    <span class="jj__color-yellow"> Ожидает действий пользователя </span>
                                 {% else %}
                                     {{ event.status }}
                                 {% endif %}
@@ -164,7 +164,7 @@
                             {% if event.chains is not null %}
                                 {% if event.chains is not empty %}
                                     <br>
-                                    <section>
+                                    <section style="padding: 10px; background: #ced6ea;">
                                         Шаги:
                                         <ul>
                                             {% for chain in event.chains %}
@@ -197,7 +197,7 @@
         {# -------------------------------------------------------------------------------------------------------- #}
         {# --------------------------------------------------Боты-------------------------------------------------- #}
         {# -------------------------------------------------------------------------------------------------------- #}
-        <div class="jj__wrapper jj__wrapper-65">
+        <div class="jj__wrapper jj__wrapper-50">
             <div class="jj__h">
                 <h2>Боты</h2>
             </div>
@@ -282,7 +282,7 @@
     <div class="jj__main_wrapper jj__main_wrapper--line">
         <div class="jj__wrapper jj__wrapper-h-auto">
             <div class="jj__h">
-                <h2>События бота</h2>
+                <h2>Расшифровка сессии</h2>
             </div>
 
             {% for botStep in botSteps %}

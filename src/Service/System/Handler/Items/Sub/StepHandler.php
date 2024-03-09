@@ -37,10 +37,6 @@ class StepHandler
                     // Не существует, обогащаем
                 }
 
-//                dd($cacheDto->getEvent()->getChains());
-
-//                $cacheDto->setContent();
-
                 // существует
 
                 $contract = $this->chainHandler->handle($contract, $cacheDto);
@@ -57,13 +53,6 @@ class StepHandler
         } catch (Throwable $exception) {
             dd($exception);
         }
-
-//        if (isset($step['chain']) || $cacheDto->getEvent()->getChains()) {
-//            $contract = $this->chainHandler->handle($contract, $cacheDto);
-//        } else {
-//            $contract = $this->scenarioHandler->handle($contract, $step);
-//        }
-//        dd('sad');
 
         return $contract;
     }

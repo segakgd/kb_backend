@@ -122,7 +122,10 @@ class MessageHandler
                     $token,
                     $visitorSession->getChatId()
                 );
+
+                continue;
             }
+
             if ($message->getMessage()) {
                 $this->telegramService->sendMessage(
                     $message,

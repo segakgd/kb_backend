@@ -111,12 +111,12 @@ class ShopProductsChain
             $contractMessage->setKeyBoard($variantsNav);
             $contractMessage->setMessage('addToCart');
 
-            $contract->setGoto(Contract::GOTO_NEXT);
+//            $contract->setGoto(Contract::GOTO_NEXT);
 
             return false;
         }
 
-        $contract->setGoto(Contract::GOTO_NEXT);
+//        $contract->setGoto(Contract::GOTO_NEXT);
         $contract->addMessage($contractMessage);
 
         return false;
