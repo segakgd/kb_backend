@@ -7,6 +7,19 @@ use Doctrine\Common\Collections\Collection;
 
 class KeyboardHelper
 {
+    public static function mapKeyboard(array $scenarioStep): array
+    {
+        $replyMarkups = [];
+
+        foreach ($scenarioStep['keyboard']['replyMarkup'] as $key => $replyMarkup) {
+            foreach ($replyMarkup as $keyItem => $replyMarkupItem) {
+                $replyMarkups[$key][$keyItem]['text'] = $replyMarkupItem['text'];
+            }
+        }
+
+        return $replyMarkups;
+    }
+
     public static function getProductCategoryNav(array $availableCategories): array
     {
         $navCategory = [];
@@ -111,16 +124,5 @@ class KeyboardHelper
         }
 
         return $nav;
-    }
-
-    public static function translate(string $key): string
-    {
-        return match ($key) {
-            'show.shop.products.category' => 'Приветственное сообщение, показываем доступные категории',
-            'shop.products.category' => 'Показываем товары по выбранной категории',
-            'shop.products' => 'Товары по выбранной катигории',
-            'shop.product' => 'Просмотр конкретного продукта',
-            default => $key,
-        };
     }
 }

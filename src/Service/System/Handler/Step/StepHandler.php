@@ -5,6 +5,7 @@ namespace App\Service\System\Handler\Step;
 use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Enum\ChainsEnum;
+use App\Service\System\Common\CacheService;
 use App\Service\System\Contract;
 use App\Service\System\Handler\Chain\ChainHandler;
 use App\Service\System\Handler\Scenario\ScenarioHandler;
@@ -31,23 +32,13 @@ class StepHandler
 
         try {
             if (!empty($step['chain'])) {
-                // todo проверить, можем ли взять данный step и chain
 
-//                $cacheDto->getEvent()->setChains([]);
                 if (!$cacheDto->getEvent()->isExistChains()) {
-                    $this->enrichCache($stepChains, $cacheDto);
-                    // Не существует, обогащаем
+                    CacheService::enrichStepCache($stepChains, $cacheDto);
                 }
-
-                // существует
 
                 $contract = $this->chainHandler->handle($contract, $cacheDto);
 
-
-                // по хорошему, нужно посмотреть, есть ли какие-то цепочки которые не завершены в предыдущей сесии.
-                // и это делать нужно до обработки по сценарию, до того как в сценарий лезть
-                //
-                // если нету ничего, тогда в кеш копируем chain-сы если они есть у сценария
             } else {
                 $contract = $this->scenarioHandler->handle($contract, $step);
                 $cacheDto->getEvent()->setFinished(true);
@@ -57,16 +48,5 @@ class StepHandler
         }
 
         return $contract;
-    }
-
-    private function enrichCache(array $stepChains, CacheDto $cacheDto): void
-    {
-        foreach ($stepChains as $stepChain) {
-            $chain = (new CacheChainDto)
-                ->setTarget(ChainsEnum::from($stepChain['target']))
-                ->setFinished($stepChain['finish']);
-
-            $cacheDto->getEvent()->addChain($chain);
-        }
     }
 }

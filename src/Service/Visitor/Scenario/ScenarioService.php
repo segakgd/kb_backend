@@ -6,13 +6,15 @@ use App\Dto\Scenario\ScenarioStepDto;
 use App\Entity\Scenario\Scenario;
 use App\Repository\Scenario\ScenarioRepository;
 use Exception;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class ScenarioService implements ScenarioServiceInterface
 {
+    const SCENARIO_DEFAULT = 'default';
+
+    const SCENARIO_MAIN = 'main';
+
     public function __construct(
         private readonly ScenarioRepository $scenarioRepository,
-        private readonly SerializerInterface $serializer,
     ) {
     }
 
@@ -53,7 +55,7 @@ class ScenarioService implements ScenarioServiceInterface
     {
         return $this->scenarioRepository->findOneBy(
             [
-                'name' => 'default', // todo в константу
+                'name' => static::SCENARIO_DEFAULT,
                 'deletedAt' => null,
             ]
         );
@@ -63,7 +65,7 @@ class ScenarioService implements ScenarioServiceInterface
     {
         return $this->scenarioRepository->findOneBy(
             [
-                'name' => 'main', // todo в константу
+                'name' => static::SCENARIO_MAIN,
                 'deletedAt' => null,
             ]
         );
@@ -101,24 +103,24 @@ class ScenarioService implements ScenarioServiceInterface
     /**
      * @throws Exception
      */
-    public function generateDefaultScenario(int $projectId, int $botId): Scenario // todo использовать!!
+    public function generateDefaultScenario(int $projectId, int $botId): Scenario
     {
         $step = (new ScenarioStepDto())
             ->setMessage('Не знаю что вам ответить');
 
-        $step = (new Scenario())
+        $scenario = (new Scenario())
             ->setUUID(uuid_create())
             ->setType('message')
             ->setName('default')
             ->setProjectId($projectId)
             ->setBotId($botId)
             ->addStep(
-                $this->serializer->normalize($step)
+                $step
             );
 
-        $this->scenarioRepository->saveAndFlush($step);
+        $this->scenarioRepository->saveAndFlush($scenario);
 
-        return $step;
+        return $scenario;
     }
 
     public function markAllAsRemoveScenario(int $projectId, int $botId): void

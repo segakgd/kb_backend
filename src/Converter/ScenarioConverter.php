@@ -16,7 +16,6 @@ class ScenarioConverter
     public function __construct(
         private readonly ScenarioServiceInterface $scenarioService,
         private readonly EntityManagerInterface $entityManager,
-        private readonly SerializerInterface $serializer,
     ) {
     }
 
@@ -30,7 +29,7 @@ class ScenarioConverter
             $this->entityManager->beginTransaction();
 
             $this->scenarioService->markAllAsRemoveScenario($projectId, $botId);
-//            $this->scenarioService->generateDefaultScenario($projectId, $botId); // todo переделать дефолтную
+            $this->scenarioService->generateDefaultScenario($projectId, $botId);
 
             $scenarios = $this->convertToEntity($scenario->getScenarios(), $projectId, $botId);
 
@@ -56,40 +55,22 @@ class ScenarioConverter
 
             $scenarioEntity = (new Scenario())
                 ->setUUID($scenario->getUUID())
-//                ->setOwnerUUID()
                 ->setName($scenario->getName())
                 ->setType($scenario->getType())
                 ->setBotId($botId)
-                ->setProjectId($projectId);
+                ->setProjectId($projectId)
+            ;
 
 
             foreach ($scenario->getSteps() as $scenarioStep) {
-                $scenarioStepArray = $this->serializer->normalize($scenarioStep);
-
-                $scenarioEntity->addStep($scenarioStepArray);
+                $scenarioEntity->addStep($scenarioStep);
             }
 
             $scenarioEntities[] = $scenarioEntity;
 
             $this->entityManager->persist($scenarioEntity);
             $this->entityManager->flush($scenarioEntity);
-
-//            $scenario->
-
-//            $step = (new Scenario())
-//                ->setType($settingItem['type'])
-//                ->setName($settingItem['name'])
-//                ->setContent($settingItem['content'])
-//                ->setActionAfter($settingItem['actionAfter'] ?? null)
-//                ->setProjectId($projectId)
-//                ->setBotId($botId)
-//            ;
-
-//            dd($scenario);
         }
-
-
-//        dd($scenarioEntities);
 
         return $scenarioEntities;
     }

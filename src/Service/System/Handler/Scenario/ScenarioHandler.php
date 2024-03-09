@@ -2,6 +2,7 @@
 
 namespace App\Service\System\Handler\Scenario;
 
+use App\Helper\KeyboardHelper;
 use App\Helper\MessageHelper;
 use App\Service\System\Contract;
 
@@ -16,7 +17,7 @@ class ScenarioHandler
         }
 
         if (!empty($scenarioStep['keyboard'])) {
-            $replyMarkups = $this->keyboard($scenarioStep);
+            $replyMarkups = KeyboardHelper::mapKeyboard($scenarioStep);
 
             if (!empty($replyMarkups)) {
                 $contractMessage->setKeyBoard($replyMarkups);
@@ -30,18 +31,5 @@ class ScenarioHandler
         $contract->addMessage($contractMessage);
 
         return $contract;
-    }
-
-    private function keyboard(array $scenarioStep): array
-    {
-        $replyMarkups = [];
-
-        foreach ($scenarioStep['keyboard']['replyMarkup'] as $key => $replyMarkup) {
-            foreach ($replyMarkup as $keyItem => $replyMarkupItem) {
-                $replyMarkups[$key][$keyItem]['text'] = $replyMarkupItem['text'];
-            }
-        }
-
-        return $replyMarkups;
     }
 }

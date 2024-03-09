@@ -2,6 +2,7 @@
 
 namespace App\Entity\Scenario;
 
+use App\Dto\Scenario\ScenarioStepDto;
 use App\Repository\Scenario\ScenarioRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
@@ -106,7 +107,7 @@ class Scenario
         return $this;
     }
 
-    public function addStep(array $step): static
+    public function addStep(ScenarioStepDto $step): static
     {
         $this->steps[] = $step;
 
