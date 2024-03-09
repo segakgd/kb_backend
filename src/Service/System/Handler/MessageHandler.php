@@ -25,7 +25,6 @@ class MessageHandler
         private readonly SerializerInterface $serializer,
         private readonly StepHandler $stepHandler,
         private readonly SenderService $senderService,
-        private readonly CacheService $cacheService,
     ) {
     }
 
@@ -44,20 +43,19 @@ class MessageHandler
         if ($contract->getGoto()) {
             $this->goto($visitorEvent, $cacheDto, $visitorSession, $contract);
 
-            return;
+        } else {
+            $this->senderService->sendMessages($contract, $bot->getToken(), $visitorSession);
+
+            $this->insertCacheDtoFromSession($visitorSession, $cacheDto);
+
+            $contract->setStatus(
+                $cacheDto->getEvent()->isFinished() ? VisitorEvent::STATUS_DONE : VisitorEvent::STATUS_AWAIT
+            );
         }
-
-        $this->senderService->sendMessages($contract, $bot->getToken(), $visitorSession);
-
-        $this->insertCacheDtoFromSession($visitorSession, $cacheDto);
 
         $this->entityManager->persist($visitorEvent);
         $this->entityManager->persist($visitorSession);
         $this->entityManager->flush();
-
-        $contract->setStatus(
-            $cacheDto->getEvent()->isFinished() ? VisitorEvent::STATUS_DONE : VisitorEvent::STATUS_AWAIT
-        );
     }
 
     /**
@@ -89,10 +87,6 @@ class MessageHandler
         $cacheDto->setEvent(CacheService::createCacheEventDto());
 
         $this->insertCacheDtoFromSession($visitorSession, $cacheDto);
-
-        $this->entityManager->persist($visitorEvent);
-        $this->entityManager->persist($visitorSession);
-        $this->entityManager->flush();
 
         $contract->setStatus(VisitorEvent::STATUS_NEW);
     }
