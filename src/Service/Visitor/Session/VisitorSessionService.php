@@ -3,7 +3,7 @@
 namespace App\Service\Visitor\Session;
 
 use App\Entity\Visitor\VisitorSession;
-use App\Helper;
+use App\Helper\CommonHelper;
 use App\Repository\Visitor\VisitorSessionRepository;
 use DateTimeImmutable;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -48,7 +48,7 @@ class VisitorSessionService implements VisitorSessionServiceInterface
         string $chanel,
         int $projectId,
     ): VisitorSession {
-        $cacheDto = Helper::createSessionCache();
+        $cacheDto = CommonHelper::createSessionCache();
 
         $cache = $this->serializer->normalize($cacheDto);
 

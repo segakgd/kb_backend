@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Service\System\Handler\Chain;
+namespace App\Service\System\Handler\Items;
 
-use App\Helper;
+use App\Helper\KeyboardHelper;
+use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\ProductCategory\ProductCategoryService;
-use App\Service\System\Handler\Contract;
+use App\Service\System\Contract;
 
 class ShopProductsCategoryChain
 {
@@ -14,14 +15,14 @@ class ShopProductsCategoryChain
 
     public function handle(Contract $contract, ?string $content = null): bool
     {
-        $contractMessage = Helper::createContractMessage('');
+        $contractMessage = MessageHelper::createContractMessage('');
 
         if ($this->checkCondition($content)) {
             $contractMessage->setMessage(
                 'Вы выбрали категорию ' . $content . ' отличный выбор! В теперь давайте выберим товар:'
             );
 
-            $replyMarkups = Helper::getProductNav();
+            $replyMarkups = KeyboardHelper::getProductNav();
 
             $contractMessage->setKeyBoard($replyMarkups);
 
@@ -38,7 +39,7 @@ class ShopProductsCategoryChain
 
         $availableCategory = $this->categoryService->getAvailableCategory();
 
-        $replyMarkups = Helper::getProductCategoryNav($availableCategory);
+        $replyMarkups = KeyboardHelper::getProductCategoryNav($availableCategory);
 
         $contractMessage->setMessage(
             'Не понимаю вашего сообщения, выберите доступную категорию товара или вернитесь в глваное меню'

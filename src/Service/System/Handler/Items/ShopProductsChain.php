@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Service\System\Handler\Chain;
+namespace App\Service\System\Handler\Items;
 
 use App\Dto\SessionCache\Cache\CacheDataDto;
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Entity\Ecommerce\Product;
-use App\Helper;
+use App\Helper\KeyboardHelper;
+use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\Product\ProductService;
-use App\Service\System\Handler\Contract;
+use App\Service\System\Contract;
 use Exception;
 
 class ShopProductsChain
@@ -36,9 +37,9 @@ class ShopProductsChain
             };
         }
 
-        $replyMarkups = Helper::getProductNav();
+        $replyMarkups = KeyboardHelper::getProductNav();
 
-        $contractMessage = Helper::createContractMessage(
+        $contractMessage = MessageHelper::createContractMessage(
             'Не понимаю о чем вы... мб вам выбрать доступные варианты из меню? К примеру, вы можете посмотреть более подробную информациюю о товаре.',
             null,
             $replyMarkups,
@@ -51,7 +52,7 @@ class ShopProductsChain
 
     private function checkSystemCondition(string $content): bool
     {
-        $availableProductNavItems = Helper::getAvailableProductNavItems();
+        $availableProductNavItems = KeyboardHelper::getAvailableProductNavItems();
 
         if (in_array($content, $availableProductNavItems)) {
             return true;
@@ -67,7 +68,7 @@ class ShopProductsChain
     {
         $products = $this->productService->getProductsByCategory($paginate->getPageNow(), 'магнитолы', 'product.prev');
 
-        $contractMessage = Helper::createContractMessage('');
+        $contractMessage = MessageHelper::createContractMessage('');
 
         /** @var Product $product */
         $product = $products['items'][0];
@@ -75,7 +76,7 @@ class ShopProductsChain
         $paginate->setPageNow($products['paginate']['now']);
         $paginate->setProductId($product->getId());
 
-        $message = Helper::renderProductMessage($product);
+        $message = MessageHelper::renderProductMessage($product);
 
         $photo = 'https://sopranoclub.ru/images/190-epichnyh-anime-artov/file48822.jpg';
 
@@ -83,9 +84,9 @@ class ShopProductsChain
         $contractMessage->setPhoto($photo);
 
         if ($products['paginate']['prev'] === null) {
-            $replyMarkups = Helper::getProductNav(['next' => true]);
+            $replyMarkups = KeyboardHelper::getProductNav(['next' => true]);
         } else {
-            $replyMarkups = Helper::getProductNav();
+            $replyMarkups = KeyboardHelper::getProductNav();
         }
 
         $contractMessage->setKeyBoard($replyMarkups);
@@ -98,7 +99,7 @@ class ShopProductsChain
     private function addToCart(Contract $contract, CacheDataDto $paginate): bool
     {
         $productId = $paginate->getProductId();
-        $contractMessage = Helper::createContractMessage('');
+        $contractMessage = MessageHelper::createContractMessage('');
 
         $product = $this->productService->find($productId);
 
@@ -106,7 +107,7 @@ class ShopProductsChain
         $variantCount = $variants->count();
 
         if ($variantCount > 1) {
-            $variantsNav = Helper::getVariantsNav($variants);
+            $variantsNav = KeyboardHelper::getVariantsNav($variants);
 
             $contractMessage->setKeyBoard($variantsNav);
             $contractMessage->setMessage('addToCart');
@@ -128,7 +129,7 @@ class ShopProductsChain
     private function next(Contract $contract, CacheDataDto $paginate): bool
     {
         $products = $this->productService->getProductsByCategory($paginate->getPageNow(), 'магнитолы', 'product.next');
-        $contractMessage = Helper::createContractMessage('');
+        $contractMessage = MessageHelper::createContractMessage('');
 
         /** @var Product $product */
         $product = $products['items'][0];
@@ -136,7 +137,7 @@ class ShopProductsChain
         $paginate->setPageNow($products['paginate']['now']);
         $paginate->setProductId($product->getId());
 
-        $message = Helper::renderProductMessage($product);
+        $message = MessageHelper::renderProductMessage($product);
 
         $photo = 'https://sopranoclub.ru/images/190-epichnyh-anime-artov/file48822.jpg';
 
@@ -144,9 +145,9 @@ class ShopProductsChain
         $contractMessage->setPhoto($photo);
 
         if ($products['paginate']['next'] === null) {
-            $replyMarkups = Helper::getProductNav(['prev' => true]);
+            $replyMarkups = KeyboardHelper::getProductNav(['prev' => true]);
         } else {
-            $replyMarkups = Helper::getProductNav();
+            $replyMarkups = KeyboardHelper::getProductNav();
         }
 
         $contractMessage->setKeyBoard($replyMarkups);

@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Service\System\Handler\Items\Sub;
+namespace App\Service\System\Handler\Scenario;
 
-use App\Helper;
-use App\Service\System\Handler\Contract;
+use App\Helper\MessageHelper;
+use App\Service\System\Contract;
 
 class ScenarioHandler
 {
     public function handle(Contract $contract, array $scenarioStep): Contract
     {
-        $contractMessage = Helper::createContractMessage('');
+        $contractMessage = MessageHelper::createContractMessage('');
 
         if ($scenarioStep['message']) {
             $contractMessage->setMessage($scenarioStep['message']);

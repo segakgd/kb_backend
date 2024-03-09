@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Service\System\Handler\Items\Sub;
+namespace App\Service\System\Handler\Chain;
 
 use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Enum\ChainsEnum;
-use App\Service\System\Handler\Chain\ShopProductChain;
-use App\Service\System\Handler\Chain\ShopProductsCategoryChain;
-use App\Service\System\Handler\Chain\ShopProductsChain;
-use App\Service\System\Handler\Chain\ShowShopProductsCategoryChain;
-use App\Service\System\Handler\Contract;
+use App\Service\System\Contract;
+use App\Service\System\Handler\Items\ShopProductChain;
+use App\Service\System\Handler\Items\ShopProductsCategoryChain;
+use App\Service\System\Handler\Items\ShopProductsChain;
+use App\Service\System\Handler\Items\ShowShopProductsCategoryChain;
 use Exception;
 
 class ChainHandler
@@ -62,8 +62,6 @@ class ChainHandler
                 break;
             }
         }
-
-//        dd($contract, $chain, $cacheDto->getEvent()->isFinished());
 
         $cacheDto->getEvent()->setChains($chains);
 

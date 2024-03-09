@@ -2,12 +2,12 @@
 
 namespace App\Service\Integration\Telegram;
 
+use App\Dto\Contract\ContractMessageDto;
 use App\Dto\Core\Telegram\Request\Invoice\InvoiceDto;
 use App\Dto\Core\Telegram\Request\Message\MessageDto;
 use App\Dto\Core\Telegram\Request\Message\PhotoDto;
 use App\Dto\Core\Telegram\Request\Webhook\WebhookDto;
 use App\Dto\Core\Telegram\Response\GetWebhookInfoDto;
-use App\Service\System\Handler\Dto\Contract\ContractMessageDto;
 use App\Service\System\HttpClient\HttpClient;
 use App\Service\System\HttpClient\HttpClientInterface;
 use App\Service\System\HttpClient\Request\Request;

@@ -9,7 +9,7 @@ use App\Entity\User\Bot;
 use App\Entity\User\Project;
 use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
-use App\Helper;
+use App\Helper\CommonHelper;
 use App\Repository\Visitor\VisitorEventRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Admin\Bot\BotServiceInterface;
@@ -228,7 +228,7 @@ class DashboardService
 
                 foreach ($cacheChains as $cacheChain) {
                     $chains[] = [
-                        'name' => Helper::translate($cacheChain['target']),
+                        'name' => CommonHelper::translate($cacheChain['target']),
                         'status' => $cacheChain['finished'],
                     ];
                 }

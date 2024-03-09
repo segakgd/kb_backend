@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Service\System\Handler\Chain;
+namespace App\Service\System\Handler\Items;
 
-use App\Helper;
+use App\Helper\KeyboardHelper;
+use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\ProductCategory\ProductCategoryService;
-use App\Service\System\Handler\Contract;
+use App\Service\System\Contract;
 
 class ShowShopProductsCategoryChain
 {
@@ -16,10 +17,10 @@ class ShowShopProductsCategoryChain
     {
         $availableCategory = $this->categoryService->getAvailableCategory();
 
-        $contractMessage = Helper::createContractMessage(
+        $contractMessage = MessageHelper::createContractMessage(
             'Отлично, 😜 выберите одну из категорий 🤘',
             null,
-            Helper::getProductCategoryNav($availableCategory)
+            KeyboardHelper::getProductCategoryNav($availableCategory)
         );
 
         $contract->addMessage($contractMessage);

@@ -1,21 +1,12 @@
 <?php
 
-namespace App;
+namespace App\Helper;
 
-use App\Dto\SessionCache\Cache\CacheDto;
-use App\Entity\Ecommerce\Product;
 use App\Entity\Ecommerce\ProductVariant;
-use App\Service\System\Handler\Dto\Contract\ContractMessageDto;
 use Doctrine\Common\Collections\Collection;
-use Exception;
 
-class Helper
+class KeyboardHelper
 {
-    public static function createSessionCache(): CacheDto
-    {
-        return (new CacheDto);
-    }
-
     public static function getProductCategoryNav(array $availableCategories): array
     {
         $navCategory = [];
@@ -33,26 +24,6 @@ class Helper
                     'text' => 'вернуться в главное меню'
                 ],
             ],
-        ];
-    }
-
-    /**
-     * @throws Exception
-     */
-    public static function buildPaginate(int $page, int $maxPage): array
-    {
-        if ($maxPage < $page) {
-            throw new Exception('max page < page');
-        }
-
-        $prevPage = ($page > 1) ? $page - 1 : null;
-        $nextPage = ($page < $maxPage) ? $page + 1 : null;
-
-        return [
-            'prev' => $prevPage,
-            'now' => $page,
-            'next' => $nextPage,
-            'total' => $maxPage,
         ];
     }
 
@@ -80,20 +51,6 @@ class Helper
         }
 
         return $nav;
-    }
-
-    public static function getGoToNav(): array
-    {
-        return [
-            [
-                [
-                    'text' => 'вернуться обратно'
-                ],
-                [
-                    'text' => 'вернуться в главное меню'
-                ],
-            ],
-        ];
     }
 
     public static function getProductNav(?array $paginate = null): array
@@ -165,49 +122,5 @@ class Helper
             'shop.product' => 'Просмотр конкретного продукта',
             default => $key,
         };
-    }
-
-    public static function renderProductMessage(Product $product): string
-    {
-        $name = $product->getName();
-
-        $message = "ℹ️ Название: $name \n\n";
-
-        $variants = $product->getVariants();
-
-        /** @var ProductVariant $variant */
-        foreach ($variants as $variant) {
-            $name = $variant->getName();
-            $price = $variant->getPrice();
-            $price = $price['price'];
-            $count = $variant->getCount();
-
-            $message .= "Вариант: $name \n";
-            $message .= "Цена: $price \n";
-            $message .= "Доступное количество: $count \n";
-            $message .= "\n";
-        }
-
-        return $message;
-    }
-
-    public static function createContractMessage(
-        string $message,
-        ?string $photo = null,
-        ?array $keyBoard = null,
-    ): ContractMessageDto {
-        $contractMessage = (new ContractMessageDto())
-            ->setMessage($message)
-        ;
-
-        if ($photo) {
-            $contractMessage->setPhoto($photo);
-        }
-
-        if ($keyBoard) {
-            $contractMessage->setKeyBoard($keyBoard);
-        }
-
-        return $contractMessage;
     }
 }

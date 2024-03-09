@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\System\Handler\Chain;
+namespace App\Service\System\Handler\Items;
 
 class ShopProductVariantChain
 {

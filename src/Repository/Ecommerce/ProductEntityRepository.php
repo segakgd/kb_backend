@@ -3,11 +3,9 @@
 namespace App\Repository\Ecommerce;
 
 use App\Entity\Ecommerce\Product;
-use App\Helper;
+use App\Helper\CommonHelper;
 use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -39,7 +37,7 @@ class ProductEntityRepository extends ServiceEntityRepository
 //            ->setParameter('categoryName', $categoryName)
         ;
 
-        $paginate = Helper::buildPaginate($page, count($queryBuilder2->getQuery()->execute()));
+        $paginate = CommonHelper::buildPaginate($page, count($queryBuilder2->getQuery()->execute()));
 
         return [
             'items' => $queryBuilder->getQuery()->execute(),

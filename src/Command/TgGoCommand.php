@@ -3,12 +3,10 @@
 namespace App\Command;
 
 use App\Entity\Visitor\VisitorEvent;
+use App\Helper\CommonHelper;
+use App\Repository\User\BotRepository;
 use App\Repository\Visitor\VisitorEventRepository;
-use App\Repository\Visitor\VisitorSessionRepository;
-use App\Service\Admin\History\HistoryService;
-use App\Service\Common\History\HistoryErrorService;
-use App\Service\System\Handler\ActionHandler;
-use App\Service\Visitor\Event\VisitorEventService;
+use App\Service\System\Handler\MessageHandler;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -25,8 +23,8 @@ class TgGoCommand extends Command
 {
     public function __construct(
         private readonly VisitorEventRepository $visitorEventRepository,
-        private readonly VisitorSessionRepository $visitorSessionRepository,
-        private readonly ActionHandler $actionHandler,
+        private readonly BotRepository $botRepository,
+        private readonly MessageHandler $messageHandler,
         string $name = null
     ) {
         parent::__construct($name);
@@ -56,9 +54,11 @@ class TgGoCommand extends Command
         }
 
         try {
-//            $this->updateChatEventStatus($chatEvent, ChatEvent::STATUS_IN_PROCESS);
+            $contract = CommonHelper::createDefaultContract();
 
-            $statusEvent = $this->actionHandler->handle($visitorEvent);
+            $bot = $this->botRepository->find(10);
+
+            $statusEvent = $this->messageHandler->handle($visitorEvent, $contract, $bot);
 
             $this->visitorEventRepository->updateChatEventStatus($visitorEvent, $statusEvent);
 

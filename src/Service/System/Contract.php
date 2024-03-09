@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Service\System\Handler;
+namespace App\Service\System;
 
-use App\Service\System\Handler\Dto\Contract\ContractMessageDto;
+use App\Dto\Contract\ContractMessageDto;
 
 class Contract
 {
@@ -11,6 +11,8 @@ class Contract
     public const GOTO_MAIN = 'main';
 
     private array $messages = [];
+
+    private string $status; // todo не увернн
 
     private ?string $goto = null;
 
@@ -30,6 +32,17 @@ class Contract
     {
         $this->messages[] = $message;
 
+        return $this;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): Contract
+    {
+        $this->status = $status;
         return $this;
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\System\Handler\Dto\Contract;
+namespace App\Dto\Contract;
 
 class ContractMessageDto
 {
