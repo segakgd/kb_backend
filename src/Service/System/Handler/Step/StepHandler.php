@@ -32,7 +32,6 @@ class StepHandler
 
         try {
             if (!empty($step['chain'])) {
-
                 if (!$cacheDto->getEvent()->isExistChains()) {
                     CacheService::enrichStepCache($stepChains, $cacheDto);
                 }

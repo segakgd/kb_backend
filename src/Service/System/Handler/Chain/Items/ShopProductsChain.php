@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Service\System\Handler\Items;
+namespace App\Service\System\Handler\Chain\Items;
 
-use App\Dto\SessionCache\Cache\CacheDataDto;
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\KeyboardHelper;
 use App\Helper\MessageHelper;
@@ -11,7 +10,7 @@ use App\Service\System\Common\PaginateService;
 use App\Service\System\Contract;
 use Exception;
 
-class ShopProductsChain
+class ShopProductsChain // 3
 {
     public function __construct(
         private readonly ProductService $productService,
@@ -32,7 +31,7 @@ class ShopProductsChain
             return match ($content) {
                 'предыдущий' => $this->paginateService->prev($contract, $event->getData()),
                 'следующий' => $this->paginateService->next($contract, $event->getData()),
-                'добавить в корзину' => $this->addToCart($contract, $event->getData()),
+                'добавить в корзину' => $this->addToCart($contract, $cacheDto),
                 'вернуться в главное меню' => $this->gotoMain($contract),
                 default => false
             };
@@ -62,31 +61,22 @@ class ShopProductsChain
         return false;
     }
 
-    private function addToCart(Contract $contract, CacheDataDto $paginate): bool
+    private function addToCart(Contract $contract, CacheDto $cacheDto): bool
     {
-        $productId = $paginate->getProductId();
+        $productId = $cacheDto->getEvent()->getData()->getProductId();
         $contractMessage = MessageHelper::createContractMessage('');
 
         $product = $this->productService->find($productId);
-
         $variants = $product->getVariants();
-        $variantCount = $variants->count();
 
-        if ($variantCount > 1) {
-            $variantsNav = KeyboardHelper::getVariantsNav($variants);
+        $variantsNav = KeyboardHelper::getVariantsNav($variants);
 
-            $contractMessage->setKeyBoard($variantsNav);
-            $contractMessage->setMessage('addToCart');
+        $contractMessage->setKeyBoard($variantsNav);
+        $contractMessage->setMessage('Добавить в корзину вариант:');
 
-//            $contract->setGoto(Contract::GOTO_NEXT);
-
-            return false;
-        }
-
-//        $contract->setGoto(Contract::GOTO_NEXT);
         $contract->addMessage($contractMessage);
 
-        return false;
+        return true;
     }
 
     private function gotoMain(Contract $contract): bool

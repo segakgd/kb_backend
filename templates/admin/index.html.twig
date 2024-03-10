@@ -72,7 +72,7 @@
                         </section>
                     </div>
 
-                    <div style="width: 100%; display: flex;">
+                    <div style="width: 100%; display: flex; padding-bottom: 15px;">
                         <section>
                             <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
                                 <label>
@@ -110,6 +110,29 @@
                                 </label>
                                 <button>
                                     вернуться в главное меню
+                                </button>
+                            </form>
+                        </section>
+                    </div>
+
+                    <div style="width: 100%; display: flex; padding-bottom: 15px;">
+                        <section>
+                            <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                                <label>
+                                    <input hidden="hidden" type="text" name="message" value="Вариант продукта 2">
+                                </label>
+                                <button>
+                                    Вариант продукта 2
+                                </button>
+                            </form>
+                        </section>
+                        <section>
+                            <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                                <label>
+                                    <input hidden="hidden" type="text" name="message" value="Вариант продукта 4">
+                                </label>
+                                <button>
+                                    Вариант продукта 4
                                 </button>
                             </form>
                         </section>

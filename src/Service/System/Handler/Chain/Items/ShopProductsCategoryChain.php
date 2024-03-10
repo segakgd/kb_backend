@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\System\Handler\Items;
+namespace App\Service\System\Handler\Chain\Items;
 
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\KeyboardHelper;
@@ -10,7 +10,7 @@ use App\Service\System\Common\PaginateService;
 use App\Service\System\Contract;
 use Exception;
 
-class ShopProductsCategoryChain
+class ShopProductsCategoryChain // 2
 {
     public function __construct(
         private readonly ProductCategoryService $categoryService,

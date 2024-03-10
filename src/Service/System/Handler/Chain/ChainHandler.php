@@ -6,10 +6,10 @@ use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Enum\ChainsEnum;
 use App\Service\System\Contract;
-use App\Service\System\Handler\Items\ShopProductChain;
-use App\Service\System\Handler\Items\ShopProductsCategoryChain;
-use App\Service\System\Handler\Items\ShopProductsChain;
-use App\Service\System\Handler\Items\ShowShopProductsCategoryChain;
+use App\Service\System\Handler\Chain\Items\ShopProductsCategoryChain;
+use App\Service\System\Handler\Chain\Items\ShopProductsChain;
+use App\Service\System\Handler\Chain\Items\ShopProductVariantChain;
+use App\Service\System\Handler\Chain\Items\ShowShopProductsCategoryChain;
 use Exception;
 
 class ChainHandler
@@ -18,7 +18,7 @@ class ChainHandler
         private readonly ShowShopProductsCategoryChain $showShopProductsCategoryChain,
         private readonly ShopProductsCategoryChain $shopProductsCategoryChain,
         private readonly ShopProductsChain $shopProductsChain,
-        private readonly ShopProductChain $shopProductChain,
+        private readonly ShopProductVariantChain $productVariantChain,
     ) {
     }
 
@@ -49,6 +49,7 @@ class ChainHandler
                 // todo костыль >>>
                 foreach ($chains as $chainsSub) {
                     /** @var CacheChainDto $chainsSub */
+                    $cacheDto->getEvent()->setFinished(true); // todo костыль
 
                     if (!$chainsSub->isFinished()) {
                         $cacheDto->getEvent()->setFinished(false);
@@ -62,7 +63,7 @@ class ChainHandler
             }
         }
 
-        $cacheDto->getEvent()->setChains($chains);
+        $cacheDto->getEvent()->setChains($chains); // todo зачем? там же внутри объекты, это же ссылки
 
         return $contract;
     }
@@ -76,7 +77,8 @@ class ChainHandler
             ChainsEnum::ShowShopProductsCategory => $this->showShopProductsCategoryChain->handle($contract),
             ChainsEnum::ShopProductsCategory => $this->shopProductsCategoryChain->handle($contract, $cacheDto),
             ChainsEnum::ShopProducts => $this->shopProductsChain->handle($contract, $cacheDto),
-            ChainsEnum::ShopProduct => $this->shopProductChain->handle(),
+            ChainsEnum::ShopProduct => $this->productVariantChain->handle($contract, $cacheDto),
+            ChainsEnum::ShopVariantCount => true,
         };
     }
 }

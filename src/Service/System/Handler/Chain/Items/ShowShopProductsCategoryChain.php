@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Service\System\Handler\Items;
+namespace App\Service\System\Handler\Chain\Items;
 
 use App\Helper\KeyboardHelper;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\ProductCategory\ProductCategoryService;
 use App\Service\System\Contract;
 
-class ShowShopProductsCategoryChain
+class ShowShopProductsCategoryChain // 1
 {
     public function __construct(private readonly ProductCategoryService $categoryService)
     {

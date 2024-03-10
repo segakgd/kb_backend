@@ -8,6 +8,8 @@ class CacheDataDto
 
     private ?int $productId = null;
 
+    private ?int $variantId = null;
+
     private ?string $categoryName = null;
 
     private ?int $categoryId = null;
@@ -33,6 +35,17 @@ class CacheDataDto
     {
         $this->productId = $productId;
 
+        return $this;
+    }
+
+    public function getVariantId(): ?int
+    {
+        return $this->variantId;
+    }
+
+    public function setVariantId(?int $variantId): CacheDataDto
+    {
+        $this->variantId = $variantId;
         return $this;
     }
 
