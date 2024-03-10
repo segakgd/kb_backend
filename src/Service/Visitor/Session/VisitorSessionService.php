@@ -8,7 +8,7 @@ use App\Repository\Visitor\VisitorSessionRepository;
 use DateTimeImmutable;
 use Symfony\Component\Serializer\SerializerInterface;
 
-class VisitorSessionService implements VisitorSessionServiceInterface
+class VisitorSessionService
 {
     public function __construct(
         private readonly VisitorSessionRepository $visitorSessionRepository,
@@ -23,11 +23,6 @@ class VisitorSessionService implements VisitorSessionServiceInterface
                 'projectId' => $projectId
             ]
         );
-    }
-
-    public function findById(int $id): ?VisitorSession
-    {
-        return $this->visitorSessionRepository->find($id);
     }
 
     public function identifyByChannel(int $chatId, int $botId, string $channel): ?VisitorSession

@@ -9,7 +9,7 @@ use App\Entity\Visitor\VisitorSession;
 use App\Repository\Visitor\VisitorEventRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Visitor\Scenario\ScenarioService;
-use App\Service\Visitor\Session\VisitorSessionServiceInterface;
+use App\Service\Visitor\Session\VisitorSessionService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -19,7 +19,7 @@ class VisitorEventService
     public function __construct(
         private readonly VisitorEventRepository $visitorEventRepository,
         private readonly VisitorSessionRepository $visitorSessionRepository,
-        private readonly VisitorSessionServiceInterface $visitorSessionService,
+        private readonly VisitorSessionService $visitorSessionService,
         private readonly ScenarioService $scenarioService,
         private readonly EntityManagerInterface $entityManager,
         private readonly SerializerInterface $serializer,

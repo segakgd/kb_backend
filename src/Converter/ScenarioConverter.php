@@ -5,16 +5,15 @@ namespace App\Converter;
 use App\Dto\Scenario\ScenarioDto;
 use App\Dto\Scenario\WrapperScenarioDto;
 use App\Entity\Scenario\Scenario;
-use App\Service\Visitor\Scenario\ScenarioServiceInterface;
+use App\Service\Visitor\Scenario\ScenarioService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Symfony\Component\Serializer\SerializerInterface;
 use Throwable;
 
 class ScenarioConverter
 {
     public function __construct(
-        private readonly ScenarioServiceInterface $scenarioService,
+        private readonly ScenarioService $scenarioService,
         private readonly EntityManagerInterface $entityManager,
     ) {
     }

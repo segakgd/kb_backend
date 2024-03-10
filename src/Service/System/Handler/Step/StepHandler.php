@@ -2,9 +2,7 @@
 
 namespace App\Service\System\Handler\Step;
 
-use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Dto\SessionCache\Cache\CacheDto;
-use App\Enum\ChainsEnum;
 use App\Service\System\Common\CacheService;
 use App\Service\System\Contract;
 use App\Service\System\Handler\Chain\ChainHandler;

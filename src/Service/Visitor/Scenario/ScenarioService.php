@@ -7,7 +7,7 @@ use App\Entity\Scenario\Scenario;
 use App\Repository\Scenario\ScenarioRepository;
 use Exception;
 
-class ScenarioService implements ScenarioServiceInterface
+class ScenarioService
 {
     const SCENARIO_DEFAULT = 'default';
 

@@ -18,7 +18,7 @@ use App\Service\Admin\History\HistoryServiceInterface;
 use App\Service\Admin\Scenario\ScenarioTemplateService;
 use App\Service\Integration\Telegram\TelegramService;
 use App\Service\Visitor\Scenario\ScenarioService;
-use App\Service\Visitor\Session\VisitorSessionServiceInterface;
+use App\Service\Visitor\Session\VisitorSessionService;
 
 class DashboardService
 {
@@ -26,7 +26,7 @@ class DashboardService
         private readonly TelegramService $telegramService,
         private readonly HistoryServiceInterface $historyService,
         private readonly BotServiceInterface $botService,
-        private readonly VisitorSessionServiceInterface $visitorSessionService,
+        private readonly VisitorSessionService $visitorSessionService,
         private readonly VisitorSessionRepository $visitorSessionRepository,
         private readonly VisitorEventRepository $visitorEventRepository,
         private readonly ScenarioTemplateService $scenarioTemplateService,
