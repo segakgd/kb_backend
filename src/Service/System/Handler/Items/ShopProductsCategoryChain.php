@@ -10,7 +10,6 @@ use App\Service\System\Common\PaginateService;
 use App\Service\System\Contract;
 use Exception;
 
-/** @deprecated delete */
 class ShopProductsCategoryChain
 {
     public function __construct(
