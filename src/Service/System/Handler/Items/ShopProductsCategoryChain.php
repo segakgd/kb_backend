@@ -2,31 +2,41 @@
 
 namespace App\Service\System\Handler\Items;
 
+use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\KeyboardHelper;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\ProductCategory\ProductCategoryService;
+use App\Service\System\Common\PaginateService;
 use App\Service\System\Contract;
+use Exception;
 
+/** @deprecated delete */
 class ShopProductsCategoryChain
 {
-    public function __construct(private readonly ProductCategoryService $categoryService)
-    {
+    public function __construct(
+        private readonly ProductCategoryService $categoryService,
+        private readonly PaginateService $paginateService,
+    ) {
     }
 
-    public function handle(Contract $contract, ?string $content = null): bool
+    /**
+     * @throws Exception
+     */
+    public function handle(Contract $contract, CacheDto $cacheDto): bool
     {
         $contractMessage = MessageHelper::createContractMessage('');
+        $content = $cacheDto->getContent();
 
         if ($this->checkCondition($content)) {
-            $contractMessage->setMessage(
-                'Вы выбрали категорию ' . $content . ' отличный выбор! В теперь давайте выберим товар:'
-            );
+            $event = $cacheDto->getEvent();
+
+            $event->getData()->setCategoryName($content);
+
+            $this->paginateService->first($contract, $event->getData());
 
             $replyMarkups = KeyboardHelper::getProductNav();
 
             $contractMessage->setKeyBoard($replyMarkups);
-
-            $contract->addMessage($contractMessage);
 
             return true;
         }

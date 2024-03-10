@@ -23,18 +23,12 @@ class ProductService implements ProductServiceInterface
      */
     public function getProductsByCategory(?int $pageNow, string $categoryName, string $key): array // todo переделать в $categoryId (хранить id совместно с названием)
     {
-        $paginator = [];
-
         $pageNow = $pageNow ?: 1;
 
-        if ('product.next' === $key) {
-            $paginator = $this->entityRepository->findProductsByCategoryName($categoryName, $pageNow + 1);
-        }
-
-        if ('product.prev' === $key) {
-            $paginator = $this->entityRepository->findProductsByCategoryName($categoryName, $pageNow - 1);
-        }
-
-        return $paginator;
+        return match (true) {
+            'product.first' === $key => $this->entityRepository->findProductsByCategoryName($categoryName, 1),
+            'product.next' === $key => $this->entityRepository->findProductsByCategoryName($categoryName, $pageNow + 1),
+            'product.prev' === $key => $this->entityRepository->findProductsByCategoryName($categoryName, $pageNow - 1),
+        };
     }
 }

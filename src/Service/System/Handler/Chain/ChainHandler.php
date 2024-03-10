@@ -28,14 +28,13 @@ class ChainHandler
     public function handle(Contract $contract, CacheDto $cacheDto): Contract
     {
         $chains = $cacheDto->getEvent()->getChains();
-        $content = $cacheDto->getContent();
 
         // todo подумай в рамках ооп, создай сущность которая будех зранить значения нунешнего шага и всё такое...
 
         foreach ($chains as $chain) {
             /** @var CacheChainDto $chain */
             if ($chain->isNotFinished()) {
-                $isHandle = $this->handleByType($chain->getTarget(), $contract, $cacheDto, $content);
+                $isHandle = $this->handleByType($chain->getTarget(), $contract, $cacheDto);
 
                 if ($contract->getGoto() !== null) {
                     break;
@@ -71,11 +70,11 @@ class ChainHandler
     /**
      * @throws Exception
      */
-    private function handleByType(ChainsEnum $target, Contract $contract, CacheDto $cacheDto, ?string $content = null): bool
+    private function handleByType(ChainsEnum $target, Contract $contract, CacheDto $cacheDto): bool
     {
         return match ($target) {
             ChainsEnum::ShowShopProductsCategory => $this->showShopProductsCategoryChain->handle($contract),
-            ChainsEnum::ShopProductsCategory => $this->shopProductsCategoryChain->handle($contract, $content),
+            ChainsEnum::ShopProductsCategory => $this->shopProductsCategoryChain->handle($contract, $cacheDto),
             ChainsEnum::ShopProducts => $this->shopProductsChain->handle($contract, $cacheDto),
             ChainsEnum::ShopProduct => $this->shopProductChain->handle(),
         };

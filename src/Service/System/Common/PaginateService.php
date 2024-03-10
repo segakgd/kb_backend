@@ -1,0 +1,91 @@
+<?php
+
+namespace App\Service\System\Common;
+
+use App\Dto\SessionCache\Cache\CacheDataDto;
+use App\Entity\Ecommerce\Product;
+use App\Helper\KeyboardHelper;
+use App\Helper\MessageHelper;
+use App\Service\Admin\Ecommerce\Product\ProductService;
+use App\Service\System\Contract;
+use Exception;
+
+class PaginateService
+{
+    public function __construct(
+        private readonly ProductService $productService,
+    ) {
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function first(Contract $contract, CacheDataDto $cacheDataDto): bool
+    {
+        $products = $this->productService->getProductsByCategory(
+            $cacheDataDto->getPageNow(),
+            $cacheDataDto->getCategoryName(),
+            'product.first'
+        );
+
+        return $this->pug($contract, $products, $cacheDataDto);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function prev(Contract $contract, CacheDataDto $cacheDataDto): bool
+    {
+        $products = $this->productService->getProductsByCategory(
+            $cacheDataDto->getPageNow(),
+            $cacheDataDto->getCategoryName(),
+            'product.prev'
+        );
+
+        return $this->pug($contract, $products, $cacheDataDto);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function next(Contract $contract, CacheDataDto $cacheDataDto): bool
+    {
+        $products = $this->productService->getProductsByCategory(
+            $cacheDataDto->getPageNow(),
+            $cacheDataDto->getCategoryName(),
+            'product.next'
+        );
+
+        return $this->pug($contract, $products, $cacheDataDto);
+    }
+
+    private function pug(Contract $contract, array $products, CacheDataDto $cacheDataDto): bool
+    {
+        /** @var Product $product */
+        $product = $products['items'][0];
+
+        $contractMessage = MessageHelper::createContractMessage('');
+
+        $cacheDataDto->setPageNow($products['paginate']['now']);
+        $cacheDataDto->setProductId($product->getId());
+
+        $message = MessageHelper::renderProductMessage($product);
+
+        $contractMessage->setMessage($message);
+        $contractMessage->setPhoto($product->getMainImage());
+
+        if ($products['paginate']['next'] === null) {
+            $replyMarkups = KeyboardHelper::getProductNav(['prev' => true]);
+        } else if ($products['paginate']['prev'] === null) {
+            $replyMarkups = KeyboardHelper::getProductNav(['next' => true]);
+        } else {
+            $replyMarkups = KeyboardHelper::getProductNav();
+        }
+
+        $contractMessage->setKeyBoard($replyMarkups);
+
+        $contract->addMessage($contractMessage);
+
+        return false;
+    }
+}

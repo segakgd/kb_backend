@@ -155,4 +155,9 @@ class Product
 
         return $this;
     }
+
+    public function getMainImage(): string
+    {
+        return 'https://sopranoclub.ru/images/190-epichnyh-anime-artov/file48822.jpg';
+    }
 }

@@ -42,7 +42,6 @@ class MessageHandler
 
         if ($contract->getGoto()) {
             $this->goto($visitorEvent, $cacheDto, $visitorSession, $contract);
-
         } else {
             $this->senderService->sendMessages($contract, $bot->getToken(), $visitorSession);
 

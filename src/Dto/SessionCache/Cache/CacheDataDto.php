@@ -8,6 +8,10 @@ class CacheDataDto
 
     private ?int $productId = null;
 
+    private ?string $categoryName = null;
+
+    private ?int $categoryId = null;
+
     public function getPageNow(): ?int
     {
         return $this->pageNow;
@@ -29,6 +33,28 @@ class CacheDataDto
     {
         $this->productId = $productId;
 
+        return $this;
+    }
+
+    public function getCategoryName(): ?string
+    {
+        return $this->categoryName;
+    }
+
+    public function setCategoryName(?string $categoryName): CacheDataDto
+    {
+        $this->categoryName = $categoryName;
+        return $this;
+    }
+
+    public function getCategoryId(): ?int
+    {
+        return $this->categoryId;
+    }
+
+    public function setCategoryId(?int $categoryId): CacheDataDto
+    {
+        $this->categoryId = $categoryId;
         return $this;
     }
 }
