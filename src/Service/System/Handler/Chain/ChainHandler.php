@@ -77,8 +77,10 @@ class ChainHandler
             ChainsEnum::ShowShopProductsCategory => $this->showShopProductsCategoryChain->handle($contract),
             ChainsEnum::ShopProductsCategory => $this->shopProductsCategoryChain->handle($contract, $cacheDto),
             ChainsEnum::ShopProducts => $this->shopProductsChain->handle($contract, $cacheDto),
-            ChainsEnum::ShopProduct => $this->productVariantChain->handle($contract, $cacheDto),
+            ChainsEnum::ShopVariant => $this->productVariantChain->handle($contract, $cacheDto),
             ChainsEnum::ShopVariantCount => true,
+            ChainsEnum::ShopVariantAdd => true,
+            ChainsEnum::ShopVariantFinal => true,
         };
     }
 }

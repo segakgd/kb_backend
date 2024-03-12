@@ -26,12 +26,10 @@ class StepHandler
         CacheDto $cacheDto,
         array $step,
     ): Contract {
-        $stepChains = $step['chain'];
-
         try {
             if (!empty($step['chain'])) {
                 if (!$cacheDto->getEvent()->isExistChains()) {
-                    CacheService::enrichStepCache($stepChains, $cacheDto);
+                    CacheService::enrichStepCache($step['chain'], $cacheDto);
                 }
 
                 $contract = $this->chainHandler->handle($contract, $cacheDto);

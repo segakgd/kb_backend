@@ -265,7 +265,7 @@ class DashboardService
                     $chains = array_merge($chains, $step['chain']);
                 }
 
-                if ($step['keyboard']) {
+                if (isset($step['keyboard'])) {
                     foreach ($step['keyboard']['replyMarkup'] as $replyMarkups) {
                         foreach ($replyMarkups as $replyMarkup) {
                             $stepsKeyboard[] = [
@@ -315,7 +315,7 @@ class DashboardService
         $result = [];
 
         foreach ($botSteps as $botStep) {
-            foreach ($botStep['keyboard'] as $keyboard) {
+            foreach ($botStep['keyboard'] ?? [] as $keyboard) {
                 if (isset($botSteps[$keyboard['target']])) {
                     $result[] = $this->step($botStep, $botSteps);
                 }

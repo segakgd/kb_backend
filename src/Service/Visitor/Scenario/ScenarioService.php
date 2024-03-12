@@ -6,6 +6,7 @@ use App\Dto\Scenario\ScenarioStepDto;
 use App\Entity\Scenario\Scenario;
 use App\Repository\Scenario\ScenarioRepository;
 use Exception;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class ScenarioService
 {
@@ -15,6 +16,7 @@ class ScenarioService
 
     public function __construct(
         private readonly ScenarioRepository $scenarioRepository,
+        private readonly SerializerInterface $serializer,
     ) {
     }
 
@@ -108,19 +110,21 @@ class ScenarioService
         $step = (new ScenarioStepDto())
             ->setMessage('Не знаю что вам ответить');
 
-        $scenario = (new Scenario())
+        $scenarioEntity = (new Scenario())
             ->setUUID(uuid_create())
             ->setType('message')
             ->setName('default')
             ->setProjectId($projectId)
             ->setBotId($botId)
-            ->addStep(
-                $step
+            ->setSteps(
+                [
+                    $this->serializer->normalize($step)
+                ]
             );
 
-        $this->scenarioRepository->saveAndFlush($scenario);
+        $this->scenarioRepository->saveAndFlush($scenarioEntity);
 
-        return $scenario;
+        return $scenarioEntity;
     }
 
     public function markAllAsRemoveScenario(int $projectId, int $botId): void

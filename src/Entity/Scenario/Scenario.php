@@ -5,6 +5,7 @@ namespace App\Entity\Scenario;
 use App\Dto\Scenario\ScenarioStepDto;
 use App\Repository\Scenario\ScenarioRepository;
 use DateTimeImmutable;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ScenarioRepository::class)]
@@ -34,7 +35,8 @@ class Scenario
     #[ORM\Column(nullable: true)]
     private ?int $botId = null;
 
-    #[ORM\Column]
+    /** @var array<ScenarioStepDto> */
+    #[ORM\Column(type: Types::JSON)]
     private array $steps = [];
 
     #[ORM\Column(nullable: true)]

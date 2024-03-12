@@ -10,6 +10,11 @@ enum ChainsEnum: string
 
     case ShopProducts = 'shop.products';
 
-    case ShopProduct = 'shop.product';
+    case ShopVariant = 'shop.variant';
+
     case ShopVariantCount = 'shop.variant.count';
+
+    case ShopVariantAdd = 'shop.variant.add';
+
+    case ShopVariantFinal = 'shop.variant.final';
 }
