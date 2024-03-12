@@ -10,6 +10,8 @@ class CacheDataDto
 
     private ?int $variantId = null;
 
+    private ?int $count = null;
+
     private ?string $categoryName = null;
 
     private ?int $categoryId = null;
@@ -46,6 +48,18 @@ class CacheDataDto
     public function setVariantId(?int $variantId): CacheDataDto
     {
         $this->variantId = $variantId;
+
+        return $this;
+    }
+
+    public function getCount(): ?int
+    {
+        return $this->count;
+    }
+
+    public function setCount(?int $count): CacheDataDto
+    {
+        $this->count = $count;
         return $this;
     }
 

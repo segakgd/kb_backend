@@ -10,6 +10,7 @@ use App\Service\System\Handler\Chain\Items\ShopProductsCategoryChain;
 use App\Service\System\Handler\Chain\Items\ShopProductsChain;
 use App\Service\System\Handler\Chain\Items\ShopProductVariantChain;
 use App\Service\System\Handler\Chain\Items\ShowShopProductsCategoryChain;
+use App\Service\System\Handler\Chain\Items\VariantCount;
 use Exception;
 
 class ChainHandler
@@ -19,6 +20,7 @@ class ChainHandler
         private readonly ShopProductsCategoryChain $shopProductsCategoryChain,
         private readonly ShopProductsChain $shopProductsChain,
         private readonly ShopProductVariantChain $productVariantChain,
+        private readonly VariantCount $variantCount,
     ) {
     }
 
@@ -78,8 +80,8 @@ class ChainHandler
             ChainsEnum::ShopProductsCategory => $this->shopProductsCategoryChain->handle($contract, $cacheDto),
             ChainsEnum::ShopProducts => $this->shopProductsChain->handle($contract, $cacheDto),
             ChainsEnum::ShopVariant => $this->productVariantChain->handle($contract, $cacheDto),
-            ChainsEnum::ShopVariantCount => true,
-            ChainsEnum::ShopVariantAdd => true,
+            ChainsEnum::ShopVariantCount => $this->variantCount->handle($contract, $cacheDto),
+            ChainsEnum::ShopVariantAdd => false,
             ChainsEnum::ShopVariantFinal => true,
         };
     }
