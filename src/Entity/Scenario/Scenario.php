@@ -42,6 +42,9 @@ class Scenario
     #[ORM\Column(nullable: true)]
     private ?DateTimeImmutable $deletedAt = null;
 
+    #[ORM\Column(length: 100)]
+    private ?string $alias = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -155,6 +158,18 @@ class Scenario
     public function markAtDeleted(): static
     {
         $this->deletedAt = new DateTimeImmutable();
+
+        return $this;
+    }
+
+    public function getAlias(): ?string
+    {
+        return $this->alias;
+    }
+
+    public function setAlias(string $alias): static
+    {
+        $this->alias = $alias;
 
         return $this;
     }

@@ -113,6 +113,7 @@ class ScenarioService
         $scenarioEntity = (new Scenario())
             ->setUUID(uuid_create())
             ->setType('message')
+            ->setAlias('default')
             ->setName('default')
             ->setProjectId($projectId)
             ->setBotId($botId)

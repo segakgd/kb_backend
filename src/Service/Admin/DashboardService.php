@@ -278,6 +278,7 @@ class DashboardService
             }
 
             $botSteps[$scenario->getUUID()] = [
+                'alias' => $scenario->getAlias(),
                 'name' => $scenario->getName(),
                 'type' => $scenario->getType(),
                 'UUID' => $scenario->getUUID(),

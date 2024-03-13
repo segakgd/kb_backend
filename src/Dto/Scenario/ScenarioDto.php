@@ -17,6 +17,8 @@ class ScenarioDto
 
     private string $name;
 
+    private ?string $alias;
+
     #[Assert\Choice(self::AVAILABLE_TYPE)]
     private string $type;
 
@@ -55,6 +57,18 @@ class ScenarioDto
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getAlias(): ?string
+    {
+        return $this->alias;
+    }
+
+    public function setAlias(?string $alias): static
+    {
+        $this->alias = $alias;
 
         return $this;
     }
