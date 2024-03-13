@@ -6,6 +6,7 @@ use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Enum\ChainsEnum;
 use App\Service\System\Contract;
+use App\Service\System\Handler\Chain\Items\End;
 use App\Service\System\Handler\Chain\Items\ShopProductsCategoryChain;
 use App\Service\System\Handler\Chain\Items\ShopProductsChain;
 use App\Service\System\Handler\Chain\Items\ShopProductVariantChain;
@@ -21,6 +22,7 @@ class ChainHandler
         private readonly ShopProductsChain $shopProductsChain,
         private readonly ShopProductVariantChain $productVariantChain,
         private readonly VariantCount $variantCount,
+        private readonly End $end,
     ) {
     }
 
@@ -81,8 +83,8 @@ class ChainHandler
             ChainsEnum::ShopProducts => $this->shopProductsChain->handle($contract, $cacheDto),
             ChainsEnum::ShopVariant => $this->productVariantChain->handle($contract, $cacheDto),
             ChainsEnum::ShopVariantCount => $this->variantCount->handle($contract, $cacheDto),
-            ChainsEnum::ShopVariantAdd => false,
-            ChainsEnum::ShopVariantFinal => true,
+            ChainsEnum::ShopVariantAdd => $this->end->handle($contract, $cacheDto),
+            ChainsEnum::ShopVariantFinal => false,
         };
     }
 }

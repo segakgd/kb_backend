@@ -32,6 +32,8 @@ class VariantCount
 
             $sum = $price * $content;
 
+            // todo тут мы должны создать заявку !!
+
             $message = 'Вы добавили в корзину продукт: ' . $productName . "\n" .
                 'вариант: ' . $variantName . "\n" .
                 'количество: ' . $content . "\n" .

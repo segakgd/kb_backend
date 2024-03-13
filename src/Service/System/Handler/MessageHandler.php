@@ -2,10 +2,12 @@
 
 namespace App\Service\System\Handler;
 
+use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Entity\User\Bot;
 use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
+use App\Enum\ChainsEnum;
 use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\System\Common\CacheService;
 use App\Service\System\Common\SenderService;
@@ -40,6 +42,7 @@ class MessageHandler
 
         $this->handleSteps($scenario->getSteps(), $contract, $cacheDto);
 
+//        dd($contract->getGoto());
         if ($contract->getGoto()) {
             $this->goto($visitorEvent, $cacheDto, $visitorSession, $contract);
         } else {
@@ -79,11 +82,29 @@ class MessageHandler
         VisitorSession $visitorSession,
         Contract $contract
     ): void {
-        $scenario = $this->scenarioService->getMainScenario();
+        $enum = ChainsEnum::tryFrom($contract->getGoto());
 
-        $visitorEvent->setScenarioUUID($scenario->getUUID());
+        if ($enum) {
+            $chains = $cacheDto->getEvent()->getChains();
 
-        $cacheDto->setEvent(CacheService::createCacheEventDto());
+            $flag = true;
+
+            /** @var CacheChainDto $chain */
+            foreach ($chains as $chain) {
+                $chain->setFinished($flag);
+
+                if ($chain->getTarget() === $enum) {
+                    $flag = false;
+                }
+            }
+        } else {
+            $scenario = $this->scenarioService->getMainScenario();
+
+            $visitorEvent->setScenarioUUID($scenario->getUUID());
+
+            $cacheDto->setEvent(CacheService::createCacheEventDto());
+        }
+
 
         $this->insertCacheDtoFromSession($visitorSession, $cacheDto);
 
