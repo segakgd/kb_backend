@@ -26,12 +26,6 @@ class ShopProductsCategoryChain extends AbstractChain
         $contractMessage = MessageHelper::createContractMessage('');
         $content = $cacheDto->getContent();
 
-        if ($this->checkSystemCondition($content)) {
-            $contract->setGoto(Contract::GOTO_MAIN);
-
-            return true;
-        }
-
         $event = $cacheDto->getEvent();
 
         $event->getData()->setCategoryName($content);
@@ -66,22 +60,8 @@ class ShopProductsCategoryChain extends AbstractChain
     public function validateCondition(string $content): bool
     {
         $availableCategory = $this->categoryService->getAvailableCategory();
-        $availableCategory[] = 'вернуться в главное меню';
 
         if (in_array($content, $availableCategory)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    private function checkSystemCondition(string $content): bool
-    {
-        $awaitsSystem = [
-            'вернуться в главное меню',
-        ];
-
-        if (in_array($content, $awaitsSystem)) {
             return true;
         }
 

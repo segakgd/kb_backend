@@ -88,7 +88,7 @@ class VariantCount extends AbstractChain
 
     public function validateCondition(string $content): bool
     {
-        $available = [1, 2, 3, 4, 5, 'вернуться в главное меню', 'вернуться к товарам'];
+        $available = [1, 2, 3, 4, 5];
 
         if (in_array($content, $available)) {
             return true;

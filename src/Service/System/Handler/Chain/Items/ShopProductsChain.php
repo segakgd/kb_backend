@@ -24,13 +24,17 @@ class ShopProductsChain extends AbstractChain
     public function success(Contract $contract, CacheDto $cacheDto): bool
     {
         $content = $cacheDto->getContent();
+
+        if ($cacheDto->getEvent()->getCurrentChain()->isRepeat()) {
+            $content = 'следующий'; // todo костыль
+        }
+
         $event = $cacheDto->getEvent();
 
         return match ($content) {
             'предыдущий' => $this->paginateService->prev($contract, $event->getData()),
             'следующий' => $this->paginateService->next($contract, $event->getData()),
             'добавить в корзину' => $this->addToCart($contract, $cacheDto),
-            'вернуться в главное меню' => $this->gotoMain($contract),
             default => false
         };
     }
@@ -75,13 +79,6 @@ class ShopProductsChain extends AbstractChain
         $contractMessage->setMessage('Добавить в корзину вариант:');
 
         $contract->addMessage($contractMessage);
-
-        return true;
-    }
-
-    private function gotoMain(Contract $contract): bool
-    {
-        $contract->setGoto(Contract::GOTO_MAIN);
 
         return true;
     }

@@ -99,17 +99,18 @@ class MessageHandler
 
             /** @var CacheChainDto $chain */
             foreach ($chains as $chain) {
-                $chain->setFinished($flag);
-
                 if ($chain->getTarget() === $enum) {
                     $chain->setRepeat(true);
 
                     $flag = false;
                 }
+
+                $chain->setFinished($flag);
             }
         } else {
             $scenario = match ($contract->getGoto()) {
                 'main' => $this->scenarioService->getMainScenario(),
+                'cart' => $this->scenarioService->getCartScenario(),
                 default => $this->scenarioService->getDefaultScenario(),
             };
 

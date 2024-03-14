@@ -14,6 +14,8 @@ class ScenarioService
 
     const SCENARIO_MAIN = 'main';
 
+    const SCENARIO_CART = 'cart';
+
     public function __construct(
         private readonly ScenarioRepository $scenarioRepository,
         private readonly SerializerInterface $serializer,
@@ -68,6 +70,16 @@ class ScenarioService
         return $this->scenarioRepository->findOneBy(
             [
                 'alias' => static::SCENARIO_MAIN,
+                'deletedAt' => null,
+            ]
+        );
+    }
+
+    public function getCartScenario(): ?Scenario
+    {
+        return $this->scenarioRepository->findOneBy(
+            [
+                'alias' => static::SCENARIO_CART,
                 'deletedAt' => null,
             ]
         );

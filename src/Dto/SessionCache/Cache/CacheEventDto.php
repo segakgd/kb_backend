@@ -34,6 +34,22 @@ class CacheEventDto
         return $this->chains;
     }
 
+    public function getCurrentChain(): ?CacheChainDto
+    {
+        if (empty($this->chains)) {
+            return null;
+        }
+
+        /** @var CacheChainDto $chain */
+        foreach ($this->chains as $chain) {
+            if (!$chain->isFinished()) {
+                return $chain;
+            }
+        }
+
+        return null;
+    }
+
     public function setChains(array $chains): static
     {
         $this->chains = $chains;
