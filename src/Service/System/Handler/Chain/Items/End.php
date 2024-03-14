@@ -8,33 +8,34 @@ use App\Helper\MessageHelper;
 use App\Service\System\Contract;
 use Exception;
 
-class End
+class End extends AbstractChain
 {
     /**
      * @throws Exception
      */
-    public function handle(Contract $contract, CacheDto $cacheDto): bool
+    public function success(Contract $contract, CacheDto $cacheDto): bool
     {
         $content = $cacheDto->getContent();
 
-        if ($this->checkSystemCondition($content)) {
-            $goto = match ($content) {
-                'вернуться к товарам' => ChainsEnum::ShowShopProductsCategory->value,
-                'вернуться к категориям' => ChainsEnum::ShopProducts->value,
-                'вернуться в главное меню' => 'main',
-                'в корзину' => 'cart',
-                default => null
-            };
+        $goto = match ($content) {
+            'вернуться к товарам' => ChainsEnum::ShowShopProductsCategory->value,
+            'вернуться к категориям' => ChainsEnum::ShopProducts->value,
+            'вернуться в главное меню' => 'main',
+            'в корзину' => 'cart',
+            default => null
+        };
 
-            if (is_null($goto)) {
-                throw new Exception('что-то случилось. нету goto');
-            }
-
-            $contract->setGoto($goto);
-
-            return true;
+        if (is_null($goto)) {
+            throw new Exception('что-то случилось. нету goto');
         }
 
+        $contract->setGoto($goto);
+
+        return true;
+    }
+
+    public function fall(Contract $contract, CacheDto $cacheDto): bool
+    {
         $replyMarkups = [
             [
                 [
@@ -54,8 +55,7 @@ class End
         return false;
     }
 
-
-    private function checkSystemCondition(string $content): bool
+    public function validateCondition(string $content): bool
     {
         $available = [
             'вернуться к товарам',

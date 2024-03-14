@@ -4,19 +4,18 @@ namespace App\Service\System\Handler\Chain\Items;
 
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Entity\Ecommerce\ProductVariant;
-use App\Helper\KeyboardHelper;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\Product\ProductService;
 use App\Service\System\Contract;
 
-class ShopProductVariantChain // 4
+class ShopProductVariantChain extends AbstractChain
 {
     public function __construct(
         private readonly ProductService $productService,
     ) {
     }
 
-    public function handle(Contract $contract, CacheDto $cacheDto): bool
+    public function success(Contract $contract, CacheDto $cacheDto): bool
     {
         $content = $cacheDto->getContent();
 
@@ -73,6 +72,11 @@ class ShopProductVariantChain // 4
             return true;
         }
 
+        return false;
+    }
+
+    public function fall(Contract $contract, CacheDto $cacheDto): bool
+    {
         $contractMessage = MessageHelper::createContractMessage(
             'Не понимаю о чем вы, выберите один из вариантов:',
         );
@@ -80,5 +84,10 @@ class ShopProductVariantChain // 4
         $contract->addMessage($contractMessage);
 
         return false;
+    }
+
+    public function validateCondition(string $content): bool
+    {
+        return true;
     }
 }

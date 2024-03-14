@@ -7,66 +7,66 @@ use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\Product\ProductService;
 use App\Service\System\Contract;
 
-class VariantCount
+class VariantCount extends AbstractChain
 {
     public function __construct(
         private readonly ProductService $productService,
-    )
-    {
+    ) {
     }
 
-    public function handle(Contract $contract, CacheDto $cacheDto): bool
+    public function success(Contract $contract, CacheDto $cacheDto): bool
     {
         $content = $cacheDto->getContent();
 
-        if ($this->checkSystemCondition($content)) {
-            $cacheDto->getEvent()->getData()->setCount($content);
+        $cacheDto->getEvent()->getData()->setCount($content);
 
-            $variant = $this->productService->findVariant($cacheDto->getEvent()->getData()->getVariantId());
+        $variant = $this->productService->findVariant($cacheDto->getEvent()->getData()->getVariantId());
 
-            $variantName = $variant->getName();
-            $productName = $variant->getProduct()->getName();
+        $variantName = $variant->getName();
+        $productName = $variant->getProduct()->getName();
 
-            $price = $variant->getPrice();
-            $price = $price['price'];
+        $price = $variant->getPrice();
+        $price = $price['price'];
 
-            $sum = $price * $content;
+        $sum = $price * $content;
 
-            // todo тут мы должны создать заявку !!
+        // todo тут мы должны создать заявку !!
 
-            $message = 'Вы добавили в корзину продукт: ' . $productName . "\n" .
-                'вариант: ' . $variantName . "\n" .
-                'количество: ' . $content . "\n" .
-                'сумма: ' . $sum;
+        $message = 'Вы добавили в корзину продукт: ' . $productName . "\n" .
+            'вариант: ' . $variantName . "\n" .
+            'количество: ' . $content . "\n" .
+            'сумма: ' . $sum;
 
-            $replyMarkups = [
+        $replyMarkups = [
+            [
                 [
-                    [
-                        'text' => 'вернуться к товарам'
-                    ],
-                    [
-                        'text' => 'вернуться к категориям'
-                    ],
-                    [
-                        'text' => 'вернуться в главное меню'
-                    ],
-                    [
-                        'text' => 'в корзину'
-                    ],
+                    'text' => 'вернуться к товарам'
                 ],
-            ];
+                [
+                    'text' => 'вернуться к категориям'
+                ],
+                [
+                    'text' => 'вернуться в главное меню'
+                ],
+                [
+                    'text' => 'в корзину'
+                ],
+            ],
+        ];
 
-            $contractMessage = MessageHelper::createContractMessage(
-                $message,
-                null,
-                $replyMarkups,
-            );
+        $contractMessage = MessageHelper::createContractMessage(
+            $message,
+            null,
+            $replyMarkups,
+        );
 
-            $contract->addMessage($contractMessage);
+        $contract->addMessage($contractMessage);
 
-            return true;
-        }
+        return true;
+    }
 
+    public function fall(Contract $contract, CacheDto $cacheDto): bool
+    {
         $replyMarkups = [
             [
                 [
@@ -86,8 +86,7 @@ class VariantCount
         return false;
     }
 
-
-    private function checkSystemCondition(string $content): bool
+    public function validateCondition(string $content): bool
     {
         $available = [1, 2, 3, 4, 5, 'вернуться в главное меню', 'вернуться в к товарам'];
 

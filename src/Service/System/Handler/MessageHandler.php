@@ -76,6 +76,11 @@ class MessageHandler
         }
     }
 
+    // todo задача:
+    //  1. к сценарию нужно добавить alias, и искать именно по нему, а не по наванию!
+    //  2. переделать Chain-ы каждый Chain должен уметь работать самостоятельно, без поддержки другого
+    //      т.е цвенья цепи должны быть сомостоятельны.
+
     private function goto(
         VisitorEvent $visitorEvent,
         CacheDto $cacheDto,

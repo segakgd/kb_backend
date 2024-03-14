@@ -10,7 +10,7 @@ use App\Service\System\Common\PaginateService;
 use App\Service\System\Contract;
 use Exception;
 
-class ShopProductsChain // 3
+class ShopProductsChain extends AbstractChain
 {
     public function __construct(
         private readonly ProductService $productService,
@@ -21,22 +21,22 @@ class ShopProductsChain // 3
     /**
      * @throws Exception
      */
-    public function handle(Contract $contract, CacheDto $cacheDto): bool
+    public function success(Contract $contract, CacheDto $cacheDto): bool
     {
         $content = $cacheDto->getContent();
+        $event = $cacheDto->getEvent();
 
-        if ($this->checkSystemCondition($content)) {
-            $event = $cacheDto->getEvent();
+        return match ($content) {
+            'предыдущий' => $this->paginateService->prev($contract, $event->getData()),
+            'следующий' => $this->paginateService->next($contract, $event->getData()),
+            'добавить в корзину' => $this->addToCart($contract, $cacheDto),
+            'вернуться в главное меню' => $this->gotoMain($contract),
+            default => false
+        };
+    }
 
-            return match ($content) {
-                'предыдущий' => $this->paginateService->prev($contract, $event->getData()),
-                'следующий' => $this->paginateService->next($contract, $event->getData()),
-                'добавить в корзину' => $this->addToCart($contract, $cacheDto),
-                'вернуться в главное меню' => $this->gotoMain($contract),
-                default => false
-            };
-        }
-
+    public function fall(Contract $contract, CacheDto $cacheDto): bool
+    {
         $replyMarkups = KeyboardHelper::getProductNav();
 
         $contractMessage = MessageHelper::createContractMessage(
@@ -50,7 +50,7 @@ class ShopProductsChain // 3
         return false;
     }
 
-    private function checkSystemCondition(string $content): bool
+    public function validateCondition(string $content): bool
     {
         $availableProductNavItems = KeyboardHelper::getAvailableProductNavItems();
 

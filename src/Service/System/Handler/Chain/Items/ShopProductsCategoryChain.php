@@ -10,7 +10,7 @@ use App\Service\System\Common\PaginateService;
 use App\Service\System\Contract;
 use Exception;
 
-class ShopProductsCategoryChain // 2
+class ShopProductsCategoryChain extends AbstractChain
 {
     public function __construct(
         private readonly ProductCategoryService $categoryService,
@@ -21,30 +21,33 @@ class ShopProductsCategoryChain // 2
     /**
      * @throws Exception
      */
-    public function handle(Contract $contract, CacheDto $cacheDto): bool
+    public function success(Contract $contract, CacheDto $cacheDto): bool
     {
         $contractMessage = MessageHelper::createContractMessage('');
         $content = $cacheDto->getContent();
-
-        if ($this->checkCondition($content)) {
-            $event = $cacheDto->getEvent();
-
-            $event->getData()->setCategoryName($content);
-
-            $this->paginateService->first($contract, $event->getData());
-
-            $replyMarkups = KeyboardHelper::getProductNav();
-
-            $contractMessage->setKeyBoard($replyMarkups);
-
-            return true;
-        }
 
         if ($this->checkSystemCondition($content)) {
             $contract->setGoto(Contract::GOTO_MAIN);
 
             return true;
         }
+
+        $event = $cacheDto->getEvent();
+
+        $event->getData()->setCategoryName($content);
+
+        $this->paginateService->first($contract, $event->getData());
+
+        $replyMarkups = KeyboardHelper::getProductNav();
+
+        $contractMessage->setKeyBoard($replyMarkups);
+
+        return true;
+    }
+
+    public function fall(Contract $contract, CacheDto $cacheDto): bool
+    {
+        $contractMessage = MessageHelper::createContractMessage('');
 
         $availableCategory = $this->categoryService->getAvailableCategory();
 
@@ -60,9 +63,10 @@ class ShopProductsCategoryChain // 2
         return false;
     }
 
-    private function checkCondition(string $content): bool
+    public function validateCondition(string $content): bool
     {
         $availableCategory = $this->categoryService->getAvailableCategory();
+        $availableCategory[] = 'вернуться в главное меню';
 
         if (in_array($content, $availableCategory)) {
             return true;

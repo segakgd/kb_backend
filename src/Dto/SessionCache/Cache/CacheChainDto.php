@@ -10,6 +10,8 @@ class CacheChainDto
 
     private bool $finished;
 
+    private bool $repeat;
+
     public function getTarget(): ChainsEnum
     {
         return $this->target;
@@ -36,6 +38,17 @@ class CacheChainDto
     {
         $this->finished = $finished;
 
+        return $this;
+    }
+
+    public function isRepeat(): bool
+    {
+        return $this->repeat;
+    }
+
+    public function setRepeat(bool $repeat): CacheChainDto
+    {
+        $this->repeat = $repeat;
         return $this;
     }
 }

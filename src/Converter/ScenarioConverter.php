@@ -56,7 +56,7 @@ class ScenarioConverter
 
             $scenarioEntity = (new Scenario())
                 ->setUUID($scenario->getUUID())
-                ->setAlias($scenario->getAlias() ?? $scenario->getName())
+                ->setAlias($scenario->getName())
                 ->setName($scenario->getName())
                 ->setType($scenario->getType())
                 ->setBotId($botId)

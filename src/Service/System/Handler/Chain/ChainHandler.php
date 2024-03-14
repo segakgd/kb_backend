@@ -77,14 +77,16 @@ class ChainHandler
      */
     private function handleByType(ChainsEnum $target, Contract $contract, CacheDto $cacheDto): bool
     {
-        return match ($target) {
-            ChainsEnum::ShowShopProductsCategory => $this->showShopProductsCategoryChain->handle($contract),
-            ChainsEnum::ShopProductsCategory => $this->shopProductsCategoryChain->handle($contract, $cacheDto),
-            ChainsEnum::ShopProducts => $this->shopProductsChain->handle($contract, $cacheDto),
-            ChainsEnum::ShopVariant => $this->productVariantChain->handle($contract, $cacheDto),
-            ChainsEnum::ShopVariantCount => $this->variantCount->handle($contract, $cacheDto),
-            ChainsEnum::ShopVariantAdd => $this->end->handle($contract, $cacheDto),
-            ChainsEnum::ShopVariantFinal => false,
+        $chain = match ($target) {
+            ChainsEnum::ShowShopProductsCategory => $this->showShopProductsCategoryChain,
+            ChainsEnum::ShopProductsCategory => $this->shopProductsCategoryChain,
+            ChainsEnum::ShopProducts => $this->shopProductsChain,
+            ChainsEnum::ShopVariant => $this->productVariantChain,
+            ChainsEnum::ShopVariantCount => $this->variantCount,
+            ChainsEnum::ShopVariantAdd => $this->end,
+            ChainsEnum::ShopVariantFinal => throw new Exception(ChainsEnum::ShopVariantFinal->value . ' is not implementation'),
         };
+
+        return $chain->chain($contract, $cacheDto);
     }
 }
