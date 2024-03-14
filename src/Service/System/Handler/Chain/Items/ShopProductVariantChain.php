@@ -56,7 +56,7 @@ class ShopProductVariantChain extends AbstractChain
                         'text' => 'вернуться в главное меню'
                     ],
                     [
-                        'text' => 'вернуться в к товарам'
+                        'text' => 'вернуться к товарам'
                     ],
                 ]
             ];

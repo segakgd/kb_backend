@@ -42,17 +42,20 @@ class MessageHandler
 
         $this->handleSteps($scenario->getSteps(), $contract, $cacheDto);
 
-//        dd($contract->getGoto());
         if ($contract->getGoto()) {
             $this->goto($visitorEvent, $cacheDto, $visitorSession, $contract);
         } else {
             $this->senderService->sendMessages($contract, $bot->getToken(), $visitorSession);
 
-            $this->insertCacheDtoFromSession($visitorSession, $cacheDto);
-
             $contract->setStatus(
                 $cacheDto->getEvent()->isFinished() ? VisitorEvent::STATUS_DONE : VisitorEvent::STATUS_AWAIT
             );
+
+            if (VisitorEvent::STATUS_DONE === $contract->getStatus()) {
+                $cacheDto->setEvent(CacheService::createCacheEventDto());
+            }
+
+            $this->insertCacheDtoFromSession($visitorSession, $cacheDto);
         }
 
         $this->entityManager->persist($visitorEvent);
@@ -99,17 +102,21 @@ class MessageHandler
                 $chain->setFinished($flag);
 
                 if ($chain->getTarget() === $enum) {
+                    $chain->setRepeat(true);
+
                     $flag = false;
                 }
             }
         } else {
-            $scenario = $this->scenarioService->getMainScenario();
+            $scenario = match ($contract->getGoto()) {
+                'main' => $this->scenarioService->getMainScenario(),
+                default => $this->scenarioService->getDefaultScenario(),
+            };
 
             $visitorEvent->setScenarioUUID($scenario->getUUID());
 
             $cacheDto->setEvent(CacheService::createCacheEventDto());
         }
-
 
         $this->insertCacheDtoFromSession($visitorSession, $cacheDto);
 

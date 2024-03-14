@@ -57,7 +57,7 @@ class ScenarioService
     {
         return $this->scenarioRepository->findOneBy(
             [
-                'name' => static::SCENARIO_DEFAULT,
+                'alias' => static::SCENARIO_DEFAULT,
                 'deletedAt' => null,
             ]
         );
@@ -67,7 +67,7 @@ class ScenarioService
     {
         return $this->scenarioRepository->findOneBy(
             [
-                'name' => static::SCENARIO_MAIN,
+                'alias' => static::SCENARIO_MAIN,
                 'deletedAt' => null,
             ]
         );

@@ -28,7 +28,8 @@ class CacheService
         foreach ($stepChains as $stepChain) {
             $chain = (new CacheChainDto)
                 ->setTarget(ChainsEnum::from($stepChain['target']))
-                ->setFinished($stepChain['finish']);
+                ->setFinished($stepChain['finish'])
+                ->setRepeat(false);
 
             $cacheDto->getEvent()->addChain($chain);
         }
