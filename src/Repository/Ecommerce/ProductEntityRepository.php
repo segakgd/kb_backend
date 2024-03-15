@@ -23,6 +23,9 @@ class ProductEntityRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function findProductsByCategoryName(string $categoryName, int $page = 1, int $total = 1): array
     {
         $queryBuilder = $this->createQueryBuilder('pc')

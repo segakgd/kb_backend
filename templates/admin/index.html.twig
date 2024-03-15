@@ -182,6 +182,49 @@
                 {% endfor %}
             </div>
         </div>
+
+
+        {# -------------------------------------------------------------------------------------------------------- #}
+        {# -------------------------------------------------Сессии------------------------------------------------- #}
+        {# -------------------------------------------------------------------------------------------------------- #}
+        <div class="jj__wrapper jj__wrapper-50 jj__wrapper-h-auto">
+            <div class="jj__h">
+                <h2>Сессии</h2>
+            </div>
+
+            <div class="jj__items">
+                {% if sessions is empty %}
+                    <div class="jj__items-without-data">
+                        Данных нет
+                    </div>
+                {% endif %}
+
+                {% for session in sessions %}
+                    <div class="jj__item">
+                        <div class="jj__item_name">Название сессии: {{ session.sessionName }}</div>
+
+                        <div class="jj__item_data">
+                            <section>
+                                <span>Канал:</span> {{ session.sessionChannel }}
+                            </section>
+                            <section style="font-weight: bold; color: #ca0a9d;">
+                                <span>Контент:</span> {{ session.cache.content }}
+                            </section>
+
+                            {% if session.sessionVisitorEvent is defined %}
+                                <section>
+                                    <span>Тип события:</span> {{ session.sessionVisitorEvent.type }}
+                                </section>
+                                <section>
+                                    <span>Статус последнего события:</span> {{ session.sessionVisitorEvent.status }}
+                                </section>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
     </div>
 
     <div class="jj__main_wrapper jj__main_wrapper--line">
@@ -469,48 +512,9 @@
     <div class="jj__main_wrapper jj__main_wrapper--line">
 
         {# -------------------------------------------------------------------------------------------------------- #}
-        {# -------------------------------------------------Сессии------------------------------------------------- #}
-        {# -------------------------------------------------------------------------------------------------------- #}
-        <div class="jj__wrapper jj__wrapper-30">
-            <div class="jj__h">
-                <h2>Сессии</h2>
-            </div>
-
-            <div class="jj__items">
-                {% if sessions is empty %}
-                    <div class="jj__items-without-data">
-                        Данных нет
-                    </div>
-                {% endif %}
-
-                {% for session in sessions %}
-                    <div class="jj__item">
-                        <div class="jj__item_name">Название сессии: {{ session.sessionName }}</div>
-
-                        <div class="jj__item_data">
-                            <section>
-                                <span>Канал:</span> {{ session.sessionChannel }}
-                            </section>
-
-                            {% if session.sessionVisitorEvent is defined %}
-                                <section>
-                                    <span>Тип события:</span> {{ session.sessionVisitorEvent.type }}
-                                </section>
-                                <section>
-                                    <span>Статус последнего события:</span> {{ session.sessionVisitorEvent.status }}
-                                </section>
-                            {% endif %}
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-
-
-        {# -------------------------------------------------------------------------------------------------------- #}
         {# ------------------------------------------------Истории------------------------------------------------- #}
         {# -------------------------------------------------------------------------------------------------------- #}
-        <div class="jj__wrapper jj__wrapper-30" id="history__wrapper">
+        <div class="jj__wrapper jj__wrapper-50" id="history__wrapper">
             <div class="jj__h">
                 <h2>Истории</h2>
             </div>
@@ -578,7 +582,7 @@
         {# -------------------------------------------------------------------------------------------------------- #}
         {# -------------------------------------------------нарии-------------------------------------------------- #}
         {# -------------------------------------------------------------------------------------------------------- #}
-        <div class="jj__wrapper jj__wrapper-30">
+        <div class="jj__wrapper jj__wrapper-50">
             <div class="jj__h">
                 <h2>Сценарии</h2>
             </div>

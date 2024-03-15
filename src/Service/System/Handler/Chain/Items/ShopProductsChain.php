@@ -26,12 +26,15 @@ class ShopProductsChain extends AbstractChain
         $content = $cacheDto->getContent();
 
         if ($cacheDto->getEvent()->getCurrentChain()->isRepeat()) {
-            $content = 'следующий'; // todo костыль
+            $cacheDto->getEvent()->getCurrentChain()->setRepeat(false);
+
+            $content = 'first'; // todo мб возвращать на тот товар с которого ушли?
         }
 
         $event = $cacheDto->getEvent();
 
         return match ($content) {
+            'first' => $this->paginateService->first($contract, $event->getData()),
             'предыдущий' => $this->paginateService->prev($contract, $event->getData()),
             'следующий' => $this->paginateService->next($contract, $event->getData()),
             'добавить в корзину' => $this->addToCart($contract, $cacheDto),

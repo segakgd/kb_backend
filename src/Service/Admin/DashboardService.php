@@ -189,9 +189,14 @@ class DashboardService
                 $visitorEvent = $this->visitorEventRepository->findOneById($session->getVisitorEvent());
             }
 
+            $cache = $session->getCache();
+
             $prepareSession = [
                 'sessionName' => $session->getName(),
                 'sessionChannel' => $session->getChannel(),
+                'cache' => [
+                    'content' => $cache['content'] ?? null
+                ]
             ];
 
             if ($visitorEvent) {

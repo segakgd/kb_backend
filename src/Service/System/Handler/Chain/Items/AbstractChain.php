@@ -31,7 +31,7 @@ abstract class AbstractChain
             'вернуться в главное меню' => 'main',
             'в корзину' => 'cart',
             'вернуться к товарам' => ChainsEnum::ShopProducts->value,
-            'вернуться к категориям' => ChainsEnum::ShopProductsCategory->value,
+            'вернуться к категориям' => ChainsEnum::ShowShopProductsCategory->value,
             default => null
         };
 
