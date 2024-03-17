@@ -3,12 +3,9 @@
 namespace App\Repository\Ecommerce;
 
 use App\Entity\Ecommerce\Product;
-use App\Entity\Ecommerce\ProductCategory;
-use App\Helper\CommonHelper;
 use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Exception;
 
 /**
  * @extends ServiceEntityRepository<Product>

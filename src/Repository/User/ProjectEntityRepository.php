@@ -4,9 +4,7 @@ namespace App\Repository\User;
 
 use App\Entity\User\Project;
 use App\Entity\User\User;
-use App\Kernel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\Exception;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**

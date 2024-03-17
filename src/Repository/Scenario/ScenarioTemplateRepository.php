@@ -2,7 +2,6 @@
 
 namespace App\Repository\Scenario;
 
-use App\Entity\History\History;
 use App\Entity\Scenario\ScenarioTemplate;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
