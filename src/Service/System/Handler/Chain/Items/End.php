@@ -5,6 +5,7 @@ namespace App\Service\System\Handler\Chain\Items;
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\MessageHelper;
 use App\Service\System\Contract;
+use App\Service\System\Handler\Chain\AbstractChain;
 use Exception;
 
 class End extends AbstractChain // todo удалить

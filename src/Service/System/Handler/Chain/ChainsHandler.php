@@ -7,6 +7,7 @@ use App\Dto\SessionCache\Cache\CacheDto;
 use App\Enum\ChainsEnum;
 use App\Service\System\Contract;
 use App\Service\System\Handler\Chain\Items\End;
+use App\Service\System\Handler\Chain\Items\FinalChain;
 use App\Service\System\Handler\Chain\Items\ShopProductsCategoryChain;
 use App\Service\System\Handler\Chain\Items\ShopProductsChain;
 use App\Service\System\Handler\Chain\Items\ShopProductVariantChain;
@@ -14,7 +15,7 @@ use App\Service\System\Handler\Chain\Items\ShowShopProductsCategoryChain;
 use App\Service\System\Handler\Chain\Items\VariantCount;
 use Exception;
 
-class ChainHandler
+class ChainsHandler
 {
     public function __construct(
         private readonly ShowShopProductsCategoryChain $showShopProductsCategoryChain,
@@ -22,7 +23,7 @@ class ChainHandler
         private readonly ShopProductsChain $shopProductsChain,
         private readonly ShopProductVariantChain $productVariantChain,
         private readonly VariantCount $variantCount,
-        private readonly End $end,
+        private readonly FinalChain $finalChain,
     ) {
     }
 
@@ -78,13 +79,14 @@ class ChainHandler
     private function handleByType(ChainsEnum $target, Contract $contract, CacheDto $cacheDto): bool
     {
         $chain = match ($target) {
-            ChainsEnum::ShowShopProductsCategory => $this->showShopProductsCategoryChain,
-            ChainsEnum::ShopProductsCategory => $this->shopProductsCategoryChain,
-            ChainsEnum::ShopProducts => $this->shopProductsChain,
-            ChainsEnum::ShopVariant => $this->productVariantChain,
-            ChainsEnum::ShopVariantCount => $this->variantCount,
-            ChainsEnum::ShopVariantAdd => $this->end,
-            ChainsEnum::ShopVariantFinal => throw new Exception(ChainsEnum::ShopVariantFinal->value . ' is not implementation'),
+            ChainsEnum::ShowShopProductsCategory => $this->showShopProductsCategoryChain, // старт цепи, вывод доступных категорий. выбрать категории
+            ChainsEnum::ShopProductsCategory => $this->shopProductsCategoryChain, // показывам товар по выбранной категории
+            ChainsEnum::ShopProducts => $this->shopProductsChain, // прокрутка товров, пагинация, выбор
+            ChainsEnum::ShopVariant => $this->productVariantChain, // выбор варианта, предлагаем выбрать количество
+            ChainsEnum::ShopVariantCount => $this->variantCount, // выбор количества, выводим финальное сообщение, что в корзину добавлен такой-то такой-то товар
+            ChainsEnum::ShopFinal => $this->finalChain, // финальная заглушка, для обработки навигации
+
+
         };
 
         return $chain->chain($contract, $cacheDto);

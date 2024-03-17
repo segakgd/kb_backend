@@ -5,7 +5,7 @@ namespace App\Service\System\Handler\Step;
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Service\System\Common\CacheService;
 use App\Service\System\Contract;
-use App\Service\System\Handler\Chain\ChainHandler;
+use App\Service\System\Handler\Chain\ChainsHandler;
 use App\Service\System\Handler\Scenario\ScenarioHandler;
 use Exception;
 use Throwable;
@@ -13,7 +13,7 @@ use Throwable;
 class StepHandler
 {
     public function __construct(
-        private readonly ChainHandler $chainHandler,
+        private readonly ChainsHandler $chainHandler,
         private readonly ScenarioHandler $scenarioHandler,
     ) {
     }

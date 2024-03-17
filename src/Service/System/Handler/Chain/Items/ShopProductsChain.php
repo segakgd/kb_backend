@@ -8,6 +8,7 @@ use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\Product\ProductService;
 use App\Service\System\Common\PaginateService;
 use App\Service\System\Contract;
+use App\Service\System\Handler\Chain\AbstractChain;
 use Exception;
 
 class ShopProductsChain extends AbstractChain

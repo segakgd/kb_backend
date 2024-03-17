@@ -7,6 +7,7 @@ use App\Helper\KeyboardHelper;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\ProductCategory\ProductCategoryService;
 use App\Service\System\Contract;
+use App\Service\System\Handler\Chain\AbstractChain;
 
 class ShowShopProductsCategoryChain extends AbstractChain
 {

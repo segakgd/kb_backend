@@ -27,9 +27,9 @@ class MessageHelper
             $message .= "Цена: $price \n";
             $message .= "Доступное количество: $count \n";
             $message .= "\n";
-            $message .= "\n";
         }
 
+        $message .= "\n";
         $message .= "Товар $now из $total";
 
         return $message;

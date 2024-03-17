@@ -42,10 +42,9 @@ class CommonHelper
     public static function translate(string $key): string
     {
         return match ($key) {
-            'show.shop.products.category' => 'Приветственное сообщение, показываем доступные категории',
-            'shop.products.category' => 'Показываем товары по выбранной категории',
-            'shop.products' => 'Товары по выбранной катигории',
-            'shop.product' => 'Просмотр конкретного продукта',
+            'show.shop.products.category' => 'show.shop.products.category',
+            'shop.products.category' => 'shop.products.category',
+            'shop.products' => 'shop.products',
             default => $key,
         };
     }

@@ -13,8 +13,5 @@ enum ChainsEnum: string
     case ShopVariant = 'shop.variant';
 
     case ShopVariantCount = 'shop.variant.count';
-
-    case ShopVariantAdd = 'shop.variant.add';
-
-    case ShopVariantFinal = 'shop.variant.final';
+    case ShopFinal = 'shop.final';
 }
