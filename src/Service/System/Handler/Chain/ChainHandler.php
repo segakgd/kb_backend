@@ -18,7 +18,7 @@ class ChainHandler
 {
     public function __construct(
         private readonly ShowShopProductsCategoryChain $showShopProductsCategoryChain,
-        private readonly ShopProductsCategoryChain $shopProductsCategoryChain,
+        private readonly ShopProductsCategoryChain $shopProductsCategoryChain, // выбор категории, вывод первого товара выбранной категории
         private readonly ShopProductsChain $shopProductsChain,
         private readonly ShopProductVariantChain $productVariantChain,
         private readonly VariantCount $variantCount,

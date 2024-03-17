@@ -26,9 +26,16 @@ class ShopProductsCategoryChain extends AbstractChain
         $contractMessage = MessageHelper::createContractMessage('');
         $content = $cacheDto->getContent();
 
+        $availableCategory = $this->categoryService->getCategoryByName($content);
+
+        if (!$availableCategory) {
+            throw new Exception('Неизвестная категория');
+        }
+
         $event = $cacheDto->getEvent();
 
-        $event->getData()->setCategoryName($content);
+        $event->getData()->setCategoryId($availableCategory->getId());
+        $event->getData()->setCategoryName($availableCategory->getName());
 
         $this->paginateService->first($contract, $event->getData());
 
@@ -43,7 +50,7 @@ class ShopProductsCategoryChain extends AbstractChain
     {
         $contractMessage = MessageHelper::createContractMessage('');
 
-        $availableCategory = $this->categoryService->getAvailableCategory();
+        $availableCategory = $this->categoryService->getAvailableCategory(4842);
 
         $replyMarkups = KeyboardHelper::getProductCategoryNav($availableCategory);
 
@@ -59,7 +66,7 @@ class ShopProductsCategoryChain extends AbstractChain
 
     public function validateCondition(string $content): bool
     {
-        $availableCategory = $this->categoryService->getAvailableCategory();
+        $availableCategory = $this->categoryService->getAvailableCategory(4842);
 
         if (in_array($content, $availableCategory)) {
             return true;

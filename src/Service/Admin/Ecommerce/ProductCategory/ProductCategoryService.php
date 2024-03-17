@@ -2,6 +2,7 @@
 
 namespace App\Service\Admin\Ecommerce\ProductCategory;
 
+use App\Entity\Ecommerce\ProductCategory;
 use App\Repository\Ecommerce\ProductCategoryEntityRepository;
 
 class ProductCategoryService implements ProductCategoryServiceInterface
@@ -11,11 +12,20 @@ class ProductCategoryService implements ProductCategoryServiceInterface
     ) {
     }
 
-    public function getAvailableCategory(): array
+    public function getCategoryByName(string $categoryName): ?ProductCategory
+    {
+        return $this->productCategoryEntityRepository->findOneBy(
+            [
+                'name' => $categoryName,
+            ]
+        );
+    }
+
+    public function getAvailableCategory(int $projectId): array
     {
         $productCategories = $this->productCategoryEntityRepository->findBy(
             [
-                'projectId' => 4842,
+                'projectId' => $projectId,
             ]
         );
 

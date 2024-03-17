@@ -24,7 +24,7 @@ class PaginateService
     {
         $products = $this->productService->getProductsByCategory(
             $cacheDataDto->getPageNow(),
-            $cacheDataDto->getCategoryName(),
+            $cacheDataDto->getCategoryId(),
             'product.first'
         );
 
@@ -38,7 +38,7 @@ class PaginateService
     {
         $products = $this->productService->getProductsByCategory(
             $cacheDataDto->getPageNow(),
-            $cacheDataDto->getCategoryName(),
+            $cacheDataDto->getCategoryId(),
             'product.prev'
         );
 
@@ -52,7 +52,7 @@ class PaginateService
     {
         $products = $this->productService->getProductsByCategory(
             $cacheDataDto->getPageNow(),
-            $cacheDataDto->getCategoryName(),
+            $cacheDataDto->getCategoryId(),
             'product.next'
         );
 
@@ -69,7 +69,11 @@ class PaginateService
         $cacheDataDto->setPageNow($products['paginate']['now']);
         $cacheDataDto->setProductId($product->getId());
 
-        $message = MessageHelper::renderProductMessage($product);
+        $message = MessageHelper::renderProductMessage(
+            $product,
+            $products['paginate']['now'],
+            $products['paginate']['total'],
+        );
 
         $contractMessage->setMessage($message);
         $contractMessage->setPhoto($product->getMainImage());

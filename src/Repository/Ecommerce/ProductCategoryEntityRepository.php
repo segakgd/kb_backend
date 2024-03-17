@@ -3,9 +3,11 @@
 namespace App\Repository\Ecommerce;
 
 use App\Entity\Ecommerce\ProductCategory;
+use App\Helper\CommonHelper;
 use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @extends ServiceEntityRepository<ProductCategory>
@@ -20,6 +22,32 @@ class ProductCategoryEntityRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ProductCategory::class);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function findProductsByCategory(int $categoryId, int $page = 1): array
+    {
+        $queryBuilder = $this->createQueryBuilder('pc')
+            ->where('pc.id = :categoryId')
+            ->setParameter('categoryId', $categoryId);
+
+        $category = $queryBuilder->getQuery()->getOneOrNullResult();
+
+        if (!$category) {
+            throw new Exception('not found category');
+        }
+
+        /** @var ProductCategory $category */
+        $products = $category->getProducts();
+
+        $paginate = CommonHelper::buildPaginate($page, $products->count());
+
+        return [
+            'items' => [$products->get($page - 1)],
+            'paginate' => $paginate,
+        ];
     }
 
     public function saveAndFlush(ProductCategory $entity): void

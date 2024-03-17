@@ -70,6 +70,17 @@
                                 </button>
                             </form>
                         </section>
+
+                        <section>
+                            <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                                <label>
+                                    <input hidden="hidden" type="text" name="message" value="динамики">
+                                </label>
+                                <button>
+                                    динамики
+                                </button>
+                            </form>
+                        </section>
                     </div>
 
                     <div style="width: 100%; display: flex; padding-bottom: 15px;">
