@@ -6,12 +6,15 @@ use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Enum\ChainsEnum;
 use App\Service\System\Contract;
-use App\Service\System\Handler\Chain\Items\End;
+use App\Service\System\Handler\Chain\Items\Category\ShopProductsCategoryChain;
+use App\Service\System\Handler\Chain\Items\Category\ShopProductsChain;
+use App\Service\System\Handler\Chain\Items\Category\ShowShopProductsCategoryChain;
 use App\Service\System\Handler\Chain\Items\FinalChain;
-use App\Service\System\Handler\Chain\Items\ShopProductsCategoryChain;
-use App\Service\System\Handler\Chain\Items\ShopProductsChain;
+use App\Service\System\Handler\Chain\Items\Popular\ShopProductPopularChain;
+use App\Service\System\Handler\Chain\Items\Popular\ShopProductsPopularChain;
+use App\Service\System\Handler\Chain\Items\Promo\ShopProductPromoChain;
+use App\Service\System\Handler\Chain\Items\Promo\ShopProductsPromoChain;
 use App\Service\System\Handler\Chain\Items\ShopProductVariantChain;
-use App\Service\System\Handler\Chain\Items\ShowShopProductsCategoryChain;
 use App\Service\System\Handler\Chain\Items\VariantCount;
 use Exception;
 
@@ -19,11 +22,15 @@ class ChainsHandler
 {
     public function __construct(
         private readonly ShowShopProductsCategoryChain $showShopProductsCategoryChain,
-        private readonly ShopProductsCategoryChain $shopProductsCategoryChain, // выбор категории, вывод первого товара выбранной категории
+        private readonly ShopProductsCategoryChain $shopProductsCategoryChain,
         private readonly ShopProductsChain $shopProductsChain,
         private readonly ShopProductVariantChain $productVariantChain,
         private readonly VariantCount $variantCount,
         private readonly FinalChain $finalChain,
+        private readonly ShopProductsPopularChain $shopProductsPopularChain,
+        private readonly ShopProductPopularChain $shopProductPopularChain,
+        private readonly ShopProductPromoChain $shopProductPromoChain,
+        private readonly ShopProductsPromoChain $shopProductsPromoChain,
     ) {
     }
 
@@ -79,14 +86,23 @@ class ChainsHandler
     private function handleByType(ChainsEnum $target, Contract $contract, CacheDto $cacheDto): bool
     {
         $chain = match ($target) {
+            // категории
             ChainsEnum::ShowShopProductsCategory => $this->showShopProductsCategoryChain, // старт цепи, вывод доступных категорий. выбрать категории
             ChainsEnum::ShopProductsCategory => $this->shopProductsCategoryChain, // показывам товар по выбранной категории
             ChainsEnum::ShopProducts => $this->shopProductsChain, // прокрутка товров, пагинация, выбор
+
+            // Популярные
+            ChainsEnum::ShopProductsPopular => $this->shopProductsPopularChain, // старт цепи, вывод популярные товары
+            ChainsEnum::ShopProductPopular => $this->shopProductPopularChain, // прокрутка товров, пагинация, выбор
+
+            // Акционные
+            ChainsEnum::ShopProductsPromo => $this->shopProductsPromoChain, // старт цепи, вывод акционные товары
+            ChainsEnum::ShopProductPromo => $this->shopProductPromoChain, // прокрутка товров, пагинация, выбор
+
+            // Общее
             ChainsEnum::ShopVariant => $this->productVariantChain, // выбор варианта, предлагаем выбрать количество
             ChainsEnum::ShopVariantCount => $this->variantCount, // выбор количества, выводим финальное сообщение, что в корзину добавлен такой-то такой-то товар
             ChainsEnum::ShopFinal => $this->finalChain, // финальная заглушка, для обработки навигации
-
-
         };
 
         return $chain->chain($contract, $cacheDto);

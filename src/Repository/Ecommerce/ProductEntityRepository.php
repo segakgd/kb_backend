@@ -3,9 +3,11 @@
 namespace App\Repository\Ecommerce;
 
 use App\Entity\Ecommerce\Product;
+use App\Helper\CommonHelper;
 use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @extends ServiceEntityRepository<Product>
@@ -20,6 +22,31 @@ class ProductEntityRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Product::class);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getPopularProducts($page = 1): array
+    {
+        $queryBuilder = $this->createQueryBuilder('product');
+        $queryBuilder
+            ->where($queryBuilder->expr()->in('product.id', [1, 2]))
+            ->setFirstResult($page - 1)
+            ->setMaxResults(1)
+        ;
+
+        $products = $queryBuilder->getQuery()->execute();
+
+        $queryBuilder2 = $this->createQueryBuilder('product')
+            ->where($queryBuilder->expr()->in('product.id', [1, 2]))
+        ;
+        $paginate = CommonHelper::buildPaginate($page, count($queryBuilder2->getQuery()->execute()));
+
+        return [
+            'items' => $products,
+            'paginate' => $paginate,
+        ];
     }
 
     public function saveAndFlush(Product $entity): void

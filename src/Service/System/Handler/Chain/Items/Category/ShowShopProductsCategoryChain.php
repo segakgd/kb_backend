@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\System\Handler\Chain\Items;
+namespace App\Service\System\Handler\Chain\Items\Category;
 
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\KeyboardHelper;

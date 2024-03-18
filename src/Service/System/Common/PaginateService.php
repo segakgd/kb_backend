@@ -59,7 +59,7 @@ class PaginateService
         return $this->pug($contract, $products, $cacheDataDto);
     }
 
-    private function pug(Contract $contract, array $products, CacheDataDto $cacheDataDto): bool
+    public function pug(Contract $contract, array $products, CacheDataDto $cacheDataDto): bool
     {
         /** @var Product $product */
         $product = $products['items'][0];

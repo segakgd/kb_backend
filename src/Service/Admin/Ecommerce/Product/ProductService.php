@@ -31,7 +31,21 @@ class ProductService implements ProductServiceInterface
     /**
      * @throws Exception
      */
-    public function getProductsByCategory(?int $pageNow, int $categoryId, string $key): array // todo переделать в $categoryId (хранить id совместно с названием)
+    public function getPopularProducts(?int $pageNow, string $key): array
+    {
+        $pageNow = $pageNow ?: 1;
+
+        return match (true) {
+            'first' === $key => $this->productEntityRepository->getPopularProducts(1),
+            'next' === $key => $this->productEntityRepository->getPopularProducts($pageNow + 1),
+            'prev' === $key => $this->productEntityRepository->getPopularProducts($pageNow - 1),
+        };
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getProductsByCategory(?int $pageNow, int $categoryId, string $key): array
     {
         $pageNow = $pageNow ?: 1;
 
