@@ -27,6 +27,31 @@ class ProductEntityRepository extends ServiceEntityRepository
     /**
      * @throws Exception
      */
+    public function getPromoProducts($page = 1): array
+    {
+        $queryBuilder = $this->createQueryBuilder('product');
+        $queryBuilder
+            ->where($queryBuilder->expr()->in('product.id', [3, 4]))
+            ->setFirstResult($page - 1)
+            ->setMaxResults(1)
+        ;
+
+        $products = $queryBuilder->getQuery()->execute();
+
+        $queryBuilder2 = $this->createQueryBuilder('product')
+            ->where($queryBuilder->expr()->in('product.id', [3, 4]))
+        ;
+        $paginate = CommonHelper::buildPaginate($page, count($queryBuilder2->getQuery()->execute()));
+
+        return [
+            'items' => $products,
+            'paginate' => $paginate,
+        ];
+    }
+
+    /**
+     * @throws Exception
+     */
     public function getPopularProducts($page = 1): array
     {
         $queryBuilder = $this->createQueryBuilder('product');

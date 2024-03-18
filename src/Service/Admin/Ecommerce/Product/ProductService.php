@@ -45,6 +45,20 @@ class ProductService implements ProductServiceInterface
     /**
      * @throws Exception
      */
+    public function getPromoProducts(?int $pageNow, string $key): array
+    {
+        $pageNow = $pageNow ?: 1;
+
+        return match (true) {
+            'first' === $key => $this->productEntityRepository->getPromoProducts(1),
+            'next' === $key => $this->productEntityRepository->getPromoProducts($pageNow + 1),
+            'prev' === $key => $this->productEntityRepository->getPromoProducts($pageNow - 1),
+        };
+    }
+
+    /**
+     * @throws Exception
+     */
     public function getProductsByCategory(?int $pageNow, int $categoryId, string $key): array
     {
         $pageNow = $pageNow ?: 1;

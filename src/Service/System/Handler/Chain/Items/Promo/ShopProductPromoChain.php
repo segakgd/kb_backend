@@ -5,14 +5,53 @@ namespace App\Service\System\Handler\Chain\Items\Promo;
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\KeyboardHelper;
 use App\Helper\MessageHelper;
+use App\Service\Admin\Ecommerce\Product\ProductService;
+use App\Service\System\Common\PaginateService;
 use App\Service\System\Contract;
 use App\Service\System\Handler\Chain\AbstractChain;
+use Exception;
 
 class ShopProductPromoChain extends AbstractChain
 {
+    public function __construct(
+        private readonly ProductService $productService,
+        private readonly PaginateService $paginateService,
+    ) {
+    }
+
+    /**
+     * @throws Exception
+     */
     public function success(Contract $contract, CacheDto $cacheDto): bool
     {
-        // TODO: Implement success() method.
+        $content = $cacheDto->getContent();
+
+        if ($cacheDto->getEvent()->getCurrentChain()->isRepeat()) {
+            $cacheDto->getEvent()->getCurrentChain()->setRepeat(false);
+
+            $content = 'first'; // todo мб возвращать на тот товар с которого ушли?
+        }
+
+        $event = $cacheDto->getEvent();
+
+        if ($content === 'добавить в корзину') {
+            return $this->addToCart($contract, $cacheDto);
+        }
+
+        $products = match ($content) {
+            'first' => $this->productService->getPromoProducts(1, 'first'),
+            'предыдущий' => $this->productService->getPromoProducts($event->getData()->getPageNow(), 'prev'),
+            'следующий' => $this->productService->getPromoProducts($event->getData()->getPageNow(), 'next'),
+            default => false
+        };
+
+        if ($products) {
+            $this->paginateService->pug($contract, $products, $cacheDto->getEvent()->getData());
+
+            return false;
+        }
+
+        return false;
     }
 
     public function fall(Contract $contract, CacheDto $cacheDto): bool
@@ -32,6 +71,30 @@ class ShopProductPromoChain extends AbstractChain
 
     public function validateCondition(string $content): bool
     {
-        // TODO: Implement validateCondition() method.
+        $availableProductNavItems = KeyboardHelper::getAvailableProductNavItems();
+
+        if (in_array($content, $availableProductNavItems)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private function addToCart(Contract $contract, CacheDto $cacheDto): bool
+    {
+        $productId = $cacheDto->getEvent()->getData()->getProductId();
+        $contractMessage = MessageHelper::createContractMessage('');
+
+        $product = $this->productService->find($productId);
+        $variants = $product->getVariants();
+
+        $variantsNav = KeyboardHelper::getVariantsNav($variants);
+
+        $contractMessage->setKeyBoard($variantsNav);
+        $contractMessage->setMessage('Добавить в корзину вариант:');
+
+        $contract->addMessage($contractMessage);
+
+        return true;
     }
 }

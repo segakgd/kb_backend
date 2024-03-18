@@ -3,32 +3,37 @@
 namespace App\Service\System\Handler\Chain\Items\Promo;
 
 use App\Dto\SessionCache\Cache\CacheDto;
-use App\Helper\KeyboardHelper;
 use App\Helper\MessageHelper;
+use App\Service\Admin\Ecommerce\Product\ProductService;
+use App\Service\System\Common\PaginateService;
 use App\Service\System\Contract;
 use App\Service\System\Handler\Chain\AbstractChain;
+use Exception;
 
 class ShopProductsPromoChain extends AbstractChain
 {
+    public function __construct(
+        private readonly ProductService $productService,
+        private readonly PaginateService $paginateService,
+    ) {
+    }
+
+    /**
+     * @throws Exception
+     */
     public function success(Contract $contract, CacheDto $cacheDto): bool
     {
-        $contractMessage = MessageHelper::createContractMessage(
-            'Выводим первый товар',
-        );
+        $products = $this->productService->getPromoProducts(1, 'first');
 
-        $contract->addMessage($contractMessage);
+        $this->paginateService->pug($contract, $products, $cacheDto->getEvent()->getData());
 
-        return false;
+        return true;
     }
 
     public function fall(Contract $contract, CacheDto $cacheDto): bool
     {
-        $replyMarkups = KeyboardHelper::getProductNav();
-
         $contractMessage = MessageHelper::createContractMessage(
-            'Не понимаю о чем вы... мб вам выбрать доступные варианты из меню? К примеру, вы можете посмотреть более подробную информациюю о товаре.',
-            null,
-            $replyMarkups,
+            'Не понимаю о чем вы...',
         );
 
         $contract->addMessage($contractMessage);
@@ -38,6 +43,6 @@ class ShopProductsPromoChain extends AbstractChain
 
     public function validateCondition(string $content): bool
     {
-        return true;
+        return $content === 'Акционные товары';
     }
 }
