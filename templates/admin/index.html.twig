@@ -172,7 +172,7 @@
                             </form>
                         </section>
                     </div>
-                    <div style="width: 100%; display: flex; padding-bottom: 15px;">
+                    <div style="width: 100%; display: flex; flex-wrap: wrap; padding-bottom: 15px;">
                         <section>
                             <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
                                 <label>
@@ -210,6 +210,16 @@
                                 </label>
                                 <button>
                                     в корзину
+                                </button>
+                            </form>
+                        </section>
+                        <section>
+                            <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                                <label>
+                                    <input hidden="hidden" type="text" name="message" value="Моя корзина">
+                                </label>
+                                <button>
+                                    Моя корзина
                                 </button>
                             </form>
                         </section>
