@@ -475,6 +475,11 @@ h1, h2 {
     margin-top: 10px;
 }
 
+.jj__color-write {
+    color: #fff;
+    font-weight: 500;
+}
+
 .jj__color-red {
     color: #e85574;
     font-weight: 500;
@@ -614,10 +619,20 @@ h1, h2 {
     margin: 0 0 0 30px;
 }
 
+.classic-btn{
+    border: 0;
+    box-shadow: var(--button-shadow);
+    color: var(--button-color);
+    cursor: pointer;
+    text-decoration: none;
+    transition: 80ms cubic-bezier(.33,1,.68,1);
+    transition-property: box-shadow;
+    white-space: nowrap;
+    border-radius: 9px;
+    border: none;
+    margin-bottom: 5px;
+}
 
-
-
-
-
-
-
+.classic-btn-w{
+    color: #fff;
+}

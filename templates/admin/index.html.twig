@@ -22,39 +22,46 @@
 
             <div class="jj__items">
                 {% for bot in bots %}
+
+                    <h3 style="font-size: 18px;">бот #{{ bot.botId }}</h3>
+
                     <section style="width: 100%; padding-bottom: 15px;">
                         <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
                             <label>
-                                Сообщение в бот {{ bot.botId }}:
+                                Сообщение:
                             </label>
                             <label>
                                 <input type="text" name="message">
                             </label>
-                            <button>
+                            <button class="classic-btn">
                                 Отправить
                             </button>
                         </form>
                     </section>
 
                     <div style="width: 100%; display: flex; flex-wrap: wrap; padding-bottom: 15px;">
-                        <section>
-                            <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
-                                <label>
-                                    <input hidden="hidden" type="text" name="message"
-                                           value="Сценарий оформления заказа">
-                                </label>
-                                <button>
-                                    Сценарий оформления заказа
-                                </button>
-                            </form>
-                        </section>
+                        <div style="width: 100%; border-bottom: solid 1px #aaa; margin: 5px 0; padding: 5px 0; display: flex;">
+                            <div>Сценарий оформления заказа:</div>
+                            <section>
+                                <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/"
+                                      method="POST">
+                                    <label>
+                                        <input hidden="hidden" type="text" name="message"
+                                               value="Сценарий оформления заказа">
+                                    </label>
+                                    <button class="classic-btn">
+                                        Сценарий оформления заказа
+                                    </button>
+                                </form>
+                            </section>
+                        </div>
 
                         <section>
                             <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
                                 <label>
                                     <input hidden="hidden" type="text" name="message" value="Товары по категориям">
                                 </label>
-                                <button>
+                                <button class="classic-btn">
                                     Товары по категориям
                                 </button>
                             </form>
@@ -65,7 +72,7 @@
                                 <label>
                                     <input hidden="hidden" type="text" name="message" value="Акционные товары">
                                 </label>
-                                <button>
+                                <button class="classic-btn">
                                     Акционные товары
                                 </button>
                             </form>
@@ -76,20 +83,35 @@
                                 <label>
                                     <input hidden="hidden" type="text" name="message" value="Популярные товары">
                                 </label>
-                                <button>
+                                <button class="classic-btn">
                                     Популярные товары
+                                </button>
+                            </form>
+                        </section>
+
+                        <section>
+                            <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                                <label>
+                                    <input hidden="hidden" type="text" name="message" value="Моя корзина">
+                                </label>
+                                <button class="classic-btn">
+                                    Моя корзина
                                 </button>
                             </form>
                         </section>
                     </div>
 
-                    <div style="width: 100%; display: flex; padding-bottom: 15px;">
+                    <div style="width: 100%; display: flex; flex-wrap: wrap; padding-bottom: 15px;">
+                        <div style="width: 100%; border-bottom: solid 1px #aaa; margin: 5px 0; padding: 5px 0; display: flex;">
+                            <div>Выбор категории:</div>
+                        </div>
+
                         <section>
                             <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
                                 <label>
                                     <input hidden="hidden" type="text" name="message" value="магнитолы">
                                 </label>
-                                <button>
+                                <button class="classic-btn">
                                     магнитолы
                                 </button>
                             </form>
@@ -100,20 +122,56 @@
                                 <label>
                                     <input hidden="hidden" type="text" name="message" value="динамики">
                                 </label>
-                                <button>
+                                <button class="classic-btn">
                                     динамики
+                                </button>
+                            </form>
+                        </section>
+
+                        <section>
+                            <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                                <label>
+                                    <input hidden="hidden" type="text" name="message" value="уселители">
+                                </label>
+                                <button class="classic-btn">
+                                    уселители
+                                </button>
+                            </form>
+                        </section>
+
+                        <section>
+                            <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                                <label>
+                                    <input hidden="hidden" type="text" name="message" value="преобразователи">
+                                </label>
+                                <button class="classic-btn">
+                                    преобразователи
+                                </button>
+                            </form>
+                        </section>
+
+                        <section>
+                            <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                                <label>
+                                    <input hidden="hidden" type="text" name="message" value="вернуться в главное меню">
+                                </label>
+                                <button class="classic-btn bg-green classic-btn-w">
+                                    вернуться в главное меню
                                 </button>
                             </form>
                         </section>
                     </div>
 
-                    <div style="width: 100%; display: flex; padding-bottom: 15px;">
+                    <div style="width: 100%; display: flex; flex-wrap: wrap; padding-bottom: 15px;">
+                        <div style="width: 100%; border-bottom: solid 1px #aaa; margin: 5px 0; padding: 5px 0; display: flex;">
+                            <div>Выбор товара:</div>
+                        </div>
                         <section>
                             <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
                                 <label>
                                     <input hidden="hidden" type="text" name="message" value="следующий">
                                 </label>
-                                <button>
+                                <button class="classic-btn">
                                     Cледующий
                                 </button>
                             </form>
@@ -123,7 +181,7 @@
                                 <label>
                                     <input hidden="hidden" type="text" name="message" value="добавить в корзину">
                                 </label>
-                                <button>
+                                <button class="classic-btn">
                                     Добавить в корзину
                                 </button>
                             </form>
@@ -133,7 +191,7 @@
                                 <label>
                                     <input hidden="hidden" type="text" name="message" value="предыдущий">
                                 </label>
-                                <button>
+                                <button class="classic-btn">
                                     Предыдущий
                                 </button>
                             </form>
@@ -143,20 +201,43 @@
                                 <label>
                                     <input hidden="hidden" type="text" name="message" value="вернуться в главное меню">
                                 </label>
-                                <button>
+                                <button class="classic-btn bg-green classic-btn-w">
                                     вернуться в главное меню
+                                </button>
+                            </form>
+                        </section>
+                        <section>
+                            <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                                <label>
+                                    <input hidden="hidden" type="text" name="message" value="вернуться к категориям">
+                                </label>
+                                <button class="classic-btn bg-green classic-btn-w">
+                                    вернуться к категориям
                                 </button>
                             </form>
                         </section>
                     </div>
 
-                    <div style="width: 100%; display: flex; padding-bottom: 15px;">
+                    <div style="width: 100%; display: flex; flex-wrap: wrap; padding-bottom: 15px;">
+                        <div style="width: 100%; border-bottom: solid 1px #aaa; margin: 5px 0; padding: 5px 0; display: flex;">
+                            <div>Выбор варианта:</div>
+                        </div>
+                        <section>
+                            <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                                <label>
+                                    <input hidden="hidden" type="text" name="message" value="Вариант продукта 1">
+                                </label>
+                                <button class="classic-btn">
+                                    Вариант продукта 1
+                                </button>
+                            </form>
+                        </section>
                         <section>
                             <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
                                 <label>
                                     <input hidden="hidden" type="text" name="message" value="Вариант продукта 2">
                                 </label>
-                                <button>
+                                <button class="classic-btn">
                                     Вариант продукта 2
                                 </button>
                             </form>
@@ -166,19 +247,119 @@
                                 <label>
                                     <input hidden="hidden" type="text" name="message" value="Вариант продукта 4">
                                 </label>
-                                <button>
+                                <button class="classic-btn">
                                     Вариант продукта 4
                                 </button>
                             </form>
                         </section>
+                        <section>
+                            <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                                <label>
+                                    <input hidden="hidden" type="text" name="message" value="вернуться в главное меню">
+                                </label>
+                                <button class="classic-btn bg-green classic-btn-w">
+                                    вернуться в главное меню
+                                </button>
+                            </form>
+                        </section>
+                        <section>
+                            <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                                <label>
+                                    <input hidden="hidden" type="text" name="message" value="вернуться к категориям">
+                                </label>
+                                <button class="classic-btn bg-green classic-btn-w">
+                                    вернуться к товарам
+                                </button>
+                            </form>
+                        </section>
                     </div>
+
                     <div style="width: 100%; display: flex; flex-wrap: wrap; padding-bottom: 15px;">
+                        <div style="width: 100%; border-bottom: solid 1px #aaa; margin: 5px 0; padding: 5px 0; display: flex;">
+                            <div>Выбор колличества:</div>
+                        </div>
+                        <section>
+                            <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                                <label>
+                                    <input hidden="hidden" type="text" name="message" value="1">
+                                </label>
+                                <button class="classic-btn">
+                                    1
+                                </button>
+                            </form>
+                        </section>
+                        <section>
+                            <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                                <label>
+                                    <input hidden="hidden" type="text" name="message" value="2">
+                                </label>
+                                <button class="classic-btn">
+                                    2
+                                </button>
+                            </form>
+                        </section>
+                        <section>
+                            <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                                <label>
+                                    <input hidden="hidden" type="text" name="message" value="3">
+                                </label>
+                                <button class="classic-btn">
+                                    3
+                                </button>
+                            </form>
+                        </section>
+                        <section>
+                            <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                                <label>
+                                    <input hidden="hidden" type="text" name="message" value="4">
+                                </label>
+                                <button class="classic-btn">
+                                    4
+                                </button>
+                            </form>
+                        </section>
+                        <section>
+                            <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                                <label>
+                                    <input hidden="hidden" type="text" name="message" value="5">
+                                </label>
+                                <button class="classic-btn">
+                                    5
+                                </button>
+                            </form>
+                        </section>
+                        <section>
+                            <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                                <label>
+                                    <input hidden="hidden" type="text" name="message" value="вернуться в главное меню">
+                                </label>
+                                <button class="classic-btn bg-green classic-btn-w">
+                                    вернуться в главное меню
+                                </button>
+                            </form>
+                        </section>
+                        <section>
+                            <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                                <label>
+                                    <input hidden="hidden" type="text" name="message" value="вернуться к категориям">
+                                </label>
+                                <button class="classic-btn bg-green classic-btn-w">
+                                    вернуться к товарам
+                                </button>
+                            </form>
+                        </section>
+                    </div>
+
+                    <div style="width: 100%; display: flex; flex-wrap: wrap; padding-bottom: 15px;">
+                        <div style="width: 100%; border-bottom: solid 1px #aaa; margin: 5px 0; padding: 5px 0; display: flex;">
+                            <div>Финал:</div>
+                        </div>
                         <section>
                             <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
                                 <label>
                                     <input hidden="hidden" type="text" name="message" value="вернуться к товарам">
                                 </label>
-                                <button>
+                                <button class="classic-btn bg-green classic-btn-w">
                                     вернуться к товарам
                                 </button>
                             </form>
@@ -188,7 +369,7 @@
                                 <label>
                                     <input hidden="hidden" type="text" name="message" value="вернуться к категориям">
                                 </label>
-                                <button>
+                                <button class="classic-btn bg-green classic-btn-w">
                                     вернуться к категориям
                                 </button>
                             </form>
@@ -198,18 +379,8 @@
                                 <label>
                                     <input hidden="hidden" type="text" name="message" value="вернуться в главное меню">
                                 </label>
-                                <button>
+                                <button class="classic-btn bg-green classic-btn-w">
                                     вернуться в главное меню
-                                </button>
-                            </form>
-                        </section>
-                        <section>
-                            <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
-                                <label>
-                                    <input hidden="hidden" type="text" name="message" value="в корзину">
-                                </label>
-                                <button>
-                                    в корзину
                                 </button>
                             </form>
                         </section>
@@ -218,7 +389,7 @@
                                 <label>
                                     <input hidden="hidden" type="text" name="message" value="Моя корзина">
                                 </label>
-                                <button>
+                                <button class="classic-btn bg-green classic-btn-w">
                                     Моя корзина
                                 </button>
                             </form>
