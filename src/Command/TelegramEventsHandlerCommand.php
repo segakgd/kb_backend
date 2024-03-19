@@ -6,8 +6,6 @@ use App\Entity\Visitor\VisitorEvent;
 use App\Helper\CommonHelper;
 use App\Repository\User\BotRepository;
 use App\Repository\Visitor\VisitorEventRepository;
-use App\Repository\Visitor\VisitorRepository;
-use App\Service\System\Handler\ActionHandler;
 use App\Service\System\Handler\MessageHandler;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;

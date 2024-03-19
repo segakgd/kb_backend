@@ -4,6 +4,7 @@ namespace App\Controller\Webhook;
 
 use App\Dto\Webhook\Telegram\TelegramWebhookDto;
 use App\Repository\User\ProjectEntityRepository;
+use App\Service\Admin\Bot\BotServiceInterface;
 use App\Service\Admin\History\HistoryService;
 use App\Service\Common\History\HistoryEventService;
 use App\Service\Visitor\Event\VisitorEventService;
@@ -24,6 +25,7 @@ class MainWebhookController extends AbstractController
         private readonly VisitorEventService $visitorEventService,
         private readonly ProjectEntityRepository $projectEntityRepository,
         private readonly HistoryEventService $historyEventService,
+        private readonly BotServiceInterface $botService,
     ) {
     }
 
@@ -60,10 +62,11 @@ class MainWebhookController extends AbstractController
     public function addWebhookAction(Request $request, int $projectId, string $channel): JsonResponse
     {
         // todo нужно прокинуть в запрос botId
+        $botId = 10;
 
         $project = $this->projectEntityRepository->find($projectId);
 
-        if (!$project){
+        if (!$project) {
             return new JsonResponse();
         }
 
@@ -74,21 +77,24 @@ class MainWebhookController extends AbstractController
                 'json'
             );
 
+            if (!$this->botService->isActive($botId)) {
+                throw new Exception('Не активный бот');
+            }
+
             $chatId = $webhookData->getWebhookChatId();
             $visitorName = $webhookData->getVisitorName();
 
-            $visitorSession = $this->visitorSessionService->identifyByChannel($chatId, $channel);
+            $visitorSession = $this->visitorSessionService->identifyByChannel($chatId, $botId, 'telegram');
 
-            if (!$visitorSession){
+            if (!$visitorSession) {
                 $visitorSession = $this->visitorSessionService->createVisitorSession(
                     $visitorName,
                     $chatId,
+                    $botId,
                     'telegram',
-                    $projectId
+                    $project->getId()
                 );
             }
-
-            // писать в кеш uuid
 
             // определяем событие
             $this->visitorEventService->createVisitorEventForSession(

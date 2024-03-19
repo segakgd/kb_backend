@@ -33,8 +33,7 @@ class TgGoCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addArgument('visitorEventId', InputArgument::OPTIONAL, 'Обрабатываем конкретный евент')
-        ;
+            ->addArgument('visitorEventId', InputArgument::OPTIONAL, 'Обрабатываем конкретный евент');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -43,13 +42,13 @@ class TgGoCommand extends Command
 
         $visitorEventId = $input->getArgument('visitorEventId');
 
-        if ($visitorEventId){
+        if ($visitorEventId) {
             $visitorEvent = $this->visitorEventRepository->findOneById($visitorEventId);
         } else {
             $visitorEvent = $this->visitorEventRepository->findOneByStatus(VisitorEvent::STATUS_NEW);
         }
 
-        if (!$visitorEvent){
+        if (!$visitorEvent) {
             return Command::SUCCESS;
         }
 
@@ -61,17 +60,10 @@ class TgGoCommand extends Command
             $this->messageHandler->handle($visitorEvent, $contract, $bot);
 
             $this->visitorEventRepository->updateChatEventStatus($visitorEvent, $contract->getStatus());
-
-        } catch (Throwable $throwable){
+        } catch (Throwable $throwable) {
             $visitorEvent->setError($throwable->getMessage());
 
             $this->visitorEventRepository->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_FAIL);
-
-//            HistoryErrorService::errorSystem(
-//                $throwable->getMessage(),
-//                $visitorEvent->getProjectId(),
-//                HistoryService::HISTORY_TYPE_SEND_MESSAGE_TO_CHANNEL
-//            );
 
             $io->error($throwable->getMessage());
 

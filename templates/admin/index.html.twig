@@ -36,7 +36,7 @@
                         </form>
                     </section>
 
-                    <div style="width: 100%; display: flex; padding-bottom: 15px;">
+                    <div style="width: 100%; display: flex; flex-wrap: wrap; padding-bottom: 15px;">
                         <section>
                             <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
                                 <label>
@@ -60,6 +60,30 @@
                             </form>
                         </section>
 
+                        <section>
+                            <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                                <label>
+                                    <input hidden="hidden" type="text" name="message" value="Акционные товары">
+                                </label>
+                                <button>
+                                    Акционные товары
+                                </button>
+                            </form>
+                        </section>
+
+                        <section>
+                            <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                                <label>
+                                    <input hidden="hidden" type="text" name="message" value="Популярные товары">
+                                </label>
+                                <button>
+                                    Популярные товары
+                                </button>
+                            </form>
+                        </section>
+                    </div>
+
+                    <div style="width: 100%; display: flex; padding-bottom: 15px;">
                         <section>
                             <form action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
                                 <label>

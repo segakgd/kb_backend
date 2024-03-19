@@ -26,18 +26,14 @@ class InitWebhookBotSubscriber implements EventSubscriberInterface
     public function initWebhookBot(InitWebhookBotEvent $event): void
     {
         $dot = $event->getBot();
-        $uri = $dot->getWebhookUri();
 
-        if (!$uri){
-            $uri = 'https://mydevbot.ru' . '/webhook/' . $dot->getProjectId() . '/' . $dot->getType() . '/';
+        $uri = 'https://mydevbot.ru' . '/webhook/' . $dot->getProjectId() . '/' . $dot->getType() . '/';
+        $dot->setWebhookUri($uri);
 
-            $dot->setWebhookUri($uri);
-
-            $this->botRepository->saveAndFlush($dot);
-        }
+        $this->botRepository->saveAndFlush($dot);
 
         $webhookDto = (new WebhookDto())
-            ->setUrl('https://webhook.site/5264a79a-1e4d-45d1-bb92-4cb2d099f1d3')
+            ->setUrl($dot->getWebhookUri())
         ;
 
         $this->telegramService->setWebhook($webhookDto, $dot->getToken());
