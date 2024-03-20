@@ -7,6 +7,7 @@ use App\Repository\User\ProjectEntityRepository;
 use App\Service\Admin\Bot\BotServiceInterface;
 use App\Service\Admin\History\HistoryService;
 use App\Service\Common\History\HistoryEventService;
+use App\Service\System\MessageHistoryService;
 use App\Service\Visitor\Event\VisitorEventService;
 use App\Service\Visitor\Session\VisitorSessionService;
 use Exception;
@@ -26,6 +27,7 @@ class MainWebhookController extends AbstractController
         private readonly ProjectEntityRepository $projectEntityRepository,
         private readonly HistoryEventService $historyEventService,
         private readonly BotServiceInterface $botService,
+        private readonly MessageHistoryService $messageHistoryService,
     ) {
     }
 
@@ -83,6 +85,12 @@ class MainWebhookController extends AbstractController
 
             $chatId = $webhookData->getWebhookChatId();
             $visitorName = $webhookData->getVisitorName();
+
+            // todo проверить на IS_DEV
+            $this->messageHistoryService->create(
+                message: $webhookData->getWebhookContent(),
+                type: MessageHistoryService::OUTGOING,
+            );
 
             $visitorSession = $this->visitorSessionService->identifyByChannel($chatId, $botId, 'telegram');
 

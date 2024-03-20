@@ -63,6 +63,19 @@ class MessageHandler
         $this->entityManager->flush();
     }
 
+    private function getCacheDtoFromSession(VisitorSession $visitorSession): CacheDto
+    {
+        $cache = $visitorSession->getCache();
+
+        /** @var CacheDto $cacheDto */
+        return $this->serializer->denormalize($cache, CacheDto::class);
+    }
+
+    // todo задача:
+    //  1. к сценарию нужно добавить alias, и искать именно по нему, а не по наванию!
+    //  2. переделать Chain-ы каждый Chain должен уметь работать самостоятельно, без поддержки другого
+    //      т.е цвенья цепи должны быть сомостоятельны.
+
     /**
      * @throws Exception
      */
@@ -78,11 +91,6 @@ class MessageHandler
             );
         }
     }
-
-    // todo задача:
-    //  1. к сценарию нужно добавить alias, и искать именно по нему, а не по наванию!
-    //  2. переделать Chain-ы каждый Chain должен уметь работать самостоятельно, без поддержки другого
-    //      т.е цвенья цепи должны быть сомостоятельны.
 
     private function goto(
         VisitorEvent $visitorEvent,
@@ -122,14 +130,6 @@ class MessageHandler
         $this->insertCacheDtoFromSession($visitorSession, $cacheDto);
 
         $contract->setStatus(VisitorEvent::STATUS_NEW);
-    }
-
-    private function getCacheDtoFromSession(VisitorSession $visitorSession): CacheDto
-    {
-        $cache = $visitorSession->getCache();
-
-        /** @var CacheDto $cacheDto */
-        return $this->serializer->denormalize($cache, CacheDto::class);
     }
 
     private function insertCacheDtoFromSession(VisitorSession $visitorSession, CacheDto $cacheDto): void

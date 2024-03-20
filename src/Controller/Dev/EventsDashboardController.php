@@ -10,6 +10,7 @@ use App\Entity\User\Project;
 use App\Entity\Visitor\VisitorEvent;
 use App\Event\InitWebhookBotEvent;
 use App\Service\Admin\Bot\BotServiceInterface;
+use App\Service\System\MessageHistoryService;
 use App\Service\Visitor\Event\VisitorEventService;
 use App\Service\Visitor\Session\VisitorSessionService;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -22,6 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Throwable;
 
 class EventsDashboardController extends AbstractDashboardController
 {
@@ -33,6 +35,7 @@ class EventsDashboardController extends AbstractDashboardController
         private readonly SerializerInterface $serializer,
         private readonly VisitorSessionService $visitorSessionService,
         private readonly VisitorEventService $visitorEventService,
+        private readonly MessageHistoryService $messageHistoryService,
     ) {
     }
 
@@ -79,6 +82,12 @@ class EventsDashboardController extends AbstractDashboardController
 
         $chatId = $webhookData->getWebhookChatId();
         $visitorName = $webhookData->getVisitorName();
+
+        // todo проверить на IS_DEV
+        $this->messageHistoryService->create(
+            message: $webhookData->getWebhookContent(),
+            type: MessageHistoryService::OUTGOING,
+        );
 
         $visitorSession = $this->visitorSessionService->identifyByChannel($chatId, $botId, 'telegram');
 
@@ -159,6 +168,7 @@ class EventsDashboardController extends AbstractDashboardController
 
     /**
      * @throws Exception
+     * @throws Throwable
      */
     #[Route('/dev/project/{project}/scenario/{scenarioTemplate}/apply/', name: 'apply_scenario_to_bot', methods: ['GET'])]
     public function applyScenarioToBot(

@@ -10,6 +10,7 @@ use App\Entity\User\Project;
 use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
 use App\Helper\CommonHelper;
+use App\Repository\MessageHistoryRepository;
 use App\Repository\Visitor\VisitorEventRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Admin\Bot\BotServiceInterface;
@@ -31,6 +32,7 @@ class DashboardService
         private readonly VisitorEventRepository $visitorEventRepository,
         private readonly ScenarioTemplateService $scenarioTemplateService,
         private readonly ScenarioService $scenarioService,
+        private readonly MessageHistoryRepository $historyRepository,
     ) {
     }
 
@@ -53,7 +55,15 @@ class DashboardService
             'sessions' => $this->prepareSessions($sessions),
             'events' => $this->prepareEvents($events),
             'botSteps' => $this->prepareBotSteps($project),
+            'messages' => $this->getMessageHistory($project),
         ];
+    }
+
+    private function getMessageHistory(Project $project): array
+    {
+        // todo use $project
+
+        return $this->historyRepository->findAll();
     }
 
     private function prepareHistory(array $histories): array
