@@ -108,7 +108,18 @@ class EventsDashboardController extends AbstractDashboardController
             $webhookData->getWebhookContent(),
         );
 
-        return new RedirectResponse('/admin');
+        $application = new Application($this->kernel);
+        $application->setAutoExit(false);
+
+        $input = new ArrayInput(
+            [
+                'command' => 'kb:tg:handler_events',
+            ]
+        );
+
+        $application->run($input);
+
+        return new RedirectResponse("/admin/session/{$visitorSession->getId()}");
     }
 
     #[Route('/dev/project/{project}/bot/{botId}/activate/', name: 'dev_bot_activate', methods: ['GET'])]

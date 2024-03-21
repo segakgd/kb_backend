@@ -46,6 +46,8 @@ class VariantCount extends AbstractChain
                 [
                     'text' => 'вернуться к категориям'
                 ],
+            ],
+            [
                 [
                     'text' => 'вернуться в главное меню'
                 ],

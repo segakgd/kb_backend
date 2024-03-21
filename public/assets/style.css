@@ -651,7 +651,7 @@ h1, h2 {
     background: url('https://i.pinimg.com/736x/8e/6b/e9/8e6be91a01ba06f18b9eddfb944b2b42.jpg');
     background-size: cover;
     overflow: auto;
-    height: 600px;
+    height: 500px;
 }
 
 .messenger-message {
@@ -691,6 +691,7 @@ h1, h2 {
     padding: 0 20px;
     margin: 20px 0;
     color: #fff;
+    white-space: pre-line;
 }
 
 .messenger-nav {
@@ -699,10 +700,11 @@ h1, h2 {
     background: #425156;
     color: #fff;
     border-radius: 9px;
-    margin: 5px;
+    /*margin: 5px;*/
     border: none;
     width: 130px;
     height: 90px;
+    /*margin: 10px;*/
 }
 
 .messenger-nav:hover {

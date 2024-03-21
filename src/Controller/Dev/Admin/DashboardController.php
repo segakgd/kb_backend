@@ -38,6 +38,16 @@ class DashboardController extends AbstractDashboardController
         );
     }
 
+    #[Route('/admin/session/{visitorSession}/', name: 'admin-session')]
+    public function getSessionData(VisitorSession $visitorSession): Response
+    {
+        $dashboardData = $this->dashboardService->getDashboardSessionData($visitorSession);
+
+        return $this->render('admin/session.html.twig',
+            $dashboardData
+        );
+    }
+
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()

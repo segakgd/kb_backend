@@ -3,7 +3,6 @@
 namespace App\Service\Admin;
 
 use App\Entity\History\History;
-use App\Entity\Scenario\Scenario;
 use App\Entity\Scenario\ScenarioTemplate;
 use App\Entity\User\Bot;
 use App\Entity\User\Project;
@@ -18,7 +17,6 @@ use App\Service\Admin\History\HistoryService;
 use App\Service\Admin\History\HistoryServiceInterface;
 use App\Service\Admin\Scenario\ScenarioTemplateService;
 use App\Service\Integration\Telegram\TelegramService;
-use App\Service\Visitor\Scenario\ScenarioService;
 use App\Service\Visitor\Session\VisitorSessionService;
 
 class DashboardService
@@ -31,9 +29,84 @@ class DashboardService
         private readonly VisitorSessionRepository $visitorSessionRepository,
         private readonly VisitorEventRepository $visitorEventRepository,
         private readonly ScenarioTemplateService $scenarioTemplateService,
-        private readonly ScenarioService $scenarioService,
         private readonly MessageHistoryRepository $historyRepository,
     ) {
+    }
+
+    public function getDashboardSessionData(VisitorSession $visitorSession): array
+    {
+        $events = $this->visitorEventRepository->findAllByProjectId($visitorSession->getProjectId());
+
+        return [
+            'botId' => $visitorSession->getBotId(),
+            'projectId' => $visitorSession->getProjectId(),
+            'events' => $this->prepareEvents($events),
+            'messages' => $this->getMessageHistory(),
+            'commands' => $this->getCommands(),
+        ];
+    }
+
+    private function prepareEvents(array $events): array
+    {
+        $prepareEvents = [];
+
+        /** @var VisitorEvent $event */
+        foreach ($events as $event) {
+            $visitorSession = $this->visitorSessionRepository->findOneBy(
+                [
+                    'visitorEvent' => $event->getId()
+                ]
+            );
+
+            $chains = [];
+
+            if ($visitorSession) {
+                $cache = $visitorSession->getCache();
+                $cacheEvent = $cache['event'];
+                $cacheChains = $cacheEvent['chains'];
+
+                foreach ($cacheChains as $cacheChain) {
+                    $chains[] = [
+                        'name' => CommonHelper::translate($cacheChain['target']),
+                        'status' => $cacheChain['finished'],
+                    ];
+                }
+            }
+
+            $prepareEvent = [
+                'id' => $event->getId(),
+                'type' => $event->getType(),
+                'status' => $event->getStatus(),
+                'createdAt' => $event->getCreatedAt(),
+                'chains' => $chains,
+                'error' => $event->getError(),
+            ];
+
+            $prepareEvents[] = $prepareEvent;
+        }
+
+        return array_reverse($prepareEvents); // todo не очень норм использовать array_reverse
+    }
+
+    private function getMessageHistory(): array
+    {
+        return $this->historyRepository->findAll();
+    }
+
+    private function getCommands(): array
+    {
+        return [
+            [
+                'commandName' => '⛳️️ Обработать события',
+                'commandCode' => 'kb:tg:handler_events',
+                'commandDescription' => 'Обрабатывает события находящиеся в очереди со статусом new',
+            ],
+            [
+                'commandName' => '🚨 Отчистить кэш',
+                'commandCode' => 'cache:clear',
+                'commandDescription' => 'Чистим кеш в проде',
+            ],
+        ];
     }
 
     public function getDashboardForProject(Project $project): array
@@ -54,16 +127,8 @@ class DashboardService
             'commands' => $this->getCommands(),
             'sessions' => $this->prepareSessions($sessions),
             'events' => $this->prepareEvents($events),
-            'botSteps' => $this->prepareBotSteps($project),
-            'messages' => $this->getMessageHistory($project),
+            'messages' => $this->getMessageHistory(),
         ];
-    }
-
-    private function getMessageHistory(Project $project): array
-    {
-        // todo use $project
-
-        return $this->historyRepository->findAll();
     }
 
     private function prepareHistory(array $histories): array
@@ -171,22 +236,6 @@ class DashboardService
         return $prepareScenarios;
     }
 
-    private function getCommands(): array
-    {
-        return [
-            [
-                'commandName' => '⛳️️ Обработать события',
-                'commandCode' => 'kb:tg:handler_events',
-                'commandDescription' => 'Обрабатывает события находящиеся в очереди со статусом new',
-            ],
-            [
-                'commandName' => '🚨 Отчистить кэш',
-                'commandCode' => 'cache:clear',
-                'commandDescription' => 'Чистим кеш в проде',
-            ],
-        ];
-    }
-
     private function prepareSessions(array $sessions): array
     {
         $prepareSessions = [];
@@ -202,6 +251,7 @@ class DashboardService
             $cache = $session->getCache();
 
             $prepareSession = [
+                'id' => $session->getId(),
                 'sessionName' => $session->getName(),
                 'sessionChannel' => $session->getChannel(),
                 'cache' => [
@@ -220,151 +270,5 @@ class DashboardService
         }
 
         return $prepareSessions;
-    }
-
-    private function prepareEvents(array $events): array
-    {
-        $prepareEvents = [];
-
-        /** @var VisitorEvent $event */
-        foreach ($events as $event) {
-            $visitorSession = $this->visitorSessionRepository->findOneBy(
-                [
-                    'visitorEvent' => $event->getId()
-                ]
-            );
-
-            $chains = [];
-
-            if ($visitorSession) {
-                $cache = $visitorSession->getCache();
-                $cacheEvent = $cache['event'];
-                $cacheChains = $cacheEvent['chains'];
-
-                foreach ($cacheChains as $cacheChain) {
-                    $chains[] = [
-                        'name' => CommonHelper::translate($cacheChain['target']),
-                        'status' => $cacheChain['finished'],
-                    ];
-                }
-            }
-
-            $prepareEvent = [
-                'id' => $event->getId(),
-                'type' => $event->getType(),
-                'status' => $event->getStatus(),
-                'createdAt' => $event->getCreatedAt(),
-                'chains' => $chains,
-                'error' => $event->getError(),
-            ];
-
-            $prepareEvents[] = $prepareEvent;
-        }
-
-        return array_reverse($prepareEvents); // todo не очень норм использовать array_reverse
-    }
-
-    private function prepareBotSteps(Project $project): array
-    {
-        $botSteps = [];
-
-        $scenarios = $this->scenarioService->getAllByProjectId($project->getId());
-
-        /** @var Scenario $scenario */
-        foreach ($scenarios as $scenario) {
-            $stepsKeyboard = [];
-            $chains = [];
-
-            foreach ($scenario->getSteps() as $step) {
-                if (isset($step['chain'])) {
-                    $chains = array_merge($chains, $step['chain']);
-                }
-
-                if (isset($step['keyboard'])) {
-                    foreach ($step['keyboard']['replyMarkup'] as $replyMarkups) {
-                        foreach ($replyMarkups as $replyMarkup) {
-                            $stepsKeyboard[] = [
-                                'name' => $replyMarkup['text'],
-                                'target' => $replyMarkup['target'],
-                            ];
-                        }
-                    }
-                }
-            }
-
-            $botSteps[$scenario->getUUID()] = [
-                'alias' => $scenario->getAlias(),
-                'name' => $scenario->getName(),
-                'type' => $scenario->getType(),
-                'UUID' => $scenario->getUUID(),
-                'keyboard' => $stepsKeyboard,
-                'chains' => $chains,
-            ];
-        }
-
-        $session = $this->visitorSessionService->findAll(4842);
-        $session = $session[0] ?? null;
-
-        if (!$session) {
-            return [];
-        }
-
-        $cache = $session->getCache();
-
-        if (isset($cache['eventUUID'])) {
-            $botSteps[$cache['eventUUID']]['status'] = 'await';
-
-            foreach ($cache['event']['chains'] as $chainCache) {
-                foreach ($botSteps[$cache['eventUUID']]['chains'] as $key => $chain) {
-                    if ($chainCache['target'] === $chain['target']) {
-                        $botSteps[$cache['eventUUID']]['chains'][$key]['finish'] = $chainCache['finished'];
-                    }
-                }
-            }
-        }
-
-        return $this->sub($botSteps);
-    }
-
-    private function sub(array $botSteps): array
-    {
-        $result = [];
-
-        foreach ($botSteps as $botStep) {
-            foreach ($botStep['keyboard'] ?? [] as $keyboard) {
-                if (isset($botSteps[$keyboard['target']])) {
-                    $result[] = $this->step($botStep, $botSteps);
-                }
-            }
-        }
-
-        return $result;
-    }
-
-    private function step(array $botStep, array &$botSteps): array
-    {
-        $resultSub = [];
-
-        $chains = $botStep['chains'];
-        $status = 'not-process';
-
-        if (isset($botStep['status'])) {
-            $status = $botStep['status'];
-        }
-
-        foreach ($botStep['keyboard'] as $keyboard) {
-            if ($botSteps[$keyboard['target']]) {
-                $resultSub[] = $this->step($botSteps[$keyboard['target']], $botSteps);
-
-                unset($botSteps[$keyboard['target']]);
-            }
-        }
-
-        return [
-            'name' => $botStep['name'],
-            'sub' => $resultSub,
-            'chain' => $chains,
-            'status' => $status,
-        ];
     }
 }
