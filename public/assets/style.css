@@ -657,7 +657,7 @@ h1, h2 {
 .messenger-message {
     height: max-content;
     width: 350px;
-    margin: 30px;
+    margin: 10px 30px;
     background: #30383b;
     border-radius: 15px;
     overflow: hidden
@@ -670,7 +670,7 @@ h1, h2 {
 .messenger-message--outgoing {
     width: max-content;
     max-width: 350px;
-    margin: 30px 30px 30px auto;
+    margin: 10px 30px 10px auto;
 }
 
 .messenger-message-image {

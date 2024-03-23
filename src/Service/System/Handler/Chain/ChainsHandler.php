@@ -43,8 +43,11 @@ class ChainsHandler
 
         // todo подумай в рамках ооп, создай сущность которая будех зранить значения нунешнего шага и всё такое...
 
-        foreach ($chains as $chain) {
+        $chainCount = count($chains);
+
+        foreach ($chains as $key => $chain) {
             /** @var CacheChainDto $chain */
+
             if ($chain->isNotFinished()) {
                 $isHandle = $this->handleByType($chain->getTarget(), $contract, $cacheDto);
 
@@ -56,22 +59,11 @@ class ChainsHandler
                     $chain->setFinished(true);
                 }
 
-                // todo нужно ли обрабатывать $isHandle === false??
-
-                // todo костыль >>>
-                foreach ($chains as $chainsSub) {
-                    /** @var CacheChainDto $chainsSub */
-                    $cacheDto->getEvent()->setFinished(true); // todo костыль
-
-                    if (!$chainsSub->isFinished()) {
-                        $cacheDto->getEvent()->setFinished(false);
-
-                        break;
-                    }
-                }
-                // todo костыль <<<
-
                 break;
+            }
+
+            if ($chainCount === 1 + $key && $chain->isFinished()) {
+                $cacheDto->getEvent()->setFinished(true);
             }
         }
 

@@ -38,7 +38,7 @@ abstract class AbstractChain
         if ($result) {
             $contract->setGoto($result);
 
-            return false;
+            return true;
         }
 
         return false;
