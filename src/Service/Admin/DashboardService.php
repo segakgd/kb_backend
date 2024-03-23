@@ -41,8 +41,10 @@ class DashboardService
             'botId' => $visitorSession->getBotId(),
             'projectId' => $visitorSession->getProjectId(),
             'events' => $this->prepareEvents($events),
+            'event' => $this->getLastEvent($visitorSession->getProjectId()),
             'messages' => $this->getMessageHistory(),
             'commands' => $this->getCommands(),
+            'session' => $this->prepareSession($visitorSession),
         ];
     }
 
@@ -52,40 +54,21 @@ class DashboardService
 
         /** @var VisitorEvent $event */
         foreach ($events as $event) {
-            $visitorSession = $this->visitorSessionRepository->findOneBy(
-                [
-                    'visitorEvent' => $event->getId()
-                ]
-            );
-
-            $chains = [];
-
-            if ($visitorSession) {
-                $cache = $visitorSession->getCache();
-                $cacheEvent = $cache['event'];
-                $cacheChains = $cacheEvent['chains'];
-
-                foreach ($cacheChains as $cacheChain) {
-                    $chains[] = [
-                        'name' => CommonHelper::translate($cacheChain['target']),
-                        'status' => $cacheChain['finished'],
-                    ];
-                }
-            }
-
-            $prepareEvent = [
-                'id' => $event->getId(),
-                'type' => $event->getType(),
-                'status' => $event->getStatus(),
-                'createdAt' => $event->getCreatedAt(),
-                'chains' => $chains,
-                'error' => $event->getError(),
-            ];
-
-            $prepareEvents[] = $prepareEvent;
+            $prepareEvents[] = $this->prepareEvent($event);
         }
 
         return array_reverse($prepareEvents); // todo не очень норм использовать array_reverse
+    }
+
+    private function getLastEvent(int $projectId): array
+    {
+        $event = $this->visitorEventRepository->getLastByProjectId($projectId);
+
+        if (!$event) {
+            return [];
+        }
+
+        return $this->prepareEvent($event);
     }
 
     private function getMessageHistory(): array
@@ -107,6 +90,35 @@ class DashboardService
                 'commandDescription' => 'Чистим кеш в проде',
             ],
         ];
+    }
+
+    private function prepareSession(VisitorSession $session): array
+    {
+        $visitorEvent = null;
+
+        if ($session->getVisitorEvent()) {
+            $visitorEvent = $this->visitorEventRepository->findOneById($session->getVisitorEvent());
+        }
+
+        $cache = $session->getCache();
+
+        $prepareSession = [
+            'id' => $session->getId(),
+            'sessionName' => $session->getName(),
+            'sessionChannel' => $session->getChannel(),
+            'cache' => [
+                'content' => $cache['content'] ?? null
+            ]
+        ];
+
+        if ($visitorEvent) {
+            $prepareSession['sessionVisitorEvent'] = [
+                'type' => $visitorEvent->getType(),
+                'status' => $visitorEvent->getStatus(),
+            ];
+        }
+
+        return $prepareSession;
     }
 
     public function getDashboardForProject(Project $project): array
@@ -242,33 +254,43 @@ class DashboardService
 
         /** @var VisitorSession $session */
         foreach ($sessions as $session) {
-            $visitorEvent = null;
-
-            if ($session->getVisitorEvent()) {
-                $visitorEvent = $this->visitorEventRepository->findOneById($session->getVisitorEvent());
-            }
-
-            $cache = $session->getCache();
-
-            $prepareSession = [
-                'id' => $session->getId(),
-                'sessionName' => $session->getName(),
-                'sessionChannel' => $session->getChannel(),
-                'cache' => [
-                    'content' => $cache['content'] ?? null
-                ]
-            ];
-
-            if ($visitorEvent) {
-                $prepareSession['sessionVisitorEvent'] = [
-                    'type' => $visitorEvent->getType(),
-                    'status' => $visitorEvent->getStatus(),
-                ];
-            }
-
-            $prepareSessions[] = $prepareSession;
+            $prepareSessions[] = $this->prepareSession($session);
         }
 
         return $prepareSessions;
+    }
+
+    private function prepareEvent(VisitorEvent $event): array
+    {
+        $visitorSession = $this->visitorSessionRepository->findOneBy(
+            [
+                'visitorEvent' => $event->getId()
+            ]
+        );
+
+        $chains = [];
+
+        if ($visitorSession) {
+            $cache = $visitorSession->getCache();
+            $cacheEvent = $cache['event'];
+            $cacheChains = $cacheEvent['chains'];
+
+            foreach ($cacheChains as $cacheChain) {
+                $chains[] = [
+                    'name' => CommonHelper::translate($cacheChain['target']),
+                    'status' => $cacheChain['finished'],
+                ];
+            }
+        }
+
+        return [
+            'id' => $event->getId(),
+            'type' => $event->getType(),
+            'status' => $event->getStatus(),
+            'createdAt' => $event->getCreatedAt(),
+            'chains' => $chains,
+            'error' => $event->getError(),
+            'contract' => $event->getContract(),
+        ];
     }
 }

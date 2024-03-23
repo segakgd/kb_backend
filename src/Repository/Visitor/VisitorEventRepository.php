@@ -30,6 +30,18 @@ class VisitorEventRepository extends ServiceEntityRepository
         );
     }
 
+    public function getLastByProjectId(int $projectId): ?VisitorEvent
+    {
+        return $this->findOneBy(
+            [
+                'projectId' => $projectId
+            ],
+            [
+                'createdAt' => 'desc'
+            ]
+        );
+    }
+
     public function findOneById(int $id): ?VisitorEvent
     {
         return $this->find($id);

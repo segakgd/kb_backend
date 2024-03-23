@@ -32,8 +32,11 @@ class TgGoCommand extends Command
 
     protected function configure(): void
     {
-        $this
-            ->addArgument('visitorEventId', InputArgument::OPTIONAL, 'Обрабатываем конкретный евент');
+        $this->addArgument(
+            'visitorEventId',
+            InputArgument::OPTIONAL,
+            'Обрабатываем конкретный евент'
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

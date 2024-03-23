@@ -42,6 +42,9 @@ class VisitorEvent
     #[ORM\Column(length: 36)]
     private ?string $scenarioUUID = null;
 
+    #[ORM\Column]
+    private array $contract = [];
+
     public function __construct()
     {
         if ($this->createdAt === null){
@@ -122,6 +125,18 @@ class VisitorEvent
     public function setScenarioUUID(string $scenarioUUID): static
     {
         $this->scenarioUUID = $scenarioUUID;
+
+        return $this;
+    }
+
+    public function getContract(): array
+    {
+        return $this->contract;
+    }
+
+    public function setContract(array $contract): static
+    {
+        $this->contract = $contract;
 
         return $this;
     }

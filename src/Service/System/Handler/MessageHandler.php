@@ -58,6 +58,9 @@ class MessageHandler
             $this->insertCacheDtoFromSession($visitorSession, $cacheDto);
         }
 
+        // todo is dev
+        $visitorEvent->setContract($this->serializer->normalize($contract));
+
         $this->entityManager->persist($visitorEvent);
         $this->entityManager->persist($visitorSession);
         $this->entityManager->flush();

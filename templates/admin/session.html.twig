@@ -1,5 +1,25 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
+{% block page_actions %}
+    {% if session is not empty %}
+        <div class="jj__item" style="display:flex;">
+            <div class="jj__item_name" style="margin-right: 20px;">Название сессии: {{ session.sessionName }}</div>
+
+            <div class="jj__item_data">
+                <section style="font-weight: bold; color: #ca0a9d;">
+                    <span>Контент:</span> {{ session.cache.content }}
+                </section>
+            </div>
+        </div>
+    {% endif %}
+
+    {% for command in commands %}
+        <a class="btn btn-primary" href="/dev/project/{{ projectId }}/command/{{ command.commandCode }}/start/{{ session.id }}">
+            {{ command.commandName }}
+        </a>
+    {% endfor %}
+{% endblock %}
+
 {% block main %}
     <div class="jj__main_wrapper jj__main_wrapper--line">
         <div class="jj__wrapper jj__wrapper-50 jj__wrapper-h-auto">
@@ -15,9 +35,7 @@
                             {% endif %}
 
                             <div class="messenger-message-text">
-                                <p>
-                                    {{ message.message }}
-                                </p>
+                                <p>{{ message.message }}</p>
                             </div>
                         </div>
                     {% endfor %}
@@ -56,7 +74,7 @@
                                             <input hidden="hidden" type="text" name="message"
                                                    value="{{ keyboard_sub.text }}">
                                         </label>
-                                        <button class="messenger-nav" style="height: auto; width: 100%;">
+                                        <button class="messenger-nav" style="height: 100%; width: 100%;">
                                             {{ keyboard_sub.text }}
                                         </button>
                                     </form>
@@ -142,5 +160,9 @@
             </div>
         </div>
     </div>
+
+    {% if event is not empty %}
+        {{ event.contract|json_encode(constant('JSON_UNESCAPED_UNICODE')) }}
+    {% endif %}
 
 {% endblock %}

@@ -8,6 +8,7 @@ use App\Dto\Webhook\Telegram\TelegramWebhookDto;
 use App\Entity\Scenario\ScenarioTemplate;
 use App\Entity\User\Project;
 use App\Entity\Visitor\VisitorEvent;
+use App\Entity\Visitor\VisitorSession;
 use App\Event\InitWebhookBotEvent;
 use App\Service\Admin\Bot\BotServiceInterface;
 use App\Service\System\MessageHistoryService;
@@ -222,5 +223,25 @@ class EventsDashboardController extends AbstractDashboardController
         $application->run($input);
 
         return new RedirectResponse('/admin');
+    }
+
+    /**
+     * @throws Exception
+     */
+    #[Route('/dev/project/{project}/command/{command}/start/{session}', name: 'dev_command_start', methods: ['GET'])]
+    public function commandStartForSession(Project $project, string $command, VisitorSession $session): RedirectResponse
+    {
+        $application = new Application($this->kernel);
+        $application->setAutoExit(false);
+
+        $input = new ArrayInput(
+            [
+                'command' => $command,
+            ]
+        );
+
+        $application->run($input);
+
+        return new RedirectResponse("/admin/session/{$session->getId()}/");
     }
 }

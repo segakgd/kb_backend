@@ -30,7 +30,7 @@ class SenderService
             $this->messageHistoryService->create(
                 message: $message->getMessage(),
                 type: MessageHistoryService::INCOMING,
-                keyboard: $message->getKeyBoard(),
+                keyboard: $message->getKeyBoard() ?? [],
                 images: [
                     [
                         'uri' => $message->getPhoto()
