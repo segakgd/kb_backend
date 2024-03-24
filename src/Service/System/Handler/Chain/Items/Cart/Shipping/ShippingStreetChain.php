@@ -12,7 +12,7 @@ class ShippingStreetChain extends AbstractChain
     {
         $content = $cacheDto->getContent();
 
-        dd($content);
+        dd(self::class);
 
         return true;
     }

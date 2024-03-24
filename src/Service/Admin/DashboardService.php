@@ -2,7 +2,6 @@
 
 namespace App\Service\Admin;
 
-use App\Entity\History\History;
 use App\Entity\Scenario\ScenarioTemplate;
 use App\Entity\User\Bot;
 use App\Entity\User\Project;
@@ -13,8 +12,6 @@ use App\Repository\MessageHistoryRepository;
 use App\Repository\Visitor\VisitorEventRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Admin\Bot\BotServiceInterface;
-use App\Service\Admin\History\HistoryService;
-use App\Service\Admin\History\HistoryServiceInterface;
 use App\Service\Admin\Scenario\ScenarioTemplateService;
 use App\Service\Integration\Telegram\TelegramService;
 use App\Service\Visitor\Session\VisitorSessionService;
@@ -23,7 +20,6 @@ class DashboardService
 {
     public function __construct(
         private readonly TelegramService $telegramService,
-        private readonly HistoryServiceInterface $historyService,
         private readonly BotServiceInterface $botService,
         private readonly VisitorSessionService $visitorSessionService,
         private readonly VisitorSessionRepository $visitorSessionRepository,
@@ -125,7 +121,6 @@ class DashboardService
     {
         $projectId = $project->getId();
 
-        $histories = $this->historyService->findAll($projectId, 10);
         $bots = $this->botService->findAll($projectId);
         $sessions = $this->visitorSessionService->findAll($projectId);
         $events = $this->visitorEventRepository->findAllByProjectId($projectId);
@@ -133,7 +128,6 @@ class DashboardService
 
         return [
             'projectId' => $projectId,
-            'histories' => $this->prepareHistory($histories),
             'bots' => $this->prepareBots($bots, $project),
             'scenario' => $this->prepareScenario($scenarioTemplate),
             'commands' => $this->getCommands(),
@@ -141,47 +135,6 @@ class DashboardService
             'events' => $this->prepareEvents($events),
             'messages' => $this->getMessageHistory(),
         ];
-    }
-
-    private function prepareHistory(array $histories): array
-    {
-        $prepareHistories = [];
-
-        /** @var History $history */
-        foreach ($histories as $history) {
-            $prepareHistory = [
-                'createdAt' => $history->getCreatedAt(),
-                'status' => $history->getStatus(),
-                'type' => $this->getNormalizedType($history->getType()),
-                'sender' => [
-                    'name' => $history->getSender(),
-                    'icon' => $this->getIconUri($history->getSender()),
-                ],
-                'recipient' => [
-                    'name' => $history->getRecipient(),
-                    'icon' => $this->getIconUri($history->getRecipient()),
-                ],
-            ];
-
-            if ($history->getStatus() === HistoryService::HISTORY_STATUS_ERROR) {
-                $prepareHistory['errorMessage'] = $this->getNormalizedErrorMessage($history->getError());
-            }
-
-            $prepareHistories[] = $prepareHistory;
-        }
-
-        return $prepareHistories;
-    }
-
-    private function getNormalizedType(string $type): string
-    {
-        return match ($type) {
-            HistoryService::HISTORY_TYPE_NEW_LEAD => 'новая заявка',
-            HistoryService::HISTORY_TYPE_SEND_MESSAGE_TO_CHANNEL => 'отправка данных в сторонний сервис (интеграции)',
-            HistoryService::HISTORY_TYPE_SEND_MESSAGE_TO_TELEGRAM_CHANNEL => 'отправка уведомлений в telegram',
-            HistoryService::HISTORY_TYPE_LOGIN => 'вход в систему',
-            HistoryService::HISTORY_TYPE_WEBHOOK => 'Вебхук',
-        };
     }
 
     private function getIconUri($name): string

@@ -12,13 +12,15 @@ class ShippingCountryChain extends AbstractChain
     {
         $content = $cacheDto->getContent();
 
-        dd($content);
+        dd(self::class);
 
         return true;
     }
 
     public function fall(Contract $contract, CacheDto $cacheDto): bool
     {
+        // todo проверить доступные города
+
         return false;
     }
 
