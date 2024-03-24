@@ -9,7 +9,15 @@ use App\Service\System\Contract;
 use App\Service\System\Handler\Chain\Items\Cart\ContactChain;
 use App\Service\System\Handler\Chain\Items\Cart\ContactViewChain;
 use App\Service\System\Handler\Chain\Items\Cart\PhoneContactChain;
+use App\Service\System\Handler\Chain\Items\Cart\Shipping\ShippingApartmentChain;
 use App\Service\System\Handler\Chain\Items\Cart\Shipping\ShippingChain;
+use App\Service\System\Handler\Chain\Items\Cart\Shipping\ShippingCityChain;
+use App\Service\System\Handler\Chain\Items\Cart\Shipping\ShippingCountryChain;
+use App\Service\System\Handler\Chain\Items\Cart\Shipping\ShippingEntranceChain;
+use App\Service\System\Handler\Chain\Items\Cart\Shipping\ShippingFinishChain;
+use App\Service\System\Handler\Chain\Items\Cart\Shipping\ShippingNumberHomeChain;
+use App\Service\System\Handler\Chain\Items\Cart\Shipping\ShippingRegionChain;
+use App\Service\System\Handler\Chain\Items\Cart\Shipping\ShippingStreetChain;
 use App\Service\System\Handler\Chain\Items\Category\ShopProductsCategoryChain;
 use App\Service\System\Handler\Chain\Items\Category\ShopProductsChain;
 use App\Service\System\Handler\Chain\Items\Category\ShowShopProductsCategoryChain;
@@ -41,7 +49,14 @@ class ChainsHandler
         private readonly PhoneContactChain $phoneContactChain,
         private readonly ShippingChain $shippingChain,
 
-
+        private readonly ShippingApartmentChain $shippingApartmentChain,
+        private readonly ShippingStreetChain $shippingStreetChain,
+        private readonly ShippingRegionChain $shippingRegionChain,
+        private readonly ShippingNumberHomeChain $shippingNumberHomeChain,
+        private readonly ShippingEntranceChain $shippingEntranceChain,
+        private readonly ShippingCountryChain $shippingCountryChain,
+        private readonly ShippingCityChain $shippingCityChain,
+        private readonly ShippingFinishChain $shippingFinishChain,
     ) {
     }
 
@@ -113,14 +128,14 @@ class ChainsHandler
             ChainsEnum::CartContact => $this->contactChain,
             ChainsEnum::CartShipping => $this->shippingChain,
 
-            ChainsEnum::CartShippingCountry => $this->shippingChain,
-            ChainsEnum::CartShippingRegion => $this->shippingChain,
-            ChainsEnum::CartShippingCity => $this->shippingChain,
-            ChainsEnum::CartShippingStreet => $this->shippingChain,
-            ChainsEnum::CartShippingNumberHome => $this->shippingChain,
-            ChainsEnum::CartShippingEntrance => $this->shippingChain,
-            ChainsEnum::CartShippingApartment => $this->shippingChain,
-            ChainsEnum::CartFinish => $this->shippingChain,
+            ChainsEnum::CartShippingCountry => $this->shippingCountryChain,
+            ChainsEnum::CartShippingRegion => $this->shippingRegionChain,
+            ChainsEnum::CartShippingCity => $this->shippingCityChain,
+            ChainsEnum::CartShippingStreet => $this->shippingStreetChain,
+            ChainsEnum::CartShippingNumberHome => $this->shippingNumberHomeChain,
+            ChainsEnum::CartShippingEntrance => $this->shippingEntranceChain,
+            ChainsEnum::CartShippingApartment => $this->shippingApartmentChain,
+            ChainsEnum::CartFinish => $this->shippingFinishChain,
         };
 
         return $chain->chain($contract, $cacheDto);
