@@ -7,17 +7,10 @@ use App\Helper\MessageHelper;
 use App\Service\System\Contract;
 use App\Service\System\Handler\Chain\AbstractChain;
 
-class ContactChain extends AbstractChain
+class ContactViewChain extends AbstractChain
 {
     public function success(Contract $contract, CacheDto $cacheDto): bool
     {
-        $content = $cacheDto->getContent();
-        $contacts = $cacheDto->getCart()->getContacts();
-
-        $contacts['full'] = $content;
-
-        $cacheDto->getCart()->setContacts($contacts);
-
         $replyMarkups = [
             [
                 [
@@ -27,7 +20,7 @@ class ContactChain extends AbstractChain
         ];
 
         $contractMessage = MessageHelper::createContractMessage(
-            "Отлично, $content а теперь пришли мне свой номер телефона",
+            'Отлично, давай начнём оформление заказа, пришли мне свое ФИО.',
             null,
             $replyMarkups,
         );
@@ -44,8 +37,6 @@ class ContactChain extends AbstractChain
 
     public function validateCondition(string $content): bool
     {
-        // todo проверить на стрингу? оО и мат
-
         return true;
     }
 }

@@ -1,15 +1,19 @@
 <?php
 
-namespace App\Service\System\Handler\Chain\Items\Cart;
+namespace App\Service\System\Handler\Chain\Items\Cart\Shipping;
 
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Service\System\Contract;
 use App\Service\System\Handler\Chain\AbstractChain;
 
-class ShippingChain extends AbstractChain
+class ShippingStreetChain extends AbstractChain
 {
     public function success(Contract $contract, CacheDto $cacheDto): bool
     {
+        $content = $cacheDto->getContent();
+
+        dd($content);
+
         return true;
     }
 

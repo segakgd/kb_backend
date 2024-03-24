@@ -31,7 +31,20 @@ enum ChainsEnum: string
 
 
     // Овормление заказа
+    case CartViewContact = 'cart.view.contact';
+
     case CartContact = 'cart.contact';
 
+    case CartPhoneContact = 'cart.phone.contact';
+
     case CartShipping = 'cart.shipping';
+
+    case CartShippingCountry = 'cart.shipping.country';
+    case CartShippingRegion = 'cart.shipping.region';
+    case CartShippingCity = 'cart.shipping.city';
+    case CartShippingStreet = 'cart.shipping.street';
+    case CartShippingNumberHome = 'cart.shipping.numberHome';
+    case CartShippingEntrance = 'cart.shipping.entrance';
+    case CartShippingApartment = 'cart.shipping.apartment';
+    case CartFinish = 'cart.finish';
 }

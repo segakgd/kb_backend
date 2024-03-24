@@ -7,19 +7,25 @@ use App\Helper\MessageHelper;
 use App\Service\System\Contract;
 use App\Service\System\Handler\Chain\AbstractChain;
 
-class ContactChain extends AbstractChain
+class PhoneContactChain extends AbstractChain
 {
     public function success(Contract $contract, CacheDto $cacheDto): bool
     {
         $content = $cacheDto->getContent();
         $contacts = $cacheDto->getCart()->getContacts();
 
-        $contacts['full'] = $content;
+        $contacts['phone'] = $content;
 
         $cacheDto->getCart()->setContacts($contacts);
 
         $replyMarkups = [
             [
+                [
+                    'text' => 'Указать адрес доставки'
+                ],
+                [
+                    'text' => 'Самовывоз'
+                ],
                 [
                     'text' => 'вернуться в главное меню'
                 ],
@@ -27,7 +33,7 @@ class ContactChain extends AbstractChain
         ];
 
         $contractMessage = MessageHelper::createContractMessage(
-            "Отлично, $content а теперь пришли мне свой номер телефона",
+            "Отлично, ваш номер телефон $content. Нужна ли вам доставка?",
             null,
             $replyMarkups,
         );
@@ -44,7 +50,7 @@ class ContactChain extends AbstractChain
 
     public function validateCondition(string $content): bool
     {
-        // todo проверить на стрингу? оО и мат
+        // todo формат телефона
 
         return true;
     }

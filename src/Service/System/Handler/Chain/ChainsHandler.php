@@ -7,7 +7,9 @@ use App\Dto\SessionCache\Cache\CacheDto;
 use App\Enum\ChainsEnum;
 use App\Service\System\Contract;
 use App\Service\System\Handler\Chain\Items\Cart\ContactChain;
-use App\Service\System\Handler\Chain\Items\Cart\ShippingChain;
+use App\Service\System\Handler\Chain\Items\Cart\ContactViewChain;
+use App\Service\System\Handler\Chain\Items\Cart\PhoneContactChain;
+use App\Service\System\Handler\Chain\Items\Cart\Shipping\ShippingChain;
 use App\Service\System\Handler\Chain\Items\Category\ShopProductsCategoryChain;
 use App\Service\System\Handler\Chain\Items\Category\ShopProductsChain;
 use App\Service\System\Handler\Chain\Items\Category\ShowShopProductsCategoryChain;
@@ -34,8 +36,12 @@ class ChainsHandler
         private readonly ShopProductPromoChain $shopProductPromoChain,
         private readonly ShopProductsPromoChain $shopProductsPromoChain,
 
+        private readonly ContactViewChain $contactViewChain,
         private readonly ContactChain $contactChain,
+        private readonly PhoneContactChain $phoneContactChain,
         private readonly ShippingChain $shippingChain,
+
+
     ) {
     }
 
@@ -102,8 +108,19 @@ class ChainsHandler
             ChainsEnum::ShopFinal => $this->finalChain, // финальная заглушка, для обработки навигации
 
             // Овормление зачки
+            ChainsEnum::CartViewContact => $this->contactViewChain,
+            ChainsEnum::CartPhoneContact => $this->phoneContactChain,
             ChainsEnum::CartContact => $this->contactChain,
             ChainsEnum::CartShipping => $this->shippingChain,
+
+            ChainsEnum::CartShippingCountry => $this->shippingChain,
+            ChainsEnum::CartShippingRegion => $this->shippingChain,
+            ChainsEnum::CartShippingCity => $this->shippingChain,
+            ChainsEnum::CartShippingStreet => $this->shippingChain,
+            ChainsEnum::CartShippingNumberHome => $this->shippingChain,
+            ChainsEnum::CartShippingEntrance => $this->shippingChain,
+            ChainsEnum::CartShippingApartment => $this->shippingChain,
+            ChainsEnum::CartFinish => $this->shippingChain,
         };
 
         return $chain->chain($contract, $cacheDto);
