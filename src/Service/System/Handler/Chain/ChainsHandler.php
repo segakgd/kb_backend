@@ -6,6 +6,8 @@ use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Enum\ChainsEnum;
 use App\Service\System\Contract;
+use App\Service\System\Handler\Chain\Items\Cart\ContactChain;
+use App\Service\System\Handler\Chain\Items\Cart\ShippingChain;
 use App\Service\System\Handler\Chain\Items\Category\ShopProductsCategoryChain;
 use App\Service\System\Handler\Chain\Items\Category\ShopProductsChain;
 use App\Service\System\Handler\Chain\Items\Category\ShowShopProductsCategoryChain;
@@ -31,6 +33,9 @@ class ChainsHandler
         private readonly ShopProductPopularChain $shopProductPopularChain,
         private readonly ShopProductPromoChain $shopProductPromoChain,
         private readonly ShopProductsPromoChain $shopProductsPromoChain,
+
+        private readonly ContactChain $contactChain,
+        private readonly ShippingChain $shippingChain,
     ) {
     }
 
@@ -95,6 +100,10 @@ class ChainsHandler
             ChainsEnum::ShopVariant => $this->productVariantChain, // выбор варианта, предлагаем выбрать количество
             ChainsEnum::ShopVariantCount => $this->variantCount, // выбор количества, выводим финальное сообщение, что в корзину добавлен такой-то такой-то товар
             ChainsEnum::ShopFinal => $this->finalChain, // финальная заглушка, для обработки навигации
+
+            // Овормление зачки
+            ChainsEnum::CartContact => $this->contactChain,
+            ChainsEnum::CartShipping => $this->shippingChain,
         };
 
         return $chain->chain($contract, $cacheDto);

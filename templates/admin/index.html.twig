@@ -75,7 +75,6 @@
                 {% for bot in bots %}
                     <div class="jj__item">
                         <div class="jj__item_name">Название бота: {{ bot.botName }}</div>
-
                         <div class="jj__item_data">
                             <section>
                                 <span>Проект:</span> {{ bot.projectName }}
@@ -97,6 +96,17 @@
                             <section>
                                 <span>Вебхук:</span> {{ bot.webhookUri }}
                             </section>
+
+                            <form style="width: 100%; display:flex;"
+                                  action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/fake_message/" method="POST">
+                                <label style="width: 100%;">
+                                    <input class="messenger-nav--input" style="color: #18181b;" type="text" placeholder="Текст сообщения"
+                                           name="message">
+                                </label>
+                                <button class="messenger-nav--input-btn">
+                                    Отправить
+                                </button>
+                            </form>
 
                             <hr>
 

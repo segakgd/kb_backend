@@ -17,25 +17,33 @@ class VariantCount extends AbstractChain
 
     public function success(Contract $contract, CacheDto $cacheDto): bool
     {
-        $content = $cacheDto->getContent();
+        $count = $cacheDto->getContent();
 
-        $cacheDto->getEvent()->getData()->setCount($content);
+        $cacheDto->getEvent()->getData()->setCount($count);
 
         $variant = $this->productService->findVariant($cacheDto->getEvent()->getData()->getVariantId());
+        $product = $variant->getProduct();
 
         $variantName = $variant->getName();
-        $productName = $variant->getProduct()->getName();
+        $productName = $product->getName();
 
         $price = $variant->getPrice();
         $price = $price['price'];
 
-        $sum = $price * $content;
+        $sum = $price * $count;
 
-        // todo тут мы должны создать заявку !!
+        $cartProduct = [
+            'productId' => $product->getId(),
+            'variantId' => $variant->getId(),
+            'count' => $count,
+        ];
+
+        $cart = $cacheDto->getCart();
+        $cart->addProduct($cartProduct);
 
         $message = 'Вы добавили в корзину продукт: ' . $productName . "\n" .
             'вариант: ' . $variantName . "\n" .
-            'количество: ' . $content . "\n" .
+            'количество: ' . $count . "\n" .
             'сумма: ' . $sum;
 
         $replyMarkups = [
@@ -52,7 +60,7 @@ class VariantCount extends AbstractChain
                     'text' => 'вернуться в главное меню'
                 ],
                 [
-                    'text' => 'в корзину'
+                    'text' => 'Моя корзина'
                 ],
             ],
         ];

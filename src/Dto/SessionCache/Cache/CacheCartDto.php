@@ -38,6 +38,13 @@ class CacheCartDto
         return $this;
     }
 
+    public function addProduct(array $product): static
+    {
+        $this->products[] = $product;
+
+        return $this;
+    }
+
     public function getShipping(): array
     {
         return $this->shipping;

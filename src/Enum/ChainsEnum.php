@@ -29,4 +29,9 @@ enum ChainsEnum: string
 
     case ShopFinal = 'shop.final';
 
+
+    // Овормление заказа
+    case CartContact = 'cart.contact';
+
+    case CartShipping = 'cart.shipping';
 }

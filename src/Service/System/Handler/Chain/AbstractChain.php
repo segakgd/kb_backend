@@ -29,7 +29,7 @@ abstract class AbstractChain
     {
         $result = match ($content) {
             'вернуться в главное меню' => 'main',
-            'в корзину' => 'cart',
+            'Моя корзина' => 'cart',
             'вернуться к товарам' => ChainsEnum::ShopProducts->value,
             'вернуться к категориям' => ChainsEnum::ShowShopProductsCategory->value,
             default => null
