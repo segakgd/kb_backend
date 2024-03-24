@@ -26,7 +26,7 @@ class ScenarioTemplateService
     {
         $scenarioTemplate = (new ScenarioTemplate())
             ->setName($dto->getName())
-            ->setScenario($dto->getScenario())
+//            ->setScenario($dto->getScenario())
             ->setProjectId($projectId)
         ;
 
