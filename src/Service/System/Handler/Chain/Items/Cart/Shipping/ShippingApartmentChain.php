@@ -3,6 +3,7 @@
 namespace App\Service\System\Handler\Chain\Items\Cart\Shipping;
 
 use App\Dto\SessionCache\Cache\CacheDto;
+use App\Helper\MessageHelper;
 use App\Service\System\Contract;
 use App\Service\System\Handler\Chain\AbstractChain;
 
@@ -12,7 +13,46 @@ class ShippingApartmentChain extends AbstractChain
     {
         $content = $cacheDto->getContent();
 
-        dd(self::class);
+        $shipping = $cacheDto->getCart()->getShipping();
+
+        $shipping['address']['apartment'] = $content;
+
+        $cacheDto->getCart()->setShipping($shipping);
+
+        $message = "Ваши апартаменты $content. Хотите что-то изменить?";
+
+        $replyMarkups = [
+            [
+                [
+                    'text' => 'Изменить контакты'
+                ],
+                [
+                    'text' => 'Изменить доставку'
+                ],
+            ],
+            [
+                [
+                    'text' => 'Изменить продукты'
+                ],
+                [
+                    'text' => 'Удалить заказ'
+                ],
+                [
+                    'text' => 'Оплатить'
+                ],
+                [
+                    'text' => 'вернуться в главное меню'
+                ],
+            ]
+        ];
+
+        $contractMessage = MessageHelper::createContractMessage(
+            $message,
+            null,
+            $replyMarkups,
+        );
+
+        $contract->addMessage($contractMessage);
 
         return true;
     }
