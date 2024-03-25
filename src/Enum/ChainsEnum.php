@@ -46,5 +46,6 @@ enum ChainsEnum: string
     case CartShippingNumberHome = 'cart.shipping.numberHome';
     case CartShippingEntrance = 'cart.shipping.entrance';
     case CartShippingApartment = 'cart.shipping.apartment';
+    case CartSave = 'cart.save';
     case CartFinish = 'cart.finish';
 }
