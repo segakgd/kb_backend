@@ -4,51 +4,42 @@ namespace App\Service\System\Handler\Chain\Items\Cart\Shipping;
 
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\MessageHelper;
+use App\Service\Admin\Ecommerce\DealManager;
+use App\Service\Common\Project\ProjectService;
 use App\Service\System\Contract;
 use App\Service\System\Handler\Chain\AbstractChain;
 
-class ShippingApartmentChain extends AbstractChain
+class CartSaveChain extends AbstractChain
 {
+    public function __construct(
+        private readonly DealManager $dealManager,
+        private readonly ProjectService $projectService,
+    ) {
+    }
+
     public function success(Contract $contract, CacheDto $cacheDto): bool
     {
         $content = $cacheDto->getContent();
+        $project = $this->projectService->findOneById(4842);
 
-        $shipping = $cacheDto->getCart()->getShipping();
+        $this->dealManager->createDeal($project, $cacheDto->getCart());
 
-        $shipping['address']['apartment'] = $content;
-
-        $cacheDto->getCart()->setShipping($shipping);
-
-        $message = "Ваши апартаменты $content. \n\n Хотите что-то изменить?";
+        $message = "Отлично. Мы сохранили ваш заказ. Сумма вашего заказа составляет N рублей Хотете его оплатить сейчас?";
 
         $replyMarkups = [
             [
                 [
-                    'text' => 'Изменить контакты'
+                    'text' => 'Оплатить'
                 ],
                 [
-                    'text' => 'Изменить доставку'
-                ],
-                [
-                    'text' => 'Изменить продукты'
+                    'text' => 'Удалить заказ'
                 ],
             ],
             [
-                [
-                    'text' => 'Продолжить',
-                ],
-            ],
-            [
-//                [
-//                    'text' => 'Удалить заказ'
-//                ],
-//                [
-//                    'text' => 'Оплатить'
-//                ],
                 [
                     'text' => 'вернуться в главное меню'
                 ],
-            ]
+            ],
         ];
 
         $contractMessage = MessageHelper::createContractMessage(

@@ -9,6 +9,7 @@ use App\Service\System\Contract;
 use App\Service\System\Handler\Chain\Items\Cart\ContactChain;
 use App\Service\System\Handler\Chain\Items\Cart\ContactViewChain;
 use App\Service\System\Handler\Chain\Items\Cart\PhoneContactChain;
+use App\Service\System\Handler\Chain\Items\Cart\Shipping\CartSaveChain;
 use App\Service\System\Handler\Chain\Items\Cart\Shipping\ShippingApartmentChain;
 use App\Service\System\Handler\Chain\Items\Cart\Shipping\ShippingChain;
 use App\Service\System\Handler\Chain\Items\Cart\Shipping\ShippingCityChain;
@@ -56,6 +57,7 @@ class ChainsHandler
         private readonly ShippingEntranceChain $shippingEntranceChain,
         private readonly ShippingCountryChain $shippingCountryChain,
         private readonly ShippingCityChain $shippingCityChain,
+        private readonly CartSaveChain $cartSaveChain,
         private readonly ShippingFinishChain $shippingFinishChain,
     ) {
     }
@@ -85,11 +87,11 @@ class ChainsHandler
                     $chain->setFinished(true);
                 }
 
-                break;
-            }
+                if ($chainCount === 1 + $key && $chain->isFinished()) {
+                    $cacheDto->getEvent()->setFinished(true);
+                }
 
-            if ($chainCount === 1 + $key && $chain->isFinished()) {
-                $cacheDto->getEvent()->setFinished(true);
+                break;
             }
         }
 
@@ -135,6 +137,7 @@ class ChainsHandler
             ChainsEnum::CartShippingNumberHome => $this->shippingNumberHomeChain,
             ChainsEnum::CartShippingEntrance => $this->shippingEntranceChain,
             ChainsEnum::CartShippingApartment => $this->shippingApartmentChain,
+            ChainsEnum::CartSave => $this->cartSaveChain,
             ChainsEnum::CartFinish => $this->shippingFinishChain,
         };
 

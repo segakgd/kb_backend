@@ -2,8 +2,7 @@
 
 namespace App\Entity\Lead;
 
-use App\Dto\deprecated\Ecommerce\ProductDto;
-use App\Dto\deprecated\Ecommerce\PromotionDto;
+use App\Dto\Ecommerce\ProductDto;
 use App\Repository\Lead\OrderEntityRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
@@ -90,13 +89,6 @@ class DealOrder
     public function setPromotions(?array $promotions): static
     {
         $this->promotions = $promotions;
-
-        return $this;
-    }
-
-    public function addPromotion(PromotionDto $promotions): static
-    {
-        $this->promotions[] = $promotions;
 
         return $this;
     }
