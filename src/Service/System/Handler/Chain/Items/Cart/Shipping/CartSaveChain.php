@@ -26,8 +26,6 @@ class CartSaveChain extends AbstractChain
 
         $message = "Отлично. Мы сохранили ваш заказ. Сумма вашего заказа составляет N рублей Хотете его оплатить сейчас?";
 
-        // todo +
-
         $replyMarkups = [
             [
                 [

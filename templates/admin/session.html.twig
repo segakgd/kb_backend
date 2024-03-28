@@ -14,7 +14,8 @@
     {% endif %}
 
     {% for command in commands %}
-        <a class="btn btn-primary" href="/dev/project/{{ projectId }}/command/{{ command.commandCode }}/start/{{ session.id }}">
+        <a class="btn btn-primary"
+           href="/dev/project/{{ projectId }}/command/{{ command.commandCode }}/start/{{ session.id }}">
             {{ command.commandName }}
         </a>
     {% endfor %}
@@ -164,5 +165,63 @@
     {% if event is not empty %}
         {{ event.contract|json_encode(constant('JSON_UNESCAPED_UNICODE')) }}
     {% endif %}
+
+    <br>
+    <br>
+
+    <div>
+        {% for deal in deals %}
+            <div style="border-radius: 15px; background: #f6f6f6; font-size: 16px; display: flex; flex-wrap: wrap;">
+                <div style="padding: 10px 20px; width: 100%; font-weight: bold;">
+                    сделка # {{ deal.id }}
+                </div>
+
+                <div style="padding: 10px 20px; margin: 10px; background: #fff; border-radius: 15px;">
+                    <div style="padding: 10px 0; font-weight: bold;">
+                        Контакты:
+                    </div>
+
+                    {% for key, contact in deal.contacts %}
+                        <div style="width: 100%;">
+                            {{ key }}:
+                            {% if contact is not empty %}
+                                {{ contact }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div style="padding: 10px 20px; margin: 10px; background: #fff; border-radius: 15px;">
+                    <div>
+                        {% for key, product in deal.order.products %}
+                            <div>
+                                <span style="padding-right: 20px;">variantParentId: {{ product.variantParentId }}</span>
+                                <span style="padding-right: 20px;">name: {{ product.name }}</span>
+                                <span style="padding-right: 20px;">count: {{ product.count }}</span>
+                                <span style="padding-right: 20px;">price: {{ product.price }}</span>
+                            </div>
+                        {% endfor %}
+                        <span style="color: #aa1111;">total amount: {{ deal.order.totalAmount }}</span>
+                    </div>
+                </div>
+
+                <div style="padding: 10px 20px; margin: 10px; background: #fff; border-radius: 15px;">
+                    <div>
+                        <div>
+                            {% for key, shippingAddress in deal.order.shipping.address %}
+                                <div>
+                                    {{ key }}:
+                                    {{ shippingAddress }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <span style="color: #aa1111;">shipping type: {{ deal.order.shipping.type }}</span>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 
 {% endblock %}
