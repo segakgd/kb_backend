@@ -27,14 +27,14 @@ class ShippingChain extends AbstractChain
         $cart = $cacheDto->getCart();
 
         if ($content === 'Указать адрес доставки') {
-            $message = 'Выберите город, или введите его вручную';
+            $message = 'Выберите свою страну';
 
             $replyMarkups[] = [
                 [
-                    'text' => 'Москва'
+                    'text' => 'Россия'
                 ],
                 [
-                    'text' => 'Калининград'
+                    'text' => 'Беларусь'
                 ],
             ];
 

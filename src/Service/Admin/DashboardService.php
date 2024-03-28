@@ -53,7 +53,7 @@ class DashboardService
     {
         $deals = $this->dealEntityRepository->findAll();
 
-        return $this->serializer->normalize($deals);
+        return $this->serializer->normalize(array_reverse($deals)); // todo array_reverse = костыль
     }
 
     private function prepareEvents(array $events): array
