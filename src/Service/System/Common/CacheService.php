@@ -6,7 +6,7 @@ use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Dto\SessionCache\Cache\CacheDataDto;
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Dto\SessionCache\Cache\CacheEventDto;
-use App\Enum\ChainsEnum;
+use App\Enum\GotoChainsEnum;
 
 class CacheService
 {
@@ -27,7 +27,7 @@ class CacheService
     {
         foreach ($stepChains as $stepChain) {
             $chain = (new CacheChainDto)
-                ->setTarget(ChainsEnum::from($stepChain['target']))
+                ->setTarget(GotoChainsEnum::from($stepChain['target']))
                 ->setFinished($stepChain['finish'])
                 ->setRepeat(false);
 

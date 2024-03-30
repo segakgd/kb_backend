@@ -2,7 +2,7 @@
 
 namespace App\Enum;
 
-enum ChainsEnum: string
+enum GotoChainsEnum: string
 {
     // Категории
     case ShowShopProductsCategory = 'show.shop.products.category';

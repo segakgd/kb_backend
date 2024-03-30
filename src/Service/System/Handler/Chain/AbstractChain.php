@@ -3,7 +3,7 @@
 namespace App\Service\System\Handler\Chain;
 
 use App\Dto\SessionCache\Cache\CacheDto;
-use App\Enum\ChainsEnum;
+use App\Enum\GotoChainsEnum;
 use App\Service\System\Contract;
 
 abstract class AbstractChain
@@ -30,8 +30,8 @@ abstract class AbstractChain
         $result = match ($content) {
             'вернуться в главное меню' => 'main',
             'Моя корзина' => 'cart',
-            'вернуться к товарам' => ChainsEnum::ShopProducts->value,
-            'вернуться к категориям' => ChainsEnum::ShowShopProductsCategory->value,
+            'вернуться к товарам' => GotoChainsEnum::ShopProducts->value,
+            'вернуться к категориям' => GotoChainsEnum::ShowShopProductsCategory->value,
             default => null
         };
 

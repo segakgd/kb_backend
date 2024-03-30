@@ -64,9 +64,15 @@ class CacheEventDto
         return $this;
     }
 
+    /** @deprecated */
     public function isExistChains(): bool
     {
         return !empty($this->chains);
+    }
+
+    public function isEmptyChains(): bool
+    {
+        return empty($this->chains);
     }
 
     public function getData(): CacheDataDto

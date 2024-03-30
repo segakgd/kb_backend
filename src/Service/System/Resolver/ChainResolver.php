@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\System\Handler\Chain;
+namespace App\Service\System\Resolver;
 
 use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Dto\SessionCache\Cache\CacheDto;
@@ -31,7 +31,7 @@ use App\Service\System\Handler\Chain\Items\ShopProductVariantChain;
 use App\Service\System\Handler\Chain\Items\VariantCount;
 use Exception;
 
-class ChainsHandler
+class ChainResolver
 {
     public function __construct(
         private readonly ShowShopProductsCategoryChain $showShopProductsCategoryChain,
@@ -44,12 +44,10 @@ class ChainsHandler
         private readonly ShopProductPopularChain $shopProductPopularChain,
         private readonly ShopProductPromoChain $shopProductPromoChain,
         private readonly ShopProductsPromoChain $shopProductsPromoChain,
-
         private readonly ContactViewChain $contactViewChain,
         private readonly ContactChain $contactChain,
         private readonly PhoneContactChain $phoneContactChain,
         private readonly ShippingChain $shippingChain,
-
         private readonly ShippingApartmentChain $shippingApartmentChain,
         private readonly ShippingStreetChain $shippingStreetChain,
         private readonly ShippingRegionChain $shippingRegionChain,
@@ -65,7 +63,7 @@ class ChainsHandler
     /**
      * @throws Exception
      */
-    public function handle(Contract $contract, CacheDto $cacheDto): Contract
+    public function resolve(Contract $contract, CacheDto $cacheDto): Contract
     {
         $chains = $cacheDto->getEvent()->getChains();
 

@@ -2,22 +2,22 @@
 
 namespace App\Dto\SessionCache\Cache;
 
-use App\Enum\ChainsEnum;
+use App\Enum\GotoChainsEnum;
 
 class CacheChainDto
 {
-    private ChainsEnum $target;
+    private GotoChainsEnum $target;
 
     private bool $finished;
 
     private bool $repeat;
 
-    public function getTarget(): ChainsEnum
+    public function getTarget(): GotoChainsEnum
     {
         return $this->target;
     }
 
-    public function setTarget(ChainsEnum $target): static
+    public function setTarget(GotoChainsEnum $target): static
     {
         $this->target = $target;
 

@@ -3,6 +3,7 @@
 namespace App\Service\System;
 
 use App\Dto\Contract\ContractMessageDto;
+use App\Entity\Visitor\VisitorEvent;
 
 class Contract
 {
@@ -14,7 +15,7 @@ class Contract
 
     private string $status; // todo не увернн
 
-    private ?string $goto = null;
+    private ?string $goto = null; // todo writing enum goto
 
     public function getMessages(): array
     {
@@ -46,9 +47,19 @@ class Contract
         return $this;
     }
 
+    public function isStatusDone(): bool
+    {
+        return $this->status === VisitorEvent::STATUS_DONE;
+    }
+
     public function getGoto(): ?string
     {
         return $this->goto;
+    }
+
+    public function isNotGoto(): bool
+    {
+        return is_null($this->goto);
     }
 
     public function setGoto(?string $goto): self

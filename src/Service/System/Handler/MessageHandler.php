@@ -7,7 +7,7 @@ use App\Dto\SessionCache\Cache\CacheDto;
 use App\Entity\User\Bot;
 use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
-use App\Enum\ChainsEnum;
+use App\Enum\GotoChainsEnum;
 use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\System\Common\CacheService;
 use App\Service\System\Common\SenderService;
@@ -51,7 +51,7 @@ class MessageHandler
                 $cacheDto->getEvent()->isFinished() ? VisitorEvent::STATUS_DONE : VisitorEvent::STATUS_AWAIT
             );
 
-            if (VisitorEvent::STATUS_DONE === $contract->getStatus()) {
+            if ($contract->isStatusDone()) {
                 $cacheDto->setEvent(CacheService::createCacheEventDto());
             }
 
@@ -101,7 +101,7 @@ class MessageHandler
         VisitorSession $visitorSession,
         Contract $contract
     ): void {
-        $enum = ChainsEnum::tryFrom($contract->getGoto());
+        $enum = GotoChainsEnum::tryFrom($contract->getGoto());
 
         if ($enum) {
             $chains = $cacheDto->getEvent()->getChains();

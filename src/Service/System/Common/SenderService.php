@@ -27,36 +27,52 @@ class SenderService
         /** @var ContractMessageDto $message */
         foreach ($messages as $message) {
 
-            $this->messageHistoryService->create(
-                message: $message->getMessage(),
-                type: MessageHistoryService::INCOMING,
-                keyboard: $message->getKeyBoard() ?? [],
-                images: [
-                    [
-                        'uri' => $message->getPhoto()
-                    ]
-                ]
+            if (isset($_SERVER['APP_ENV']) && $_SERVER['APP_ENV'] === 'prod') {
+                $this->sendProd($message, $token, $visitorSession->getChatId());
+            }
+
+            $this->sendDev($message);
+        }
+    }
+
+
+    /**
+     * @throws Exception
+     */
+    private function sendProd(ContractMessageDto $message, string $token, int $chatId): void
+    {
+        if ($message->getPhoto()) {
+            $this->telegramService->sendPhoto(
+                contractMessageDto: $message,
+                token: $token,
+                chatId: $chatId
             );
 
-            if ($message->getPhoto()) {
-                $this->telegramService->sendPhoto(
-                    $message,
-                    $token,
-                    $visitorSession->getChatId()
-                );
-
-                continue;
-            }
-
-            if ($message->getMessage()) {
-                $this->telegramService->sendMessage(
-                    $message,
-                    $token,
-                    $visitorSession->getChatId()
-                );
-            } else {
-                throw new Exception('not found message');
-            }
+            return;
         }
+
+        if ($message->getMessage()) {
+            $this->telegramService->sendMessage(
+                contractMessageDto: $message,
+                token: $token,
+                chatId: $chatId
+            );
+        } else {
+            throw new Exception('not found message');
+        }
+    }
+
+    private function sendDev(ContractMessageDto $message): void
+    {
+        $this->messageHistoryService->create(
+            message: $message->getMessage(),
+            type: MessageHistoryService::INCOMING,
+            keyboard: $message->getKeyBoard() ?? [],
+            images: [
+                [
+                    'uri' => $message->getPhoto()
+                ]
+            ]
+        );
     }
 }

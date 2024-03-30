@@ -171,7 +171,7 @@
 
     <div>
         {% for deal in deals %}
-            <div style="border-radius: 15px; background: #f6f6f6; font-size: 16px; display: flex; flex-wrap: wrap;">
+            <div style="border-radius: 15px; padding: 10px 0; background: #f6f6f6; font-size: 16px; display: flex; flex-wrap: wrap; margin-bottom: 20px;">
                 <div style="padding: 10px 20px; width: 100%; font-weight: bold;">
                     сделка # {{ deal.id }}
                 </div>
@@ -194,6 +194,9 @@
                 </div>
 
                 <div style="padding: 10px 20px; margin: 10px; background: #fff; border-radius: 15px;">
+                    <div style="padding: 10px 0; font-weight: bold;">
+                        Продукты:
+                    </div>
                     <div>
                         {% for key, product in deal.order.products %}
                             <div>
@@ -208,15 +211,16 @@
                 </div>
 
                 <div style="padding: 10px 20px; margin: 10px; background: #fff; border-radius: 15px;">
+                    <div style="padding: 10px 0; font-weight: bold;">
+                        Доставка:
+                    </div>
                     <div>
-                        <div>
-                            {% for key, shippingAddress in deal.order.shipping.address %}
-                                <div>
-                                    {{ key }}:
-                                    {{ shippingAddress }}
-                                </div>
-                            {% endfor %}
-                        </div>
+                        {% for key, shippingAddress in deal.order.shipping.address %}
+                            <div>
+                                {{ key }}:
+                                {{ shippingAddress }}
+                            </div>
+                        {% endfor %}
                         <span style="color: #aa1111;">shipping type: {{ deal.order.shipping.type }}</span>
                     </div>
                 </div>

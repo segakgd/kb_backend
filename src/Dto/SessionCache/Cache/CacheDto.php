@@ -2,6 +2,8 @@
 
 namespace App\Dto\SessionCache\Cache;
 
+use App\Service\System\Common\CacheService;
+
 class CacheDto
 {
     private ?string $eventUUID = null;
@@ -55,6 +57,13 @@ class CacheDto
     public function setEvent(?CacheEventDto $event): static
     {
         $this->event = $event;
+
+        return $this;
+    }
+
+    public function clearEvent(): static
+    {
+        $this->event = CacheService::createCacheEventDto();
 
         return $this;
     }
