@@ -6,6 +6,7 @@ use App\Dto\SessionCache\Cache\CacheDto;
 use App\Enum\GotoChainsEnum;
 use App\Enum\GotoScenarioEnum;
 use App\Enum\NavigateEnum;
+use App\Helper\MessageHelper;
 use App\Service\System\Resolver\Chains\Dto\ConditionInterface;
 use App\Service\System\Resolver\Chains\Dto\ContractInterface;
 
@@ -43,8 +44,20 @@ abstract class AbstractChain
 
     abstract public function success(ContractInterface $contract, string $content): ContractInterface;
 
-    abstract public function fail(ContractInterface $contract, string $content): ContractInterface;
+    public function fail(ContractInterface $contract, string $content): ContractInterface
+    {
+        $message = "Не понимаю что вы от меня хотите, повторите выбор:";
+        $keyBoard = $this->condition()->getKeyBoard();
 
+        $contractMessage = MessageHelper::createContractMessage(
+            message: $message,
+            keyBoard: $keyBoard,
+        );
+
+        $contract->addMessage($contractMessage);
+
+        return $contract;
+    }
     abstract public function validate(string $content): bool;
 
     abstract public function condition(): ConditionInterface;

@@ -6,7 +6,6 @@ use App\Helper\MessageHelper;
 use App\Service\System\Resolver\Chains\AbstractChain;
 use App\Service\System\Resolver\Chains\Dto\Condition;
 use App\Service\System\Resolver\Chains\Dto\ConditionInterface;
-use App\Service\System\Resolver\Chains\Dto\Contract;
 use App\Service\System\Resolver\Chains\Dto\ContractInterface;
 
 class C2Chain extends AbstractChain
@@ -21,13 +20,7 @@ class C2Chain extends AbstractChain
 
         $contract->addMessage($contractMessage);
 
-
-        return new Contract();
-    }
-
-    public function fail(ContractInterface $contract, string $content): ContractInterface
-    {
-        return new Contract();
+        return $contract;
     }
 
     public function condition(): ConditionInterface
