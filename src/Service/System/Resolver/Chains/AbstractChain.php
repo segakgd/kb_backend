@@ -8,7 +8,7 @@ use App\Enum\GotoScenarioEnum;
 use App\Enum\NavigateEnum;
 use App\Helper\MessageHelper;
 use App\Service\System\Resolver\Chains\Dto\ConditionInterface;
-use App\Service\System\Resolver\Chains\Dto\ContractInterface;
+use App\Service\System\Resolver\ContractInterface;
 
 abstract class AbstractChain
 {
@@ -16,33 +16,46 @@ abstract class AbstractChain
         ContractInterface $contract,
         CacheDto $cacheDto,
         ?AbstractChain $nextChain = null,
-    ): ContractInterface {
-        // todo мб стоит расширить роль контракта... что если он будет ещё помнить о чейнах? Аля чтоб не прокидывать везде кеш, писать туда, а потом это мапить. так мы ученьшим связанность эл-в
+    ): bool {
+        // todo мб стоит расширить роль контракта... что если он будет ещё помнить о чейнах?
+        //  Аля чтоб не прокидывать везде кеш, писать туда, а потом это мапить. так мы ученьшим связанность эл-в
 
         if ($cacheDto->getEvent()->getCurrentChain()->isRepeat()) {
-            $this->success($contract, $cacheDto->getContent());
+            $nextCondition = $nextChain->condition(); // todo собираем всё что нужно для нового чейна
 
-            return $contract;
+            $this->success($contract, $nextCondition, $cacheDto->getContent());
+
+            return true;
         }
 
         if ($this->gotoIsNavigate($cacheDto->getContent(), $contract)) {
-            return $contract;
+            return true;
         }
 
         if ($this->validate($cacheDto->getContent())) {
-            $this->success($contract, $cacheDto->getContent());
-
             $nextCondition = $nextChain->condition(); // todo собираем всё что нужно для нового чейна
 
-            return $contract;
+            $this->success($contract, $nextCondition, $cacheDto->getContent());
+
+            return true;
         }
+
+        dd(static::class, '');
 
         $this->fail($contract, $cacheDto->getContent());
 
-        return $contract;
+        return false;
     }
 
-    abstract public function success(ContractInterface $contract, string $content): ContractInterface;
+    abstract public function success(
+        ContractInterface $contract,
+        ConditionInterface $nextCondition,
+        string $content,
+    ): ContractInterface;
+
+    abstract public function validate(string $content): bool;
+
+    abstract public function condition(): ConditionInterface;
 
     public function fail(ContractInterface $contract, string $content): ContractInterface
     {
@@ -58,9 +71,6 @@ abstract class AbstractChain
 
         return $contract;
     }
-    abstract public function validate(string $content): bool;
-
-    abstract public function condition(): ConditionInterface;
 
     private function gotoIsNavigate(string $content, ContractInterface $contract): bool
     {

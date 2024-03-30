@@ -32,6 +32,9 @@ class StepResolver
                 } else {
                     $this->scenario($contract, $cacheDto, $step);
                 }
+
+                // todo проблема с сообщениями...
+                break;
             }
         } catch (Throwable $exception) {
             $this->logger->error(

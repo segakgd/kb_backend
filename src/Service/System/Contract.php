@@ -4,7 +4,7 @@ namespace App\Service\System;
 
 use App\Dto\Contract\ContractMessageDto;
 use App\Entity\Visitor\VisitorEvent;
-use App\Service\System\Resolver\Chains\Dto\ContractInterface;
+use App\Service\System\Resolver\ContractInterface;
 
 class Contract implements ContractInterface
 {

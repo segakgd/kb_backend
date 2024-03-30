@@ -6,16 +6,20 @@ use App\Helper\MessageHelper;
 use App\Service\System\Resolver\Chains\AbstractChain;
 use App\Service\System\Resolver\Chains\Dto\Condition;
 use App\Service\System\Resolver\Chains\Dto\ConditionInterface;
-use App\Service\System\Resolver\Chains\Dto\ContractInterface;
+use App\Service\System\Resolver\ContractInterface;
 
 class C2Chain extends AbstractChain
 {
-    public function success(ContractInterface $contract, string $content): ContractInterface
-    {
-        $message = "Ваши апартаменты $content. \n\n Хотите что-то изменить?";
+    public function success(
+        ContractInterface $contract,
+        ConditionInterface $nextCondition,
+        string $content
+    ): ContractInterface {
+        $message = "Вы кликнули на $content";
 
         $contractMessage = MessageHelper::createContractMessage(
             message: $message,
+            keyBoard: $nextCondition->getKeyBoard()
         );
 
         $contract->addMessage($contractMessage);

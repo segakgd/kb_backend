@@ -62,8 +62,11 @@ class ChainResolver
     /**
      * @throws Exception
      */
-    private function handleByTarget(GotoChainsEnum $target, Contract $contract, CacheDto $cacheDto): bool
-    {
+    private function handleByTarget(
+        GotoChainsEnum $target,
+        ContractInterface $contract,
+        CacheDto $cacheDto
+    ): bool {
         $chain = match ($target) {
             GotoChainsEnum::refChain1 => new C1Chain(),
             GotoChainsEnum::refChain2 => new C2Chain(),
@@ -77,6 +80,10 @@ class ChainResolver
             GotoChainsEnum::refChain10 => new C10Chain(),
         };
 
-        return $chain->chain($contract, $cacheDto);
+        return $chain->chain(
+            contract: $contract,
+            cacheDto: $cacheDto,
+            nextChain: (new C2Chain())
+        );
     }
 }

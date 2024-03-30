@@ -6,13 +6,15 @@ use App\Helper\MessageHelper;
 use App\Service\System\Resolver\Chains\AbstractChain;
 use App\Service\System\Resolver\Chains\Dto\Condition;
 use App\Service\System\Resolver\Chains\Dto\ConditionInterface;
-use App\Service\System\Resolver\Chains\Dto\Contract;
-use App\Service\System\Resolver\Chains\Dto\ContractInterface;
+use App\Service\System\Resolver\ContractInterface;
 
 class C1Chain extends AbstractChain
 {
-    public function success(ContractInterface $contract, string $content): ContractInterface
-    {
+    public function success(
+        ContractInterface $contract,
+        ConditionInterface $nextCondition,
+        string $content
+    ): ContractInterface {
         $data = $contract->getData();
         $data['shipping']['address']['apartment'] = $content;
 
@@ -22,16 +24,12 @@ class C1Chain extends AbstractChain
 
         $contractMessage = MessageHelper::createContractMessage(
             message: $message,
+            keyBoard: $nextCondition->getKeyBoard()
         );
 
         $contract->addMessage($contractMessage);
 
         return $contract;
-    }
-
-    public function fail(ContractInterface $contract, string $content): ContractInterface
-    {
-        return new Contract();
     }
 
     public function condition(): ConditionInterface
