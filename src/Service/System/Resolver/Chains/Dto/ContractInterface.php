@@ -7,6 +7,10 @@ use App\Service\System\Contract;
 
 interface ContractInterface
 {
+    public function getData(): array;
+
+    public function setData(array $data);
+
     public function getMessages(): array;
 
     public function setMessages(array $messages): self;

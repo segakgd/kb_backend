@@ -19,7 +19,7 @@ abstract class AbstractChain
         // todo мб стоит расширить роль контракта... что если он будет ещё помнить о чейнах? Аля чтоб не прокидывать везде кеш, писать туда, а потом это мапить. так мы ученьшим связанность эл-в
 
         if ($cacheDto->getEvent()->getCurrentChain()->isRepeat()) {
-            $this->success($contract, $cacheDto);
+            $this->success($contract, $cacheDto->getContent());
 
             return $contract;
         }
@@ -29,19 +29,25 @@ abstract class AbstractChain
         }
 
         if ($this->validate($cacheDto->getContent())) {
-            $this->success($contract, $cacheDto);
+            $this->success($contract, $cacheDto->getContent());
 
             $nextCondition = $nextChain->condition(); // todo собираем всё что нужно для нового чейна
 
             return $contract;
         }
 
-        $this->fail($contract, $cacheDto);
+        $this->fail($contract, $cacheDto->getContent());
 
         return $contract;
     }
 
-    abstract public function success(ContractInterface $contract, CacheDto $cacheDto): ContractInterface;
+    abstract public function success(ContractInterface $contract, string $content): ContractInterface;
+
+    abstract public function fail(ContractInterface $contract, string $content): ContractInterface;
+
+    abstract public function validate(string $content): bool;
+
+    abstract public function condition(): ConditionInterface;
 
     private function gotoIsNavigate(string $content, ContractInterface $contract): bool
     {
@@ -61,10 +67,4 @@ abstract class AbstractChain
 
         return false;
     }
-
-    abstract public function validate(string $content): bool;
-
-    abstract public function condition(): ConditionInterface;
-
-    abstract public function fail(ContractInterface $contract, CacheDto $cacheDto): ContractInterface;
 }

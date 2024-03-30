@@ -10,9 +10,14 @@ use App\Service\System\Resolver\Chains\Dto\ContractInterface;
 
 class C3Chain extends AbstractChain
 {
-    public function validate(): bool
+    public function success(ContractInterface $contract, string $content): ContractInterface
     {
-        return true;
+        return new Contract();
+    }
+
+    public function fail(ContractInterface $contract, string $content): ContractInterface
+    {
+        return new Contract();
     }
 
     public function condition(): ConditionInterface
@@ -20,13 +25,8 @@ class C3Chain extends AbstractChain
         return new Condition();
     }
 
-    public function success(ConditionInterface $nextCondition): ContractInterface
+    public function validate(string $content): bool
     {
-        return new Contract();
-    }
-
-    public function fail(): ContractInterface
-    {
-        return new Contract();
+        return true;
     }
 }

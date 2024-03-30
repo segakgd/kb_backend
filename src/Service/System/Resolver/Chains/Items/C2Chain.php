@@ -2,6 +2,7 @@
 
 namespace App\Service\System\Resolver\Chains\Items;
 
+use App\Helper\MessageHelper;
 use App\Service\System\Resolver\Chains\AbstractChain;
 use App\Service\System\Resolver\Chains\Dto\Condition;
 use App\Service\System\Resolver\Chains\Dto\ConditionInterface;
@@ -10,23 +11,56 @@ use App\Service\System\Resolver\Chains\Dto\ContractInterface;
 
 class C2Chain extends AbstractChain
 {
-    public function validate(): bool
+    public function success(ContractInterface $contract, string $content): ContractInterface
     {
-        return true;
+        $message = "Ваши апартаменты $content. \n\n Хотите что-то изменить?";
+
+        $contractMessage = MessageHelper::createContractMessage(
+            message: $message,
+        );
+
+        $contract->addMessage($contractMessage);
+
+
+        return new Contract();
+    }
+
+    public function fail(ContractInterface $contract, string $content): ContractInterface
+    {
+        return new Contract();
     }
 
     public function condition(): ConditionInterface
     {
-        return new Condition();
+        $replyMarkups = [
+            [
+                [
+                    'text' => 'Да'
+                ],
+                [
+                    'text' => 'Нет'
+                ],
+            ],
+        ];
+
+        $condition = new Condition();
+
+        $condition->setKeyBoard($replyMarkups);
+
+        return $condition;
     }
 
-    public function success(ConditionInterface $nextCondition): ContractInterface
+    public function validate(string $content): bool
     {
-        return new Contract();
-    }
+        $validData = [
+            'Да',
+            'Нет',
+        ];
 
-    public function fail(): ContractInterface
-    {
-        return new Contract();
+        if (in_array($content, $validData)) {
+            return true;
+        }
+
+        return false;
     }
 }

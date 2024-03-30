@@ -2,7 +2,6 @@
 
 namespace App\Service\System\Resolver\Chains\Items;
 
-use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\MessageHelper;
 use App\Service\System\Resolver\Chains\AbstractChain;
 use App\Service\System\Resolver\Chains\Dto\Condition;
@@ -12,9 +11,27 @@ use App\Service\System\Resolver\Chains\Dto\ContractInterface;
 
 class C1Chain extends AbstractChain
 {
-    public function validate(string $content): bool
+    public function success(ContractInterface $contract, string $content): ContractInterface
     {
-        return true;
+        $data = $contract->getData();
+        $data['shipping']['address']['apartment'] = $content;
+
+        $contract->setData($data);
+
+        $message = "Ваши апартаменты $content. \n\n Хотите что-то изменить?";
+
+        $contractMessage = MessageHelper::createContractMessage(
+            message: $message,
+        );
+
+        $contract->addMessage($contractMessage);
+
+        return $contract;
+    }
+
+    public function fail(ContractInterface $contract, string $content): ContractInterface
+    {
+        return new Contract();
     }
 
     public function condition(): ConditionInterface
@@ -22,63 +39,8 @@ class C1Chain extends AbstractChain
         return new Condition();
     }
 
-    public function success(ContractInterface $contract, CacheDto $cacheDto): ContractInterface
+    public function validate(string $content): bool
     {
-        $content = $cacheDto->getContent();
-
-        $shipping = $cacheDto->getCart()->getShipping();
-
-        $shipping['address']['apartment'] = $content;
-
-        $cacheDto->getCart()->setShipping($shipping);
-
-        $message = "Ваши апартаменты $content. \n\n Хотите что-то изменить?";
-
-        $replyMarkups = [
-            [
-                [
-                    'text' => 'Изменить контакты'
-                ],
-                [
-                    'text' => 'Изменить доставку'
-                ],
-                [
-                    'text' => 'Изменить продукты'
-                ],
-            ],
-            [
-                [
-                    'text' => 'Продолжить',
-                ],
-            ],
-            [
-//                [
-//                    'text' => 'Удалить заказ'
-//                ],
-//                [
-//                    'text' => 'Оплатить'
-//                ],
-                [
-                    'text' => 'вернуться в главное меню'
-                ],
-            ]
-        ];
-
-        $contractMessage = MessageHelper::createContractMessage(
-            $message,
-            null,
-            $replyMarkups,
-        );
-
-        $contract->addMessage($contractMessage);
-
-
-
-        return new Contract(); // todo ....
-    }
-
-    public function fail(): ContractInterface
-    {
-        return new Contract();
+        return true;
     }
 }

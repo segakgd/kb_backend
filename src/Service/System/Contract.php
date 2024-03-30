@@ -17,6 +17,7 @@ class Contract implements ContractInterface
     private string $status; // todo не увернн
 
     private ?string $goto = null; // todo writing enum goto
+    private array $data = [];
 
     public function getMessages(): array
     {
@@ -66,6 +67,18 @@ class Contract implements ContractInterface
     public function setGoto(?string $goto): self
     {
         $this->goto = $goto;
+
+        return $this;
+    }
+
+    public function getData(): array
+    {
+        return $this->data;
+    }
+
+    public function setData(array $data): static
+    {
+        $this->data = $data;
 
         return $this;
     }
