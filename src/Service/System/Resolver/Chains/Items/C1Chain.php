@@ -2,6 +2,7 @@
 
 namespace App\Service\System\Resolver\Chains\Items;
 
+use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\MessageHelper;
 use App\Service\System\Resolver\Chains\AbstractChain;
 use App\Service\System\Resolver\Chains\Dto\Condition;
@@ -11,7 +12,7 @@ use App\Service\System\Resolver\Chains\Dto\ContractInterface;
 
 class C1Chain extends AbstractChain
 {
-    public function validate(): bool
+    public function validate(string $content): bool
     {
         return true;
     }
@@ -21,7 +22,7 @@ class C1Chain extends AbstractChain
         return new Condition();
     }
 
-    public function success(ConditionInterface $nextCondition): ContractInterface
+    public function success(ContractInterface $contract, CacheDto $cacheDto): ContractInterface
     {
         $content = $cacheDto->getContent();
 

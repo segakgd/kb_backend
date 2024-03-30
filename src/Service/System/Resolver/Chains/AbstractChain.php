@@ -6,22 +6,17 @@ use App\Dto\SessionCache\Cache\CacheDto;
 use App\Enum\GotoChainsEnum;
 use App\Enum\GotoScenarioEnum;
 use App\Enum\NavigateEnum;
-use App\Service\System\Contract;
 use App\Service\System\Resolver\Chains\Dto\ConditionInterface;
 use App\Service\System\Resolver\Chains\Dto\ContractInterface;
 
 abstract class AbstractChain
 {
-    abstract public function success(Contract $contract, CacheDto $cacheDto): ContractInterface;
-
-    abstract public function fail(Contract $contract, CacheDto $cacheDto): ContractInterface;
-
-    abstract public function validate(string $content): bool;
-
-    abstract public function condition(): ConditionInterface;
-
-    public function chain(Contract $contract, CacheDto $cacheDto, ?AbstractChain $nextChain = null): ContractInterface
-    {
+    public function chain(
+        ContractInterface $contract,
+        CacheDto $cacheDto,
+        ?AbstractChain $nextChain = null,
+    ): ContractInterface {
+        // todo мб стоит расширить роль контракта... что если он будет ещё помнить о чейнах? Аля чтоб не прокидывать везде кеш, писать туда, а потом это мапить. так мы ученьшим связанность эл-в
 
         if ($cacheDto->getEvent()->getCurrentChain()->isRepeat()) {
             $this->success($contract, $cacheDto);
@@ -46,7 +41,9 @@ abstract class AbstractChain
         return $contract;
     }
 
-    private function gotoIsNavigate(string $content, Contract $contract): bool
+    abstract public function success(ContractInterface $contract, CacheDto $cacheDto): ContractInterface;
+
+    private function gotoIsNavigate(string $content, ContractInterface $contract): bool
     {
         $result = match ($content) {
             NavigateEnum::ToMain->value => GotoScenarioEnum::Main->value,
@@ -64,4 +61,10 @@ abstract class AbstractChain
 
         return false;
     }
+
+    abstract public function validate(string $content): bool;
+
+    abstract public function condition(): ConditionInterface;
+
+    abstract public function fail(ContractInterface $contract, CacheDto $cacheDto): ContractInterface;
 }
