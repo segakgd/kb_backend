@@ -8,7 +8,7 @@ use App\Service\System\Resolver\Chains\Dto\ConditionInterface;
 use App\Service\System\Resolver\Chains\Dto\Contract;
 use App\Service\System\Resolver\Chains\Dto\ContractInterface;
 
-class OneChain extends AbstractChain
+class C7Chain extends AbstractChain
 {
     public function validate(): bool
     {

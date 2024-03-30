@@ -4,8 +4,9 @@ namespace App\Service\System;
 
 use App\Dto\Contract\ContractMessageDto;
 use App\Entity\Visitor\VisitorEvent;
+use App\Service\System\Resolver\Chains\Dto\ContractInterface;
 
-class Contract
+class Contract implements ContractInterface
 {
     public const GOTO_NEXT = 'next';
 

@@ -2,6 +2,7 @@
 
 namespace App\Service\System\Resolver\Chains;
 
+use App\Dto\SessionCache\Cache\CacheDto;
 use App\Enum\GotoChainsEnum;
 use App\Enum\GotoScenarioEnum;
 use App\Enum\NavigateEnum;
@@ -11,20 +12,41 @@ use App\Service\System\Resolver\Chains\Dto\ContractInterface;
 
 abstract class AbstractChain
 {
-    abstract public function validate(): bool;
+    abstract public function success(Contract $contract, CacheDto $cacheDto): ContractInterface;
+
+    abstract public function fail(Contract $contract, CacheDto $cacheDto): ContractInterface;
+
+    abstract public function validate(string $content): bool;
 
     abstract public function condition(): ConditionInterface;
 
-    abstract public function success(ConditionInterface $nextCondition): ContractInterface;
-
-    abstract public function fail(): ContractInterface;
-
-    public function chain(): bool
+    public function chain(Contract $contract, CacheDto $cacheDto, ?AbstractChain $nextChain = null): ContractInterface
     {
-        return true;
+
+        if ($cacheDto->getEvent()->getCurrentChain()->isRepeat()) {
+            $this->success($contract, $cacheDto);
+
+            return $contract;
+        }
+
+        if ($this->gotoIsNavigate($cacheDto->getContent(), $contract)) {
+            return $contract;
+        }
+
+        if ($this->validate($cacheDto->getContent())) {
+            $this->success($contract, $cacheDto);
+
+            $nextCondition = $nextChain->condition(); // todo собираем всё что нужно для нового чейна
+
+            return $contract;
+        }
+
+        $this->fail($contract, $cacheDto);
+
+        return $contract;
     }
 
-    public function gotoIsNavigate(string $content, Contract $contract): bool
+    private function gotoIsNavigate(string $content, Contract $contract): bool
     {
         $result = match ($content) {
             NavigateEnum::ToMain->value => GotoScenarioEnum::Main->value,

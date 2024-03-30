@@ -3,18 +3,18 @@
 namespace App\Service\System\Resolver\Chains;
 
 
-use App\Service\System\Resolver\Chains\Items\OneChain;
-use App\Service\System\Resolver\Chains\Items\TooChain;
+use App\Service\System\Resolver\Chains\Items\C1Chain;
+use App\Service\System\Resolver\Chains\Items\C2Chain;
 
 class Event
 {
     public function getActualChain(): AbstractChain
     {
-        return new OneChain();
+        return new C1Chain();
     }
 
     public function getNextChain(): AbstractChain
     {
-        return new TooChain();
+        return new C2Chain();
     }
 }

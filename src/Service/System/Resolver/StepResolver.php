@@ -6,6 +6,7 @@ use App\Dto\SessionCache\Cache\CacheDto;
 use App\Service\System\Common\CacheService;
 use App\Service\System\Contract;
 use Exception;
+use Psr\Log\LoggerInterface;
 use Throwable;
 
 class StepResolver
@@ -13,6 +14,7 @@ class StepResolver
     public function __construct(
         private readonly ChainResolver $chainResolver,
         private readonly ScenarioResolver $scenarioResolver,
+        private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -32,6 +34,14 @@ class StepResolver
                 }
             }
         } catch (Throwable $exception) {
+            $this->logger->error(
+                message: $exception->getMessage(),
+                context: [
+                    'file' => $exception->getFile(),
+                    'line' => $exception->getLine()
+                ]
+            );
+
             dd($exception);
         }
     }

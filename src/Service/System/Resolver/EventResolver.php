@@ -41,6 +41,7 @@ class EventResolver
 
         $scenario = $this->scenarioService->findScenarioByUUID($visitorEvent->getScenarioUUID());
         $cacheDto = $this->cacheDtoRepository->get($visitorSession);
+
         $this->stepResolver->resolve($scenario->getSteps(), $contract, $cacheDto);
 
         if ($contract->isNotGoto()) {
