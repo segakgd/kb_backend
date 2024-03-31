@@ -2,6 +2,9 @@
 
 namespace App\Enum;
 
+/**
+ * @deprecated need to remove
+ */
 enum GotoChainsEnum: string
 {
     // Категории

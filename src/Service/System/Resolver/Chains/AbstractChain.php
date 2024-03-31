@@ -2,8 +2,7 @@
 
 namespace App\Service\System\Resolver\Chains;
 
-use App\Enum\GotoChainsEnum;
-use App\Enum\GotoScenarioEnum;
+use App\Enum\JumpEnum;
 use App\Enum\NavigateEnum;
 use App\Helper\MessageHelper;
 use App\Service\System\Resolver\Chains\Dto\ConditionInterface;
@@ -44,15 +43,14 @@ abstract class AbstractChain
         $content = $contract->getContent();
 
         $result = match ($content) {
-            NavigateEnum::ToMain->value => GotoScenarioEnum::Main->value,
-            NavigateEnum::ToCart->value => GotoScenarioEnum::Cart->value,
-            NavigateEnum::ToProducts->value => GotoChainsEnum::ShopProducts->value,
-            NavigateEnum::ToCategoryProducts->value => GotoChainsEnum::ShowShopProductsCategory->value,
-            default => null
+            NavigateEnum::ToMain->value => JumpEnum::Main,
+            NavigateEnum::ToCart->value => JumpEnum::Cart,
+            NavigateEnum::ToProducts->value => JumpEnum::ShopProducts,
+            NavigateEnum::ToCategoryProducts->value => JumpEnum::ShowShopProductsCategory,
         };
 
         if ($result) {
-            $contract->setGoto($result);
+            $contract->setJump($result);
 
             return true;
         }

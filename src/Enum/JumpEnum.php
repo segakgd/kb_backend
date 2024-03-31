@@ -49,7 +49,8 @@ enum JumpEnum: string
     case CartSave = 'cart.save';
     case CartFinish = 'cart.finish';
 
-
+    case Main = 'main';
+    case Cart = 'cart';
 
     // test
     case refChain1 = 'ref.chain.1';
