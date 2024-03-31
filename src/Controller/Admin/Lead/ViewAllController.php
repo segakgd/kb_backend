@@ -61,25 +61,27 @@ class ViewAllController extends AbstractController
 
         // todo ... тут мы должны обратиться к сервису или менеджеру ...
 
-        $contacts = (new AllLeadContactsRespDto())
-            ->setMail(
-                (new AllLeadContactRespDto())
-                    ->setName('Почта')
-                    ->setType('mail')
-                    ->setValue('mail@mail.fake')
-            )
-        ;
 
-        $fakeLead = (new AllLeadRespDto())
-            ->setType('service')
-            ->setStatus(LeadRespDto::LEAD_STATUS_NEW)
-            ->setNumber(111)
-            ->setContacts($contacts)
-            ->setPaymentStatus(true)
-            ->setTotalAmount(30000)
-            ->setTotalAmountWF('300,00')
-            ->setFullName('Fake Faker Fake')
-        ;
+
+//        $contacts = (new AllLeadContactsRespDto())
+//            ->setMail(
+//                (new AllLeadContactRespDto())
+//                    ->setName('Почта')
+//                    ->setType('mail')
+//                    ->setValue('mail@mail.fake')
+//            )
+//        ;
+//
+//        $fakeLead = (new AllLeadRespDto())
+//            ->setType('service')
+//            ->setStatus(LeadRespDto::LEAD_STATUS_NEW)
+//            ->setNumber(111)
+//            ->setContacts($contacts)
+//            ->setPaymentStatus(true)
+//            ->setTotalAmount(30000)
+//            ->setTotalAmountWF('300,00')
+//            ->setFullName('Fake Faker Fake')
+//        ;
 
         return new JsonResponse(
             $this->serializer->normalize(

@@ -73,6 +73,13 @@ class LeadRespDto
         return $this;
     }
 
+    public function setFields(array $fields): self
+    {
+        $this->fields = $fields;
+
+        return $this;
+    }
+
     public function getStatus(): string
     {
         return $this->status;

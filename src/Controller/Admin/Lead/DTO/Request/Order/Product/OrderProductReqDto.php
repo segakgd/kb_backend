@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Lead\DTO\Request\Order\Product;
 
 class OrderProductReqDto
 {
     private array $variants;
 
-    private int $totalCount;
-
-    private int $totalAmount;
+    private int $totalCount; // todo -> не увеерн о нужде этого поля в дто. Оно определяется динамически в результате обработки $variants
+//
+    private int $totalAmount; // todo -> не уверен о нужден этого поля в дто. Оно определяется динамически в результате обработки $variants
 
     public function getVariants(): array
     {

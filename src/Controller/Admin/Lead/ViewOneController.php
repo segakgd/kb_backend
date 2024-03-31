@@ -1,33 +1,30 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Lead;
 
-use App\Controller\Admin\Lead\DTO\Response\Chanel\LeadChanelRespDto;
 use App\Controller\Admin\Lead\DTO\Response\Fields\LeadContactsRespDto;
 use App\Controller\Admin\Lead\DTO\Response\Fields\LeadFieldRespDto;
 use App\Controller\Admin\Lead\DTO\Response\LeadRespDto;
 use App\Controller\Admin\Lead\DTO\Response\Order\OrderRespDto;
-use App\Controller\Admin\Lead\DTO\Response\Order\Payment\PaymentRespDto;
-use App\Controller\Admin\Lead\DTO\Response\Order\Product\ProductCategoryRespDto;
-use App\Controller\Admin\Lead\DTO\Response\Order\Product\ProductRespDto;
-use App\Controller\Admin\Lead\DTO\Response\Order\Product\ProductVariantRespDto;
-use App\Controller\Admin\Lead\DTO\Response\Order\Promotion\PromotionRespDto;
-use App\Controller\Admin\Lead\DTO\Response\Order\Shipping\ShippingRespDto;
+use App\Entity\Lead\Deal;
 use App\Entity\User\Project;
-use DateTimeImmutable;
+use App\Repository\Lead\ContactsEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\Serializer\SerializerInterface;
 
 #[OA\Tag(name: 'Lead')]
 #[OA\Response(
     response: Response::HTTP_OK,
-    description: 'Возвращает коллекцию заявок',
+    description: 'Возвращает заявку',
     content: new Model(
         type: LeadRespDto::class
     ),
@@ -35,96 +32,103 @@ use Symfony\Component\Serializer\SerializerInterface;
 class ViewOneController extends AbstractController
 {
     public function __construct(
-        private readonly SerializerInterface $serializer,
-    ) {
+        private readonly ContactsEntityRepository $contactsEntityRepository,
+        private readonly EntityManagerInterface  $manager,
+    )
+    {
     }
 
-    #[Route('/api/admin/project/{project}/lead/{leadId}/', name: 'admin_lead_get_one', methods: ['GET'])]
+    #[Route('/api/admin/project/{project}/lead/{lead}/', name: 'admin_lead_get_one', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Project $project, int $leadId): JsonResponse
+    public function execute(Project $project, ?Deal $lead): JsonResponse
     {
-        // todo ... тут мы должны обратиться к сервису или менеджеру ...
+        if (null === $lead) {
+            return $this->json(['Lead not found'], Response::HTTP_NOT_FOUND);
+        }
 
-        $productCategory = (new ProductCategoryRespDto())
-            ->setName('Category name')
-        ;
+        if ($project->getId() !== $lead->getProjectId()) {
+            throw new AccessDeniedException('Access Denied.');
+        }
 
-        $productVariant = (new ProductVariantRespDto())
-            ->setName('Variant name')
-            ->setCount(2)
-            ->setPrice(50000)
-        ;
+        return $this->json($this->mapToResponse($lead));
+    }
 
-        $product = (new ProductRespDto)
-            ->setName('Product name')
-            ->setType(ProductRespDto::TYPE_SERVICE)
-            ->setImage('image.fake')
-            ->setCategory($productCategory)
-            ->setVariant($productVariant)
-            ->setTotalCount(2)
-            ->setTotalAmount(10000)
-            ->setTotalAmountWF('100,00')
-        ;
+    private function mapToResponse(Deal $deal): LeadRespDto // todo точно в сервис перекинуть эту кашу!
+    {
+        $leadContactsRespDto = $this->mapContactsToResponse($deal);
+        $fieldsRespArray = $this->mapFieldsToResponse($deal);
+        $orderDto = $this->mapOrderToResponse($deal);
 
-        $promotion = (new PromotionRespDto)
-            ->setName('Promotion Name')
-            ->setCode('PROMO_2024')
-            ->setDiscount(30)
-            ->setCalculationType(PromotionRespDto::CALCULATION_TYPE_PERCENT)
-            ->setTotalAmount(10000)
-            ->setTotalAmountWF('100,00')
-        ;
+        return (new LeadRespDto())
+            ->setContacts($leadContactsRespDto)
+            ->setFields($fieldsRespArray)
+            ->setNumber($deal->getId())
+            ->setOrder($orderDto);
+    }
 
-        $shipping = (new ShippingRespDto)
-            ->setName('Shipping name')
-            ->setType(ShippingRespDto::TYPE_COURIER)
-            ->setTotalAmount(10000)
-            ->setTotalAmountWF('100,00')
-        ;
+    private function mapContactsToResponse(Deal $deal): LeadContactsRespDto
+    {
+        $leadContactsRespDto = new LeadContactsRespDto();
+        $contacts = $deal->getContacts();
 
-        $payment = (new PaymentRespDto())
-            ->setPaymentStatus(true)
-            ->setProductPrice(10000)
-            ->setPromotionSum(10000)
-            ->setShippingPrice(10000)
-            ->setTotalAmount(30000)
-            ->setTotalAmountWF('300,00')
-        ;
+        if (null === $contacts) {
+            return $leadContactsRespDto;
+        }
 
-        $fakeOrder = (new OrderRespDto())
-            ->addProduct($product)
-            ->addPromotion($promotion)
-            ->setShipping($shipping)
-            ->setPayment($payment)
-            ->setCreatedAt(new DateTimeImmutable())
-        ;
+        $this->manager->refresh($contacts); // temporary fix
 
-        $fakeField = (new LeadFieldRespDto())
-            ->setType('mail')
-            ->setName('Почта')
-            ->setValue('fake@mail.fake')
-        ;
+        if ($contacts->getEmail()) {
+            $emailField = (new LeadFieldRespDto())
+                ->setName('email')
+                ->setType('email')
+                ->setValue($contacts->getEmail());
 
-        $fakeContacts = (new LeadContactsRespDto())
-            ->setMail($fakeField)
-        ;
+            $leadContactsRespDto->setMail($emailField);
+        }
 
-        $chanel = (new LeadChanelRespDto())
-            ->setName('telegram')
-            ->setLink('link')
-        ;
+        if ($contacts->getPhone()) {
+            $phoneField = (new LeadFieldRespDto())
+                ->setName('phone')
+                ->setType('phone')
+                ->setValue($contacts->getPhone());
 
-        $fakeLead = (new LeadRespDto())
-            ->setStatus(LeadRespDto::LEAD_STATUS_NEW)
-            ->setCreatedAt(new DateTimeImmutable())
-            ->setContacts($fakeContacts)
-            ->setNumber(111)
-            ->setChanel($chanel)
-            ->setOrder($fakeOrder)
-        ;
+            $leadContactsRespDto->setPhone($phoneField);
+        }
 
-        return new JsonResponse(
-            $this->serializer->normalize($fakeLead)
-        );
+        if ($contacts->getLastName() || $contacts->getFirstName()) {
+            $fullName = ($contacts->getFirstName() ?? '') . ' ' . ($contacts->getLastName() ?? '');
+
+            $fullNameField = (new LeadFieldRespDto)
+                ->setName('fullName')
+                ->setType('full_name')
+                ->setValue($fullName);
+
+            $leadContactsRespDto->setFullName($fullNameField);
+        }
+
+        return $leadContactsRespDto;
+    }
+
+    private function mapFieldsToResponse(Deal $deal): array
+    {
+        $fields = $deal->getFields();
+
+        $fieldsArray = [];
+
+        foreach ($fields as $field) {
+            $fieldDto = (new LeadFieldRespDto())
+                ->setType('string')
+                ->setValue($field->getValue())
+                ->setName($field->getName());
+
+            $fieldsArray[] = $fieldDto;
+        }
+
+        return $fieldsArray;
+    }
+
+    private function mapOrderToResponse(Deal $deal): OrderRespDto // надо подумать тут, а то еще непонятно, какое дто лежит в ордере в базе
+    {
+        return new OrderRespDto();
     }
 }

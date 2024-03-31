@@ -1,9 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Lead\DTO\Request\Order\Shipping;
+
+use Symfony\Component\Validator\Constraints as Assert;
 
 class OrderShippingReqDto
 {
+    #[Assert\GreaterThan(0)]
     private int $id;
 
     private int $totalAmount = 0;

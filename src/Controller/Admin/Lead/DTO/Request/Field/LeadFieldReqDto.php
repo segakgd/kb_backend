@@ -1,14 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Lead\DTO\Request\Field;
+
+use Symfony\Component\Validator\Constraints as Assert;
 
 class LeadFieldReqDto
 {
-    private string $type;
+    #[Assert\NotBlank]
+    private string $type; // todo -> DealField не содержит тип. Не вижу его применения.
 
+    #[Assert\NotBlank]
     private string $name;
 
-    private string|int $value;
+    #[Assert\NotBlank]
+    private string|int $value; // todo -> не очень нравится string|int. Давайте уже стрингу хранить, а в нужных местах(?) типизировать в int. Entity со стрингой
 
     public function getType(): string
     {
