@@ -2,7 +2,7 @@
 
 namespace App\Helper;
 
-use App\Enum\GotoChainsEnum;
+use App\Enum\JumpEnum;
 use App\Service\System\Resolver\Chains\AbstractChain;
 use App\Service\System\Resolver\Chains\Items\C10Chain;
 use App\Service\System\Resolver\Chains\Items\C1Chain;
@@ -17,19 +17,19 @@ use App\Service\System\Resolver\Chains\Items\C9Chain;
 
 class ChainsGeneratorHelper
 {
-    public static function generate(GotoChainsEnum $target): AbstractChain
+    public static function generate(JumpEnum $target): AbstractChain
     {
         return match ($target) {
-            GotoChainsEnum::refChain1 => new C1Chain(),
-            GotoChainsEnum::refChain2 => new C2Chain(),
-            GotoChainsEnum::refChain3 => new C3Chain(),
-            GotoChainsEnum::refChain4 => new C4Chain(),
-            GotoChainsEnum::refChain5 => new C5Chain(),
-            GotoChainsEnum::refChain6 => new C6Chain(),
-            GotoChainsEnum::refChain7 => new C7Chain(),
-            GotoChainsEnum::refChain8 => new C8Chain(),
-            GotoChainsEnum::refChain9 => new C9Chain(),
-            GotoChainsEnum::refChain10 => new C10Chain(),
+            JumpEnum::refChain1 => new C1Chain(),
+            JumpEnum::refChain2 => new C2Chain(),
+            JumpEnum::refChain3 => new C3Chain(),
+            JumpEnum::refChain4 => new C4Chain(),
+            JumpEnum::refChain5 => new C5Chain(),
+            JumpEnum::refChain6 => new C6Chain(),
+            JumpEnum::refChain7 => new C7Chain(),
+            JumpEnum::refChain8 => new C8Chain(),
+            JumpEnum::refChain9 => new C9Chain(),
+            JumpEnum::refChain10 => new C10Chain(),
         };
     }
 }

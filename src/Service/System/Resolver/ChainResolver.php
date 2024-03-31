@@ -3,7 +3,7 @@
 namespace App\Service\System\Resolver;
 
 use App\Dto\SessionCache\Cache\CacheChainDto;
-use App\Enum\GotoChainsEnum;
+use App\Enum\JumpEnum;
 use App\Helper\ChainsGeneratorHelper;
 use App\Service\System\Resolver\Dto\Contract;
 use App\Service\System\Resolver\Dto\ContractInterface;
@@ -52,11 +52,14 @@ class ChainResolver
     /**
      * @throws Exception
      */
-    private function handleByTarget(
-        GotoChainsEnum $target,
-        ContractInterface $contract,
-    ): bool {
+    private function handleByTarget(JumpEnum $target, ContractInterface $contract): bool
+    {
         $chain = ChainsGeneratorHelper::generate($target);
+
+        // todo вот тут по сути должно быть состояние того чейна, который бкдет следующий.
+        $condition = ChainsGeneratorHelper::generate($target)->condition();
+
+        $contract->setNextCondition($condition);
 
         return $chain->chain($contract);
     }
