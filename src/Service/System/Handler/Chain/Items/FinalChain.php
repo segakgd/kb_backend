@@ -3,8 +3,8 @@
 namespace App\Service\System\Handler\Chain\Items;
 
 use App\Dto\SessionCache\Cache\CacheDto;
-use App\Service\System\Contract;
 use App\Service\System\Handler\Chain\AbstractChain;
+use App\Service\System\Resolver\Dto\Contract;
 
 class FinalChain extends AbstractChain
 {

@@ -4,7 +4,7 @@ namespace App\Service\System\Resolver;
 
 use App\Helper\KeyboardHelper;
 use App\Helper\MessageHelper;
-use App\Service\System\Contract;
+use App\Service\System\Resolver\Dto\Contract;
 
 class ScenarioResolver
 {

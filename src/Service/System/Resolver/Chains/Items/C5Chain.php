@@ -6,7 +6,7 @@ use App\Helper\MessageHelper;
 use App\Service\System\Resolver\Chains\AbstractChain;
 use App\Service\System\Resolver\Chains\Dto\Condition;
 use App\Service\System\Resolver\Chains\Dto\ConditionInterface;
-use App\Service\System\Resolver\ContractInterface;
+use App\Service\System\Resolver\Dto\ContractInterface;
 
 class C5Chain extends AbstractChain
 {

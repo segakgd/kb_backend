@@ -3,7 +3,7 @@
 namespace App\Helper;
 
 use App\Dto\SessionCache\Cache\CacheDto;
-use App\Service\System\Contract;
+use App\Service\System\Resolver\Dto\Contract;
 use Exception;
 
 class CommonHelper

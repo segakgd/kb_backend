@@ -6,8 +6,8 @@ use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\DealManager;
 use App\Service\Common\Project\ProjectService;
-use App\Service\System\Contract;
 use App\Service\System\Handler\Chain\AbstractChain;
+use App\Service\System\Resolver\Dto\Contract;
 
 class CartSaveChain extends AbstractChain
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\System;
+namespace App\Service\System\Resolver\Dto;
 
 use App\Dto\Contract\ContractMessageDto;
 

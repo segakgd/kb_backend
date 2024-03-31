@@ -3,7 +3,7 @@
 namespace App\Service\DtoRepository;
 
 use App\Entity\Visitor\VisitorEvent;
-use App\Service\System\Contract;
+use App\Service\System\Resolver\Dto\Contract;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ContractDtoRepository

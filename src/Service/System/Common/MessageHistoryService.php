@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\System;
+namespace App\Service\System\Common;
 
 use App\Entity\MessageHistory;
 use App\Repository\MessageHistoryRepository;

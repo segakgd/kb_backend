@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Service\System;
+namespace App\Service\System\Resolver\Dto;
 
 use App\Dto\SessionCache\Cache\CacheCartDto;
 use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Enum\ChainStatusEnum;
 use App\Enum\JumpEnum;
 use App\Service\System\Resolver\Chains\Dto\ConditionInterface;
-use App\Service\System\Resolver\ContractInterface;
 
 class Contract implements ContractInterface
 {

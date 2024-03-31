@@ -4,7 +4,7 @@ namespace App\Service\System\Resolver;
 
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Service\System\Common\CacheService;
-use App\Service\System\Contract;
+use App\Service\System\Resolver\Dto\Contract;
 use Exception;
 use Psr\Log\LoggerInterface;
 use Throwable;

@@ -7,7 +7,7 @@ use App\Enum\GotoScenarioEnum;
 use App\Enum\NavigateEnum;
 use App\Helper\MessageHelper;
 use App\Service\System\Resolver\Chains\Dto\ConditionInterface;
-use App\Service\System\Resolver\ContractInterface;
+use App\Service\System\Resolver\Dto\ContractInterface;
 
 abstract class AbstractChain
 {

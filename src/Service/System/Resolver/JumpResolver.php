@@ -8,11 +8,11 @@ use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
 use App\Enum\GotoChainsEnum;
 use App\Service\System\Common\CacheService;
-use App\Service\System\Contract;
+use App\Service\System\Resolver\Dto\Contract;
 use App\Service\Visitor\Scenario\ScenarioService;
 use Symfony\Component\Serializer\SerializerInterface;
 
-class GotoResolver
+class JumpResolver
 {
     public function __construct(
         private readonly ScenarioService $scenarioService,

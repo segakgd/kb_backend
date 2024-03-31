@@ -5,8 +5,7 @@ namespace App\Service\System\Common;
 use App\Dto\Contract\ContractMessageDto;
 use App\Entity\Visitor\VisitorSession;
 use App\Service\Integration\Telegram\TelegramService;
-use App\Service\System\Contract;
-use App\Service\System\MessageHistoryService;
+use App\Service\System\Resolver\Dto\Contract;
 use Exception;
 
 class SenderService
@@ -26,7 +25,6 @@ class SenderService
 
         /** @var ContractMessageDto $message */
         foreach ($messages as $message) {
-
             if (isset($_SERVER['APP_ENV']) && $_SERVER['APP_ENV'] === 'prod') {
                 $this->sendProd($message, $token, $visitorSession->getChatId());
             }
@@ -34,7 +32,6 @@ class SenderService
             $this->sendDev($message);
         }
     }
-
 
     /**
      * @throws Exception

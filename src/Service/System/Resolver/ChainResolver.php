@@ -5,7 +5,8 @@ namespace App\Service\System\Resolver;
 use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Enum\GotoChainsEnum;
 use App\Helper\ChainsGeneratorHelper;
-use App\Service\System\Contract;
+use App\Service\System\Resolver\Dto\Contract;
+use App\Service\System\Resolver\Dto\ContractInterface;
 use Exception;
 
 class ChainResolver

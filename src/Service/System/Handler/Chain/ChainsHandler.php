@@ -5,7 +5,6 @@ namespace App\Service\System\Handler\Chain;
 use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Enum\GotoChainsEnum;
-use App\Service\System\Contract;
 use App\Service\System\Handler\Chain\Items\Cart\ContactChain;
 use App\Service\System\Handler\Chain\Items\Cart\ContactViewChain;
 use App\Service\System\Handler\Chain\Items\Cart\PhoneContactChain;
@@ -29,6 +28,7 @@ use App\Service\System\Handler\Chain\Items\Promo\ShopProductPromoChain;
 use App\Service\System\Handler\Chain\Items\Promo\ShopProductsPromoChain;
 use App\Service\System\Handler\Chain\Items\ShopProductVariantChain;
 use App\Service\System\Handler\Chain\Items\VariantCount;
+use App\Service\System\Resolver\Dto\Contract;
 use Exception;
 
 class ChainsHandler

@@ -4,7 +4,7 @@ namespace App\Service\System\Handler\Chain;
 
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Enum\GotoChainsEnum;
-use App\Service\System\Contract;
+use App\Service\System\Resolver\Dto\Contract;
 
 abstract class AbstractChain
 {

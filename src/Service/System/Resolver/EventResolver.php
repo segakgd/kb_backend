@@ -6,12 +6,13 @@ use App\Dto\SessionCache\Cache\CacheDto;
 use App\Entity\User\Bot;
 use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
+use App\Enum\ChainStatusEnum;
 use App\Repository\User\BotRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\DtoRepository\ContractDtoRepository;
 use App\Service\DtoRepository\SessionCacheDtoRepository;
 use App\Service\System\Common\SenderService;
-use App\Service\System\Contract;
+use App\Service\System\Resolver\Dto\Contract;
 use App\Service\Visitor\Scenario\ScenarioService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -24,7 +25,7 @@ class EventResolver
         private readonly EntityManagerInterface $entityManager,
         private readonly StepResolver $stepResolver,
         private readonly SenderService $senderService,
-        private readonly GotoResolver $gotoResolver,
+        private readonly JumpResolver $gotoResolver,
         private readonly BotRepository $botRepository,
         private readonly SessionCacheDtoRepository $cacheDtoRepository,
         private readonly ContractDtoRepository $contractDtoRepository,
@@ -44,7 +45,9 @@ class EventResolver
 
         $this->stepResolver->resolve($scenario->getSteps(), $contract, $cacheDto);
 
-        if ($contract->isNotGoto()) {
+        $jump = $contract->getJump();
+
+        if (is_null($jump)) {
             $this->sendMessageAndMoveStatus(
                 contract: $contract,
                 bot: $bot,
@@ -80,11 +83,11 @@ class EventResolver
     ): void {
         $this->senderService->sendMessages($contract, $bot->getToken(), $visitorSession);
 
-        $status = $cacheDto->getEvent()->isFinished() ? VisitorEvent::STATUS_DONE : VisitorEvent::STATUS_AWAIT;
+        $status = $cacheDto->getEvent()->isFinished() ? ChainStatusEnum::Done : ChainStatusEnum::Await;
 
         $contract->setStatus($status);
 
-        if ($contract->isStatusDone()) {
+        if ($contract->getStatus() === ChainStatusEnum::Done) {
             $cacheDto->clearEvent();
         }
 

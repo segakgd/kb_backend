@@ -7,8 +7,8 @@ use App\Helper\KeyboardHelper;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\ProductCategory\ProductCategoryService;
 use App\Service\System\Common\PaginateService;
-use App\Service\System\Contract;
 use App\Service\System\Handler\Chain\AbstractChain;
+use App\Service\System\Resolver\Dto\Contract;
 use Exception;
 
 class ShopProductsCategoryChain extends AbstractChain

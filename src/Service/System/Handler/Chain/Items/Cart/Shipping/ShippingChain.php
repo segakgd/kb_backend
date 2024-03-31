@@ -5,8 +5,8 @@ namespace App\Service\System\Handler\Chain\Items\Cart\Shipping;
 use App\Controller\Admin\Lead\DTO\Response\Order\Shipping\ShippingRespDto;
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\MessageHelper;
-use App\Service\System\Contract;
 use App\Service\System\Handler\Chain\AbstractChain;
+use App\Service\System\Resolver\Dto\Contract;
 
 class ShippingChain extends AbstractChain
 {
