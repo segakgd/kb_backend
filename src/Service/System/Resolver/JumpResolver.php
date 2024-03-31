@@ -12,6 +12,9 @@ use App\Service\System\Resolver\Dto\Contract;
 use App\Service\Visitor\Scenario\ScenarioService;
 use Symfony\Component\Serializer\SerializerInterface;
 
+/**
+ * @deprecated need refactoring
+ */
 class JumpResolver
 {
     public function __construct(

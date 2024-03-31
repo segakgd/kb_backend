@@ -9,6 +9,9 @@ use App\Service\System\Resolver\Dto\Contract;
 use App\Service\System\Resolver\Dto\ContractInterface;
 use Exception;
 
+/**
+ * @deprecated need refactoring
+ */
 class ChainResolver
 {
     /**

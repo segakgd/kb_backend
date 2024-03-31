@@ -9,6 +9,9 @@ use Exception;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
+/**
+ * @deprecated need refactoring
+ */
 class StepResolver
 {
     public function __construct(

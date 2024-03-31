@@ -6,6 +6,9 @@ use App\Helper\KeyboardHelper;
 use App\Helper\MessageHelper;
 use App\Service\System\Resolver\Dto\Contract;
 
+/**
+ * @deprecated need refactoring
+ */
 class ScenarioResolver
 {
     public function resolve(Contract $contract, array $scenarioStep): Contract
