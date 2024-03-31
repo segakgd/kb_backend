@@ -29,7 +29,9 @@ class JumpResolver
         VisitorSession $visitorSession,
         Contract $contract
     ): void {
-        $enum = GotoChainsEnum::tryFrom($contract->getGoto());
+
+
+        $enum = GotoChainsEnum::tryFrom($contract->getJump()); // todo
 
         if ($enum) {
             $chains = $cacheDto->getEvent()->getChains();
@@ -47,7 +49,7 @@ class JumpResolver
                 $chain->setFinished($flag);
             }
         } else {
-            $scenario = match ($contract->getGoto()) {
+            $scenario = match ($contract->getJump()->value) {
                 'main' => $this->scenarioService->getMainScenario(),
                 'cart' => $this->scenarioService->getCartScenario(),
                 default => $this->scenarioService->getDefaultScenario(),

@@ -8,9 +8,6 @@ use App\Helper\MessageHelper;
 use App\Service\System\Resolver\Chains\Dto\ConditionInterface;
 use App\Service\System\Resolver\Dto\ContractInterface;
 
-/**
- * @deprecated need refactoring
- */
 abstract class AbstractChain
 {
     public function chain(ContractInterface $contract): bool

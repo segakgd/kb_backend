@@ -30,7 +30,7 @@ class ChainResolver
             if ($chain->isNotFinished()) {
                 $isHandle = $this->handleByTarget($chain->getTarget(), $contract);
 
-                if ($contract->getGoto() !== null) {
+                if ($contract->getJump() !== null) {
                     break;
                 }
 
