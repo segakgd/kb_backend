@@ -24,6 +24,11 @@ class LeadManager
     ){
     }
 
+    public function getAllByProject(Project $project): array
+    {
+       return $this->leadService->getAllByProject($project);
+    }
+
     /**
      * @throws Exception
      */

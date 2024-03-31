@@ -33,6 +33,11 @@ class LeadService implements LeadServiceInterface
         return $this->saveToDb($deal);
     }
 
+    public function getAllByProject(Project $project): array
+    {
+        return $this->dealEntityRepository->findBy(['projectId' => $project->getId()]);
+    }
+
     private function saveToDb(Deal $deal): Deal
     {
         $this->dealEntityRepository->saveAndFlush($deal);
