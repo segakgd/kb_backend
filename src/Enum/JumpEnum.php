@@ -2,7 +2,7 @@
 
 namespace App\Enum;
 
-enum GotoChainsEnum: string
+enum JumpEnum: string
 {
     // Категории
     case ShowShopProductsCategory = 'show.shop.products.category';
@@ -71,8 +71,4 @@ enum GotoChainsEnum: string
     case refChain9 = 'ref.chain.9';
 
     case refChain10 = 'ref.chain.10';
-
-    // todo сетить трейтами...
-    case Main = 'main';
-    case Cart = 'cart';
 }

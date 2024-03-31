@@ -10,11 +10,10 @@ use App\Service\System\Resolver\ContractInterface;
 
 class C1Chain extends AbstractChain
 {
-    public function success(
-        ContractInterface $contract,
-        ConditionInterface $nextCondition,
-        string $content
-    ): ContractInterface {
+    public function success(ContractInterface $contract): ContractInterface
+    {
+        $content = $contract->getContent();
+
         $data = $contract->getData();
         $data['shipping']['address']['apartment'] = $content;
 
@@ -24,7 +23,7 @@ class C1Chain extends AbstractChain
 
         $contractMessage = MessageHelper::createContractMessage(
             message: $message,
-            keyBoard: $nextCondition->getKeyBoard()
+            keyBoard: $contract->getNextCondition()->getKeyBoard()
         );
 
         $contract->addMessage($contractMessage);
@@ -37,7 +36,7 @@ class C1Chain extends AbstractChain
         return new Condition();
     }
 
-    public function validate(string $content): bool
+    public function validate(ContractInterface $contract): bool
     {
         return true;
     }

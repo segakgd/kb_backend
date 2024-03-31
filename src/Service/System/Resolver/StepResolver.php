@@ -33,6 +33,7 @@ class StepResolver
                     $this->scenario($contract, $cacheDto, $step);
                 }
 
+                // todo вот тут ещё нужно повозиться, как по мне...
                 // todo проблема с сообщениями...
                 break;
             }
@@ -58,7 +59,9 @@ class StepResolver
             CacheService::enrichStepCache($step['chain'], $cacheDto);
         }
 
-        $this->chainResolver->resolve($contract, $cacheDto);
+        $chains = $this->chainResolver->resolve($contract, $cacheDto->getEvent()->getChains());
+
+        $cacheDto->getEvent()->setChains($chains);
     }
 
     private function scenario(Contract $contract, CacheDto $cacheDto, array $step): void

@@ -2,83 +2,109 @@
 
 namespace App\Service\System;
 
-use App\Dto\Contract\ContractMessageDto;
-use App\Entity\Visitor\VisitorEvent;
+use App\Dto\SessionCache\Cache\CacheCartDto;
+use App\Dto\SessionCache\Cache\CacheChainDto;
+use App\Enum\ChainStatusEnum;
+use App\Enum\JumpEnum;
+use App\Service\System\Resolver\Chains\Dto\ConditionInterface;
 use App\Service\System\Resolver\ContractInterface;
 
 class Contract implements ContractInterface
 {
-    public const GOTO_NEXT = 'next';
+    public ?CacheChainDto $chain = null;
 
-    public const GOTO_MAIN = 'main';
+    private ?ConditionInterface $nextCondition = null;
 
-    private array $messages = [];
+    private ?Result $result = null;
 
-    private string $status; // todo не увернн
+    private ?CacheCartDto $cacheCart;
 
-    private ?string $goto = null; // todo writing enum goto
-    private array $data = [];
+    private ?JumpEnum $jump = null;
 
-    public function getMessages(): array
+    private ?ChainStatusEnum $status = null;
+
+    private ?string $content = null;
+
+    public function getChain(): ?CacheChainDto
     {
-        return $this->messages;
+        return $this->chain;
     }
 
-    public function setMessages(array $messages): self
+    public function setChain(?CacheChainDto $chain): static
     {
-        $this->messages = $messages;
+        $this->chain = $chain;
 
         return $this;
     }
 
-    public function addMessage(ContractMessageDto $message): self
+    public function getNextCondition(): ?ConditionInterface
     {
-        $this->messages[] = $message;
+        return $this->nextCondition;
+    }
+
+    public function setNextCondition(?ConditionInterface $nextCondition): static
+    {
+        $this->nextCondition = $nextCondition;
 
         return $this;
     }
 
-    public function getStatus(): string
+    public function getResult(): ?Result
+    {
+        return $this->result;
+    }
+
+    public function setResult(?Result $result): static
+    {
+        $this->result = $result;
+
+        return $this;
+    }
+
+    public function getCacheCart(): ?CacheCartDto
+    {
+        return $this->cacheCart;
+    }
+
+    public function setCacheCart(?CacheCartDto $cacheCart): static
+    {
+        $this->cacheCart = $cacheCart;
+
+        return $this;
+    }
+
+    public function getJump(): ?JumpEnum
+    {
+        return $this->jump;
+    }
+
+    public function setJump(?JumpEnum $jump): static
+    {
+        $this->jump = $jump;
+
+        return $this;
+    }
+
+    public function getStatus(): ?ChainStatusEnum
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): Contract
+    public function setStatus(?ChainStatusEnum $status): static
     {
         $this->status = $status;
-        return $this;
-    }
-
-    public function isStatusDone(): bool
-    {
-        return $this->status === VisitorEvent::STATUS_DONE;
-    }
-
-    public function getGoto(): ?string
-    {
-        return $this->goto;
-    }
-
-    public function isNotGoto(): bool
-    {
-        return is_null($this->goto);
-    }
-
-    public function setGoto(?string $goto): self
-    {
-        $this->goto = $goto;
 
         return $this;
     }
 
-    public function getData(): array
+    public function getContent(): ?string
     {
-        return $this->data;
+        return $this->content;
     }
 
-    public function setData(array $data): static
+    public function setContent(?string $content): static
     {
-        $this->data = $data;
+        $this->content = $content;
 
         return $this;
     }

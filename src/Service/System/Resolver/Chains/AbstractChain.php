@@ -2,7 +2,6 @@
 
 namespace App\Service\System\Resolver\Chains;
 
-use App\Dto\SessionCache\Cache\CacheDto;
 use App\Enum\GotoChainsEnum;
 use App\Enum\GotoScenarioEnum;
 use App\Enum\NavigateEnum;
@@ -12,68 +11,35 @@ use App\Service\System\Resolver\ContractInterface;
 
 abstract class AbstractChain
 {
-    public function chain(
-        ContractInterface $contract,
-        CacheDto $cacheDto,
-        ?AbstractChain $nextChain = null,
-    ): bool {
-        // todo мб стоит расширить роль контракта... что если он будет ещё помнить о чейнах?
-        //  Аля чтоб не прокидывать везде кеш, писать туда, а потом это мапить. так мы ученьшим связанность эл-в
-
-        if ($cacheDto->getEvent()->getCurrentChain()->isRepeat()) {
-            $nextCondition = $nextChain->condition(); // todo собираем всё что нужно для нового чейна
-
-            $this->success($contract, $nextCondition, $cacheDto->getContent());
+    public function chain(ContractInterface $contract): bool
+    {
+        if ($contract->getChain()->isRepeat()) {
+            $this->success($contract);
 
             return true;
         }
 
-        if ($this->gotoIsNavigate($cacheDto->getContent(), $contract)) {
+        if ($this->gotoIsNavigate($contract)) {
             return true;
         }
 
-        if ($this->validate($cacheDto->getContent())) {
-            $nextCondition = $nextChain->condition(); // todo собираем всё что нужно для нового чейна
-
-            $this->success($contract, $nextCondition, $cacheDto->getContent());
+        if ($this->validate($contract)) {
+            $this->success($contract);
 
             return true;
         }
 
-        dd(static::class, '');
-
-        $this->fail($contract, $cacheDto->getContent());
+        $this->fail($contract);
 
         return false;
     }
 
-    abstract public function success(
-        ContractInterface $contract,
-        ConditionInterface $nextCondition,
-        string $content,
-    ): ContractInterface;
+    abstract public function success(ContractInterface $contract): ContractInterface;
 
-    abstract public function validate(string $content): bool;
-
-    abstract public function condition(): ConditionInterface;
-
-    public function fail(ContractInterface $contract, string $content): ContractInterface
+    private function gotoIsNavigate(ContractInterface $contract): bool
     {
-        $message = "Не понимаю что вы от меня хотите, повторите выбор:";
-        $keyBoard = $this->condition()->getKeyBoard();
+        $content = $contract->getContent();
 
-        $contractMessage = MessageHelper::createContractMessage(
-            message: $message,
-            keyBoard: $keyBoard,
-        );
-
-        $contract->addMessage($contractMessage);
-
-        return $contract;
-    }
-
-    private function gotoIsNavigate(string $content, ContractInterface $contract): bool
-    {
         $result = match ($content) {
             NavigateEnum::ToMain->value => GotoScenarioEnum::Main->value,
             NavigateEnum::ToCart->value => GotoScenarioEnum::Cart->value,
@@ -90,4 +56,23 @@ abstract class AbstractChain
 
         return false;
     }
+
+    abstract public function validate(ContractInterface $contract): bool;
+
+    public function fail(ContractInterface $contract): ContractInterface
+    {
+        $message = "Не понимаю что вы от меня хотите, повторите выбор:";
+        $keyBoard = $this->condition()->getKeyBoard();
+
+        $contractMessage = MessageHelper::createContractMessage(
+            message: $message,
+            keyBoard: $keyBoard,
+        );
+
+        $contract->addMessage($contractMessage);
+
+        return $contract;
+    }
+
+    abstract public function condition(): ConditionInterface;
 }

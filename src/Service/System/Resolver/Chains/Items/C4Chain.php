@@ -10,16 +10,15 @@ use App\Service\System\Resolver\ContractInterface;
 
 class C4Chain extends AbstractChain
 {
-    public function success(
-        ContractInterface $contract,
-        ConditionInterface $nextCondition,
-        string $content
-    ): ContractInterface {
+    public function success(ContractInterface $contract): ContractInterface
+    {
+        $content = $contract->getContent();
+
         $message = "Вы кликнули на $content";
 
         $contractMessage = MessageHelper::createContractMessage(
             message: $message,
-            keyBoard: $nextCondition->getKeyBoard()
+            keyBoard: $contract->getNextCondition()->getKeyBoard()
         );
 
         $contract->addMessage($contractMessage);
@@ -47,8 +46,10 @@ class C4Chain extends AbstractChain
         return $condition;
     }
 
-    public function validate(string $content): bool
+    public function validate(ContractInterface $contract): bool
     {
+        $content = $contract->getContent();
+
         $validData = [
             'Да',
             'Нет',

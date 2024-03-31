@@ -60,7 +60,7 @@ class ShopProductsCategoryChain extends AbstractChain
         );
         $contractMessage->setKeyBoard($replyMarkups);
 
-        $contract->addMessage($contractMessage);
+        $contract->getResult()->addMessage($contractMessage);
 
         return false;
     }

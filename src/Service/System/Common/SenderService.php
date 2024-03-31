@@ -22,7 +22,7 @@ class SenderService
      */
     public function sendMessages(Contract $contract, string $token, VisitorSession $visitorSession): void
     {
-        $messages = $contract->getMessages();
+        $messages = $contract->getResult()->getMessages();
 
         /** @var ContractMessageDto $message */
         foreach ($messages as $message) {
