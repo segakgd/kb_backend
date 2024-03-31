@@ -31,7 +31,7 @@ class ScenarioResolver
             dd('сработали attached', $scenarioStep['attached']);
         }
 
-        $contract->addMessage($contractMessage);
+        $contract->getResult()->addMessage($contractMessage);
 
         return $contract;
     }

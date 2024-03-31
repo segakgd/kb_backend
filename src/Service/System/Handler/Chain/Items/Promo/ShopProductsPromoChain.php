@@ -36,7 +36,7 @@ class ShopProductsPromoChain extends AbstractChain
             'Не понимаю о чем вы...',
         );
 
-        $contract->addMessage($contractMessage);
+        $contract->getResult()->addMessage($contractMessage);
 
         return false;
     }

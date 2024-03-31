@@ -21,7 +21,7 @@ class C9Chain extends AbstractChain
             keyBoard: $contract->getNextCondition()->getKeyBoard()
         );
 
-        $contract->addMessage($contractMessage);
+        $contract->getResult()->addMessage($contractMessage);
 
         return $contract;
     }

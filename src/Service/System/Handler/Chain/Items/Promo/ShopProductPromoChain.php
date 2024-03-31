@@ -64,7 +64,7 @@ class ShopProductPromoChain extends AbstractChain
             $replyMarkups,
         );
 
-        $contract->addMessage($contractMessage);
+        $contract->getResult()->addMessage($contractMessage);
 
         return false;
     }
@@ -93,7 +93,7 @@ class ShopProductPromoChain extends AbstractChain
         $contractMessage->setKeyBoard($variantsNav);
         $contractMessage->setMessage('Добавить в корзину вариант:');
 
-        $contract->addMessage($contractMessage);
+        $contract->getResult()->addMessage($contractMessage);
 
         return true;
     }

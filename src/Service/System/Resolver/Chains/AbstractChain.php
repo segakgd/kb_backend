@@ -72,7 +72,7 @@ abstract class AbstractChain
             keyBoard: $keyBoard,
         );
 
-        $contract->addMessage($contractMessage);
+        $contract->getResult()->addMessage($contractMessage);
 
         return $contract;
     }

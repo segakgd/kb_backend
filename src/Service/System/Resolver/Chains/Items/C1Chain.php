@@ -14,10 +14,17 @@ class C1Chain extends AbstractChain
     {
         $content = $contract->getContent();
 
-        $data = $contract->getData();
-        $data['shipping']['address']['apartment'] = $content;
+        $cart = $contract->getCacheCart();
 
-        $contract->setData($data);
+        $shipping = [
+            'address' => [ // todo need realization as DTO
+                'apartment' => $content
+            ]
+        ];
+
+        $cart->setShipping($shipping);
+
+        $contract->setCacheCart($cart);
 
         $message = "Ваши апартаменты $content. \n\n Хотите что-то изменить?";
 
@@ -26,7 +33,7 @@ class C1Chain extends AbstractChain
             keyBoard: $contract->getNextCondition()->getKeyBoard()
         );
 
-        $contract->addMessage($contractMessage);
+        $contract->getResult()->addMessage($contractMessage);
 
         return $contract;
     }

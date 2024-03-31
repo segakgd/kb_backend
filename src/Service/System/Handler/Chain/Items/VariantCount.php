@@ -71,7 +71,7 @@ class VariantCount extends AbstractChain
             $replyMarkups,
         );
 
-        $contract->addMessage($contractMessage);
+        $contract->getResult()->addMessage($contractMessage);
 
         return true;
     }
@@ -92,7 +92,7 @@ class VariantCount extends AbstractChain
             $replyMarkups,
         );
 
-        $contract->addMessage($contractMessage);
+        $contract->getResult()->addMessage($contractMessage);
 
         return false;
     }

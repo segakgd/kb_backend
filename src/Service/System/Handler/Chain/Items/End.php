@@ -34,7 +34,7 @@ class End extends AbstractChain // todo удалить
             $replyMarkups,
         );
 
-        $contract->addMessage($contractMessage);
+        $contract->getResult()->addMessage($contractMessage);
 
         return false;
     }

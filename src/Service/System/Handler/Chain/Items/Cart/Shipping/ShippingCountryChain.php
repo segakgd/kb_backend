@@ -40,7 +40,7 @@ class ShippingCountryChain extends AbstractChain
             $replyMarkups,
         );
 
-        $contract->addMessage($contractMessage);
+        $contract->getResult()->addMessage($contractMessage);
 
         return true;
     }

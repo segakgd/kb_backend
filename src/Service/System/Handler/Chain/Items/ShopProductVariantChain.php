@@ -68,7 +68,7 @@ class ShopProductVariantChain extends AbstractChain
 
             $contractMessage->setKeyBoard($replyMarkups);
 
-            $contract->addMessage($contractMessage);
+            $contract->getResult()->addMessage($contractMessage);
 
             return true;
         }
@@ -82,7 +82,7 @@ class ShopProductVariantChain extends AbstractChain
             'Не понимаю о чем вы, выберите один из вариантов:',
         );
 
-        $contract->addMessage($contractMessage);
+        $contract->getResult()->addMessage($contractMessage);
 
         return false;
     }

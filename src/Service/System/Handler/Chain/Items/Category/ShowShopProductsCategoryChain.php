@@ -25,7 +25,7 @@ class ShowShopProductsCategoryChain extends AbstractChain
             KeyboardHelper::getProductCategoryNav($availableCategory)
         );
 
-        $contract->addMessage($contractMessage);
+        $contract->getResult()->addMessage($contractMessage);
 
         return true;
     }
