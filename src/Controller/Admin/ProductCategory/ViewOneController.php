@@ -1,22 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\ProductCategory;
 
 use App\Controller\Admin\ProductCategory\DTO\Response\ProductCategoryRespDto;
+use App\Entity\Ecommerce\ProductCategory;
 use App\Entity\User\Project;
+use App\Service\Admin\Ecommerce\ProductCategory\Mapper\ProductCategoryMapper;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\Serializer\SerializerInterface;
 
 #[OA\Tag(name: 'ProductCategory')]
 #[OA\Response(
     response: Response::HTTP_NO_CONTENT,
-    description: '', // todo You need to write a description
+    description: 'Возвращает запрашиваемую категорию по проекту',
     content: new Model(
         type: ProductCategoryRespDto::class,
     ),
@@ -24,23 +28,22 @@ use Symfony\Component\Serializer\SerializerInterface;
 class ViewOneController extends AbstractController
 {
     public function __construct(
-        private readonly SerializerInterface $serializer,
+        private readonly ProductCategoryMapper $productCategoryMapper,
     ) {
     }
 
-    #[Route('/api/admin/project/{project}/productCategory/{productCategoryId}/', name: 'admin_product_category_get_one', methods: ['GET'])]
+    #[Route('/api/admin/project/{project}/productCategory/{productCategory}/', name: 'admin_product_category_get_one', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Project $project, int $productCategoryId): JsonResponse
+    public function execute(Project $project, ?ProductCategory $productCategory): JsonResponse
     {
-        // todo ... тут мы должны обратиться к сервису или менеджеру ...
+        if (null === $productCategory) {
+            return $this->json('Not found', Response::HTTP_NOT_FOUND);
+        }
 
-        $fakeProductCategory = (new ProductCategoryRespDto())
-            ->setId(111)
-            ->setName('Category name')
-        ;
+        if ($productCategory->getProjectId() !== $project->getId()) {
+            throw new AccessDeniedException('Access Denied.');
+        }
 
-        return new JsonResponse(
-            $this->serializer->normalize($fakeProductCategory)
-        );
+        return $this->json($this->productCategoryMapper->mapToResponse($productCategory));
     }
 }
