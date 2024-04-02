@@ -3,6 +3,7 @@
 namespace App\Service\System\Resolver;
 
 use App\Dto\SessionCache\Cache\CacheDto;
+use App\Dto\SessionCache\Cache\CacheEventDto;
 use App\Service\System\Common\CacheService;
 use App\Service\System\Resolver\Dto\Contract;
 use Exception;
@@ -22,10 +23,18 @@ class StepResolver
     {
         try {
             foreach ($steps as $step) {
+                // todo $step['chain'] переделать в объекты
                 $chains = $step['chain'] ?? [];
 
                 if (!empty($chains)) {
-                    $this->resolveChain($contract, $cacheDto, $step);
+                    $event = $cacheDto->getEvent();
+
+                    if ($event->isEmptyChains()) {
+                        CacheService::enrichStepCache($step['chain'], $cacheDto);
+                    }
+
+                    $this->chainResolver->resolve($contract, $event->getChains());
+
                 } else {
                     $this->resolveScenario($contract, $cacheDto, $step);
                 }
@@ -37,20 +46,6 @@ class StepResolver
         } catch (Throwable $exception) {
             $this->handleException($exception);
         }
-    }
-
-    /**
-     * @throws Exception
-     */
-    private function resolveChain(Contract $contract, CacheDto $cacheDto, array $step): void
-    {
-        if ($cacheDto->getEvent()->isEmptyChains()) {
-            CacheService::enrichStepCache($step['chain'], $cacheDto);
-        }
-
-        $chains = $this->chainResolver->resolve($contract, $cacheDto->getEvent()->getChains());
-
-        $cacheDto->getEvent()->setChains($chains);
     }
 
     private function resolveScenario(Contract $contract, CacheDto $cacheDto, array $step): void
