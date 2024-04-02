@@ -2,18 +2,22 @@
 
 namespace App\Dto\Scenario;
 
+use App\Entity\Scenario\Scenario;
+
 class ScenarioStepDto
 {
     private ?string $message = null;
 
     private ?ScenarioKeyboardDto $keyboard = null;
 
-    /** @var array|null<ScenarioChainDto>  */
+    /** @var array|null<ScenarioChainDto> */
     private ?array $chain = null;
 
     private ?ScenarioAttachedDto $attached = null;
 
     private bool $finish = false;
+
+    private ?Scenario $scenario = null;
 
     public function getMessage(): ?string
     {
@@ -80,5 +84,52 @@ class ScenarioStepDto
         $this->finish = $finish;
 
         return $this;
+    }
+
+    public function getScenario(): ?Scenario
+    {
+        return $this->scenario;
+    }
+
+    public function setScenario(?Scenario $scenario): static
+    {
+        $this->scenario = $scenario;
+
+        return $this;
+    }
+
+    public static function fromArray(array $data): self
+    {
+        $step = new self();
+
+        $step->setMessage($data['message'] ?? null);
+        $step->setKeyboard(isset($data['keyboard']) ? ScenarioKeyboardDto::fromArray($data['keyboard']) : null);
+
+        $chainData = $data['chain'] ?? null;
+        $chain = [];
+        if ($chainData !== null) {
+            foreach ($chainData as $chainItem) {
+                $chain[] = ScenarioChainDto::fromArray($chainItem);
+            }
+        }
+        $step->setChain($chain);
+
+        $step->setAttached(isset($data['attached']) ? ScenarioAttachedDto::fromArray($data['attached']) : null);
+        $step->setFinish($data['finish'] ?? false);
+
+        return $step;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'message' => $this->getMessage(),
+            'keyboard' => $this->getKeyboard()?->toArray(),
+            'chain' => array_map(function (ScenarioChainDto $chainItem) {
+                return $chainItem->toArray();
+            }, $this->getChain() ?? []),
+            'attached' => $this->getAttached()?->toArray(),
+            'finish' => $this->getFinish(),
+        ];
     }
 }

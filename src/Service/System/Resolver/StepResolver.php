@@ -2,6 +2,7 @@
 
 namespace App\Service\System\Resolver;
 
+use App\Dto\Scenario\ScenarioStepDto;
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Dto\SessionCache\Cache\CacheEventDto;
 use App\Service\System\Common\CacheService;
@@ -22,7 +23,9 @@ class StepResolver
     public function resolve(array $steps, Contract $contract, CacheDto $cacheDto): void
     {
         try {
+            /** @var ScenarioStepDto $step */
             foreach ($steps as $step) {
+                dd($step);
                 // todo $step['chain'] переделать в объекты
                 $chains = $step['chain'] ?? [];
 

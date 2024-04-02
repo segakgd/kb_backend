@@ -22,4 +22,19 @@ class ScenarioKeyboardDto
 
         return $this;
     }
+
+    public static function fromArray(array $data): self
+    {
+        $keyboard = new self();
+        $keyboard->setReplyMarkup($data['replyMarkup'] ?? null);
+
+        return $keyboard;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'replyMarkup' => $this->getReplyMarkup(),
+        ];
+    }
 }

@@ -6,7 +6,6 @@ use App\Dto\Scenario\ScenarioStepDto;
 use App\Entity\Scenario\Scenario;
 use App\Repository\Scenario\ScenarioRepository;
 use Exception;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class ScenarioService
 {
@@ -18,7 +17,6 @@ class ScenarioService
 
     public function __construct(
         private readonly ScenarioRepository $scenarioRepository,
-        private readonly SerializerInterface $serializer,
     ) {
     }
 
@@ -129,11 +127,7 @@ class ScenarioService
             ->setName('default')
             ->setProjectId($projectId)
             ->setBotId($botId)
-            ->setSteps(
-                [
-                    $this->serializer->normalize($step)
-                ]
-            );
+            ->addStep($step);
 
         $this->scenarioRepository->saveAndFlush($scenarioEntity);
 

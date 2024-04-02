@@ -20,19 +20,21 @@ class ChainResolver
         $chainCount = count($chains);
 
         foreach ($chains as $key => $chain) {
-            if ($chain->isNotFinished()) {
-                $this->handleChain($chain->getTarget(), $contract);
+            if ($chain->isFinished()) {
+                continue;
+            }
 
-                if ($contract->getJump() !== null) {
-                    break;
-                }
+            $this->handleChain($chain->getTarget(), $contract);
 
-                if ($chain->isFinished() && $key === $chainCount - 1) {
-                    $contract->getChain()->setFinished(true);
-                }
-
+            if ($contract->getJump() !== null) {
                 break;
             }
+
+            if ($chain->isFinished() && $key === $chainCount - 1) {
+                $contract->getChain()->setFinished(true);
+            }
+
+            break;
         }
 
         return $chains;

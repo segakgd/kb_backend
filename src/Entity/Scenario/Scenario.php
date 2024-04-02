@@ -2,9 +2,12 @@
 
 namespace App\Entity\Scenario;
 
+use App\Doctrine\ScenarioStepDtoArrayType;
 use App\Dto\Scenario\ScenarioStepDto;
 use App\Repository\Scenario\ScenarioRepository;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -19,10 +22,6 @@ class Scenario
     #[ORM\Column(length: 36)]
     private ?string $UUID = null;
 
-    /** @deprecated */
-    #[ORM\Column(length: 36, nullable: true)]
-    private ?string $ownerUUID = null;
-
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
@@ -35,8 +34,10 @@ class Scenario
     #[ORM\Column(nullable: true)]
     private ?int $botId = null;
 
-    /** @var array<ScenarioStepDto> */
-    #[ORM\Column(type: Types::JSON)]
+    /**
+     * @var array<ScenarioStepDto>
+     */
+    #[ORM\Column(type: ScenarioStepDtoArrayType::TYPE_NAME, nullable: true)]
     private array $steps = [];
 
     #[ORM\Column(nullable: true)]
@@ -86,35 +87,30 @@ class Scenario
         return $this;
     }
 
-    /** @deprecated  */
-    public function getOwnerUUID(): ?string
-    {
-        return $this->ownerUUID;
-    }
-
-    /** @deprecated  */
-    public function setOwnerUUID(?string $ownerUUID): static
-    {
-        $this->ownerUUID = $ownerUUID;
-
-        return $this;
-    }
-
     public function getSteps(): array
     {
         return $this->steps;
     }
 
-    public function setSteps(array $steps): static
+    public function setSteps(array $steps): self
     {
         $this->steps = $steps;
 
         return $this;
     }
 
-    public function addStep(ScenarioStepDto $step): static
+    public function addStep(ScenarioStepDto $step): self
     {
         $this->steps[] = $step;
+
+        return $this;
+    }
+
+    public function removeStep(ScenarioStepDto $stepToRemove): self
+    {
+        $this->steps = array_filter($this->steps, function (ScenarioStepDto $step) use ($stepToRemove) {
+            return $step !== $stepToRemove;
+        });
 
         return $this;
     }

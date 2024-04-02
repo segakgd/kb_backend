@@ -41,9 +41,10 @@ class EventResolver
         $bot = $this->botRepository->find($visitorSession->getBotId());
 
         $scenario = $this->scenarioService->findScenarioByUUID($visitorEvent->getScenarioUUID());
+        $steps = $scenario->getSteps();
         $cacheDto = $this->cacheDtoRepository->get($visitorSession);
 
-        $this->stepResolver->resolve($scenario->getSteps(), $contract, $cacheDto);
+        $this->stepResolver->resolve($steps, $contract, $cacheDto);
 
         $jump = $contract->getJump();
 

@@ -8,7 +8,6 @@ use App\Entity\Scenario\Scenario;
 use App\Service\Visitor\Scenario\ScenarioService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Symfony\Component\Serializer\SerializerInterface;
 use Throwable;
 
 class ScenarioConverter
@@ -16,7 +15,6 @@ class ScenarioConverter
     public function __construct(
         private readonly ScenarioService $scenarioService,
         private readonly EntityManagerInterface $entityManager,
-        private readonly SerializerInterface $serializer,
     ) {
     }
 
@@ -36,7 +34,6 @@ class ScenarioConverter
 
             $this->entityManager->flush();
             $this->entityManager->commit();
-
         } catch (Throwable $exception) {
             $this->entityManager->rollback();
 
@@ -50,25 +47,24 @@ class ScenarioConverter
     {
         $scenarioEntities = [];
 
+        /** @var ScenarioDto $scenario */
         foreach ($scenarios as $scenario) {
-            /** @var ScenarioDto $scenario */
-
-
             $scenarioEntity = (new Scenario())
                 ->setUUID($scenario->getUUID())
                 ->setAlias($scenario->getName())
                 ->setName($scenario->getName())
                 ->setType($scenario->getType())
                 ->setBotId($botId)
-                ->setProjectId($projectId)
-            ;
+                ->setProjectId($projectId);
 
-            $scenarioEntity->setSteps($this->serializer->normalize($scenario->getSteps()));
-
-            $scenarioEntities[] = $scenarioEntity;
+            foreach ($scenario->getSteps() as $step) {
+                $scenarioEntity->addStep($step);
+            }
 
             $this->entityManager->persist($scenarioEntity);
             $this->entityManager->flush($scenarioEntity);
+
+            $scenarioEntities[] = $scenarioEntity;
         }
 
         return $scenarioEntities;
