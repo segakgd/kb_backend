@@ -9,9 +9,6 @@ use Exception;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
-/**
- * @deprecated need refactoring
- */
 class StepResolver
 {
     public function __construct(
@@ -21,9 +18,6 @@ class StepResolver
     ) {
     }
 
-    /**
-     * @throws Exception
-     */
     public function resolve(array $steps, Contract $contract, CacheDto $cacheDto): void
     {
         try {
@@ -31,9 +25,9 @@ class StepResolver
                 $chains = $step['chain'] ?? [];
 
                 if (!empty($chains)) {
-                    $this->chain($contract, $cacheDto, $step);
+                    $this->resolveChain($contract, $cacheDto, $step);
                 } else {
-                    $this->scenario($contract, $cacheDto, $step);
+                    $this->resolveScenario($contract, $cacheDto, $step);
                 }
 
                 // todo вот тут ещё нужно повозиться, как по мне...
@@ -41,22 +35,14 @@ class StepResolver
                 break;
             }
         } catch (Throwable $exception) {
-            $this->logger->error(
-                message: $exception->getMessage(),
-                context: [
-                    'file' => $exception->getFile(),
-                    'line' => $exception->getLine()
-                ]
-            );
-
-            dd($exception);
+            $this->handleException($exception);
         }
     }
 
     /**
      * @throws Exception
      */
-    private function chain(Contract $contract, CacheDto $cacheDto, array $step): void
+    private function resolveChain(Contract $contract, CacheDto $cacheDto, array $step): void
     {
         if ($cacheDto->getEvent()->isEmptyChains()) {
             CacheService::enrichStepCache($step['chain'], $cacheDto);
@@ -67,10 +53,21 @@ class StepResolver
         $cacheDto->getEvent()->setChains($chains);
     }
 
-    private function scenario(Contract $contract, CacheDto $cacheDto, array $step): void
+    private function resolveScenario(Contract $contract, CacheDto $cacheDto, array $step): void
     {
         $this->scenarioResolver->resolve($contract, $step);
 
         $cacheDto->getEvent()->setFinished(true);
+    }
+
+    private function handleException(Throwable $exception): void
+    {
+        $this->logger->error(
+            message: $exception->getMessage(),
+            context: [
+                'file' => $exception->getFile(),
+                'line' => $exception->getLine()
+            ]
+        );
     }
 }

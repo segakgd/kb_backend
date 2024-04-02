@@ -3,7 +3,7 @@
 namespace App\Service\System\Handler\Chain;
 
 use App\Dto\SessionCache\Cache\CacheDto;
-use App\Enum\GotoChainsEnum;
+use App\Enum\JumpEnum;
 use App\Service\System\Resolver\Dto\Contract;
 
 abstract class AbstractChain
@@ -28,15 +28,15 @@ abstract class AbstractChain
     public function handleNavigate(string $content, Contract $contract): bool
     {
         $result = match ($content) {
-            'вернуться в главное меню' => 'main',
-            'Моя корзина' => 'cart',
-            'вернуться к товарам' => GotoChainsEnum::ShopProducts->value,
-            'вернуться к категориям' => GotoChainsEnum::ShowShopProductsCategory->value,
+            'вернуться в главное меню' => JumpEnum::Main,
+            'Моя корзина' => JumpEnum::Cart,
+            'вернуться к товарам' => JumpEnum::ShopProducts,
+            'вернуться к категориям' => JumpEnum::ShowShopProductsCategory,
             default => null
         };
 
         if ($result) {
-            $contract->setGoto($result);
+            $contract->setJump($result);
 
             return true;
         }

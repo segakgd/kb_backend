@@ -55,7 +55,7 @@ class EventResolver
                 cacheDto: $cacheDto
             );
         } else {
-            $this->gotoResolver->goto(
+            $this->gotoResolver->resolveJump(
                 visitorEvent: $visitorEvent,
                 cacheDto: $cacheDto,
                 visitorSession: $visitorSession,

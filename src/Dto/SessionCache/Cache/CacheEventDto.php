@@ -6,6 +6,7 @@ class CacheEventDto
 {
     private bool $finished = false;
 
+    /** @var array<CacheChainDto> */
     private array $chains = [];
 
     private ?CacheDataDto $data = null;
@@ -40,7 +41,6 @@ class CacheEventDto
             return null;
         }
 
-        /** @var CacheChainDto $chain */
         foreach ($this->chains as $chain) {
             if (!$chain->isFinished()) {
                 return $chain;

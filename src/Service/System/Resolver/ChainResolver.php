@@ -6,12 +6,8 @@ use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Enum\JumpEnum;
 use App\Helper\ChainsGeneratorHelper;
 use App\Service\System\Resolver\Dto\Contract;
-use App\Service\System\Resolver\Dto\ContractInterface;
 use Exception;
 
-/**
- * @deprecated need refactoring
- */
 class ChainResolver
 {
     /**
@@ -25,17 +21,13 @@ class ChainResolver
 
         foreach ($chains as $key => $chain) {
             if ($chain->isNotFinished()) {
-                $isHandle = $this->handleByTarget($chain->getTarget(), $contract);
+                $this->handleChain($chain->getTarget(), $contract);
 
                 if ($contract->getJump() !== null) {
                     break;
                 }
 
-                if ($isHandle) {
-                    $chain->setFinished(true);
-                }
-
-                if ($chainCount === 1 + $key && $chain->isFinished()) {
+                if ($chain->isFinished() && $key === $chainCount - 1) {
                     $contract->getChain()->setFinished(true);
                 }
 
@@ -49,7 +41,7 @@ class ChainResolver
     /**
      * @throws Exception
      */
-    private function handleByTarget(JumpEnum $target, ContractInterface $contract): bool
+    private function handleChain(JumpEnum $target, Contract $contract): void
     {
         $chain = ChainsGeneratorHelper::generate($target);
 
@@ -58,6 +50,10 @@ class ChainResolver
 
         $contract->setNextCondition($condition);
 
-        return $chain->chain($contract);
+        $isHandled = $chain->chain($contract);
+
+        if ($isHandled) {
+            $contract->getChain()->setFinished(true);
+        }
     }
 }
