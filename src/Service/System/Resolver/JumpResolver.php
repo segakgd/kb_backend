@@ -7,17 +7,17 @@ use App\Dto\SessionCache\Cache\CacheDto;
 use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
 use App\Enum\ChainStatusEnum;
+use App\Service\DtoRepository\SessionCacheDtoRepository;
 use App\Service\System\Common\CacheService;
 use App\Service\System\Resolver\Dto\Contract;
 use App\Service\Visitor\Scenario\ScenarioService;
 use Exception;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class JumpResolver
 {
     public function __construct(
         private readonly ScenarioService $scenarioService,
-        private readonly SerializerInterface $serializer,
+        private readonly SessionCacheDtoRepository $sessionCacheDtoRepository,
     ) {
     }
 
@@ -63,14 +63,8 @@ class JumpResolver
             }
         }
 
-        $this->insertCacheDtoFromSession($visitorSession, $cacheDto);
+        $this->sessionCacheDtoRepository->save($visitorSession, $cacheDto);
 
         $contract->setStatus(ChainStatusEnum::New);
-    }
-
-    private function insertCacheDtoFromSession(VisitorSession $visitorSession, CacheDto $cacheDto): void
-    {
-        $cache = $this->serializer->normalize($cacheDto);
-        $visitorSession->setCache($cache);
     }
 }

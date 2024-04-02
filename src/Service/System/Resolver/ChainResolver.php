@@ -21,11 +21,8 @@ class ChainResolver
      */
     public function resolve(Contract $contract, array $chains): array
     {
-        // todo подумай в рамках ооп, создай сущность которая будех зранить значения нунешнего шага и всё такое...
-
         $chainCount = count($chains);
 
-        // todo было бы здорово, если бы мы знаки какой chain не обработан... чтоб не проходить постоянно масиивом
         foreach ($chains as $key => $chain) {
             if ($chain->isNotFinished()) {
                 $isHandle = $this->handleByTarget($chain->getTarget(), $contract);
