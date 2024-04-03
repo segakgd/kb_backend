@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\System\Resolver\Chains\Dto;
+namespace App\Service\System\Resolver\Dto;
 
 interface ConditionInterface
 {

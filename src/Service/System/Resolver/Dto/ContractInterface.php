@@ -6,7 +6,6 @@ use App\Dto\SessionCache\Cache\CacheCartDto;
 use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Enum\ChainStatusEnum;
 use App\Enum\JumpEnum;
-use App\Service\System\Resolver\Chains\Dto\ConditionInterface;
 
 interface ContractInterface
 {

@@ -5,7 +5,7 @@ namespace App\Service\System\Resolver\Chains;
 use App\Enum\JumpEnum;
 use App\Enum\NavigateEnum;
 use App\Helper\MessageHelper;
-use App\Service\System\Resolver\Chains\Dto\ConditionInterface;
+use App\Service\System\Resolver\Dto\ConditionInterface;
 use App\Service\System\Resolver\Dto\ContractInterface;
 
 abstract class AbstractChain
