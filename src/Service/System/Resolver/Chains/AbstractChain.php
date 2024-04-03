@@ -4,12 +4,19 @@ namespace App\Service\System\Resolver\Chains;
 
 use App\Enum\JumpEnum;
 use App\Enum\NavigateEnum;
+use App\Helper\JumpHelper;
 use App\Helper\MessageHelper;
 use App\Service\System\Resolver\Dto\ConditionInterface;
 use App\Service\System\Resolver\Dto\ContractInterface;
 
 abstract class AbstractChain
 {
+    abstract public function success(ContractInterface $contract): ContractInterface;
+
+    abstract public function validate(ContractInterface $contract): bool;
+
+    abstract public function condition(): ConditionInterface;
+
     public function chain(ContractInterface $contract): bool
     {
         if ($contract->getChain()->isRepeat()) {
@@ -33,29 +40,20 @@ abstract class AbstractChain
         return false;
     }
 
-    abstract public function success(ContractInterface $contract): ContractInterface;
-
     private function gotoIsNavigate(ContractInterface $contract): bool
     {
         $content = $contract->getContent();
 
-        $result = match ($content) {
-            NavigateEnum::ToMain->value => JumpEnum::Main,
-            NavigateEnum::ToCart->value => JumpEnum::Cart,
-            NavigateEnum::ToProducts->value => JumpEnum::ShopProducts,
-            NavigateEnum::ToCategoryProducts->value => JumpEnum::ShowShopProductsCategory,
-        };
+        $jump = JumpHelper::getJumpFromNavigate($content);
 
-        if ($result) {
-            $contract->setJump($result);
+        if ($jump) {
+            $contract->setJump($jump);
 
             return true;
         }
 
         return false;
     }
-
-    abstract public function validate(ContractInterface $contract): bool;
 
     public function fail(ContractInterface $contract): ContractInterface
     {
@@ -71,6 +69,4 @@ abstract class AbstractChain
 
         return $contract;
     }
-
-    abstract public function condition(): ConditionInterface;
 }

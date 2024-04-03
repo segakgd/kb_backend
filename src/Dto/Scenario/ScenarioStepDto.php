@@ -48,6 +48,11 @@ class ScenarioStepDto
         return $this->chain;
     }
 
+    public function isNotEmptyChain(): bool
+    {
+        return empty($this->chain);
+    }
+
     public function addChain(ScenarioChainDto $chain): static
     {
         $this->chain[] = $chain;

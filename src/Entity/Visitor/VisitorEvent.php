@@ -42,6 +42,7 @@ class VisitorEvent
     #[ORM\Column(length: 36)]
     private ?string $scenarioUUID = null;
 
+    // todo переделать под работу с дто
     #[ORM\Column]
     private array $contract = [];
 

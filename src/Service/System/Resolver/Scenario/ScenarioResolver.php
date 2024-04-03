@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\System\Resolver;
+namespace App\Service\System\Resolver\Scenario;
 
 use App\Dto\Contract\ContractMessageDto;
 use App\Dto\Scenario\ScenarioStepDto;

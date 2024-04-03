@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Service\System\Resolver;
+namespace App\Service\System\Resolver\Jumps;
 
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Entity\Scenario\Scenario;
 use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
 use App\Enum\ChainStatusEnum;
-use App\Service\System\Common\CacheService;
 use App\Service\DtoRepository\SessionCacheDtoRepository;
+use App\Service\System\Common\CacheService;
 use App\Service\System\Resolver\Dto\Contract;
 use App\Service\Visitor\Scenario\ScenarioService;
 use Exception;

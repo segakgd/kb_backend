@@ -13,6 +13,8 @@ use App\Service\DtoRepository\ContractDtoRepository;
 use App\Service\DtoRepository\SessionCacheDtoRepository;
 use App\Service\System\Common\SenderService;
 use App\Service\System\Resolver\Dto\Contract;
+use App\Service\System\Resolver\Jumps\JumpResolver;
+use App\Service\System\Resolver\Steps\StepResolver;
 use App\Service\Visitor\Scenario\ScenarioService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;

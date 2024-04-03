@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Service\System\Resolver;
+namespace App\Service\System\Resolver\Steps;
 
 use App\Dto\Scenario\ScenarioStepDto;
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Service\System\Common\CacheService;
+use App\Service\System\Resolver\Chains\ChainResolver;
 use App\Service\System\Resolver\Dto\Contract;
+use App\Service\System\Resolver\Scenario\ScenarioResolver;
+use Exception;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
@@ -23,18 +26,10 @@ class StepResolver
         try {
             /** @var ScenarioStepDto $step */
             foreach ($steps as $step) {
-                $chains = $step->getChain() ?? [];
-
-                if (!empty($chains)) {
-                    $event = $cacheDto->getEvent();
-
-                    if ($event->isEmptyChains()) {
-                        CacheService::enrichStepCache($chains, $cacheDto);
-                    }
-
-                    $this->chainResolver->resolve($contract, $event->getChains());
+                if ($step->isNotEmptyChain()) {
+                    $this->handleChain($contract, $cacheDto, $step);
                 } else {
-                    $this->resolveScenario($contract, $cacheDto, $step);
+                    $this->handleScenario($contract, $cacheDto, $step);
                 }
 
                 // todo вот тут ещё нужно повозиться, как по мне...
@@ -46,7 +41,21 @@ class StepResolver
         }
     }
 
-    private function resolveScenario(Contract $contract, CacheDto $cacheDto, ScenarioStepDto $step): void
+    /**
+     * @throws Exception
+     */
+    private function handleChain(Contract $contract, CacheDto $cacheDto, ScenarioStepDto $step): void
+    {
+        $event = $cacheDto->getEvent();
+
+        if ($event->isEmptyChains()) {
+            CacheService::enrichStepCache($step->getChain(), $cacheDto);
+        }
+
+        $this->chainResolver->resolve($contract, $event->getChains());
+    }
+
+    private function handleScenario(Contract $contract, CacheDto $cacheDto, ScenarioStepDto $step): void
     {
         $this->scenarioResolver->resolve($contract, $step);
 

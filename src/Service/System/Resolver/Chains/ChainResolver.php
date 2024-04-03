@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\System\Resolver;
+namespace App\Service\System\Resolver\Chains;
 
 use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Enum\JumpEnum;
