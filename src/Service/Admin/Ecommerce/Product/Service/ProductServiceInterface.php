@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Admin\Ecommerce\Product;
+namespace App\Service\Admin\Ecommerce\Product\Service;
 
 interface ProductServiceInterface
 {

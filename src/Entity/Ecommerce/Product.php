@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Ecommerce;
 
 use App\Repository\Ecommerce\ProductEntityRepository;
@@ -33,8 +35,14 @@ class Product
     #[ORM\Column(nullable: true)]
     private ?DateTimeImmutable $updatedAt = null;
 
-    #[ORM\Column(length: 100, nullable: true)] // todo убрать nullable: true
-    private ?string $name = null;
+    #[ORM\Column(nullable: false)]
+    private bool $visible;
+
+    #[ORM\Column(length: 100, nullable: false)] // todo убрать nullable: true
+    private string $name = '';
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $description = null;
 
     public function __construct()
     {
@@ -144,12 +152,12 @@ class Product
         return $this;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName(?string $name): static
+    public function setName(string $name): static
     {
         $this->name = $name;
 
@@ -159,5 +167,29 @@ class Product
     public function getMainImage(): string
     {
         return 'https://sopranoclub.ru/images/190-epichnyh-anime-artov/file48822.jpg';
+    }
+
+    public function isVisible(): bool
+    {
+        return $this->visible;
+    }
+
+    public function setVisible(bool $visible): static
+    {
+        $this->visible = $visible;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
     }
 }

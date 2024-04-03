@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Admin\Ecommerce\Product;
+namespace App\Service\Admin\Ecommerce\Product\Service;
 
 use App\Entity\Ecommerce\Product;
 use App\Entity\Ecommerce\ProductVariant;
@@ -16,6 +16,18 @@ class ProductService implements ProductServiceInterface
         private readonly ProductCategoryEntityRepository $productCategoryEntityRepository,
         private readonly ProductVariantRepository $productVariantRepository,
     ) {
+    }
+
+    public function save(Product $product): Product
+    {
+        $this->productEntityRepository->saveAndFlush($product);
+
+        return $product;
+    }
+
+    public function remove(Product $product): void
+    {
+        $this->productEntityRepository->removeAndFlush($product);
     }
 
     public function find(int $productId): ?Product

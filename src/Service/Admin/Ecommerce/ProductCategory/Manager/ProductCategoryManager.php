@@ -15,7 +15,6 @@ class ProductCategoryManager implements ProductCategoryManagerInterface
 {
     public function __construct(private readonly ProductCategoryService $productCategoryService)
     {
-
     }
 
     /**
@@ -25,7 +24,8 @@ class ProductCategoryManager implements ProductCategoryManagerInterface
     public function create(ProductCategoryReqDto $categoryReqDto, Project $project): ProductCategory
     {
         $existingCategory = $this->productCategoryService->getCategoryByNameAndProjectId(
-            $categoryReqDto->getName(), $project->getId()
+            $categoryReqDto->getName(),
+            $project->getId()
         );
 
         if (null !== $existingCategory) {

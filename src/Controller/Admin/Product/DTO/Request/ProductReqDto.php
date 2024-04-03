@@ -1,24 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Product\DTO\Request;
+
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ProductReqDto
 {
+    #[Assert\NotBlank]
     private string $name;
 
-    private string $article;
-
-    private string $type;
-
+    #[Assert\NotBlank]
     private bool $visible;
 
-    private string $description;
+    private ?string $description = null;
 
-    private string $image;
+    #[Assert\Valid]
+    private array $categories = [];
 
-    private array $category;
-
-    private array $variants;
+    #[Assert\Valid]
+    private array $variants = [];
 
     public function getName(): string
     {
@@ -28,30 +30,6 @@ class ProductReqDto
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getArticle(): string
-    {
-        return $this->article;
-    }
-
-    public function setArticle(string $article): self
-    {
-        $this->article = $article;
-
-        return $this;
-    }
-
-    public function getType(): string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): self
-    {
-        $this->type = $type;
 
         return $this;
     }
@@ -68,48 +46,53 @@ class ProductReqDto
         return $this;
     }
 
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
         return $this;
     }
 
-    public function getImage(): string
+    public function setCategories(array $categories): self
     {
-        return $this->image;
-    }
-
-    public function setImage(string $image): self
-    {
-        $this->image = $image;
+        $this->categories = $categories;
 
         return $this;
     }
 
-    public function getCategory(): array
+    public function getCategories(): array
     {
-        return $this->category;
+        return $this->categories;
     }
 
     public function addCategory(ProductCategoryReqDto $category): self
     {
-        $this->category[] = $category;
+        $this->categories[] = $category;
 
         return $this;
     }
 
+    public function setVariants(array $variants): self
+    {
+        $this->variants = $variants;
+
+        return $this;
+    }
+
+    /**
+     * @return ProductVariantReqDto[]
+     */
     public function getVariants(): array
     {
         return $this->variants;
     }
 
-    public function addVariants(ProductVariantReqDto $variant): self
+    public function addVariant(ProductVariantReqDto $variant): self
     {
         $this->variants[] = $variant;
 

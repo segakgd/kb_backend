@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Admin\Ecommerce\ProductCategory\Service;
 
+use App\Controller\Admin\Product\DTO\Request\ProductCategoryReqDto;
 use App\Entity\Ecommerce\ProductCategory;
 use App\Repository\Ecommerce\ProductCategoryEntityRepository;
 
@@ -11,13 +12,30 @@ class ProductCategoryService implements ProductCategoryServiceInterface
 {
     public function __construct(
         private readonly ProductCategoryEntityRepository $productCategoryEntityRepository,
-    )
+    ) {
+    }
+
+    public function getByProjectIdAndIDs(int $projectId, array $categories): array
     {
+        $categoriesId = array_map(function (ProductCategoryReqDto $productCategory) {
+            return $productCategory->getId();
+        }, $categories);
+
+        if (empty($categoriesId)) {
+            return [];
+        }
+
+        return $this->productCategoryEntityRepository->findBy(['projectId' => $projectId, 'id' => $categoriesId]);
     }
 
     public function getAllByProjectId(int $projectId): array
     {
         return $this->productCategoryEntityRepository->findBy(['projectId' => $projectId]);
+    }
+
+    public function getAllByProjectIdAndIDs(int $projectId, array $ids): array
+    {
+        return $this->productCategoryEntityRepository->findBy(['projectId' => $projectId, 'id' => $ids]);
     }
 
     public function save(ProductCategory $category): ProductCategory

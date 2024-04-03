@@ -13,7 +13,7 @@ use App\Controller\Admin\Promotion\DTO\Request\PromotionReqDto;
 use App\Entity\Ecommerce\ProductVariant;
 use App\Entity\Ecommerce\Shipping;
 use App\Entity\User\Project;
-use App\Service\Admin\Ecommerce\ProductVariant\ProductVariantService;
+use App\Service\Admin\Ecommerce\ProductVariant\Service\ProductVariantService;
 use App\Service\Admin\Ecommerce\Promotion\PromotionService;
 use App\Service\Admin\Ecommerce\Shipping\ShippingService;
 use Exception;
@@ -22,11 +22,10 @@ use Symfony\Component\Translation\Exception\NotFoundResourceException;
 class OrderChecker
 {
     public function __construct(
-        private readonly ShippingService       $shippingService,
-        private readonly PromotionService      $promotionService,
+        private readonly ShippingService $shippingService,
+        private readonly PromotionService $promotionService,
         private readonly ProductVariantService $productVariantService,
-    )
-    {
+    ) {
     }
 
     /**

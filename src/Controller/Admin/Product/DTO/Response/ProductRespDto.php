@@ -2,23 +2,19 @@
 
 namespace App\Controller\Admin\Product\DTO\Response;
 
+use App\Dto\Product\Variants\ImageDto;
+
 class ProductRespDto
 {
     private int $id;
 
     private string $name;
 
-    private string $article;
-
-    private string $type;
-
     private bool $visible;
 
     private string $description;
 
-    private string $image;
-
-    private array $category;
+    private array $categories;
 
     private array $variants;
 
@@ -94,26 +90,33 @@ class ProductRespDto
         return $this;
     }
 
-    public function getImage(): string
+    public function getImage(): array
     {
-        return $this->image;
+        return $this->images;
     }
 
-    public function setImage(string $image): self
+    public function setImage(array $images): self
     {
-        $this->image = $image;
+        $this->images = $images;
 
         return $this;
     }
 
-    public function getCategory(): array
+    public function addImage(ImageDto $imageDto): self
     {
-        return $this->category;
+        $this->images[] = $imageDto;
+
+        return $this;
+    }
+
+    public function getCategories(): array
+    {
+        return $this->categories;
     }
 
     public function addCategory(ProductCategoryRespDto $category): self
     {
-        $this->category[] = $category;
+        $this->categories[] = $category;
 
         return $this;
     }

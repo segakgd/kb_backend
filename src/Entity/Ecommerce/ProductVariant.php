@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Ecommerce;
 
+use App\Dto\Product\Variants\VariantPriceDto;
 use App\Repository\Ecommerce\ProductVariantRepository;
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -113,6 +116,13 @@ class ProductVariant
     public function setPrice(array $price): static
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    public function addPrice(VariantPriceDto $priceDto): static
+    {
+        $this->price[] = $priceDto;
 
         return $this;
     }

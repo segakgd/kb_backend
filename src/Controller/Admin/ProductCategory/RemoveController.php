@@ -28,7 +28,7 @@ class RemoveController extends AbstractController
     public function execute(Project $project, ?ProductCategory $productCategory): JsonResponse
     {
         if (null === $productCategory) {
-            return $this->json(['Not found'], Response::HTTP_NOT_FOUND);
+            return $this->json('Not found', Response::HTTP_NOT_FOUND);
         }
 
         if ($productCategory->getProjectId() !== $project->getId()) {
