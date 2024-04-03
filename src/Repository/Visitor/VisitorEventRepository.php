@@ -3,6 +3,7 @@
 namespace App\Repository\Visitor;
 
 use App\Entity\Visitor\VisitorEvent;
+use App\Enum\ChainStatusEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -56,9 +57,9 @@ class VisitorEventRepository extends ServiceEntityRepository
         );
     }
 
-    public function updateChatEventStatus(VisitorEvent $chatEvent, string $status): void
+    public function updateChatEventStatus(VisitorEvent $chatEvent, ChainStatusEnum $status): void
     {
-        $chatEvent->setStatus($status);
+        $chatEvent->setStatus($status->value);
 
         $this->saveAndFlush($chatEvent);
     }

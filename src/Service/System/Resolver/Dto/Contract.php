@@ -15,13 +15,20 @@ class Contract implements ContractInterface
 
     private ?ResultInterface $result = null;
 
-    private ?CacheCartDto $cacheCart;
+    private ?CacheCartDto $cacheCart = null;
 
     private ?JumpEnum $jump = null;
 
     private ?ChainStatusEnum $status = null;
 
     private ?string $content = null;
+
+    public function __construct()
+    {
+        if (is_null($this->result)) {
+            $this->result = new Result;
+        }
+    }
 
     public function getChain(): ?CacheChainDto
     {

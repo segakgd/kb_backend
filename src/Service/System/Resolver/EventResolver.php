@@ -46,6 +46,10 @@ class EventResolver
         $steps = $scenario->getSteps();
         $cacheDto = $this->cacheDtoRepository->get($visitorSession);
 
+        $content = $cacheDto->getContent();
+        $contract->setContent($content);
+        $contract->setCacheCart($cacheDto->getCart());
+
         $this->stepResolver->resolve($steps, $contract, $cacheDto);
 
         $jump = $contract->getJump();

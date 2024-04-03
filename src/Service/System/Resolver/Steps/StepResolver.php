@@ -26,7 +26,7 @@ class StepResolver
         try {
             /** @var ScenarioStepDto $step */
             foreach ($steps as $step) {
-                if ($step->isNotEmptyChain()) {
+                if ($step->hasChain()) {
                     $this->handleChain($contract, $cacheDto, $step);
                 } else {
                     $this->handleScenario($contract, $cacheDto, $step);

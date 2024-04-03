@@ -2,8 +2,6 @@
 
 namespace App\Service\System\Resolver\Chains;
 
-use App\Enum\JumpEnum;
-use App\Enum\NavigateEnum;
 use App\Helper\JumpHelper;
 use App\Helper\MessageHelper;
 use App\Service\System\Resolver\Dto\ConditionInterface;
@@ -11,14 +9,9 @@ use App\Service\System\Resolver\Dto\ContractInterface;
 
 abstract class AbstractChain
 {
-    abstract public function success(ContractInterface $contract): ContractInterface;
-
-    abstract public function validate(ContractInterface $contract): bool;
-
-    abstract public function condition(): ConditionInterface;
-
     public function chain(ContractInterface $contract): bool
     {
+        // todo если используем как стек, то не нужно будет проверять не повтор
         if ($contract->getChain()->isRepeat()) {
             $this->success($contract);
 
@@ -40,6 +33,8 @@ abstract class AbstractChain
         return false;
     }
 
+    abstract public function success(ContractInterface $contract): ContractInterface;
+
     private function gotoIsNavigate(ContractInterface $contract): bool
     {
         $content = $contract->getContent();
@@ -55,6 +50,8 @@ abstract class AbstractChain
         return false;
     }
 
+    abstract public function validate(ContractInterface $contract): bool;
+
     public function fail(ContractInterface $contract): ContractInterface
     {
         $message = "Не понимаю что вы от меня хотите, повторите выбор:";
@@ -69,4 +66,6 @@ abstract class AbstractChain
 
         return $contract;
     }
+
+    abstract public function condition(): ConditionInterface;
 }

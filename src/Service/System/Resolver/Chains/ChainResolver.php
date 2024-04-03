@@ -20,11 +20,11 @@ class ChainResolver
         $chainCount = count($chains);
 
         foreach ($chains as $key => $chain) {
-            if ($chain->isFinished()) {
-                continue;
-            }
+            $nextChain = $chains[1 + $key] ?? null;
 
-            $this->handleChain($chain->getTarget(), $contract);
+            $contract->setChain($chain);
+
+            $this->handleChain($nextChain?->getTarget(), $contract);
 
             if ($contract->getJump() !== null) {
                 break;
@@ -32,6 +32,8 @@ class ChainResolver
 
             if ($chain->isFinished() && $key === $chainCount - 1) {
                 $contract->getChain()->setFinished(true);
+
+                unset($chains[$key]);
             }
 
             break;
@@ -43,12 +45,10 @@ class ChainResolver
     /**
      * @throws Exception
      */
-    private function handleChain(JumpEnum $target, Contract $contract): void
+    private function handleChain(JumpEnum $targetNext, Contract $contract): void
     {
-        $chain = ChainsGeneratorHelper::generate($target);
-
-        // todo вот тут по сути должно быть состояние того чейна, который бкдет следующий.
-        $condition = ChainsGeneratorHelper::generate($target)->condition();
+        $chain = ChainsGeneratorHelper::generate($contract->getChain()->getTarget());
+        $condition = ChainsGeneratorHelper::generate($targetNext)->condition();
 
         $contract->setNextCondition($condition);
 
