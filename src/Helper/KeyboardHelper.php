@@ -2,16 +2,19 @@
 
 namespace App\Helper;
 
+use App\Dto\Scenario\ScenarioKeyboardDto;
 use App\Entity\Ecommerce\ProductVariant;
 use Doctrine\Common\Collections\Collection;
 
 class KeyboardHelper
 {
-    public static function mapKeyboard(array $scenarioStep): array
+    public static function mapKeyboard(ScenarioKeyboardDto $scenarioStep): array
     {
         $replyMarkups = [];
 
-        foreach ($scenarioStep['keyboard']['replyMarkup'] as $key => $replyMarkup) {
+        $replyMarkupsFromSteps = $scenarioStep->getReplyMarkup();
+
+        foreach ($replyMarkupsFromSteps as $key => $replyMarkup) {
             foreach ($replyMarkup as $keyItem => $replyMarkupItem) {
                 $replyMarkups[$key][$keyItem]['text'] = $replyMarkupItem['text'];
             }

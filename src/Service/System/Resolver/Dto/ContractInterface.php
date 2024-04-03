@@ -17,9 +17,9 @@ interface ContractInterface
 
     public function setNextCondition(?ConditionInterface $nextCondition): static;
 
-    public function getResult(): ?Result;
+    public function getResult(): ?ResultInterface;
 
-    public function setResult(?Result $result): static;
+    public function setResult(?ResultInterface $result): static;
 
     public function getCacheCart(): ?CacheCartDto;
 

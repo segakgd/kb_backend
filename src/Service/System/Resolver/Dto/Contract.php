@@ -13,7 +13,7 @@ class Contract implements ContractInterface
 
     private ?ConditionInterface $nextCondition = null;
 
-    private ?Result $result = null;
+    private ?ResultInterface $result = null;
 
     private ?CacheCartDto $cacheCart;
 
@@ -47,12 +47,12 @@ class Contract implements ContractInterface
         return $this;
     }
 
-    public function getResult(): ?Result
+    public function getResult(): ?ResultInterface
     {
         return $this->result;
     }
 
-    public function setResult(?Result $result): static
+    public function setResult(?ResultInterface $result): static
     {
         $this->result = $result;
 

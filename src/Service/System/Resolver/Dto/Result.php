@@ -4,7 +4,7 @@ namespace App\Service\System\Resolver\Dto;
 
 use App\Dto\Contract\ContractMessageDto;
 
-class Result
+class Result implements ResultInterface
 {
     private array $messages = [];
 

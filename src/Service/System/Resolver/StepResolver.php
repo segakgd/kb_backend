@@ -4,10 +4,8 @@ namespace App\Service\System\Resolver;
 
 use App\Dto\Scenario\ScenarioStepDto;
 use App\Dto\SessionCache\Cache\CacheDto;
-use App\Dto\SessionCache\Cache\CacheEventDto;
 use App\Service\System\Common\CacheService;
 use App\Service\System\Resolver\Dto\Contract;
-use Exception;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
@@ -25,19 +23,16 @@ class StepResolver
         try {
             /** @var ScenarioStepDto $step */
             foreach ($steps as $step) {
-                dd($step);
-                // todo $step['chain'] переделать в объекты
-                $chains = $step['chain'] ?? [];
+                $chains = $step->getChain() ?? [];
 
                 if (!empty($chains)) {
                     $event = $cacheDto->getEvent();
 
                     if ($event->isEmptyChains()) {
-                        CacheService::enrichStepCache($step['chain'], $cacheDto);
+                        CacheService::enrichStepCache($chains, $cacheDto);
                     }
 
                     $this->chainResolver->resolve($contract, $event->getChains());
-
                 } else {
                     $this->resolveScenario($contract, $cacheDto, $step);
                 }
@@ -51,7 +46,7 @@ class StepResolver
         }
     }
 
-    private function resolveScenario(Contract $contract, CacheDto $cacheDto, array $step): void
+    private function resolveScenario(Contract $contract, CacheDto $cacheDto, ScenarioStepDto $step): void
     {
         $this->scenarioResolver->resolve($contract, $step);
 

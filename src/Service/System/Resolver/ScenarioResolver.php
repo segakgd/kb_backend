@@ -3,13 +3,14 @@
 namespace App\Service\System\Resolver;
 
 use App\Dto\Contract\ContractMessageDto;
+use App\Dto\Scenario\ScenarioStepDto;
 use App\Helper\KeyboardHelper;
 use App\Helper\MessageHelper;
 use App\Service\System\Resolver\Dto\Contract;
 
 class ScenarioResolver
 {
-    public function resolve(Contract $contract, array $scenarioStep): Contract
+    public function resolve(Contract $contract, ScenarioStepDto $scenarioStep): Contract
     {
         $contractMessage = MessageHelper::createContractMessage();
 
@@ -21,7 +22,7 @@ class ScenarioResolver
         return $contract;
     }
 
-    private function setMessage(ContractMessageDto $contractMessage, array $scenarioStep): void
+    private function setMessage(ContractMessageDto $contractMessage, ScenarioStepDto $scenarioStep): void
     {
         if (!$scenarioStep['message']) {
             return;
@@ -30,13 +31,13 @@ class ScenarioResolver
         $contractMessage->setMessage($scenarioStep['message']);
     }
 
-    private function setKeyboard(ContractMessageDto $contractMessage, array $scenarioStep): void
+    private function setKeyboard(ContractMessageDto $contractMessage, ScenarioStepDto $scenarioStep): void
     {
-        if (empty($scenarioStep['keyboard'])) {
+        if (empty($scenarioStep->getKeyboard())) {
             return;
         }
 
-        $replyMarkups = KeyboardHelper::mapKeyboard($scenarioStep);
+        $replyMarkups = KeyboardHelper::mapKeyboard($scenarioStep->getKeyboard());
 
         if (empty($replyMarkups)) {
             return;
