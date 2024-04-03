@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Entity\Visitor\VisitorEvent;
+use App\Enum\ChainStatusEnum;
 use App\Helper\CommonHelper;
 use App\Repository\Visitor\VisitorEventRepository;
 use App\Service\System\Resolver\EventResolver;
@@ -48,7 +49,7 @@ class TelegramEventsHandlerCommand extends Command
                 } catch (Throwable $throwable) {
                     $visitorEvent->setError($throwable->getMessage());
 
-                    $this->visitorEventRepository->updateChatEventStatus($visitorEvent, VisitorEvent::STATUS_FAIL);
+                    $this->visitorEventRepository->updateChatEventStatus($visitorEvent, ChainStatusEnum::Failed);
 
                     $io->error($throwable->getMessage());
 

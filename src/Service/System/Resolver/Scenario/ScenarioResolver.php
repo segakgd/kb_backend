@@ -24,11 +24,11 @@ class ScenarioResolver
 
     private function setMessage(ContractMessageDto $contractMessage, ScenarioStepDto $scenarioStep): void
     {
-        if (!$scenarioStep['message']) {
+        if (!$scenarioStep->getMessage()) {
             return;
         }
 
-        $contractMessage->setMessage($scenarioStep['message']);
+        $contractMessage->setMessage($scenarioStep->getMessage());
     }
 
     private function setKeyboard(ContractMessageDto $contractMessage, ScenarioStepDto $scenarioStep): void
