@@ -17,22 +17,19 @@ class ChainResolver
      */
     public function resolve(Contract $contract, array $chains): array
     {
-        $chainCount = count($chains);
-
+        /** @var CacheChainDto $chain */
         foreach ($chains as $key => $chain) {
             $nextChain = $chains[1 + $key] ?? null;
 
             $contract->setChain($chain);
 
-            $this->handleChain($nextChain?->getTarget(), $contract);
+            $this->handleChain($contract, $nextChain?->getTarget());
 
             if ($contract->getJump() !== null) {
                 break;
             }
 
-            if ($chain->isFinished() && $key === $chainCount - 1) {
-                $contract->getChain()->setFinished(true);
-
+            if ($chain->isFinished()) {
                 unset($chains[$key]);
             }
 
@@ -45,12 +42,15 @@ class ChainResolver
     /**
      * @throws Exception
      */
-    private function handleChain(JumpEnum $targetNext, Contract $contract): void
+    private function handleChain(Contract $contract, ?JumpEnum $targetNext): void
     {
         $chain = ChainsGeneratorHelper::generate($contract->getChain()->getTarget());
-        $condition = ChainsGeneratorHelper::generate($targetNext)->condition();
 
-        $contract->setNextCondition($condition);
+        if (!is_null($targetNext)) {
+            $condition = ChainsGeneratorHelper::generate($targetNext)->condition();
+
+            $contract->setNextCondition($condition);
+        }
 
         $isHandled = $chain->chain($contract);
 

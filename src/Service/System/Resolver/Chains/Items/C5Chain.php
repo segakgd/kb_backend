@@ -18,7 +18,7 @@ class C5Chain extends AbstractChain
 
         $contractMessage = MessageHelper::createContractMessage(
             message: $message,
-            keyBoard: $contract->getNextCondition()->getKeyBoard()
+            keyBoard: $contract->getNextCondition()?->getKeyBoard()
         );
 
         $contract->getResult()->addMessage($contractMessage);

@@ -4,6 +4,7 @@ namespace App\Service\System\Resolver\Steps;
 
 use App\Dto\Scenario\ScenarioStepDto;
 use App\Dto\SessionCache\Cache\CacheDto;
+use App\Dto\SessionCache\Cache\CacheEventDto;
 use App\Service\System\Common\CacheService;
 use App\Service\System\Resolver\Chains\ChainResolver;
 use App\Service\System\Resolver\Dto\Contract;
@@ -27,9 +28,9 @@ class StepResolver
             /** @var ScenarioStepDto $step */
             foreach ($steps as $step) {
                 if ($step->hasChain()) {
-                    $this->handleChain($contract, $cacheDto, $step);
+                    $this->handleChain($contract, $cacheDto->getEvent(), $step);
                 } else {
-                    $this->handleScenario($contract, $cacheDto, $step);
+                    $this->handleScenario($contract, $cacheDto->getEvent(), $step);
                 }
 
                 // todo вот тут ещё нужно повозиться, как по мне...
@@ -44,22 +45,22 @@ class StepResolver
     /**
      * @throws Exception
      */
-    private function handleChain(Contract $contract, CacheDto $cacheDto, ScenarioStepDto $step): void
+    private function handleChain(Contract $contract, CacheEventDto $event, ScenarioStepDto $step): void
     {
-        $event = $cacheDto->getEvent();
-
         if ($event->isEmptyChains()) {
-            CacheService::enrichStepCache($step->getChain(), $cacheDto);
+            CacheService::enrichStepCache($step->getChain(), $event);
         }
 
-        $this->chainResolver->resolve($contract, $event->getChains());
+        $chains = $this->chainResolver->resolve($contract, $event->getChains());
+
+        $event->setChains($chains);
     }
 
-    private function handleScenario(Contract $contract, CacheDto $cacheDto, ScenarioStepDto $step): void
+    private function handleScenario(Contract $contract, CacheEventDto $event, ScenarioStepDto $step): void
     {
         $this->scenarioResolver->resolve($contract, $step);
 
-        $cacheDto->getEvent()->setFinished(true);
+        $event->setFinished(true);
     }
 
     private function handleException(Throwable $exception): void
