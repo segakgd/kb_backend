@@ -90,7 +90,10 @@ class EventResolver
     ): void {
         $this->senderService->sendMessages($contract, $bot->getToken(), $visitorSession);
 
-        $status = $cacheDto->getEvent()->isFinished() ? ChainStatusEnum::Done : ChainStatusEnum::Await;
+        $finishedChain = $contract->getChain()?->isFinished() ?? true;
+        $finished = $finishedChain && $contract->isStepsStatus();
+
+        $status = $finished ? ChainStatusEnum::Done : ChainStatusEnum::Await;
 
         $contract->setStatus($status);
 

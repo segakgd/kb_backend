@@ -17,7 +17,6 @@ class ChainResolver
      */
     public function resolve(Contract $contract, array $chains): array
     {
-        /** @var CacheChainDto $chain */
         foreach ($chains as $key => $chain) {
             $nextChain = $chains[1 + $key] ?? null;
 

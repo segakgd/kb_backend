@@ -5,7 +5,6 @@ namespace App\Service\System\Common;
 use App\Dto\Scenario\ScenarioChainDto;
 use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Dto\SessionCache\Cache\CacheDataDto;
-use App\Dto\SessionCache\Cache\CacheDto;
 use App\Dto\SessionCache\Cache\CacheEventDto;
 use App\Enum\JumpEnum;
 
@@ -20,8 +19,7 @@ class CacheService
                 (new CacheDataDto)
                     ->setProductId(null)
                     ->setPageNow(null)
-            )
-        ;
+            );
     }
 
     public static function enrichStepCache(array $stepChains, CacheEventDto $cacheEventDto): void

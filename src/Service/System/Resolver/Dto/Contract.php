@@ -21,6 +21,8 @@ class Contract implements ContractInterface
 
     private ?ChainStatusEnum $status = null;
 
+    private bool $stepsStatus = false;
+
     private ?string $content = null;
 
     public function __construct()
@@ -110,6 +112,18 @@ class Contract implements ContractInterface
     public function setContent(?string $content): static
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    public function isStepsStatus(): bool
+    {
+        return $this->stepsStatus;
+    }
+
+    public function setStepsStatus(bool $stepsStatus): static
+    {
+        $this->stepsStatus = $stepsStatus;
 
         return $this;
     }

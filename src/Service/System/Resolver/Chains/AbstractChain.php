@@ -15,6 +15,8 @@ abstract class AbstractChain
         if ($contract->getChain()->isRepeat()) {
             $this->success($contract);
 
+            $contract->getChain()->setFinished(true);
+
             return true;
         }
 
@@ -24,6 +26,8 @@ abstract class AbstractChain
 
         if ($this->validate($contract)) {
             $this->success($contract);
+
+            $contract->getChain()->setFinished(true);
 
             return true;
         }

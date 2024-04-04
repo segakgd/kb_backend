@@ -27,10 +27,20 @@ class StepResolver
         try {
             /** @var ScenarioStepDto $step */
             foreach ($steps as $step) {
+                $event = $cacheDto->getEvent();
+
                 if ($step->hasChain()) {
-                    $this->handleChain($contract, $cacheDto->getEvent(), $step);
+                    $this->handleChain($contract, $event, $step);
+
+                    if ($event->isEmptyChains()) {
+                        // показываем что все шаги закончились
+                        $contract->setStepsStatus(true);
+                    }
                 } else {
-                    $this->handleScenario($contract, $cacheDto->getEvent(), $step);
+                    $this->handleScenario($contract, $event, $step);
+
+                    // показываем что все шаги закончились
+                    $contract->setStepsStatus(true);
                 }
 
                 // todo вот тут ещё нужно повозиться, как по мне...
