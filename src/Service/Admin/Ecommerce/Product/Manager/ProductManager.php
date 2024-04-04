@@ -10,13 +10,11 @@ use App\Entity\Ecommerce\ProductVariant;
 use App\Entity\User\Project;
 use App\Service\Admin\Ecommerce\Product\Service\ProductService;
 use App\Service\Admin\Ecommerce\ProductCategory\Service\ProductCategoryService;
-use App\Service\Admin\Ecommerce\ProductVariant\Service\ProductVariantService;
 
 class ProductManager implements ProductManagerInterface
 {
     public function __construct(
         private readonly ProductCategoryService $productCategoryService,
-        private readonly ProductVariantService $productVariantService,
         private readonly ProductService $productService,
     ) {
     }
@@ -52,7 +50,6 @@ class ProductManager implements ProductManagerInterface
                 ;
 
                 $product->addVariant($productVariantEntity);
-                $this->productVariantService->save($productVariantEntity);
             }
         }
 
@@ -64,5 +61,15 @@ class ProductManager implements ProductManagerInterface
     public function remove(Product $product): void
     {
         $this->productService->remove($product);
+    }
+
+    public function getAll(Project $project): array
+    {
+        $this->productService->getAllByProject($project);
+    }
+
+    public function update(ProductReqDto $productReqDto, Product $product, Project $project): void
+    {
+        // TODO: Implement update() method.
     }
 }

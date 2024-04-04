@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Product;
 
 use App\Controller\Admin\Product\DTO\Request\ProductReqDto;

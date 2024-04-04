@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controller\Admin\Product\DTO\Response;
+declare(strict_types=1);
 
-use App\Dto\Product\Variants\ImageDto;
+namespace App\Controller\Admin\Product\DTO\Response;
 
 class ProductRespDto
 {
@@ -42,30 +42,6 @@ class ProductRespDto
         return $this;
     }
 
-    public function getArticle(): string
-    {
-        return $this->article;
-    }
-
-    public function setArticle(string $article): self
-    {
-        $this->article = $article;
-
-        return $this;
-    }
-
-    public function getType(): string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): self
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
     public function isVisible(): bool
     {
         return $this->visible;
@@ -90,21 +66,9 @@ class ProductRespDto
         return $this;
     }
 
-    public function getImage(): array
+    public function setCategories(array $categories): self
     {
-        return $this->images;
-    }
-
-    public function setImage(array $images): self
-    {
-        $this->images = $images;
-
-        return $this;
-    }
-
-    public function addImage(ImageDto $imageDto): self
-    {
-        $this->images[] = $imageDto;
+        $this->categories = $categories;
 
         return $this;
     }
@@ -117,6 +81,13 @@ class ProductRespDto
     public function addCategory(ProductCategoryRespDto $category): self
     {
         $this->categories[] = $category;
+
+        return $this;
+    }
+
+    public function setVariants(array $variants): self
+    {
+        $this->variants = $variants;
 
         return $this;
     }

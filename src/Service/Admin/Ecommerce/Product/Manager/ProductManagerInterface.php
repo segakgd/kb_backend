@@ -13,4 +13,8 @@ interface ProductManagerInterface
     public function create(ProductReqDto $productReqDto, Project $project): Product;
 
     public function remove(Product $product): void;
+
+    public function getAll(Project $project): array;
+
+    public function update(ProductReqDto $productReqDto, Product $product, Project $project): void;
 }

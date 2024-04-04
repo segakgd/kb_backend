@@ -35,7 +35,7 @@ class RemoveController extends AbstractController
             return $this->json('Not found', Response::HTTP_NOT_FOUND);
         }
 
-        if ($product->getProjectId() !== $project) {
+        if ($product->getProjectId() !== $project->getId()) {
             throw new AccessDeniedException('Access Denied.');
         }
 
