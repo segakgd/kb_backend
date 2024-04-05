@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Service\Admin\Ecommerce\Product\Manager;
 
-use App\Controller\Admin\Product\DTO\Request\ProductCategoryReqDto;
 use App\Controller\Admin\Product\DTO\Request\ProductReqDto;
 use App\Entity\Ecommerce\Product;
 use App\Entity\Ecommerce\ProductCategory;
@@ -26,37 +25,31 @@ class ProductManager implements ProductManagerInterface
     public function create(
         ProductReqDto $productReqDto,
         Project $project
-    ): Product // todo -> как будто много логики на одного productManager
-    {
+    ): Product {
         $product = (new Product())
             ->setName($productReqDto->getName())
             ->setProjectId($project->getId())
             ->setDescription($productReqDto->getDescription())
             ->setVisible($productReqDto->isVisible());
 
-        $categories = $productReqDto->getCategories();
+        $categories = $this->productCategoryService->getByProjectIdAndReqDto(
+            $project->getId(),
+            $productReqDto->getCategories()
+        );
 
-        if (!empty($categories)) {
-            $categories = $this->productCategoryService->getByProjectIdAndReqDto($project->getId(), $categories);
-
-            foreach ($categories as $category) {
-                $product->addCategory($category);
-            }
+        foreach ($categories as $category) {
+            $product->addCategory($category);
         }
 
-        $productVariants = $productReqDto->getVariants();
+        foreach ($productReqDto->getVariants() as $productVariant) {
+            $productVariantEntity = (new ProductVariant())
+                ->setName($productVariant->getName())
+                ->setCount($productVariant->getCount())
+                ->setArticle($productVariant->getArticle())
+                ->setPrice($productVariant->getPrice())
+                ->setImage($productVariant->getImages());
 
-        if (!empty($productVariants)) {
-            foreach ($productVariants as $productVariant) {
-                $productVariantEntity = (new ProductVariant())
-                    ->setName($productVariant->getName())
-                    ->setCount($productVariant->getCount())
-                    ->setArticle($productVariant->getArticle())
-                    ->setPrice($productVariant->getPrice())
-                    ->setImage($productVariant->getImages());
-
-                $product->addVariant($productVariantEntity);
-            }
+            $product->addVariant($productVariantEntity);
         }
 
         $this->productService->save($product);
@@ -74,71 +67,37 @@ class ProductManager implements ProductManagerInterface
         return $this->productService->getAllByProject($project);
     }
 
-    public function update(ProductReqDto $productReqDto, Product $product, Project $project): void
+    public function update(ProductReqDto $productReqDto, Product $product, Project $project): void // todo -> clean up
     {
         $categoriesDto = $productReqDto->getCategories();
 
         /** @var ProductCategory[] $categories */
         $categories = $this->productCategoryService->getByProjectIdAndReqDto($project->getId(), $categoriesDto);
 
-        foreach ($categories as $category) {
-            $categoryDto = array_filter(
-                $categoriesDto,
-                function (ProductCategoryReqDto $productCategoryDto) use ($category) {
-                    return $category->getId() === $productCategoryDto->getId();
-                }
-            );
+        $categoriesArray = [];
 
-            $categoryDto = current($categoryDto);
+        foreach ($categories as $categoryEntity) {
+            $categoriesArray[$categoryEntity->getId()] = $categoryEntity;
+        }
 
-            if (false !== $categoryDto) {
-                /** @var ProductCategoryReqDto $categoryDto */
-                $category->setName($categoryDto->getName());
-                $category->markAsUpdated();
+        foreach ($categoriesDto as $categoryDto) {
+            $categoryEntity = $categoriesArray[$categoryDto->getId()] ?? null;
+            $categoryEntity
+                ?->setName($categoryDto->getName())
+                ->markAsUpdated();
+
+            if (null !== $categoryEntity) {
+                $this->productCategoryService->save($categoryEntity);
             }
         }
 
-
-        $variantsDto = $product->getVariants();
-
-        foreach ($variantsDto as $variantDto) {
-            if (null === $variantDto->getId()) {
-                $productVariantEntity = (new ProductVariant())
-                    ->setName($variantDto->getName())
-                    ->setCount($variantDto->getCount())
-                    ->setArticle($variantDto->getArticle())
-                    ->setPrice($variantDto->getPrice())
-                    ->setImage($variantDto->getImage());
-
-                $product->addVariant($productVariantEntity);
-            } elseif (null !== $variantDto->getId()) {
-                $variantEntity = $this->productVariantService->getByProductAndId(
-                    $product->getId(),
-                    $variantDto->getId()
-                );
-
-                if (null !== $variantEntity) {
-                    $variantEntity
-                        ->markAsUpdated()
-                        ->setName($variantDto->getName())
-                        ->setCount($variantDto->getCount())
-                        ->setPrice($variantDto->getPrice())
-                        ->setArticle($variantDto->getArticle())
-                        ->setImage($variantDto->getImage())
-                        ->setActive($variantDto->isActive())
-                    ;
-                }
-
-                $this->productVariantService->save($variantEntity);
-            }
-        }
+        $product = $this->productVariantService->handleRequestVariantsDto($product, $productReqDto->getVariants());
 
         $product
             ->markAsUpdated()
             ->setName($productReqDto->getName())
             ->setDescription($productReqDto->getName())
-            ->setVisible($productReqDto->isVisible())
-        ;
+            ->setVisible($productReqDto->isVisible());
 
         $this->productService->save($product);
     }

@@ -20,7 +20,7 @@ class OrderReqDto
     private array $promotions = [];
 
     #[Assert\Callback]
-    public function validateExistence(ExecutionContextInterface $context)
+    public function validateExistence(ExecutionContextInterface $context): void
     {
         if (empty($this->promotions) && empty($this->products) && empty($this->shipping)) {
             $context

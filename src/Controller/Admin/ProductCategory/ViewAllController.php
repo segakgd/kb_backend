@@ -41,8 +41,8 @@ class ViewAllController extends AbstractController
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project): JsonResponse
     {
-        $response = $this->productCategoryMapper->mapArrayToResponse($this->productCategoryManager->getAll($project));
-
-        return $this->json($response);
+        return $this->json(
+            $this->productCategoryMapper->mapArrayToResponse($this->productCategoryManager->getAll($project))
+        );
     }
 }

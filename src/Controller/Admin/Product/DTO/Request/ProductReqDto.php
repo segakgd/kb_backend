@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Product\DTO\Request;
 
+use App\Entity\Ecommerce\ProductCategory;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ProductReqDto
@@ -65,6 +66,8 @@ class ProductReqDto
         return $this;
     }
 
+
+    /** @return ProductCategory[] */
     public function getCategories(): array
     {
         return $this->categories;

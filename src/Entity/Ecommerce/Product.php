@@ -49,7 +49,7 @@ class Product
         $this->categories = new ArrayCollection();
         $this->variants = new ArrayCollection();
 
-        if ($this->createdAt === null){
+        if ($this->createdAt === null) {
             $this->createdAt = new DateTimeImmutable();
         }
     }
