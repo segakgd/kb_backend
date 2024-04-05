@@ -90,7 +90,7 @@ class OrderChecker
                 $trackingPromotions[$promotionDto->getId()]['count'] += 1;
             }
 
-            if ($trackingPromotions[$promotionDto->getId()]['count'] !== $foundPromotion->getCount()) {
+            if ($trackingPromotions[$promotionDto->getId()]['count'] > $foundPromotion->getCount()) {
                 throw new Exception('Requested promotion count exceeds presented one');
             }
         }

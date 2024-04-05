@@ -63,7 +63,7 @@ class LeadMapper
         if ($contacts->getLastName() || $contacts->getFirstName()) {
             $fullName = ($contacts->getFirstName() ?? '') . ' ' . ($contacts->getLastName() ?? '');
 
-            $fullNameField = (new LeadFieldRespDto)
+            $fullNameField = (new LeadFieldRespDto())
                 ->setName('fullName')
                 ->setType('full_name')
                 ->setValue($fullName);

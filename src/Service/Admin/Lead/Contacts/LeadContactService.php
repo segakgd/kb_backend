@@ -28,10 +28,10 @@ class LeadContactService
             ->setFirstName($firstName)
             ->setLastName($lastName);
 
-        return $this->saveToDb($contactsEntity);
+        return $this->save($contactsEntity);
     }
 
-    private function saveToDb(DealContacts $contacts): DealContacts
+    private function save(DealContacts $contacts): DealContacts
     {
         $this->contactsEntityRepository->saveAndFlush($contacts);
 

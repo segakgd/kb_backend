@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Lead;
 
 use App\Controller\Admin\Lead\DTO\Request\LeadReqDto;
@@ -46,7 +48,7 @@ class CreateController extends AbstractController
         try {
             $requestDto = $this->serializer->deserialize($request->getContent() ?? '{}', LeadReqDto::class, 'json');
         } catch (Throwable $exception) {
-            return $this->json([$exception->getMessage()], Response::HTTP_BAD_REQUEST);
+            return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
 
         $errors = $this->validator->validate($requestDto);
@@ -58,7 +60,7 @@ class CreateController extends AbstractController
         try {
             $this->leadManager->add($requestDto, $project);
         } catch (Throwable $exception) {
-            return $this->json([$exception->getMessage()], Response::HTTP_BAD_REQUEST);
+            return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
 
         return $this->json([], Response::HTTP_NO_CONTENT);

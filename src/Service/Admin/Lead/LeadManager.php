@@ -21,12 +21,12 @@ class LeadManager
         private readonly LeadFieldsService $fieldsService,
         private readonly OrderService $orderService,
         private readonly OrderChecker $orderChecker,
-    ){
+    ) {
     }
 
     public function getAllByProject(Project $project): array
     {
-       return $this->leadService->getAllByProject($project);
+        return $this->leadService->getAllByProject($project);
     }
 
     /**
