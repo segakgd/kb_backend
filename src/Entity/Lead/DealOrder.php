@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Lead;
 
+use App\Controller\Admin\Product\DTO\Request\ProductReqDto;
 use App\Controller\Admin\Promotion\DTO\Request\PromotionReqDto;
 use App\Controller\Admin\Shipping\DTO\Request\ShippingReqDto;
 use App\Repository\Lead\OrderEntityRepository;
@@ -65,7 +66,7 @@ class DealOrder
         return $this;
     }
 
-    public function addProduct(?ProductDto $product): static // todo  -> подумать над лежащим ДТО (думаю миинмум полей сюда)
+    public function addProduct(?ProductReqDto $product): static // todo  -> подумать над лежащим ДТО (думаю миинмум полей сюда)
     {
         $this->products[] = $product;
 

@@ -12,8 +12,6 @@ class ShippingFinishChain extends AbstractChain
     {
         $content = $cacheDto->getContent();
 
-        dd(self::class);
-
         return true;
     }
 

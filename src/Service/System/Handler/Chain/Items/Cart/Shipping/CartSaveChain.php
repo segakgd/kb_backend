@@ -4,34 +4,42 @@ namespace App\Service\System\Handler\Chain\Items\Cart\Shipping;
 
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\MessageHelper;
+use App\Service\Admin\Ecommerce\DealManager;
+use App\Service\Common\Project\ProjectService;
 use App\Service\System\Contract;
 use App\Service\System\Handler\Chain\AbstractChain;
 
-class ShippingCityChain extends AbstractChain
+class CartSaveChain extends AbstractChain
 {
+    public function __construct(
+        private readonly DealManager $dealManager,
+        private readonly ProjectService $projectService,
+    ) {
+    }
+
     public function success(Contract $contract, CacheDto $cacheDto): bool
     {
         $content = $cacheDto->getContent();
+        $project = $this->projectService->findOneById(4842);
 
-        $shipping = $cacheDto->getCart()->getShipping();
+        $this->dealManager->createDeal($project, $cacheDto->getCart());
 
-        $shipping['address']['city'] = $content;
-
-        $cacheDto->getCart()->setShipping($shipping);
-
-        $message = "Ваш город $content. Введите свою улицу:";
+        $message = "Отлично. Мы сохранили ваш заказ. Сумма вашего заказа составляет N рублей Хотете его оплатить сейчас?";
 
         $replyMarkups = [
             [
                 [
-                    'text' => 'Моя корзина'
+                    'text' => 'Оплатить'
+                ],
+                [
+                    'text' => 'Удалить заказ'
                 ],
             ],
             [
                 [
                     'text' => 'вернуться в главное меню'
                 ],
-            ]
+            ],
         ];
 
         $contractMessage = MessageHelper::createContractMessage(

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Security;
 
 use App\Dto\Security\UserDto;
@@ -11,7 +13,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -43,15 +44,6 @@ class UserRegistrationController extends AbstractController
             return $this->json(['message' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
-        $normalizeUser = $this->serializer->normalize(
-            $user,
-            null,
-            [
-                'groups' => ['openForReading'],
-                AbstractObjectNormalizer::SKIP_NULL_VALUES => true
-            ]
-        );
-
-        return $this->json($normalizeUser);
+        return $this->json($user, 200, [], ['groups' => ['openForReading']]);
     }
 }
