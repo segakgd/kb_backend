@@ -20,6 +20,11 @@ class ProductVariantService
         return $productVariant;
     }
 
+    public function getByProductAndId(int $product, int $id): ?ProductVariant
+    {
+        return $this->productVariantRepository->findOneBy(['id' => $id, 'product' => $product]);
+    }
+
     public function getById(int $id): ?ProductVariant
     {
         return $this->productVariantRepository->find($id);

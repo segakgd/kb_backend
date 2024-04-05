@@ -15,7 +15,7 @@ class ProductCategoryService implements ProductCategoryServiceInterface
     ) {
     }
 
-    public function getByProjectIdAndIDs(int $projectId, array $categories): array
+    public function getByProjectIdAndReqDto(int $projectId, array $categories): array
     {
         $categoriesId = array_map(function (ProductCategoryReqDto $productCategory) {
             return $productCategory->getId();

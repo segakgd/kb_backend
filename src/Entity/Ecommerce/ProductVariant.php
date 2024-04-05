@@ -223,6 +223,11 @@ class ProductVariant
         return $this;
     }
 
+    public function markAsUpdated(): static
+    {
+        return $this->setUpdatedAt(new DateTimeImmutable());
+    }
+
     public function getProduct(): ?Product
     {
         return $this->product;

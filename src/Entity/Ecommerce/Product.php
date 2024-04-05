@@ -152,6 +152,11 @@ class Product
         return $this;
     }
 
+    public function markAsUpdated(): static
+    {
+        return $this->setUpdatedAt(new DateTimeImmutable());
+    }
+
     public function getName(): string
     {
         return $this->name;

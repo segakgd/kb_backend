@@ -10,6 +10,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ProductVariantReqDto
 {
+    private ?int $id;
+
     #[Assert\Length(max: 50)]
     private string $article;
 
@@ -17,12 +19,22 @@ class ProductVariantReqDto
     private string $name;
 
     #[Assert\GreaterThan(0)]
-    private int $count;
+    private ?int $count;
 
     #[Assert\Valid]
     private array $price = [];
 
     private array $images = [];
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
+    }
 
     public function getName(): string
     {
@@ -36,12 +48,12 @@ class ProductVariantReqDto
         return $this;
     }
 
-    public function getCount(): int
+    public function getCount(): ?int
     {
         return $this->count;
     }
 
-    public function setCount(int $count): self
+    public function setCount(?int $count): self
     {
         $this->count = $count;
 
