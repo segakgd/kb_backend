@@ -26,10 +26,10 @@ class OrderService
             ->setPromotions($dto->getPromotions())
             ->markAsUpdated();
 
-        return $this->saveToDb($order);
+        return $this->save($order);
     }
 
-    private function saveToDb(DealOrder $order): DealOrder
+    private function save(DealOrder $order): DealOrder
     {
         $this->orderEntityRepository->saveAndFlush($order);
 

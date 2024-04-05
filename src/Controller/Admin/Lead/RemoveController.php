@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Lead;
 
 use App\Entity\Lead\Deal;
@@ -22,7 +24,6 @@ class RemoveController extends AbstractController
 {
     public function __construct(private readonly LeadManager $leadManager)
     {
-
     }
 
     #[Route('/api/admin/project/{project}/lead/{lead}/', name: 'admin_lead_remove', methods: ['DELETE'])]

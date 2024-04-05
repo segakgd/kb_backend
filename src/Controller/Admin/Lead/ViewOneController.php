@@ -8,7 +8,6 @@ use App\Controller\Admin\Lead\DTO\Response\LeadRespDto;
 use App\Entity\Lead\Deal;
 use App\Entity\User\Project;
 use App\Service\Admin\Lead\LeadMapper;
-use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,10 +28,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class ViewOneController extends AbstractController
 {
     public function __construct(
-        private readonly EntityManagerInterface $manager,
-        private readonly LeadMapper             $leadMapper,
-    )
-    {
+        private readonly LeadMapper $leadMapper,
+    ) {
     }
 
     #[Route('/api/admin/project/{project}/lead/{lead}/', name: 'admin_lead_get_one', methods: ['GET'])]

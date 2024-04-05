@@ -22,10 +22,10 @@ class LeadFieldsService
             ->setName($leadFieldReqDto->getName())
             ->setValue((string)$leadFieldReqDto->getValue());
 
-        return $this->saveToDb($dealField);
+        return $this->save($dealField);
     }
 
-    private function saveToDb(DealField $dealField): DealField
+    private function save(DealField $dealField): DealField
     {
         $this->fieldEntityRepository->saveAndFlush($dealField);
 
