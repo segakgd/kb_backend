@@ -8,11 +8,11 @@ class CacheDto
 {
     private ?string $eventUUID = null;
 
+    private ?string $content = null;
+
     private ?CacheCartDto $cart = null;
 
     private ?CacheEventDto $event = null;
-
-    private ?string $content = null;
 
     public function __construct()
     {
@@ -33,6 +33,18 @@ class CacheDto
     public function setEventUUID(?string $eventUUID): static
     {
         $this->eventUUID = $eventUUID;
+
+        return $this;
+    }
+
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
+    public function setContent(?string $content): static
+    {
+        $this->content = $content;
 
         return $this;
     }
@@ -64,18 +76,6 @@ class CacheDto
     public function clearEvent(): static
     {
         $this->event = CacheService::createCacheEventDto();
-
-        return $this;
-    }
-
-    public function getContent(): ?string
-    {
-        return $this->content;
-    }
-
-    public function setContent(?string $content): static
-    {
-        $this->content = $content;
 
         return $this;
     }
