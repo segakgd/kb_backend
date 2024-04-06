@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Doctrine;
+namespace App\Doctrine\Types;
 
 use App\Dto\SessionCache\Cache\CacheDto;
 use Doctrine\DBAL\Platforms\AbstractPlatform;

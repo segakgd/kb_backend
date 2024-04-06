@@ -12,7 +12,7 @@ class VariantPriceType extends JsonType
 {
     public const VARIANT_PRICE_TYPE = 'variant_price_type';
 
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): array
     {
         $values = parent::convertToPHPValue($value, $platform);
         return array_map(function ($value) {
@@ -20,7 +20,7 @@ class VariantPriceType extends JsonType
         }, $values);
     }
 
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
         $values = array_map(function (VariantPriceDto $variantPriceDto) {
             return $variantPriceDto->toArray();

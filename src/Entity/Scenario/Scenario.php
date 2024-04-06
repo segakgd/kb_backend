@@ -2,7 +2,7 @@
 
 namespace App\Entity\Scenario;
 
-use App\Doctrine\ScenarioStepDtoArrayType;
+use App\Doctrine\Types\ScenarioStepDtoArrayType;
 use App\Dto\Scenario\ScenarioStepDto;
 use App\Repository\Scenario\ScenarioRepository;
 use DateTimeImmutable;

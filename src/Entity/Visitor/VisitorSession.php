@@ -2,7 +2,7 @@
 
 namespace App\Entity\Visitor;
 
-use App\Doctrine\VisitorSessionCacheDtoArrayType;
+use App\Doctrine\Types\VisitorSessionCacheDtoArrayType;
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Repository\Visitor\VisitorSessionRepository;
 use DateTimeImmutable;
@@ -120,7 +120,7 @@ class VisitorSession
 
     public function setCache(CacheDto $cache): static
     {
-        $this->cache = $cache;
+        $this->cache = clone $cache;
 
         return $this;
     }
