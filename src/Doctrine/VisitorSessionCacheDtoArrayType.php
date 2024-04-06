@@ -23,6 +23,7 @@ class VisitorSessionCacheDtoArrayType extends JsonType
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
+        /** @var CacheDto $value */
         return parent::convertToDatabaseValue($value->toArray(), $platform);
     }
 

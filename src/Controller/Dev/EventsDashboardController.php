@@ -109,6 +109,7 @@ class EventsDashboardController extends AbstractDashboardController
             $webhookData->getWebhookContent(),
         );
 
+        // запускаем команду для обработки
         $application = new Application($this->kernel);
         $application->setAutoExit(false);
 

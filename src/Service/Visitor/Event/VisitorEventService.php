@@ -48,7 +48,6 @@ class VisitorEventService
         $cache->setContent($content);
 
         if (!$cache->getEvent()->isFinished()) {
-            $cache->setContent($content);
 
             $visitorSession->setCache($cache);
             $visitorEvent->setStatus('new');
