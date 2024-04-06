@@ -10,7 +10,6 @@ use App\Enum\ChainStatusEnum;
 use App\Repository\User\BotRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\DtoRepository\ContractDtoRepository;
-use App\Service\DtoRepository\SessionCacheDtoRepository;
 use App\Service\System\Common\SenderService;
 use App\Service\System\Resolver\Dto\Contract;
 use App\Service\System\Resolver\Jumps\JumpResolver;
@@ -29,7 +28,6 @@ class EventResolver
         private readonly SenderService $senderService,
         private readonly JumpResolver $gotoResolver,
         private readonly BotRepository $botRepository,
-        private readonly SessionCacheDtoRepository $cacheDtoRepository,
         private readonly ContractDtoRepository $contractDtoRepository,
     ) {
     }
@@ -44,7 +42,7 @@ class EventResolver
 
         $scenario = $this->scenarioService->findScenarioByUUID($visitorEvent->getScenarioUUID());
         $steps = $scenario->getSteps();
-        $cacheDto = $this->cacheDtoRepository->get($visitorSession);
+        $cacheDto = $visitorSession->getCache();
 
         $content = $cacheDto->getContent();
         $contract->setContent($content);
@@ -101,6 +99,6 @@ class EventResolver
             $cacheDto->clearEvent();
         }
 
-        $this->cacheDtoRepository->save($visitorSession, $cacheDto);
+        $visitorSession->setCache($cacheDto);
     }
 }

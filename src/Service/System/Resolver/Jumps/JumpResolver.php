@@ -7,7 +7,6 @@ use App\Entity\Scenario\Scenario;
 use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
 use App\Enum\ChainStatusEnum;
-use App\Service\DtoRepository\SessionCacheDtoRepository;
 use App\Service\System\Common\CacheService;
 use App\Service\System\Resolver\Dto\Contract;
 use App\Service\Visitor\Scenario\ScenarioService;
@@ -17,7 +16,6 @@ class JumpResolver
 {
     public function __construct(
         private readonly ScenarioService $scenarioService,
-        private readonly SessionCacheDtoRepository $sessionCacheDtoRepository,
     ) {
     }
 
@@ -45,7 +43,7 @@ class JumpResolver
             $this->updateCacheChains($cacheDto, $jump->value);
         }
 
-        $this->sessionCacheDtoRepository->save($visitorSession, $cacheDto);
+        $visitorSession->setCache($cacheDto);
 
         $contract->setStatus(ChainStatusEnum::New);
     }

@@ -115,7 +115,7 @@ class DashboardService
             'sessionName' => $session->getName(),
             'sessionChannel' => $session->getChannel(),
             'cache' => [
-                'content' => $cache['content'] ?? null
+                'content' => $cache->getContent() ?? null
             ]
         ];
 
@@ -237,13 +237,13 @@ class DashboardService
 
         if ($visitorSession) {
             $cache = $visitorSession->getCache();
-            $cacheEvent = $cache['event'];
-            $cacheChains = $cacheEvent['chains'];
+            $cacheEvent = $cache->getEvent();
+            $cacheChains = $cacheEvent->getChains();
 
             foreach ($cacheChains as $cacheChain) {
                 $chains[] = [
-                    'name' => CommonHelper::translate($cacheChain['target']),
-                    'status' => $cacheChain['finished'],
+                    'name' => CommonHelper::translate($cacheChain->getTarget()),
+                    'status' => $cacheChain->isFinished(),
                 ];
             }
         }

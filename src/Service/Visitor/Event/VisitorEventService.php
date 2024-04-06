@@ -2,7 +2,6 @@
 
 namespace App\Service\Visitor\Event;
 
-use App\Dto\SessionCache\Cache\CacheDto;
 use App\Entity\Scenario\Scenario;
 use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
@@ -12,7 +11,6 @@ use App\Service\Visitor\Scenario\ScenarioService;
 use App\Service\Visitor\Session\VisitorSessionService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class VisitorEventService
 {
@@ -22,7 +20,6 @@ class VisitorEventService
         private readonly VisitorSessionService $visitorSessionService,
         private readonly ScenarioService $scenarioService,
         private readonly EntityManagerInterface $entityManager,
-        private readonly SerializerInterface $serializer,
     ) {
     }
 
@@ -34,10 +31,7 @@ class VisitorEventService
         string $type,
         string $content,
     ): void {
-
-        dd($visitorSession->getCache());
-        /** @var CacheDto $cache */
-        $cache = $this->serializer->denormalize($visitorSession->getCache(), CacheDto::class);
+        $cache = $visitorSession->getCache();
 
         $visitorEvent = null;
         $eventUUID = $cache->getEventUUID();
@@ -56,9 +50,7 @@ class VisitorEventService
         if (!$cache->getEvent()->isFinished()) {
             $cache->setContent($content);
 
-            $cacheNorm = $this->serializer->normalize($cache, CacheDto::class);
-
-            $visitorSession->setCache($cacheNorm);
+            $visitorSession->setCache($cache);
             $visitorEvent->setStatus('new');
 
             $this->entityManager->persist($visitorSession);
@@ -68,8 +60,6 @@ class VisitorEventService
 
             return;
         }
-
-        $cache = $this->serializer->normalize($cache, 'array');
 
         $visitorSession->setCache($cache);
 
