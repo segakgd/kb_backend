@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Ecommerce;
 
+use App\Dto\Product\Variants\VariantPriceDto;
 use App\Repository\Ecommerce\ProductVariantRepository;
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -27,22 +30,22 @@ class ProductVariant
     #[ORM\Column(nullable: true)]
     private array $image = [];
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'variant_price_type')]
     private array $price = [];
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $count = null;
 
     #[ORM\ManyToOne(inversedBy: 'variants')]
     private ?Product $product = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?bool $promotionDistributed = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $percentDiscount = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?bool $active = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
@@ -117,12 +120,19 @@ class ProductVariant
         return $this;
     }
 
+    public function addPrice(VariantPriceDto $price): static
+    {
+        $this->price[] = $price;
+
+        return $this;
+    }
+
     public function getCount(): ?int
     {
         return $this->count;
     }
 
-    public function setCount(int $count): static
+    public function setCount(?int $count): static
     {
         $this->count = $count;
 
@@ -211,6 +221,11 @@ class ProductVariant
         $this->updatedAt = $updatedAt;
 
         return $this;
+    }
+
+    public function markAsUpdated(): static
+    {
+        return $this->setUpdatedAt(new DateTimeImmutable());
     }
 
     public function getProduct(): ?Product

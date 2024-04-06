@@ -1,20 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Product;
 
-use App\Controller\Admin\Product\DTO\Response\ProductCategoryRespDto;
 use App\Controller\Admin\Product\DTO\Response\ProductRespDto;
-use App\Controller\Admin\Lead\DTO\Response\Order\Product\ProductRespDto as LeadProductRespDto;
-use App\Controller\Admin\Product\DTO\Response\ProductVariantRespDto;
+use App\Entity\Ecommerce\Product;
 use App\Entity\User\Project;
+use App\Service\Admin\Ecommerce\Product\Mapper\ProductMapper;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\Serializer\SerializerInterface;
+use Throwable;
 
 #[OA\Tag(name: 'Product')]
 #[OA\Response(
@@ -27,42 +29,27 @@ use Symfony\Component\Serializer\SerializerInterface;
 class ViewOneController extends AbstractController
 {
     public function __construct(
-        private readonly SerializerInterface $serializer,
+        private readonly ProductMapper $productMapper,
     ) {
     }
 
     /** Получение одного продукта */
-    #[Route('/api/admin/project/{project}/product/{productId}/', name: 'admin_product_get_one', methods: ['GET'])]
+    #[Route('/api/admin/project/{project}/product/{product}/', name: 'admin_product_get_one', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Project $project, int $productId): JsonResponse
+    public function execute(Project $project, ?Product $product): JsonResponse
     {
-        // todo ... тут мы должны обратиться к сервису или менеджеру ...
+        if (null === $product) {
+            return $this->json('Not found', Response::HTTP_NOT_FOUND);
+        }
 
-        $variant = (new ProductVariantRespDto())
-            ->setName('Имя варианта')
-            ->setPrice(10000)
-            ->setCount(1)
-        ;
+        if ($product->getProjectId() !== $project->getId()) {
+            throw new AccessDeniedException('Access Denied.');
+        }
 
-        $category = (new ProductCategoryRespDto())
-            ->setId(111)
-            ->setName('Имя категории')
-        ;
-
-        $product = (new ProductRespDto)
-            ->setId(111)
-            ->setName('Продукт')
-            ->setType(LeadProductRespDto::TYPE_PRODUCT)
-            ->setImage('image.fake')
-            ->setArticle('ARTICLE')
-            ->setVisible(true)
-            ->setDescription('Какое-то описание чего-либо')
-            ->addVariants($variant)
-            ->addCategory($category)
-        ;
-
-        return new JsonResponse(
-            $this->serializer->normalize($product)
-        );
+        try {
+            return $this->json($this->productMapper->mapToResponse($product));
+        } catch (Throwable $exception) {
+            return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
+        }
     }
 }

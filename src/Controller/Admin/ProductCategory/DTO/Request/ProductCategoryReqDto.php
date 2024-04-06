@@ -2,8 +2,12 @@
 
 namespace App\Controller\Admin\ProductCategory\DTO\Request;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 class ProductCategoryReqDto
 {
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 100)]
     private string $name;
 
     public function getName(): string

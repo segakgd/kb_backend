@@ -1,8 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Lead;
 
-use App\Dto\Ecommerce\ProductDto;
+use App\Controller\Admin\Product\DTO\Request\ProductReqDto;
+use App\Controller\Admin\Promotion\DTO\Request\PromotionReqDto;
+use App\Controller\Admin\Shipping\DTO\Request\ShippingReqDto;
 use App\Repository\Lead\OrderEntityRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
@@ -62,7 +66,7 @@ class DealOrder
         return $this;
     }
 
-    public function addProduct(?ProductDto $product): static
+    public function addProduct(?ProductReqDto $product): static // todo  -> подумать над лежащим ДТО (думаю миинмум полей сюда)
     {
         $this->products[] = $product;
 
@@ -81,6 +85,13 @@ class DealOrder
         return $this;
     }
 
+    public function addShipping(ShippingReqDto $dto): static
+    {
+        $this->shipping[] = $dto;
+
+        return $this;
+    }
+
     public function getPromotions(): array
     {
         return $this->promotions;
@@ -89,6 +100,13 @@ class DealOrder
     public function setPromotions(?array $promotions): static
     {
         $this->promotions = $promotions;
+
+        return $this;
+    }
+
+    public function addPromotion(PromotionReqDto $promotions): static
+    {
+        $this->promotions[] = $promotions;
 
         return $this;
     }
@@ -125,6 +143,13 @@ class DealOrder
     public function setUpdatedAt(?DateTimeImmutable $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function markAsUpdated(): static
+    {
+        $this->updatedAt = new DateTimeImmutable();
 
         return $this;
     }

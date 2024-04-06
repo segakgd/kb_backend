@@ -3,6 +3,7 @@ doctrine:
         url: '%env(resolve:DATABASE_URL)%'
         use_savepoints: true
         types:
+            variant_price_type: App\Doctrine\Types\VariantPriceType
             scenario_step_dto_array: App\Doctrine\ScenarioStepDtoArrayType
             visitor_session_cache_dto_array: App\Doctrine\VisitorSessionCacheDtoArrayType
         # IMPORTANT: You MUST configure your server version,

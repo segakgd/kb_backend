@@ -27,7 +27,7 @@ class Deal
     private Collection $fields;
 
     #[Groups(['administrator'])]
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(cascade: ['persist', 'remove',], fetch: "EAGER")]
     #[OAT\Property(type: 'jsonType')]
     private ?DealOrder $order = null;
 

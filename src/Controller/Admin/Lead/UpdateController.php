@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Lead;
 
 use App\Entity\User\Project;
@@ -14,9 +16,9 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class UpdateController extends AbstractController
 {
     #[OA\Tag(name: 'Lead')]
-    #[Route('/api/admin/project/{project}/lead/{leadId}/', name: 'admin_lead_update', methods: ['POST'])]
+    #[Route('/api/admin/project/{project}/lead/{lead}/', name: 'admin_lead_update', methods: ['POST'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Request $request, Project $project, int $leadId): JsonResponse
+    public function execute(Request $request, Project $project, int $lead): JsonResponse
     {
         // todo ... тут мы должны обратиться к сервису или менеджеру ...
 
