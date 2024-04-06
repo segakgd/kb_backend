@@ -1,9 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Product;
 
-use App\Controller\Admin\Product\DTO\Response\AllProductRespDto;
+use App\Controller\Admin\Product\DTO\Response\ProductRespDto;
 use App\Entity\User\Project;
+use App\Service\Admin\Ecommerce\Product\Manager\ProductManagerInterface;
+use App\Service\Admin\Ecommerce\Product\Mapper\ProductMapper;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,7 +15,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\Serializer\SerializerInterface;
+use Throwable;
 
 #[OA\Response(
     response: Response::HTTP_OK,
@@ -20,7 +24,7 @@ use Symfony\Component\Serializer\SerializerInterface;
         type: 'array',
         items: new OA\Items(
             ref: new Model(
-                type: AllProductRespDto::class
+                type: ProductRespDto::class
             )
         )
     ),
@@ -29,7 +33,8 @@ use Symfony\Component\Serializer\SerializerInterface;
 class ViewAllController extends AbstractController
 {
     public function __construct(
-        private readonly SerializerInterface $serializer,
+        private readonly ProductManagerInterface $productManager,
+        private readonly ProductMapper $productMapper,
     ) {
     }
 
@@ -38,25 +43,10 @@ class ViewAllController extends AbstractController
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project): JsonResponse
     {
-        // todo ... тут мы должны обратиться к сервису или менеджеру ...
-
-        $product = (new AllProductRespDto())
-            ->setId(111)
-            ->setName('Продукт')
-            ->setType('service')
-            ->setArticle('PRODUCT-1')
-            ->setAffordablePrices('100-200')
-            ->setVisible(true)
-            ->setCount(1)
-        ;
-
-        return new JsonResponse(
-            $this->serializer->normalize(
-                [
-                    $product,
-                    $product,
-                ]
-            )
-        );
+        try {
+            return $this->json($this->productMapper->mapArrayToResponse($this->productManager->getAll($project)));
+        } catch (Throwable $exception) {
+            return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
+        }
     }
 }

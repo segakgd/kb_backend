@@ -1,26 +1,44 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Lead\DTO\Request;
 
+use App\Controller\Admin\Lead\DTO\Request\Field\LeadContactsReqDto;
 use App\Controller\Admin\Lead\DTO\Request\Field\LeadFieldReqDto;
 use App\Controller\Admin\Lead\DTO\Request\Order\OrderReqDto;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class LeadReqDto
 {
-    private array $contacts;
+    #[Assert\Valid]
+    private ?LeadContactsReqDto $contacts = null;
 
-    private array $fields;
+    #[Assert\Valid]
+    private array $fields = [];
 
-    private OrderReqDto $order;
+    #[Assert\Valid]
+    private ?OrderReqDto $order = null;
 
-    public function getContacts(): array
+    #[Assert\Callback]
+    public function validate(ExecutionContextInterface $context): void
+    {
+        if (empty($this->fields) && null === $this->contacts && $this->order === null) {
+            $context
+                ->buildViolation('Lead has no nested parameters')
+                ->addViolation();
+        }
+    }
+
+    public function getContacts(): ?LeadContactsReqDto
     {
         return $this->contacts;
     }
 
-    public function addContacts(LeadFieldReqDto $contact): self
+    public function setContacts(?LeadContactsReqDto $contact): self
     {
-        $this->contacts[] = $contact;
+        $this->contacts = $contact;
 
         return $this;
     }
@@ -30,19 +48,29 @@ class LeadReqDto
         return $this->fields;
     }
 
-    public function addFields(LeadFieldReqDto $field): self
+    public function addFields(LeadFieldReqDto $fields): self
     {
-        $this->fields[] = $field;
+        $this->fields[] = $fields;
 
         return $this;
     }
 
-    public function getOrder(): OrderReqDto
+    /**
+     * @param LeadFieldReqDto[] $fields
+     */
+    public function setFields(array $fields): self
+    {
+        $this->fields = $fields;
+
+        return $this;
+    }
+
+    public function getOrder(): ?OrderReqDto
     {
         return $this->order;
     }
 
-    public function setOrder(OrderReqDto $order): self
+    public function setOrder(?OrderReqDto $order): self
     {
         $this->order = $order;
 

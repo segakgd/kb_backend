@@ -1,14 +1,42 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Product\DTO\Request;
+
+use App\Dto\Product\Variants\ImageDto;
+use App\Dto\Product\Variants\VariantPriceDto;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ProductVariantReqDto
 {
+    private ?int $id = null;
+
+    #[Assert\Length(max: 50)]
+    private string $article;
+
+    #[Assert\NotBlank]
     private string $name;
 
-    private int $count;
+    #[Assert\GreaterThan(0)]
+    private ?int $count = null;
 
-    private int $price;
+    #[Assert\Valid]
+    private array $price = [];
+
+    private array $images = [];
+
+    private bool $isActive = false;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
+    }
 
     public function getName(): string
     {
@@ -22,26 +50,76 @@ class ProductVariantReqDto
         return $this;
     }
 
-    public function getCount(): int
+    public function getCount(): ?int
     {
         return $this->count;
     }
 
-    public function setCount(int $count): self
+    public function setCount(?int $count): self
     {
         $this->count = $count;
 
         return $this;
     }
 
-    public function getPrice(): int
+    public function getPrice(): array
     {
         return $this->price;
     }
 
-    public function setPrice(int $price): self
+    public function setPrice(array $price): self
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    public function addPrice(VariantPriceDto $priceDto): self
+    {
+        $this->price[] = $priceDto;
+
+        return $this;
+    }
+
+    public function getArticle(): string
+    {
+        return $this->article;
+    }
+
+    public function setArticle(string $article): self
+    {
+        $this->article = $article;
+
+        return $this;
+    }
+
+    public function addImage(ImageDto $imageDto): self
+    {
+        $this->images[] = $imageDto;
+
+        return $this;
+    }
+
+    public function getImages(): array
+    {
+        return $this->images;
+    }
+
+    public function setImages(array $images): self
+    {
+        $this->images = $images;
+
+        return $this;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): self
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }

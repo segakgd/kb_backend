@@ -13,7 +13,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
 
 #[OA\Tag(name: 'Project')]
 #[OA\Response(
@@ -31,7 +30,6 @@ use Symfony\Component\Serializer\SerializerInterface;
 class ViewAllController extends AbstractController
 {
     public function __construct(
-        private readonly SerializerInterface $serializer,
         private readonly StatisticsServiceInterface $statisticsService,
         private readonly ProjectServiceInterface $projectService,
     ) {
@@ -48,9 +46,7 @@ class ViewAllController extends AbstractController
         $projects = $this->projectService->getAll($user);
         $response = $this->mapToResponse($projects);
 
-        return new JsonResponse(
-            $this->serializer->normalize($response)
-        );
+        return $this->json($response);
     }
 
     private function mapToResponse(array $projects): array

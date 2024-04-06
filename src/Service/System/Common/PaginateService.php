@@ -6,7 +6,7 @@ use App\Dto\SessionCache\Cache\CacheDataDto;
 use App\Entity\Ecommerce\Product;
 use App\Helper\KeyboardHelper;
 use App\Helper\MessageHelper;
-use App\Service\Admin\Ecommerce\Product\ProductService;
+use App\Service\Admin\Ecommerce\Product\Service\ProductService;
 use App\Service\System\Contract;
 use Exception;
 

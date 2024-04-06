@@ -1,9 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\ProductCategory;
 
 use App\Controller\Admin\ProductCategory\DTO\Response\ProductCategoryRespDto;
 use App\Entity\User\Project;
+use App\Service\Admin\Ecommerce\ProductCategory\Manager\ProductCategoryManagerInterface;
+use App\Service\Admin\Ecommerce\ProductCategory\Mapper\ProductCategoryMapper;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,12 +15,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\Serializer\SerializerInterface;
 
 #[OA\Tag(name: 'ProductCategory')]
 #[OA\Response(
     response: Response::HTTP_OK,
-    description: '', // todo You need to write a description
+    description: 'Возвращает коллекцию категорий продуктов проекта',
     content: new OA\JsonContent(
         type: 'array',
         items: new OA\Items(
@@ -29,28 +32,18 @@ use Symfony\Component\Serializer\SerializerInterface;
 class ViewAllController extends AbstractController
 {
     public function __construct(
-        private readonly SerializerInterface $serializer,
+        private readonly ProductCategoryManagerInterface $productCategoryManager,
+        private readonly ProductCategoryMapper $productCategoryMapper,
     ) {
     }
 
+    /** Получение колекции категорий */
     #[Route('/api/admin/project/{project}/productCategory/', name: 'admin_product_category_get_all', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project): JsonResponse
     {
-        // todo ... тут мы должны обратиться к сервису или менеджеру ...
-
-        $fakeProductCategory = (new ProductCategoryRespDto())
-            ->setId(111)
-            ->setName('Category name')
-        ;
-
-        return new JsonResponse(
-            $this->serializer->normalize(
-                [
-                    $fakeProductCategory,
-                    $fakeProductCategory,
-                ]
-            )
+        return $this->json(
+            $this->productCategoryMapper->mapArrayToResponse($this->productCategoryManager->getAll($project))
         );
     }
 }

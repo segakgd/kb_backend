@@ -1,13 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Lead;
 
 use App\Controller\Admin\Lead\DTO\Request\FilterLeadsReqDto;
-use App\Controller\Admin\Lead\DTO\Response\AllLeadContactRespDto;
-use App\Controller\Admin\Lead\DTO\Response\AllLeadContactsRespDto;
 use App\Controller\Admin\Lead\DTO\Response\AllLeadRespDto;
-use App\Controller\Admin\Lead\DTO\Response\LeadRespDto;
 use App\Entity\User\Project;
+use App\Service\Admin\Lead\LeadManager;
+use App\Service\Admin\Lead\LeadMapper;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -42,6 +43,8 @@ class ViewAllController extends AbstractController
     public function __construct(
         private readonly ValidatorInterface $validator,
         private readonly SerializerInterface $serializer,
+        private readonly LeadManager $leadManager,
+        private readonly LeadMapper $leadMapper,
     ) {
     }
 
@@ -53,41 +56,20 @@ class ViewAllController extends AbstractController
 
         $requestDto = $this->serializer->deserialize($content, FilterLeadsReqDto::class, 'json');
 
-        $errors = $this->validator->validate($requestDto);
+        $errors = $this->validator->validate($requestDto); // todo -> пока не нашел применения
 
         if (count($errors) > 0) {
             return $this->json(['message' => $errors->get(0)->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
-        // todo ... тут мы должны обратиться к сервису или менеджеру ...
+        $leads = $this->leadManager->getAllByProject($project);
 
-        $contacts = (new AllLeadContactsRespDto())
-            ->setMail(
-                (new AllLeadContactRespDto())
-                    ->setName('Почта')
-                    ->setType('mail')
-                    ->setValue('mail@mail.fake')
-            )
-        ;
+        $response = [];
 
-        $fakeLead = (new AllLeadRespDto())
-            ->setType('service')
-            ->setStatus(LeadRespDto::LEAD_STATUS_NEW)
-            ->setNumber(111)
-            ->setContacts($contacts)
-            ->setPaymentStatus(true)
-            ->setTotalAmount(30000)
-            ->setTotalAmountWF('300,00')
-            ->setFullName('Fake Faker Fake')
-        ;
+        foreach ($leads as $lead) {
+            $response[] = $this->leadMapper->mapToResponse($lead);
+        }
 
-        return new JsonResponse(
-            $this->serializer->normalize(
-                [
-                    $fakeLead,
-                    $fakeLead,
-                ]
-            )
-        );
+        return $this->json($response);
     }
 }

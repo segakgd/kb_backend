@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Product\DTO\Response;
 
 class ProductRespDto
@@ -8,17 +10,11 @@ class ProductRespDto
 
     private string $name;
 
-    private string $article;
-
-    private string $type;
-
     private bool $visible;
 
     private string $description;
 
-    private string $image;
-
-    private array $category;
+    private array $categories;
 
     private array $variants;
 
@@ -42,30 +38,6 @@ class ProductRespDto
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getArticle(): string
-    {
-        return $this->article;
-    }
-
-    public function setArticle(string $article): self
-    {
-        $this->article = $article;
-
-        return $this;
-    }
-
-    public function getType(): string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): self
-    {
-        $this->type = $type;
 
         return $this;
     }
@@ -94,26 +66,28 @@ class ProductRespDto
         return $this;
     }
 
-    public function getImage(): string
+    public function setCategories(array $categories): self
     {
-        return $this->image;
-    }
-
-    public function setImage(string $image): self
-    {
-        $this->image = $image;
+        $this->categories = $categories;
 
         return $this;
     }
 
-    public function getCategory(): array
+    public function getCategories(): array
     {
-        return $this->category;
+        return $this->categories;
     }
 
     public function addCategory(ProductCategoryRespDto $category): self
     {
-        $this->category[] = $category;
+        $this->categories[] = $category;
+
+        return $this;
+    }
+
+    public function setVariants(array $variants): self
+    {
+        $this->variants = $variants;
 
         return $this;
     }

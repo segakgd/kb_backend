@@ -1,26 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Lead\DTO\Request\Field;
+
+use Symfony\Component\Validator\Constraints as Assert;
 
 class LeadFieldReqDto
 {
-    private string $type;
-
+    #[Assert\NotBlank]
     private string $name;
 
-    private string|int $value;
-
-    public function getType(): string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): self
-    {
-        $this->type = $type;
-
-        return $this;
-    }
+    #[Assert\NotBlank]
+    private string $value;
 
     public function getName(): string
     {

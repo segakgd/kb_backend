@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Ecommerce;
 
 use App\Repository\Ecommerce\ProductCategoryEntityRepository;
@@ -116,6 +118,13 @@ class ProductCategory
     public function setUpdatedAt(DateTimeImmutable $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function markAsUpdated(): static
+    {
+        $this->setUpdatedAt(new DateTimeImmutable());
 
         return $this;
     }
