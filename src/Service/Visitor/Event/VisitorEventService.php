@@ -34,6 +34,8 @@ class VisitorEventService
         string $type,
         string $content,
     ): void {
+
+        dd($visitorSession->getCache());
         /** @var CacheDto $cache */
         $cache = $this->serializer->denormalize($visitorSession->getCache(), CacheDto::class);
 

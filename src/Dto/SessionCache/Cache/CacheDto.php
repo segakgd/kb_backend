@@ -79,4 +79,50 @@ class CacheDto
 
         return $this;
     }
+
+    public static function fromArray(array $data): static
+    {
+        $step = new self();
+
+        if (isset($data['eventUUID'])) {
+            $step->eventUUID = $data['eventUUID'];
+        }
+
+        if (isset($data['cart'])) {
+            $step->cart = CacheCartDto::fromArray($data['cart']);
+        }
+
+        if (isset($data['event'])) {
+            $step->event = CacheEventDto::fromArray($data['event']);
+        }
+
+        if (isset($data['content'])) {
+            $step->content = $data['content'];
+        }
+
+        return $step;
+    }
+
+    public function toArray(): array
+    {
+        $data = [];
+
+        if ($this->eventUUID !== null) {
+            $data['eventUUID'] = $this->eventUUID;
+        }
+
+        if ($this->cart !== null) {
+            $data['cart'] = $this->cart->toArray();
+        }
+
+        if ($this->event !== null) {
+            $data['event'] = $this->event->toArray();
+        }
+
+        if ($this->content !== null) {
+            $data['content'] = $this->content;
+        }
+
+        return $data;
+    }
 }

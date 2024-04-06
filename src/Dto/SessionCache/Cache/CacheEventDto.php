@@ -86,4 +86,37 @@ class CacheEventDto
 
         return $this;
     }
+
+    public static function fromArray(array $data): static
+    {
+        $event = new self();
+        $event->finished = $data['finished'] ?? false;
+
+        $chains = [];
+
+        foreach ($data['chains'] ?? [] as $chainData) {
+            $chains[] = CacheChainDto::fromArray($chainData);
+        }
+
+        $event->chains = $chains;
+
+        $event->data = CacheDataDto::fromArray($data['data'] ?? []);
+
+        return $event;
+    }
+
+    public function toArray(): array
+    {
+        $chainsArray = [];
+
+        foreach ($this->chains as $chain) {
+            $chainsArray[] = $chain->toArray();
+        }
+
+        return [
+            'finished' => $this->finished,
+            'chains' => $chainsArray,
+            'data' => $this->data->toArray(),
+        ];
+    }
 }

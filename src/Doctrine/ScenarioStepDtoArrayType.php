@@ -19,6 +19,7 @@ class ScenarioStepDtoArrayType extends JsonType
         $decodedValue = parent::convertToPHPValue($value, $platform);
 
         $result = [];
+
         foreach ($decodedValue as $item) {
             $result[] = ScenarioStepDto::fromArray($item);
         }
@@ -29,6 +30,7 @@ class ScenarioStepDtoArrayType extends JsonType
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
         $serializedValue = [];
+
         /** @var ScenarioStepDto $item */
         foreach ($value as $item) {
             $serializedValue[] = $item->toArray();

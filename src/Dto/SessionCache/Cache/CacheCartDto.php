@@ -80,4 +80,28 @@ class CacheCartDto
 
         return $this;
     }
+
+    public static function fromArray(array $data): static
+    {
+        $cart = new self();
+
+        $cart->contacts = $data['contacts'] ?? [];
+        $cart->products = $data['products'] ?? [];
+        $cart->shipping = $data['shipping'] ?? [];
+        $cart->promotion = $data['promotion'] ?? [];
+        $cart->pay = $data['pay'] ?? false;
+
+        return $cart;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'contacts' => $this->contacts,
+            'products' => $this->products,
+            'shipping' => $this->shipping,
+            'promotion' => $this->promotion,
+            'pay' => $this->pay,
+        ];
+    }
 }

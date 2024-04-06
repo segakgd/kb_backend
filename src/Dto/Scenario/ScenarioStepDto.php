@@ -112,11 +112,13 @@ class ScenarioStepDto
 
         $chainData = $data['chain'] ?? null;
         $chain = [];
+
         if ($chainData !== null) {
             foreach ($chainData as $chainItem) {
                 $chain[] = ScenarioChainDto::fromArray($chainItem);
             }
         }
+
         $step->setChain($chain);
 
         $step->setAttached(isset($data['attached']) ? ScenarioAttachedDto::fromArray($data['attached']) : null);

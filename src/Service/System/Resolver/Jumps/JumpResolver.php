@@ -28,7 +28,7 @@ class JumpResolver
         VisitorEvent $visitorEvent,
         CacheDto $cacheDto,
         VisitorSession $visitorSession,
-        Contract $contract
+        Contract $contract,
     ): void {
         $jump = $contract->getJump();
 
