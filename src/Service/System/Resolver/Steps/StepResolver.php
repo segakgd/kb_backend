@@ -27,28 +27,31 @@ class StepResolver
         try {
             /** @var ScenarioStepDto $step */
             foreach ($steps as $step) {
-                $event = $cacheDto->getEvent();
+                $cacheEventDto = $cacheDto->getEvent();
 
-                if ($step->hasChain()) {
-                    $this->handleChain($contract, $event, $step);
+                $this->resolveStep($contract, $step, $cacheEventDto);
 
-                    if ($event->isEmptyChains()) {
-                        // показываем что все шаги закончились
-                        $contract->setStepsStatus(true);
-                    }
-                } else {
-                    $this->handleScenario($contract, $event, $step);
-
-                    // показываем что все шаги закончились
-                    $contract->setStepsStatus(true);
-                }
-
-                // todo вот тут ещё нужно повозиться, как по мне...
-                // todo проблема с сообщениями...
                 break;
             }
         } catch (Throwable $exception) {
             $this->handleException($exception);
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function resolveStep(Contract $contract, ScenarioStepDto $step, CacheEventDto $cacheEventDto): void
+    {
+        if ($step->hasChain()) {
+            $this->handleChain($contract, $cacheEventDto, $step);
+
+            if ($cacheEventDto->isEmptyChains()) {
+                $contract->setStepsStatus(true);
+            }
+        } else {
+            $this->handleScenario($contract, $cacheEventDto, $step);
+            $contract->setStepsStatus(true);
         }
     }
 

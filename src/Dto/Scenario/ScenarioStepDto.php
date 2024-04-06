@@ -84,6 +84,16 @@ class ScenarioStepDto
         return $this->finish;
     }
 
+    public function isNotFinish(): bool
+    {
+        return !$this->finish;
+    }
+
+    public function isFinish(): bool
+    {
+        return $this->finish;
+    }
+
     public function setFinish(bool $finish): static
     {
         $this->finish = $finish;
