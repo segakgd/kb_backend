@@ -47,7 +47,9 @@ class ProductManager implements ProductManagerInterface
                 ->setCount($productVariant->getCount())
                 ->setArticle($productVariant->getArticle())
                 ->setPrice($productVariant->getPrice())
-                ->setImage($productVariant->getImages());
+                ->setImage($productVariant->getImages())
+                ->markAsUpdated()
+            ;
 
             $product->addVariant($productVariantEntity);
         }
@@ -87,6 +89,7 @@ class ProductManager implements ProductManagerInterface
                 ->markAsUpdated();
 
             if (null !== $categoryEntity) {
+                $categoryEntity->addProduct($product);
                 $this->productCategoryService->save($categoryEntity);
             }
         }

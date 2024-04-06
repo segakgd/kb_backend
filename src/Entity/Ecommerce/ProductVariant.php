@@ -30,22 +30,22 @@ class ProductVariant
     #[ORM\Column(nullable: true)]
     private array $image = [];
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'variant_price_type')]
     private array $price = [];
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $count = null;
 
     #[ORM\ManyToOne(inversedBy: 'variants')]
     private ?Product $product = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?bool $promotionDistributed = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $percentDiscount = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?bool $active = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
@@ -120,9 +120,9 @@ class ProductVariant
         return $this;
     }
 
-    public function addPrice(VariantPriceDto $priceDto): static
+    public function addPrice(VariantPriceDto $price): static
     {
-        $this->price[] = $priceDto;
+        $this->price[] = $price;
 
         return $this;
     }
@@ -132,7 +132,7 @@ class ProductVariant
         return $this->count;
     }
 
-    public function setCount(int $count): static
+    public function setCount(?int $count): static
     {
         $this->count = $count;
 

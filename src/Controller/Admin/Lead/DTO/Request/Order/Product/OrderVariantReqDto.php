@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Lead\DTO\Request\Order\Product;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 class OrderVariantReqDto
 {
+    #[Assert\GreaterThan(0)]
     private int $id;
 
     private int $count;

@@ -31,7 +31,7 @@ class ProductCategoryManager implements ProductCategoryManagerInterface
         if (null !== $existingCategory) {
             throw new ProductCategoryExistException(
                 sprintf(
-                    'Product category for project %d with %s name exist',
+                    'Product category for project id %d with %s name exist',
                     $project->getId(),
                     $categoryReqDto->getName()
                 )

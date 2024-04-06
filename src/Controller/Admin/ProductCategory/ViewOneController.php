@@ -32,6 +32,7 @@ class ViewOneController extends AbstractController
     ) {
     }
 
+    /** Получение категории продуктов */
     #[Route('/api/admin/project/{project}/productCategory/{productCategory}/', name: 'admin_product_category_get_one', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project, ?ProductCategory $productCategory): JsonResponse

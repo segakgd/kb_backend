@@ -23,6 +23,7 @@ class RemoveController extends AbstractController
     {
     }
 
+    /** Удаление категории продуктов */
     #[Route('/api/admin/project/{project}/productCategory/{productCategory}/', name: 'admin_product_category_remove', methods: ['DELETE'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project, ?ProductCategory $productCategory): JsonResponse

@@ -31,7 +31,7 @@ class RemoveController extends AbstractController
     public function execute(Project $project, ?Deal $lead): JsonResponse
     {
         if (null === $lead) {
-            return $this->json(['Lead not found'], Response::HTTP_NOT_FOUND);
+            return $this->json('Lead not found', Response::HTTP_NOT_FOUND);
         }
 
         if ($lead->getProjectId() !== $project->getId()) {

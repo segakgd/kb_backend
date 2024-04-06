@@ -12,7 +12,7 @@ class ProductReqDto
     #[Assert\NotBlank]
     private string $name;
 
-    #[Assert\NotBlank]
+    #[Assert\Choice(choices: [true, false])]
     private bool $visible;
 
     private ?string $description = null;
@@ -66,8 +66,7 @@ class ProductReqDto
         return $this;
     }
 
-
-    /** @return ProductCategory[] */
+    /** @return ProductCategoryReqDto[] */
     public function getCategories(): array
     {
         return $this->categories;

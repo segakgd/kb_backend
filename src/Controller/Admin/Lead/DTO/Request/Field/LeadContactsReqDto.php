@@ -30,14 +30,14 @@ class LeadContactsReqDto
                 ->addViolation();
         }
 
-        if ($this->phone !== null && $this->phone->getType() !== 'phone') {
-            $context
-                ->buildViolation('Phone field invalid')
-                ->atPath('phone.type')
-                ->addViolation();
-        }
+//        if ($this->phone !== null) {
+//            $context
+//                ->buildViolation('Phone field invalid')
+//                ->atPath('phone.type')
+//                ->addViolation();
+//        }
 
-        if ($this->email !== null && $this->email->getType() !== 'email' || !filter_var($this->email->getValue(), FILTER_VALIDATE_EMAIL)) {
+        if ($this->email !== null || !filter_var($this->email->getValue(), FILTER_VALIDATE_EMAIL)) {
             $context
                 ->buildViolation('Mail field invalid')
                 ->atPath('mail.type')

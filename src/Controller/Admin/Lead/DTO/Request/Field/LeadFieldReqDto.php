@@ -9,25 +9,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 class LeadFieldReqDto
 {
     #[Assert\NotBlank]
-    private string $type; // todo -> DealField не содержит тип. Не вижу его применения.
-
-    #[Assert\NotBlank]
     private string $name;
 
     #[Assert\NotBlank]
-    private string|int $value; // todo -> не очень нравится string|int. Давайте уже стрингу хранить, а в нужных местах(?) типизировать в int. Entity со стрингой
-
-    public function getType(): string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): self
-    {
-        $this->type = $type;
-
-        return $this;
-    }
+    private string $value;
 
     public function getName(): string
     {

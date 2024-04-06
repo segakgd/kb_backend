@@ -41,7 +41,7 @@ class UpdateController extends AbstractController
     }
 
     /** Обновление одного продукта */
-    #[Route('/api/admin/project/{project}/product/{product}/', name: 'admin_product_update', methods: ['POST'])]
+    #[Route('/api/admin/project/{project}/product/{product}/', name: 'admin_product_update', methods: ['PATCH'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project, ?Product $product): JsonResponse
     {
@@ -53,7 +53,6 @@ class UpdateController extends AbstractController
 
         try {
             $requestDto = $this->serializer->deserialize($request->getContent(), ProductReqDto::class, 'json');
-
             $errors = $this->validator->validate($requestDto);
 
             if (count($errors) > 0) {

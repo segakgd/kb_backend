@@ -14,7 +14,7 @@ class OrderReqDto
     private array $products = [];
 
     #[Assert\Valid]
-    private array $shipping = []; // todo -> поменял как в ентити
+    private array $shipping = [];
 
     #[Assert\Valid]
     private array $promotions = [];

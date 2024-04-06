@@ -23,10 +23,10 @@ class Product
     #[ORM\Column]
     private ?int $projectId = null;
 
-    #[ORM\ManyToMany(targetEntity: ProductCategory::class, mappedBy: 'products')]
+    #[ORM\ManyToMany(targetEntity: ProductCategory::class, mappedBy: 'products', cascade: ['persist'])]
     private Collection $categories;
 
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductVariant::class)]
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductVariant::class, cascade: ['persist', 'remove'])]
     private Collection $variants;
 
     #[ORM\Column]

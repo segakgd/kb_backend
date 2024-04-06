@@ -14,7 +14,7 @@ class LeadService implements LeadServiceInterface
 {
     public function __construct(
         public readonly DealEntityRepository $dealEntityRepository,
-    ){
+    ) {
     }
 
     public function remove(Deal $deal): void
@@ -27,10 +27,9 @@ class LeadService implements LeadServiceInterface
         $deal = (new Deal())
             ->setProjectId($project->getId())
             ->setContacts($contacts)
-            ->setOrder($order)
-        ;
+            ->setOrder($order);
 
-        return $this->saveToDb($deal);
+        return $this->save($deal);
     }
 
     public function getAllByProject(Project $project): array
@@ -38,7 +37,7 @@ class LeadService implements LeadServiceInterface
         return $this->dealEntityRepository->findBy(['projectId' => $project->getId()]);
     }
 
-    private function saveToDb(Deal $deal): Deal
+    private function save(Deal $deal): Deal
     {
         $this->dealEntityRepository->saveAndFlush($deal);
 

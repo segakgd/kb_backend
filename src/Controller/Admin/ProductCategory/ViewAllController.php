@@ -37,6 +37,7 @@ class ViewAllController extends AbstractController
     ) {
     }
 
+    /** Получение колекции категорий */
     #[Route('/api/admin/project/{project}/productCategory/', name: 'admin_product_category_get_all', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project): JsonResponse

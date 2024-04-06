@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Admin\Ecommerce\ProductVariant\Service;
 
+use App\Controller\Admin\Product\DTO\Request\ProductVariantReqDto;
 use App\Entity\Ecommerce\Product;
 use App\Entity\Ecommerce\ProductVariant;
 use App\Repository\Ecommerce\ProductVariantRepository;
@@ -16,6 +17,7 @@ class ProductVariantService
 
     public function handleRequestVariantsDto(Product $product, array $variantsRequestDto): Product
     {
+        /** @var ProductVariantReqDto $variantDto */
         foreach ($variantsRequestDto as $variantDto) {
             if (null === $variantDto->getId()) {
                 $productVariantEntity = (new ProductVariant())
@@ -23,7 +25,7 @@ class ProductVariantService
                     ->setCount($variantDto->getCount())
                     ->setArticle($variantDto->getArticle())
                     ->setPrice($variantDto->getPrice())
-                    ->setImage($variantDto->getImage());
+                    ->setImage($variantDto->getImages());
 
                 $product->addVariant($productVariantEntity);
             } elseif (null !== $variantDto->getId()) {
@@ -38,7 +40,7 @@ class ProductVariantService
                     ->setCount($variantDto->getCount())
                     ->setPrice($variantDto->getPrice())
                     ->setArticle($variantDto->getArticle())
-                    ->setImage($variantDto->getImage())
+                    ->setImage($variantDto->getImages())
                     ->setActive($variantDto->isActive())
                     ->setProduct($product);
 

@@ -15,7 +15,6 @@ class LeadMapper
 {
     public function __construct(private readonly EntityManagerInterface $manager,)
     {
-
     }
 
     public function mapToResponse(Deal $deal): LeadRespDto
@@ -92,7 +91,8 @@ class LeadMapper
         return $fieldsArray;
     }
 
-    private function mapOrderToResponse(Deal $deal): OrderRespDto // надо подумать тут, а то еще непонятно, какое дто лежит в ордере в базе
+    private function mapOrderToResponse(Deal $deal
+    ): OrderRespDto // надо подумать тут, а то еще непонятно, какое дто лежит в ордере в базе
     {
         return new OrderRespDto();
     }

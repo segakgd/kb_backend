@@ -58,7 +58,7 @@ class CreateController extends AbstractController
         }
 
         try {
-            $this->leadManager->add($requestDto, $project);
+            $this->leadManager->create($requestDto, $project);
         } catch (Throwable $exception) {
             return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }

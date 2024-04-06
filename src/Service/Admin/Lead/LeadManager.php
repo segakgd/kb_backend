@@ -32,7 +32,7 @@ class LeadManager
     /**
      * @throws Exception
      */
-    public function add(LeadReqDto $leadDto, Project $project): Deal
+    public function create(LeadReqDto $leadDto, Project $project): Deal
     {
         $orderDto = $leadDto->getOrder();
 

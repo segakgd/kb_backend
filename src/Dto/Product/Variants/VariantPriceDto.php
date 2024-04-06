@@ -37,4 +37,21 @@ class VariantPriceDto
 
         return $this;
     }
+
+    public function toArray(): array
+    {
+        return [
+            'cost' => $this->cost,
+            'currency' => $this->currency,
+        ];
+    }
+
+    public static function fromArray(array $data): self
+    {
+        $dto = new self();
+        $dto->setCost($data['cost']);
+        $dto->setCurrency($data['currency']);
+
+        return $dto;
+    }
 }
