@@ -107,21 +107,10 @@ class CacheDto
     {
         $data = [];
 
-        if ($this->eventUUID !== null) {
-            $data['eventUUID'] = $this->eventUUID;
-        }
-
-        if ($this->cart !== null) {
-            $data['cart'] = $this->cart->toArray();
-        }
-
-        if ($this->event !== null) {
-            $data['event'] = $this->event->toArray();
-        }
-
-        if ($this->content !== null) {
-            $data['content'] = $this->content;
-        }
+        $data['eventUUID'] = $this->eventUUID;
+        $data['cart'] = $this->cart->toArray();
+        $data['event'] = $this->event->toArray();
+        $data['content'] = $this->content;
 
         return $data;
     }

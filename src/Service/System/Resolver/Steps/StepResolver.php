@@ -55,15 +55,15 @@ class StepResolver
     /**
      * @throws Exception
      */
-    private function handleChain(Contract $contract, CacheEventDto $event, ScenarioStepDto $step): void
+    private function handleChain(Contract $contract, CacheEventDto $cacheEventDto, ScenarioStepDto $step): void
     {
-        if ($event->isEmptyChains()) {
-            CacheService::enrichStepCache($step->getChain(), $event);
+        if ($cacheEventDto->isEmptyChains()) {
+            CacheService::enrichStepCache($step->getChain(), $cacheEventDto);
         }
 
-        $chains = $this->chainResolver->resolve($contract, $event->getChains());
+        $chains = $this->chainResolver->resolve($contract, $cacheEventDto->getChains());
 
-        $event->setChains($chains);
+        $cacheEventDto->setChains($chains);
     }
 
     private function handleScenario(Contract $contract, CacheEventDto $event, ScenarioStepDto $step): void

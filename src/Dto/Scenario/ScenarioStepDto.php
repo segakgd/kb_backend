@@ -115,7 +115,11 @@ class ScenarioStepDto
 
         if ($chainData !== null) {
             foreach ($chainData as $chainItem) {
-                $chain[] = ScenarioChainDto::fromArray($chainItem);
+                if (is_array($chainItem)) {
+                    $chain[] = $chainItem;
+                } else {
+                    $chain[] = ScenarioChainDto::fromArray($chainItem);
+                }
             }
         }
 
@@ -129,12 +133,22 @@ class ScenarioStepDto
 
     public function toArray(): array
     {
+        $chainArray = [];
+        $chain = $this->getChain() ?? [];
+
+        /** @var ScenarioChainDto $chainItem */
+        foreach ($chain as $chainItem) {
+            if (is_array($chainItem)) {
+                $chainArray[] = $chainItem;
+            } else {
+                $chainArray[] = $chainItem->toArray();
+            }
+        }
+
         return [
             'message' => $this->getMessage(),
             'keyboard' => $this->getKeyboard()?->toArray(),
-            'chain' => array_map(function (ScenarioChainDto $chainItem) {
-                return $chainItem->toArray();
-            }, $this->getChain() ?? []),
+            'chain' => $chainArray,
             'attached' => $this->getAttached()?->toArray(),
             'finish' => $this->getFinish(),
         ];

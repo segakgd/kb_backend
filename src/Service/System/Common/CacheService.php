@@ -26,6 +26,10 @@ class CacheService
     {
         /** @var ScenarioChainDto $stepChain */
         foreach ($stepChains as $stepChain) {
+            if (is_array($stepChain)) {
+                $stepChain = ScenarioChainDto::fromArray($stepChain);
+            }
+
             $chain = (new CacheChainDto)
                 ->setTarget(JumpEnum::from($stepChain->getTarget()))
                 ->setFinished($stepChain->isFinish())

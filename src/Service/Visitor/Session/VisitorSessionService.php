@@ -6,13 +6,11 @@ use App\Entity\Visitor\VisitorSession;
 use App\Helper\CommonHelper;
 use App\Repository\Visitor\VisitorSessionRepository;
 use DateTimeImmutable;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class VisitorSessionService
 {
     public function __construct(
         private readonly VisitorSessionRepository $visitorSessionRepository,
-        private readonly SerializerInterface $serializer,
     ) {
     }
 
@@ -44,16 +42,14 @@ class VisitorSessionService
         int $projectId,
     ): VisitorSession {
         $cacheDto = CommonHelper::createSessionCache();
-
-        $cache = $this->serializer->normalize($cacheDto);
-
+        $cacheDto->setContent('ratatatata');
         $visitorSession = (new VisitorSession())
             ->setName($visitorName)
             ->setChannel($chanel)
             ->setChatId($chatId)
             ->setBotId($botId)
             ->setProjectId($projectId)
-            ->setCache($cache)
+            ->setCache($cacheDto)
             ->setCreatedAt(new DateTimeImmutable())
         ;
 
