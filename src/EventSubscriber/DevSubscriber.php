@@ -19,7 +19,7 @@ class DevSubscriber implements EventSubscriberInterface
     ];
 
     private const OPEN_UR = [
-        '/webhook/4842/telegram/',
+        '/webhook/1/telegram/',
     ];
 
     public static function getSubscribedEvents(): array

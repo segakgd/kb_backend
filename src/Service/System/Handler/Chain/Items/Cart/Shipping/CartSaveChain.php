@@ -20,7 +20,7 @@ class CartSaveChain extends AbstractChain
     public function success(Contract $contract, CacheDto $cacheDto): bool
     {
         $content = $cacheDto->getContent();
-        $project = $this->projectService->findOneById(4842);
+        $project = $this->projectService->findOneById(1);
 
         $this->dealManager->createDeal($project, $cacheDto->getCart());
 

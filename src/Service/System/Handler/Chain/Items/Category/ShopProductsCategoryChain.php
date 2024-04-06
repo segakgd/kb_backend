@@ -51,7 +51,7 @@ class ShopProductsCategoryChain extends AbstractChain
     {
         $contractMessage = MessageHelper::createContractMessage('');
 
-        $availableCategory = $this->categoryService->getAvailableCategory(4842);
+        $availableCategory = $this->categoryService->getAvailableCategory(1);
 
         $replyMarkups = KeyboardHelper::getProductCategoryNav($availableCategory);
 
@@ -67,7 +67,7 @@ class ShopProductsCategoryChain extends AbstractChain
 
     public function validateCondition(string $content): bool
     {
-        $availableCategory = $this->categoryService->getAvailableCategory(4842);
+        $availableCategory = $this->categoryService->getAvailableCategory(1);
 
         if (in_array($content, $availableCategory)) {
             return true;

@@ -16,7 +16,7 @@ class ShowShopProductsCategoryChain extends AbstractChain
 
     public function success(Contract $contract, CacheDto $cacheDto): bool
     {
-        $availableCategory = $this->categoryService->getAvailableCategory(4842);
+        $availableCategory = $this->categoryService->getAvailableCategory(1);
 
         $contractMessage = MessageHelper::createContractMessage(
             'Отлично, 😜 выберите одну из категорий 🤘',
