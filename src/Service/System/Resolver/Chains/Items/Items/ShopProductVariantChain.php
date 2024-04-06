@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Service\System\Handler\Chain\Items;
+namespace App\Service\System\Resolver\Chains\Items\Items;
 
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Entity\Ecommerce\ProductVariant;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\Product\Service\ProductService;
+use App\Service\System\Handler\Chain\Items\AbstractChai;
 use App\Service\System\Resolver\Dto\Contract;
 
 class ShopProductVariantChain extends AbstractChai

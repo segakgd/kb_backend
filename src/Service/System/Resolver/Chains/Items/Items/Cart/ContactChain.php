@@ -1,25 +1,23 @@
 <?php
 
-namespace App\Service\System\Handler\Chain\Items;
+namespace App\Service\System\Resolver\Chains\Items\Items\Cart;
 
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\MessageHelper;
 use App\Service\System\Handler\Chain\AbstractChain;
 use App\Service\System\Resolver\Dto\Contract;
-use Exception;
 
-class End extends AbstractChain // todo удалить
+class ContactChain extends AbstractChain
 {
-    /**
-     * @throws Exception
-     */
     public function success(Contract $contract, CacheDto $cacheDto): bool
     {
-        return true;
-    }
+        $content = $cacheDto->getContent();
+        $contacts = $cacheDto->getCart()->getContacts();
 
-    public function fall(Contract $contract, CacheDto $cacheDto): bool
-    {
+        $contacts['full'] = $content;
+
+        $cacheDto->getCart()->setContacts($contacts);
+
         $replyMarkups = [
             [
                 [
@@ -29,18 +27,25 @@ class End extends AbstractChain // todo удалить
         ];
 
         $contractMessage = MessageHelper::createContractMessage(
-            'Не понимаю о чем вы... мб вам...',
+            "Отлично, $content а теперь пришли мне свой номер телефона",
             null,
             $replyMarkups,
         );
 
         $contract->getResult()->addMessage($contractMessage);
 
+        return true;
+    }
+
+    public function fall(Contract $contract, CacheDto $cacheDto): bool
+    {
         return false;
     }
 
     public function validateCondition(string $content): bool
     {
-        return false;
+        // todo проверить на стрингу? оО и мат
+
+        return true;
     }
 }

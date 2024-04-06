@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Service\System\Handler\Chain\Items\Cart\Shipping;
+namespace App\Service\System\Resolver\Chains\Items\Items\Cart\Shipping;
 
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\MessageHelper;
 use App\Service\System\Handler\Chain\AbstractChain;
 use App\Service\System\Resolver\Dto\Contract;
 
-class ShippingEntranceChain extends AbstractChain
+class ShippingApartmentChain extends AbstractChain
 {
     public function success(Contract $contract, CacheDto $cacheDto): bool
     {
@@ -15,19 +15,36 @@ class ShippingEntranceChain extends AbstractChain
 
         $shipping = $cacheDto->getCart()->getShipping();
 
-        $shipping['address']['entrance'] = $content;
+        $shipping['address']['apartment'] = $content;
 
         $cacheDto->getCart()->setShipping($shipping);
 
-        $message = "Подъезд № $content. Введите свои апартаменты:";
+        $message = "Ваши апартаменты $content. \n\n Хотите что-то изменить?";
 
         $replyMarkups = [
             [
                 [
-                    'text' => 'Моя корзина'
+                    'text' => 'Изменить контакты'
+                ],
+                [
+                    'text' => 'Изменить доставку'
+                ],
+                [
+                    'text' => 'Изменить продукты'
                 ],
             ],
             [
+                [
+                    'text' => 'Продолжить',
+                ],
+            ],
+            [
+//                [
+//                    'text' => 'Удалить заказ'
+//                ],
+//                [
+//                    'text' => 'Оплатить'
+//                ],
                 [
                     'text' => 'вернуться в главное меню'
                 ],

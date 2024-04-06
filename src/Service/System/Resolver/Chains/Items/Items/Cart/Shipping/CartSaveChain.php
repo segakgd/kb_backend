@@ -1,37 +1,45 @@
 <?php
 
-namespace App\Service\System\Handler\Chain\Items\Cart\Shipping;
+namespace App\Service\System\Resolver\Chains\Items\Items\Cart\Shipping;
 
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\MessageHelper;
+use App\Service\Admin\Ecommerce\DealManager;
+use App\Service\Common\Project\ProjectService;
 use App\Service\System\Handler\Chain\AbstractChain;
 use App\Service\System\Resolver\Dto\Contract;
 
-class ShippingCountryChain extends AbstractChain
+class CartSaveChain extends AbstractChain
 {
+    public function __construct(
+        private readonly DealManager $dealManager,
+        private readonly ProjectService $projectService,
+    ) {
+    }
+
     public function success(Contract $contract, CacheDto $cacheDto): bool
     {
         $content = $cacheDto->getContent();
+        $project = $this->projectService->findOneById(1);
 
-        $shipping = $cacheDto->getCart()->getShipping();
+        $this->dealManager->createDeal($project, $cacheDto->getCart());
 
-        $shipping['address']['country'] = $content;
-
-        $cacheDto->getCart()->setShipping($shipping);
-
-        $message = "Ваши страна $content. Введите свой регион:";
+        $message = "Отлично. Мы сохранили ваш заказ. Сумма вашего заказа составляет N рублей Хотете его оплатить сейчас?";
 
         $replyMarkups = [
             [
                 [
-                    'text' => 'Моя корзина'
+                    'text' => 'Оплатить'
+                ],
+                [
+                    'text' => 'Удалить заказ'
                 ],
             ],
             [
                 [
                     'text' => 'вернуться в главное меню'
                 ],
-            ]
+            ],
         ];
 
         $contractMessage = MessageHelper::createContractMessage(
@@ -47,8 +55,6 @@ class ShippingCountryChain extends AbstractChain
 
     public function fall(Contract $contract, CacheDto $cacheDto): bool
     {
-        // todo проверить доступные города
-
         return false;
     }
 

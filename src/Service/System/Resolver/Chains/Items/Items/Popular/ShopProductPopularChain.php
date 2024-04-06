@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\System\Handler\Chain\Items\Promo;
+namespace App\Service\System\Resolver\Chains\Items\Items\Popular;
 
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\KeyboardHelper;
@@ -11,7 +11,7 @@ use App\Service\System\Handler\Chain\AbstractChain;
 use App\Service\System\Resolver\Dto\Contract;
 use Exception;
 
-class ShopProductPromoChain extends AbstractChain
+class ShopProductPopularChain extends AbstractChain
 {
     public function __construct(
         private readonly ProductService $productService,
@@ -39,9 +39,9 @@ class ShopProductPromoChain extends AbstractChain
         }
 
         $products = match ($content) {
-            'first' => $this->productService->getPromoProducts(1, 'first'),
-            'предыдущий' => $this->productService->getPromoProducts($event->getData()->getPageNow(), 'prev'),
-            'следующий' => $this->productService->getPromoProducts($event->getData()->getPageNow(), 'next'),
+            'first' => $this->productService->getPopularProducts(1, 'first'),
+            'предыдущий' => $this->productService->getPopularProducts($event->getData()->getPageNow(), 'prev'),
+            'следующий' => $this->productService->getPopularProducts($event->getData()->getPageNow(), 'next'),
             default => false
         };
 

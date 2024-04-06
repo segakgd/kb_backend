@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\System\Handler\Chain\Items\Category;
+namespace App\Service\System\Resolver\Chains\Items\Items\Promo;
 
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\KeyboardHelper;
@@ -11,7 +11,7 @@ use App\Service\System\Handler\Chain\AbstractChain;
 use App\Service\System\Resolver\Dto\Contract;
 use Exception;
 
-class ShopProductsChain extends AbstractChain
+class ShopProductPromoChain extends AbstractChain
 {
     public function __construct(
         private readonly ProductService $productService,
@@ -34,13 +34,24 @@ class ShopProductsChain extends AbstractChain
 
         $event = $cacheDto->getEvent();
 
-        return match ($content) {
-            'first' => $this->paginateService->first($contract, $event->getData()),
-            'предыдущий' => $this->paginateService->prev($contract, $event->getData()),
-            'следующий' => $this->paginateService->next($contract, $event->getData()),
-            'добавить в корзину' => $this->addToCart($contract, $cacheDto),
+        if ($content === 'добавить в корзину') {
+            return $this->addToCart($contract, $cacheDto);
+        }
+
+        $products = match ($content) {
+            'first' => $this->productService->getPromoProducts(1, 'first'),
+            'предыдущий' => $this->productService->getPromoProducts($event->getData()->getPageNow(), 'prev'),
+            'следующий' => $this->productService->getPromoProducts($event->getData()->getPageNow(), 'next'),
             default => false
         };
+
+        if ($products) {
+            $this->paginateService->pug($contract, $products, $cacheDto->getEvent()->getData());
+
+            return false;
+        }
+
+        return false;
     }
 
     public function fall(Contract $contract, CacheDto $cacheDto): bool

@@ -136,12 +136,6 @@
                                         <ul>
                                             {% for chain in event.chains %}
                                                 <li>
-                                                    {% if chain.status == 1 %}
-                                                        <span class="jj__color-green">Пройдено</span>
-                                                    {% else %}
-                                                        <span class="jj__color-red">Не пройдено</span>
-                                                    {% endif %}
-
                                                     {{ chain.name }}
                                                 </li>
                                             {% endfor %}

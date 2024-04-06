@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\System\Handler\Chain\Items\Promo;
+namespace App\Service\System\Resolver\Chains\Items\Items\Popular;
 
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\MessageHelper;
@@ -10,7 +10,7 @@ use App\Service\System\Handler\Chain\AbstractChain;
 use App\Service\System\Resolver\Dto\Contract;
 use Exception;
 
-class ShopProductsPromoChain extends AbstractChain
+class ShopProductsPopularChain extends AbstractChain
 {
     public function __construct(
         private readonly ProductService $productService,
@@ -23,7 +23,7 @@ class ShopProductsPromoChain extends AbstractChain
      */
     public function success(Contract $contract, CacheDto $cacheDto): bool
     {
-        $products = $this->productService->getPromoProducts(1, 'first');
+        $products = $this->productService->getPopularProducts(1, 'first');
 
         $this->paginateService->pug($contract, $products, $cacheDto->getEvent()->getData());
 
@@ -43,6 +43,6 @@ class ShopProductsPromoChain extends AbstractChain
 
     public function validateCondition(string $content): bool
     {
-        return $content === 'Акционные товары';
+        return $content === 'Популярные товары';
     }
 }

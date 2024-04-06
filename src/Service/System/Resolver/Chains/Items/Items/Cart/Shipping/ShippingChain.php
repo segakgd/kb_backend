@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\System\Handler\Chain\Items\Cart\Shipping;
+namespace App\Service\System\Resolver\Chains\Items\Items\Cart\Shipping;
 
 use App\Controller\Admin\Lead\DTO\Response\Order\Shipping\ShippingRespDto;
 use App\Dto\SessionCache\Cache\CacheDto;

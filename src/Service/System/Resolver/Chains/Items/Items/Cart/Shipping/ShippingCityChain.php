@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Service\System\Handler\Chain\Items\Cart\Shipping;
+namespace App\Service\System\Resolver\Chains\Items\Items\Cart\Shipping;
 
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\MessageHelper;
 use App\Service\System\Handler\Chain\AbstractChain;
 use App\Service\System\Resolver\Dto\Contract;
 
-class ShippingNumberHomeChain extends AbstractChain
+class ShippingCityChain extends AbstractChain
 {
     public function success(Contract $contract, CacheDto $cacheDto): bool
     {
@@ -15,11 +15,11 @@ class ShippingNumberHomeChain extends AbstractChain
 
         $shipping = $cacheDto->getCart()->getShipping();
 
-        $shipping['address']['numberHome'] = $content;
+        $shipping['address']['city'] = $content;
 
         $cacheDto->getCart()->setShipping($shipping);
 
-        $message = "№ дома $content. Введите номер подъезда:";
+        $message = "Ваш город $content. Введите свою улицу:";
 
         $replyMarkups = [
             [

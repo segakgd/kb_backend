@@ -1,31 +1,18 @@
 <?php
 
-namespace App\Service\System\Handler\Chain\Items\Cart;
+namespace App\Service\System\Resolver\Chains\Items\Items\Cart;
 
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\MessageHelper;
 use App\Service\System\Handler\Chain\AbstractChain;
 use App\Service\System\Resolver\Dto\Contract;
 
-class PhoneContactChain extends AbstractChain
+class ContactViewChain extends AbstractChain
 {
     public function success(Contract $contract, CacheDto $cacheDto): bool
     {
-        $content = $cacheDto->getContent();
-        $contacts = $cacheDto->getCart()->getContacts();
-
-        $contacts['phone'] = $content;
-
-        $cacheDto->getCart()->setContacts($contacts);
-
         $replyMarkups = [
             [
-                [
-                    'text' => 'Указать адрес доставки'
-                ],
-                [
-                    'text' => 'Самовывоз'
-                ],
                 [
                     'text' => 'вернуться в главное меню'
                 ],
@@ -33,7 +20,7 @@ class PhoneContactChain extends AbstractChain
         ];
 
         $contractMessage = MessageHelper::createContractMessage(
-            "Отлично, ваш номер телефон $content. Нужна ли вам доставка?",
+            'Отлично, давай начнём оформление заказа, пришли мне свое ФИО.',
             null,
             $replyMarkups,
         );
@@ -50,8 +37,6 @@ class PhoneContactChain extends AbstractChain
 
     public function validateCondition(string $content): bool
     {
-        // todo формат телефона
-
         return true;
     }
 }

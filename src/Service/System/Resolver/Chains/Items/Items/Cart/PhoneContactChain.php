@@ -1,33 +1,31 @@
 <?php
 
-namespace App\Service\System\Handler\Chain\Items\Cart\Shipping;
+namespace App\Service\System\Resolver\Chains\Items\Items\Cart;
 
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\MessageHelper;
 use App\Service\System\Handler\Chain\AbstractChain;
 use App\Service\System\Resolver\Dto\Contract;
 
-class ShippingRegionChain extends AbstractChain
+class PhoneContactChain extends AbstractChain
 {
     public function success(Contract $contract, CacheDto $cacheDto): bool
     {
         $content = $cacheDto->getContent();
+        $contacts = $cacheDto->getCart()->getContacts();
 
-        $shipping = $cacheDto->getCart()->getShipping();
+        $contacts['phone'] = $content;
 
-        $shipping['address']['region'] = $content;
-
-        $cacheDto->getCart()->setShipping($shipping);
-
-        $message = "Вах регион $content. Введите город:";
+        $cacheDto->getCart()->setContacts($contacts);
 
         $replyMarkups = [
             [
                 [
-                    'text' => 'Моя корзина'
+                    'text' => 'Указать адрес доставки'
                 ],
-            ],
-            [
+                [
+                    'text' => 'Самовывоз'
+                ],
                 [
                     'text' => 'вернуться в главное меню'
                 ],
@@ -35,7 +33,7 @@ class ShippingRegionChain extends AbstractChain
         ];
 
         $contractMessage = MessageHelper::createContractMessage(
-            $message,
+            "Отлично, ваш номер телефон $content. Нужна ли вам доставка?",
             null,
             $replyMarkups,
         );
@@ -52,6 +50,8 @@ class ShippingRegionChain extends AbstractChain
 
     public function validateCondition(string $content): bool
     {
+        // todo формат телефона
+
         return true;
     }
 }

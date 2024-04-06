@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Service\System\Handler\Chain\Items\Category;
+namespace App\Service\System\Resolver\Chains\Items\Items\Category;
 
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\KeyboardHelper;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\ProductCategory\Service\ProductCategoryService;
+use App\Service\System\Handler\Chain\Items\Category\AbstractChain;
 use App\Service\System\Resolver\Dto\Contract;
 
 class ShowShopProductsCategoryChain extends AbstractChain
