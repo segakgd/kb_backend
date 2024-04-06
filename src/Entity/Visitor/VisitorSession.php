@@ -120,6 +120,7 @@ class VisitorSession
 
     public function setCache(CacheDto $cache): static
     {
+        // clone потому что используем дто тип в ентити
         $this->cache = clone $cache;
 
         return $this;
