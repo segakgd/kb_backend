@@ -2,9 +2,10 @@
 
 namespace App\Dto\SessionCache\Cache;
 
+use App\Dto\Common\AbstractDto;
 use App\Enum\JumpEnum;
 
-class CacheChainDto
+class CacheChainDto extends AbstractDto
 {
     private JumpEnum $target;
 

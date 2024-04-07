@@ -6,6 +6,7 @@ use App\Dto\Scenario\ScenarioChainDto;
 use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Dto\SessionCache\Cache\CacheDataDto;
 use App\Dto\SessionCache\Cache\CacheEventDto;
+use App\Dto\SessionCache\Cache\CacheStepDto;
 use App\Enum\JumpEnum;
 
 class CacheService
@@ -14,7 +15,7 @@ class CacheService
     {
         return (new CacheEventDto())
             ->setFinished(false)
-            ->setChains([])
+            ->setSteps([])
             ->setData(
                 (new CacheDataDto)
                     ->setProductId(null)
@@ -22,7 +23,7 @@ class CacheService
             );
     }
 
-    public static function enrichStepCache(array $stepChains, CacheEventDto $cacheEventDto): void
+    public static function enrichStepCache(array $stepChains, CacheStepDto $cacheStepDto): void
     {
         /** @var ScenarioChainDto $stepChain */
         foreach ($stepChains as $stepChain) {
@@ -35,7 +36,7 @@ class CacheService
                 ->setFinished($stepChain->isFinish())
                 ->setRepeat(false);
 
-            $cacheEventDto->addChain($chain);
+            $cacheStepDto->addChain($chain);
         }
     }
 }

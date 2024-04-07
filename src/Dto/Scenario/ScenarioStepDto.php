@@ -15,6 +15,7 @@ class ScenarioStepDto
 
     private ?ScenarioAttachedDto $attached = null;
 
+    /** @deprecated delete it */
     private bool $finish = false;
 
     private ?Scenario $scenario = null;
@@ -79,16 +80,19 @@ class ScenarioStepDto
         return $this;
     }
 
+    /** @deprecated delete it */
     public function getFinish(): bool
     {
         return $this->finish;
     }
 
+    /** @deprecated delete it */
     public function isNotFinish(): bool
     {
         return !$this->finish;
     }
 
+    /** @deprecated delete it */
     public function isFinish(): bool
     {
         return $this->finish;

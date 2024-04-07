@@ -2,7 +2,9 @@
 
 namespace App\Dto\SessionCache\Cache;
 
-class CacheCartDto
+use App\Dto\Common\AbstractDto;
+
+class CacheCartDto extends AbstractDto
 {
     private array $contacts = [];
 

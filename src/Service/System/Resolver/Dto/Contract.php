@@ -4,8 +4,8 @@ namespace App\Service\System\Resolver\Dto;
 
 use App\Dto\SessionCache\Cache\CacheCartDto;
 use App\Dto\SessionCache\Cache\CacheChainDto;
-use App\Enum\ChainStatusEnum;
 use App\Enum\JumpEnum;
+use App\Enum\VisitorEventStatusEnum;
 
 class Contract implements ContractInterface
 {
@@ -19,7 +19,7 @@ class Contract implements ContractInterface
 
     private ?JumpEnum $jump = null;
 
-    private ?ChainStatusEnum $status = null;
+    private ?VisitorEventStatusEnum $status = null;
 
     private bool $stepsStatus = false;
 
@@ -92,12 +92,12 @@ class Contract implements ContractInterface
         return $this;
     }
 
-    public function getStatus(): ?ChainStatusEnum
+    public function getStatus(): ?VisitorEventStatusEnum
     {
         return $this->status;
     }
 
-    public function setStatus(?ChainStatusEnum $status): static
+    public function setStatus(?VisitorEventStatusEnum $status): static
     {
         $this->status = $status;
 

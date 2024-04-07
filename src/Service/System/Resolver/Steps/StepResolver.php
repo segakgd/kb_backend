@@ -2,10 +2,8 @@
 
 namespace App\Service\System\Resolver\Steps;
 
-use App\Dto\Scenario\ScenarioStepDto;
 use App\Dto\SessionCache\Cache\CacheDto;
-use App\Dto\SessionCache\Cache\CacheEventDto;
-use App\Service\System\Common\CacheService;
+use App\Dto\SessionCache\Cache\CacheStepDto;
 use App\Service\System\Resolver\Chains\ChainResolver;
 use App\Service\System\Resolver\Dto\Contract;
 use App\Service\System\Resolver\Scenario\ScenarioResolver;
@@ -22,35 +20,35 @@ class StepResolver
     ) {
     }
 
-    public function resolve(array $steps, Contract $contract, CacheDto $cacheDto): void
+    /**
+     * @throws Throwable
+     */
+    public function resolve(Contract $contract, CacheDto $cacheDto): void
     {
-        try {
-            /** @var ScenarioStepDto $step */
-            foreach ($steps as $step) {
-                $cacheEventDto = $cacheDto->getEvent();
+        $steps = $cacheDto->getEvent()->getSteps();
 
-                $this->resolveStep($contract, $step, $cacheEventDto);
+        try {
+            foreach ($steps as $step) {
+                $this->resolveStep($contract, $step);
 
                 break;
             }
         } catch (Throwable $exception) {
             $this->handleException($exception);
+
+            throw $exception;
         }
     }
 
     /**
      * @throws Exception
      */
-    private function resolveStep(Contract $contract, ScenarioStepDto $step, CacheEventDto $cacheEventDto): void
+    private function resolveStep(Contract $contract, CacheStepDto $step): void
     {
         if ($step->hasChain()) {
-            $this->handleChain($contract, $cacheEventDto, $step);
-
-            if ($cacheEventDto->isEmptyChains()) {
-                $contract->setStepsStatus(true);
-            }
+            $this->handleChain($contract, $step);
         } else {
-            $this->handleScenario($contract, $cacheEventDto, $step);
+            $this->handleScenario($contract, $step);
             $contract->setStepsStatus(true);
         }
     }
@@ -58,22 +56,14 @@ class StepResolver
     /**
      * @throws Exception
      */
-    private function handleChain(Contract $contract, CacheEventDto $cacheEventDto, ScenarioStepDto $step): void
+    private function handleChain(Contract $contract, CacheStepDto $step): void
     {
-        if ($cacheEventDto->isEmptyChains()) {
-            CacheService::enrichStepCache($step->getChain(), $cacheEventDto);
-        }
-
-        $chains = $this->chainResolver->resolve($contract, $cacheEventDto->getChains());
-
-        $cacheEventDto->setChains($chains);
+        $this->chainResolver->resolve($contract, $step->getChains());
     }
 
-    private function handleScenario(Contract $contract, CacheEventDto $event, ScenarioStepDto $step): void
+    private function handleScenario(Contract $contract, CacheStepDto $step): void
     {
         $this->scenarioResolver->resolve($contract, $step);
-
-        $event->setFinished(true);
     }
 
     private function handleException(Throwable $exception): void

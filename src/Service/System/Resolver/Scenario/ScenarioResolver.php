@@ -3,14 +3,14 @@
 namespace App\Service\System\Resolver\Scenario;
 
 use App\Dto\Contract\ContractMessageDto;
-use App\Dto\Scenario\ScenarioStepDto;
+use App\Dto\SessionCache\Cache\CacheStepDto;
 use App\Helper\KeyboardHelper;
 use App\Helper\MessageHelper;
 use App\Service\System\Resolver\Dto\Contract;
 
 class ScenarioResolver
 {
-    public function resolve(Contract $contract, ScenarioStepDto $scenarioStep): Contract
+    public function resolve(Contract $contract, CacheStepDto $scenarioStep): Contract
     {
         $contractMessage = MessageHelper::createContractMessage();
 
@@ -22,7 +22,7 @@ class ScenarioResolver
         return $contract;
     }
 
-    private function setMessage(ContractMessageDto $contractMessage, ScenarioStepDto $scenarioStep): void
+    private function setMessage(ContractMessageDto $contractMessage, CacheStepDto $scenarioStep): void
     {
         if (!$scenarioStep->getMessage()) {
             return;
@@ -31,7 +31,7 @@ class ScenarioResolver
         $contractMessage->setMessage($scenarioStep->getMessage());
     }
 
-    private function setKeyboard(ContractMessageDto $contractMessage, ScenarioStepDto $scenarioStep): void
+    private function setKeyboard(ContractMessageDto $contractMessage, CacheStepDto $scenarioStep): void
     {
         if (empty($scenarioStep->getKeyboard())) {
             return;
@@ -48,6 +48,6 @@ class ScenarioResolver
 
     private function handleAttached(array $attachedData): void
     {
-        dd('сработали attached', $attachedData);
+        // todo write an implementation
     }
 }

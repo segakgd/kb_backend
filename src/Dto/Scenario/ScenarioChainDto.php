@@ -2,7 +2,9 @@
 
 namespace App\Dto\Scenario;
 
-class ScenarioChainDto
+use App\Dto\Common\AbstractDto;
+
+class ScenarioChainDto extends AbstractDto
 {
     private string $target;
 

@@ -2,12 +2,14 @@
 
 namespace App\Dto\SessionCache\Cache;
 
-class CacheEventDto
+use App\Dto\Common\AbstractDto;
+
+class CacheEventDto extends AbstractDto
 {
     private bool $finished = false;
 
-    /** @var array<CacheChainDto> */
-    private array $chains = [];
+    /** @var array<CacheStepDto> */
+    private array $steps = [];
 
     private ?CacheDataDto $data = null;
 
@@ -30,49 +32,43 @@ class CacheEventDto
         return $this;
     }
 
-    public function getChains(): array
+    public function getSteps(): array
     {
-        return $this->chains;
+        return $this->steps;
     }
 
-    public function getCurrentChain(): ?CacheChainDto
+    public function isEmptySteps(): bool
     {
-        if (empty($this->chains)) {
+        return empty($this->steps);
+    }
+
+    public function getCurrentStep(): ?CacheStepDto
+    {
+        if (empty($this->steps)) {
             return null;
         }
 
-        foreach ($this->chains as $chain) {
-            if (!$chain->isFinished()) {
-                return $chain;
+        foreach ($this->steps as $step) {
+            if (!$step->isFinished()) {
+                return $step;
             }
         }
 
         return null;
     }
 
-    public function setChains(array $chains): static
+    public function setSteps(array $steps): static
     {
-        $this->chains = $chains;
+        $this->steps = $steps;
 
         return $this;
     }
 
-    public function addChain(CacheChainDto $chain): static
+    public function addStep(CacheStepDto $step): static
     {
-        $this->chains[] = $chain;
+        $this->steps[] = $step;
 
         return $this;
-    }
-
-    /** @deprecated */
-    public function isExistChains(): bool
-    {
-        return !empty($this->chains);
-    }
-
-    public function isEmptyChains(): bool
-    {
-        return empty($this->chains);
     }
 
     public function getData(): CacheDataDto
@@ -92,13 +88,13 @@ class CacheEventDto
         $event = new self();
         $event->finished = $data['finished'] ?? false;
 
-        $chains = [];
+        $steps = [];
 
-        foreach ($data['chains'] ?? [] as $chainData) {
-            $chains[] = CacheChainDto::fromArray($chainData);
+        foreach ($data['steps'] ?? [] as $stepData) {
+            $steps[] = CacheStepDto::fromArray($stepData);
         }
 
-        $event->chains = $chains;
+        $event->steps = $steps;
 
         $event->data = CacheDataDto::fromArray($data['data'] ?? []);
 
@@ -107,15 +103,15 @@ class CacheEventDto
 
     public function toArray(): array
     {
-        $chainsArray = [];
+        $stepsArray = [];
 
-        foreach ($this->chains as $chain) {
-            $chainsArray[] = $chain->toArray();
+        foreach ($this->steps as $step) {
+            $stepsArray[] = $step->toArray();
         }
 
         return [
             'finished' => $this->finished,
-            'chains' => $chainsArray,
+            'steps' => $stepsArray,
             'data' => $this->data->toArray(),
         ];
     }

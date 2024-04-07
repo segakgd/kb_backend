@@ -3,10 +3,12 @@
 namespace App\Service\System\Resolver;
 
 use App\Dto\SessionCache\Cache\CacheDto;
+use App\Dto\SessionCache\Cache\CacheStepDto;
+use App\Entity\Scenario\Scenario;
 use App\Entity\User\Bot;
 use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
-use App\Enum\ChainStatusEnum;
+use App\Enum\VisitorEventStatusEnum;
 use App\Repository\User\BotRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\DtoRepository\ContractDtoRepository;
@@ -17,6 +19,7 @@ use App\Service\System\Resolver\Steps\StepResolver;
 use App\Service\Visitor\Scenario\ScenarioService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Throwable;
 
 class EventResolver
 {
@@ -33,7 +36,7 @@ class EventResolver
     }
 
     /**
-     * @throws Exception
+     * @throws Throwable
      */
     public function resolve(VisitorEvent $visitorEvent, Contract $contract): void
     {
@@ -41,14 +44,22 @@ class EventResolver
         $bot = $this->botRepository->find($visitorSession->getBotId());
 
         $scenario = $this->scenarioService->findScenarioByUUID($visitorEvent->getScenarioUUID());
-        $steps = $scenario->getSteps();
         $cacheDto = $visitorSession->getCache();
 
         $content = $cacheDto->getContent();
         $contract->setContent($content);
         $contract->setCacheCart($cacheDto->getCart());
 
-        $this->stepResolver->resolve($steps, $contract, $cacheDto);
+        $visitorEvent->setStatus(VisitorEventStatusEnum::Waiting);
+
+        $isEmptySteps = $cacheDto->getEvent()->isEmptySteps();
+
+        // todo надо разобраться со статусам
+        if ($visitorEvent->getStatus() === VisitorEventStatusEnum::New || $isEmptySteps) {
+            $cacheDto = $this->enrichStepsCache($scenario, $cacheDto);
+        }
+
+        $this->stepResolver->resolve($contract, $cacheDto);
 
         $jump = $contract->getJump();
 
@@ -91,14 +102,30 @@ class EventResolver
         $finishedChain = $contract->getChain()?->isFinished() ?? true;
         $finished = $finishedChain && $contract->isStepsStatus();
 
-        $status = $finished ? ChainStatusEnum::Done : ChainStatusEnum::Await;
+        $status = $finished ? VisitorEventStatusEnum::Done : VisitorEventStatusEnum::Waiting;
 
         $contract->setStatus($status);
 
-        if ($contract->getStatus() === ChainStatusEnum::Done) {
+        if ($contract->getStatus() === VisitorEventStatusEnum::Done) {
             $cacheDto->clearEvent();
         }
 
         $visitorSession->setCache($cacheDto);
+    }
+
+    private function enrichStepsCache(Scenario $scenario, CacheDto $cacheDto): CacheDto
+    {
+        $arraySteps = [];
+        $scenarioSteps = $scenario->getSteps();
+
+        foreach ($scenarioSteps as $scenarioStep) {
+            $cacheStepDto = CacheStepDto::fromArray($scenarioStep->toArray());
+
+            $arraySteps[] = $cacheStepDto;
+        }
+
+        $cacheDto->getEvent()->setSteps($arraySteps);
+
+        return $cacheDto;
     }
 }

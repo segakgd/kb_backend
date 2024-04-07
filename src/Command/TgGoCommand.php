@@ -2,8 +2,7 @@
 
 namespace App\Command;
 
-use App\Entity\Visitor\VisitorEvent;
-use App\Enum\ChainStatusEnum;
+use App\Enum\VisitorEventStatusEnum;
 use App\Helper\CommonHelper;
 use App\Repository\Visitor\VisitorEventRepository;
 use App\Service\System\Resolver\EventResolver;
@@ -14,8 +13,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Throwable;
-
-use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 
 #[AsCommand(
     name: 'kb:tg:handler_events',
@@ -49,7 +46,7 @@ class TgGoCommand extends Command
         if ($visitorEventId) {
             $visitorEvent = $this->visitorEventRepository->findOneById($visitorEventId);
         } else {
-            $visitorEvent = $this->visitorEventRepository->findOneByStatus(VisitorEvent::STATUS_NEW);
+            $visitorEvent = $this->visitorEventRepository->findOneByStatus(VisitorEventStatusEnum::New);
         }
 
         if (!$visitorEvent) {
@@ -65,7 +62,7 @@ class TgGoCommand extends Command
         } catch (Throwable $throwable) {
             $visitorEvent->setError($throwable->getMessage());
 
-            $this->visitorEventRepository->updateChatEventStatus($visitorEvent, ChainStatusEnum::Failed);
+            $this->visitorEventRepository->updateChatEventStatus($visitorEvent, VisitorEventStatusEnum::Failed);
 
             $io->error($throwable->getMessage());
 

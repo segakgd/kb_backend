@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Entity\Visitor\VisitorEvent;
 use App\Enum\ChainStatusEnum;
+use App\Enum\VisitorEventStatusEnum;
 use App\Helper\CommonHelper;
 use App\Repository\Visitor\VisitorEventRepository;
 use App\Service\System\Resolver\EventResolver;
@@ -37,7 +38,7 @@ class TelegramEventsHandlerCommand extends Command
         $io->info('Начал выполнять команду');
 
         for (; ;) {
-            $visitorEvent = $this->visitorEventRepository->findOneByStatus(VisitorEvent::STATUS_NEW);
+            $visitorEvent = $this->visitorEventRepository->findOneByStatus(VisitorEventStatusEnum::New);
 
             if ($visitorEvent) {
                 try {

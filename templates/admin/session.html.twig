@@ -121,22 +121,38 @@
                                     <span class="jj__color-green"> Успешно </span>
                                 {% elseif event.status == 'new' %}
                                     <span class="jj__color-blue"> Новое </span>
-                                {% elseif event.status == 'await' %}
+                                {% elseif event.status == 'waiting' %}
                                     <span class="jj__color-yellow"> Ожидает действий пользователя </span>
                                 {% else %}
                                     {{ event.status }}
                                 {% endif %}
                             </section>
 
-                            {% if event.chains is not null %}
-                                {% if event.chains is not empty %}
+                            {% if event.steps is not null %}
+                                {% if event.steps is not empty %}
                                     <br>
                                     <section style="padding: 10px; background: #ced6ea;">
                                         Шаги:
                                         <ul>
-                                            {% for chain in event.chains %}
+                                            {% for step in event.steps %}
                                                 <li>
-                                                    {{ chain.name }}
+                                                    Шаг {{ step.number }}
+
+                                                    {% if step.chains is not null %}
+                                                        {% if step.chains is not empty %}
+                                                            <br>
+                                                            <section style="padding: 10px; background: #ced6ea;">
+                                                                Шаги:
+                                                                <ul>
+                                                                    {% for chain in step.chains %}
+                                                                        <li>
+                                                                            {{ chain.name }}
+                                                                        </li>
+                                                                    {% endfor %}
+                                                                </ul>
+                                                            </section>
+                                                        {% endif %}
+                                                    {% endif %}
                                                 </li>
                                             {% endfor %}
                                         </ul>

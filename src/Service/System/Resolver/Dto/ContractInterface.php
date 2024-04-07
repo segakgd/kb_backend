@@ -6,6 +6,7 @@ use App\Dto\SessionCache\Cache\CacheCartDto;
 use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Enum\ChainStatusEnum;
 use App\Enum\JumpEnum;
+use App\Enum\VisitorEventStatusEnum;
 
 interface ContractInterface
 {
@@ -29,9 +30,9 @@ interface ContractInterface
 
     public function setJump(?JumpEnum $jump): static;
 
-    public function getStatus(): ?ChainStatusEnum;
+    public function getStatus(): ?VisitorEventStatusEnum;
 
-    public function setStatus(?ChainStatusEnum $status): static;
+    public function setStatus(?VisitorEventStatusEnum $status): static;
 
     public function getContent(): ?string;
 

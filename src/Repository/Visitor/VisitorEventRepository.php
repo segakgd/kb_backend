@@ -3,7 +3,7 @@
 namespace App\Repository\Visitor;
 
 use App\Entity\Visitor\VisitorEvent;
-use App\Enum\ChainStatusEnum;
+use App\Enum\VisitorEventStatusEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -48,44 +48,20 @@ class VisitorEventRepository extends ServiceEntityRepository
         return $this->find($id);
     }
 
-    public function findOneByStatus(string $status): ?VisitorEvent
+    public function findOneByStatus(VisitorEventStatusEnum $status): ?VisitorEvent
     {
         return $this->findOneBy(
             [
-                'status' => $status,
+                'status' => $status->value,
             ]
         );
     }
 
-    public function updateChatEventStatus(VisitorEvent $chatEvent, ChainStatusEnum $status): void
+    public function updateChatEventStatus(VisitorEvent $chatEvent, VisitorEventStatusEnum $status): void
     {
-        $chatEvent->setStatus($status->value);
+        $chatEvent->setStatus($status);
 
         $this->saveAndFlush($chatEvent);
-    }
-
-    public function getVisitorEventIfExistByScenarioUUID(string $visitorEventUUID): ?VisitorEvent
-    {
-        return $this->findOneBy(
-            [
-                'scenarioUUID' => $visitorEventUUID,
-                'status' => ['new', 'await'],
-            ]
-        );
-    }
-
-    public function getVisitorEventIfExist(?int $visitorEventId): ?VisitorEvent
-    {
-        if (!$visitorEventId) {
-            return null;
-        }
-
-        return $this->findOneBy(
-            [
-                'id' => $visitorEventId,
-                'status' => ['new', 'await'],
-            ]
-        );
     }
 
     public function saveAndFlush(VisitorEvent $entity): void
@@ -94,19 +70,33 @@ class VisitorEventRepository extends ServiceEntityRepository
         $this->getEntityManager()->flush();
     }
 
-    public function remove(VisitorEvent $entity): void
+    public function getVisitorEventIfExistByScenarioUUID(string $visitorEventUUID): ?VisitorEvent
     {
-        $this->getEntityManager()->remove($entity);
-        $this->getEntityManager()->flush();
+        return $this->findOneBy(
+            [
+                'scenarioUUID' => $visitorEventUUID,
+                'status' => [
+                    VisitorEventStatusEnum::New->value,
+                    VisitorEventStatusEnum::Waiting->value
+                ],
+            ]
+        );
     }
 
     public function removeById(int $visitorEventId): void
     {
         $visitorEvent = $this->find($visitorEventId);
 
-        if ($visitorEvent){
+        if ($visitorEvent) {
             $this->getEntityManager()->remove($visitorEvent);
             $this->getEntityManager()->flush();
         }
+    }
+
+    // todo нужен?
+    public function remove(VisitorEvent $entity): void
+    {
+        $this->getEntityManager()->remove($entity);
+        $this->getEntityManager()->flush();
     }
 }

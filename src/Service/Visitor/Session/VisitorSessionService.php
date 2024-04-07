@@ -42,7 +42,7 @@ class VisitorSessionService
         int $projectId,
     ): VisitorSession {
         $cacheDto = CommonHelper::createSessionCache();
-        $cacheDto->setContent('ratatatata');
+
         $visitorSession = (new VisitorSession())
             ->setName($visitorName)
             ->setChannel($chanel)

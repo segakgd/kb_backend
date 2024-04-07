@@ -2,7 +2,9 @@
 
 namespace App\Dto\SessionCache\Cache;
 
-class CacheDataDto
+use App\Dto\Common\AbstractDto;
+
+class CacheDataDto extends AbstractDto
 {
     private ?int $pageNow = null;
 

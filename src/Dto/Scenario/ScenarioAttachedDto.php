@@ -2,7 +2,9 @@
 
 namespace App\Dto\Scenario;
 
-class ScenarioAttachedDto
+use App\Dto\Common\AbstractDto;
+
+class ScenarioAttachedDto extends AbstractDto
 {
     private ?string $document = null;
 

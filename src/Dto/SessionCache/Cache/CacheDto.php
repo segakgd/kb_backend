@@ -2,9 +2,10 @@
 
 namespace App\Dto\SessionCache\Cache;
 
+use App\Dto\Common\AbstractDto;
 use App\Service\System\Common\CacheService;
 
-class CacheDto
+class CacheDto extends AbstractDto
 {
     private ?string $eventUUID = null;
 
