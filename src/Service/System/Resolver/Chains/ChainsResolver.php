@@ -8,8 +8,9 @@ use Exception;
 
 class ChainsResolver
 {
-    public function __construct(private readonly ChainResolver $chainResolver)
-    {
+    public function __construct(
+        private readonly ChainResolver $chainResolver,
+    ) {
     }
 
     /**
