@@ -15,6 +15,7 @@ class DevSubscriber implements EventSubscriberInterface
 {
     private const ALLOWED_IP = [
         '89.190.240.56',
+        '5.142.186.143',
         '127.0.0.1',
     ];
 
