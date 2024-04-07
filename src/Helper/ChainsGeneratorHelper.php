@@ -3,7 +3,7 @@
 namespace App\Helper;
 
 use App\Enum\JumpEnum;
-use App\Service\System\Resolver\Chains\AbstractChain;
+use App\Service\System\Resolver\Chains\Items\AbstractChain;
 use App\Service\System\Resolver\Chains\Items\C10Chain;
 use App\Service\System\Resolver\Chains\Items\C1Chain;
 use App\Service\System\Resolver\Chains\Items\C2Chain;

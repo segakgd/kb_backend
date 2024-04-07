@@ -4,7 +4,7 @@ namespace App\Service\System\Resolver\Steps;
 
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Dto\SessionCache\Cache\CacheStepDto;
-use App\Service\System\Resolver\Chains\ChainResolver;
+use App\Service\System\Resolver\Chains\ChainsResolver;
 use App\Service\System\Resolver\Dto\Contract;
 use App\Service\System\Resolver\Scenario\ScenarioResolver;
 use Exception;
@@ -14,7 +14,7 @@ use Throwable;
 class StepResolver
 {
     public function __construct(
-        private readonly ChainResolver $chainResolver,
+        private readonly ChainsResolver $chainsResolver,
         private readonly ScenarioResolver $scenarioResolver,
         private readonly LoggerInterface $logger,
     ) {
@@ -58,7 +58,7 @@ class StepResolver
      */
     private function handleChain(Contract $contract, CacheStepDto $step): void
     {
-        $this->chainResolver->resolve($contract, $step->getChains());
+        $this->chainsResolver->resolve($contract, $step->getChains());
     }
 
     private function handleScenario(Contract $contract, CacheStepDto $step): void

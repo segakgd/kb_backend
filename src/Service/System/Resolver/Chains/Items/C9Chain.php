@@ -3,7 +3,6 @@
 namespace App\Service\System\Resolver\Chains\Items;
 
 use App\Helper\MessageHelper;
-use App\Service\System\Resolver\Chains\AbstractChain;
 use App\Service\System\Resolver\Dto\Condition;
 use App\Service\System\Resolver\Dto\ConditionInterface;
 use App\Service\System\Resolver\Dto\ContractInterface;

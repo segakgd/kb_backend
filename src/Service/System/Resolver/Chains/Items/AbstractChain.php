@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\System\Resolver\Chains;
+namespace App\Service\System\Resolver\Chains\Items;
 
 use App\Helper\JumpHelper;
 use App\Helper\MessageHelper;
