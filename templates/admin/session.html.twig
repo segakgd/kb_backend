@@ -132,17 +132,16 @@
                                 {% if event.steps is not empty %}
                                     <br>
                                     <section style="padding: 10px; background: #ced6ea;">
-                                        Шаги:
                                         <ul>
                                             {% for step in event.steps %}
                                                 <li>
-                                                    Шаг {{ step.number }}
+                                                    <span style="font-weight: bold; color: #18181b;">Шаг {{ step.number }}</span>
 
                                                     {% if step.chains is not null %}
                                                         {% if step.chains is not empty %}
                                                             <br>
                                                             <section style="padding: 10px; background: #ced6ea;">
-                                                                Шаги:
+                                                                Цепочка:
                                                                 <ul>
                                                                     {% for chain in step.chains %}
                                                                         <li>

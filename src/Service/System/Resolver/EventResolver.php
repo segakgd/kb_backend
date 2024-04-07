@@ -50,8 +50,6 @@ class EventResolver
         $contract->setContent($content);
         $contract->setCacheCart($cacheDto->getCart());
 
-        $visitorEvent->setStatus(VisitorEventStatusEnum::Waiting);
-
         $isEmptySteps = $cacheDto->getEvent()->isEmptySteps();
 
         // todo надо разобраться со статусам

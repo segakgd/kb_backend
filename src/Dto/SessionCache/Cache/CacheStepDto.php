@@ -63,7 +63,7 @@ class CacheStepDto extends AbstractDto
 
     public function hasChain(): bool
     {
-        return !empty($this->chain);
+        return empty($this->chain);
     }
 
     public function setChains(array $chains): static
@@ -121,8 +121,18 @@ class CacheStepDto extends AbstractDto
 
         $chains = [];
 
-        foreach ($data['chains'] ?? [] as $chainData) {
-            $chains[] = CacheChainDto::fromArray($chainData);
+        // todo костыль, когда мы мапим из dto сценария. Нужно подправить в сценарии этот косяк
+
+        if (isset($data['chains'])) {
+            foreach ($data['chains'] ?? [] as $chainData) {
+                $chains[] = CacheChainDto::fromArray($chainData);
+            }
+        }
+
+        if (isset($data['chain'])) {
+            foreach ($data['chain'] ?? [] as $chainData) {
+                $chains[] = CacheChainDto::fromArray($chainData);
+            }
         }
 
         $step->chains = $chains;
