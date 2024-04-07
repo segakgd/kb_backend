@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Lead\DTO\Response\Fields;
 
 class LeadContactsRespDto
@@ -9,8 +11,6 @@ class LeadContactsRespDto
     private ?LeadFieldRespDto $phone = null;
 
     private ?LeadFieldRespDto $mail = null;
-
-    private ?LeadFieldRespDto $telegram = null;
 
     public function getFullName(): ?LeadFieldRespDto
     {
@@ -44,18 +44,6 @@ class LeadContactsRespDto
     public function setMail(LeadFieldRespDto $mail): self
     {
         $this->mail = $mail;
-
-        return $this;
-    }
-
-    public function getTelegram(): ?LeadFieldRespDto
-    {
-        return $this->telegram;
-    }
-
-    public function setTelegram(LeadFieldRespDto $telegram): self
-    {
-        $this->telegram = $telegram;
 
         return $this;
     }

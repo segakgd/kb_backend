@@ -19,7 +19,7 @@ class Deal
     private ?int $id = null;
 
     #[Groups(['administrator'])]
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(cascade: ['persist', 'remove'], fetch: 'EAGER')]
     private ?DealContacts $contacts = null;
 
     #[Groups(['administrator'])]

@@ -65,12 +65,6 @@ class ViewAllController extends AbstractController
 
         $leads = $this->leadManager->getAllByProject($project);
 
-        $response = [];
-
-        foreach ($leads as $lead) {
-            $response[] = $this->leadMapper->mapToResponse($lead);
-        }
-
-        return $this->json($response);
+        return $this->json($this->leadMapper->mapArrayToResponse($leads));
     }
 }

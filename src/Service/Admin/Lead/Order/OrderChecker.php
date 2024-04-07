@@ -46,7 +46,7 @@ class OrderChecker
     /**
      * @throws Exception
      */
-    private function checkOrderTotalSum(OrderReqDto $reqDto): void
+    private function checkOrderTotalSum(OrderReqDto $reqDto): void // todo -> промоушены и доставка как бы еще нормально не сделаны
     {
         $totalAmountShipping = $totalAmountPromotion = $productsTotalPrice = 0;
 

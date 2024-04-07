@@ -36,7 +36,7 @@ class OrderService
             $product = $this->productVariantService->getById($productVariant->getId());
 
             if ($product) {
-                $order->addProductVariant($product);
+                $order->addProductVariant($productVariant);
             }
         }
 
@@ -45,7 +45,7 @@ class OrderService
             $shipping = $this->shippingService->getById($shippingDto->getId());
 
             if ($shipping) {
-                $order->addShipping($shipping);
+                $order->addShipping($shippingDto);
             }
         }
 
@@ -54,7 +54,7 @@ class OrderService
             $promotion = $this->promotionService->getById($promotionReqDto->getId());
 
             if ($promotion) {
-                $order->addPromotion($promotion);
+                $order->addPromotion($promotionReqDto);
             }
         }
 

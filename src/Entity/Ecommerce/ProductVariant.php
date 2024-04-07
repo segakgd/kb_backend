@@ -36,7 +36,7 @@ class ProductVariant
     #[ORM\Column(nullable: true)]
     private ?int $count = null;
 
-    #[ORM\ManyToOne(inversedBy: 'variants')]
+    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'variants')]
     private ?Product $product = null;
 
     #[ORM\Column(nullable: true)]

@@ -1,26 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Lead\DTO\Response\Fields;
 
 class LeadFieldRespDto
 {
-    private string $type;
-
     private string $name;
 
-    private string|int $value;
-
-    public function getType(): string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): self
-    {
-        $this->type = $type;
-
-        return $this;
-    }
+    private string $value;
 
     public function getName(): string
     {

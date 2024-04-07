@@ -7,6 +7,7 @@ namespace App\Controller\Admin\Lead;
 use App\Controller\Admin\Lead\DTO\Response\LeadRespDto;
 use App\Entity\Lead\Deal;
 use App\Entity\User\Project;
+use App\Helper\Lead\LeadHelper;
 use App\Service\Admin\Lead\LeadMapper;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -38,7 +39,7 @@ class ViewOneController extends AbstractController
     public function execute(Project $project, ?Deal $lead): JsonResponse
     {
         if (null === $lead) {
-            return $this->json(['Lead not found'], Response::HTTP_NOT_FOUND);
+            return $this->json('Lead not found', Response::HTTP_NOT_FOUND);
         }
 
         if ($project->getId() !== $lead->getProjectId()) {
