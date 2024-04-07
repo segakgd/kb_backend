@@ -60,9 +60,9 @@ class OrderChecker
             $totalAmountPromotion += $promotionDto->getTotalAmount();
         }
 
-        /** @var OrderProductReqDto $productDto */
-        foreach ($reqDto->getProductVariants() as $productDto) {
-            $productsTotalPrice += $productDto->getTotalAmount();
+        /** @var OrderVariantReqDto $variantDto */
+        foreach ($reqDto->getProductVariants() as $variantDto) {
+            $productsTotalPrice += $variantDto->getPrice();
         }
 
 
