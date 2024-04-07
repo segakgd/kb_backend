@@ -32,6 +32,7 @@ class ViewOneController extends AbstractController
     ) {
     }
 
+    /** Получение одного лида */
     #[Route('/api/admin/project/{project}/lead/{lead}/', name: 'admin_lead_get_one', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project, ?Deal $lead): JsonResponse

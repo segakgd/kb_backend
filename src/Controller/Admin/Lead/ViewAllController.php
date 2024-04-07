@@ -48,6 +48,7 @@ class ViewAllController extends AbstractController
     ) {
     }
 
+    /** Получение коллекцию лидов */
     #[Route('/api/admin/project/{project}/lead/', name: 'admin_lead_get_all', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project): JsonResponse

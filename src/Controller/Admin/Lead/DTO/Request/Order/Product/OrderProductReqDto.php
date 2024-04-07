@@ -8,13 +8,18 @@ class OrderProductReqDto
 {
     private array $variants;
 
-    private int $totalCount; // todo -> не увеерн о нужде этого поля в дто. Оно определяется динамически в результате обработки $variants
-//
-    private int $totalAmount; // todo -> не уверен о нужден этого поля в дто. Оно определяется динамически в результате обработки $variants
+    private int $totalAmount = 0; // todo -> не уверен о нужден этого поля в дто. Оно определяется динамически в результате обработки $variants
 
     public function getVariants(): array
     {
         return $this->variants;
+    }
+
+    public function setVariants(array $variants): self
+    {
+        $this->variants = $variants;
+
+        return $this;
     }
 
     public function addVariant(OrderVariantReqDto $variant): self
@@ -23,19 +28,6 @@ class OrderProductReqDto
 
         return $this;
     }
-
-    public function getTotalCount(): int
-    {
-        return $this->totalCount;
-    }
-
-    public function setTotalCount(int $totalCount): self
-    {
-        $this->totalCount = $totalCount;
-
-        return $this;
-    }
-
     public function getTotalAmount(): int
     {
         return $this->totalAmount;

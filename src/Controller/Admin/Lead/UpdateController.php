@@ -15,6 +15,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class UpdateController extends AbstractController
 {
+    /** Обновлегние лида */
     #[OA\Tag(name: 'Lead')]
     #[Route('/api/admin/project/{project}/lead/{lead}/', name: 'admin_lead_update', methods: ['POST'])]
     #[IsGranted('existUser', 'project')]

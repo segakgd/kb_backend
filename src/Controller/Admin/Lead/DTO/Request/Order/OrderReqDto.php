@@ -30,6 +30,13 @@ class OrderReqDto
         }
     }
 
+    public function setProducts(array $products): self
+    {
+        $this->products = $products;
+
+        return $this;
+    }
+
     public function getProducts(): array
     {
         return $this->products;

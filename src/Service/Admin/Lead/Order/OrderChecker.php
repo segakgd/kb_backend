@@ -9,7 +9,9 @@ use App\Controller\Admin\Lead\DTO\Request\Order\Product\OrderProductReqDto;
 use App\Controller\Admin\Lead\DTO\Request\Order\Product\OrderVariantReqDto;
 use App\Controller\Admin\Lead\DTO\Request\Order\Promotion\OrderPromotionReqDto;
 use App\Controller\Admin\Lead\DTO\Request\Order\Shipping\OrderShippingReqDto;
+use App\Controller\Admin\Product\DTO\Request\ProductVariantReqDto;
 use App\Controller\Admin\Promotion\DTO\Request\PromotionReqDto;
+use App\Dto\Product\Variants\VariantPriceDto;
 use App\Entity\Ecommerce\ProductVariant;
 use App\Entity\Ecommerce\Shipping;
 use App\Entity\User\Project;
@@ -103,7 +105,11 @@ class OrderChecker
     {
         /** @var OrderProductReqDto $product */
         foreach ($products as $product) {
-            $this->checkProductVariants($project, $product);
+            try {
+                $this->checkProductVariants($project, $product);
+            } catch (\Throwable $exception) {
+                dd($exception);
+            }
         }
     }
 
@@ -114,42 +120,55 @@ class OrderChecker
     {
         $trackingVariants = [];
         $totalAmount = $productReqDto->getTotalAmount();
-        $totalCount = $productReqDto->getTotalCount();
 
-        $expectedTotalCount = $expectedTotalAmount = 0;
+        $expectedTotalAmount = 0;
 
         /** @var OrderVariantReqDto $variant */
         foreach ($productReqDto->getVariants() as $variant) {
-            if (!isset($trackingVariants[$variant->getId()]['count'])) {
-                $trackingVariants[$variant->getId()]['count'] = $variant->getCount();
-            } else {
-                $trackingVariants[$variant->getId()]['count'] += $variant->getCount();
-            }
-
-            $countVariant = $variant->getCount();
-            $price = $variant->getPrice();
-
             $variantEntity = $this->productVariantService->getById($variant->getId());
 
             if (null === $variantEntity || $this->isVariantInProject($variantEntity, $project->getId())) {
                 throw new NotFoundResourceException(sprintf('Variant with id %d not found', $variant->getId()));
             }
 
-            $variantPrice = $variantEntity->getPrice();
-            $variantPrice = $variantPrice['price'] ?? null;
+            /** @var null|VariantPriceDto $variantPrice */
+            $variantPrice = current($variantEntity->getPrice()); // todo -> need to fix
+            $variantPrice = $variantPrice?->getPrice();
 
-            if ($price !== $variantPrice) {
+            if ($variant->getPrice() !== $variantPrice) {
                 throw new Exception('Variant price does not match the requested price');
-            } elseif ($trackingVariants[$variant->getId()]['count'] > $variantEntity->getCount()) {
-                throw new Exception('Requested variant count exceeds presented one');
             }
 
-            $expectedTotalCount += $countVariant;
-            $expectedTotalAmount += $price;
+            $this->checkVariantCount($variantEntity, $variant, $trackingVariants);
+
+            $expectedTotalAmount += $variant->getPrice();
         }
 
-        if ($totalAmount !== $expectedTotalAmount || $totalCount !== $expectedTotalCount) {
+        if ($totalAmount !== $expectedTotalAmount) {
             throw new Exception('Provided count or amount does not match actual');
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function checkVariantCount(
+        ProductVariant $variantEntity,
+        OrderVariantReqDto $variant,
+        array $trackingVariants
+    ): void {
+        if ($variantEntity->isLimitless()) {
+            return;
+        }
+
+        if (!isset($trackingVariants[$variant->getId()]['count'])) {
+            $trackingVariants[$variant->getId()]['count'] = $variant->getCount();
+        } else {
+            $trackingVariants[$variant->getId()]['count'] += $variant->getCount();
+        }
+
+        if ($trackingVariants[$variant->getId()]['count'] > $variantEntity->getCount()) {
+            throw new Exception('Requested variant count exceeds presented one');
         }
     }
 

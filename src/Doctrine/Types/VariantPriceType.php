@@ -15,16 +15,18 @@ class VariantPriceType extends JsonType
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         $values = parent::convertToPHPValue($value, $platform);
+
         return array_map(function ($value) {
             return VariantPriceDto::fromArray($value);
         }, $values);
     }
 
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
         $values = array_map(function (VariantPriceDto $variantPriceDto) {
             return $variantPriceDto->toArray();
         }, $value);
+
         return parent::convertToDatabaseValue($values, $platform);
     }
 
