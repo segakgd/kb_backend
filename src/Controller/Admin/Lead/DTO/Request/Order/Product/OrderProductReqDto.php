@@ -8,7 +8,7 @@ class OrderProductReqDto
 {
     private array $variants;
 
-    private int $totalAmount = 0; // todo -> не уверен о нужден этого поля в дто. Оно определяется динамически в результате обработки $variants
+    private int $totalAmount = 0;
 
     public function getVariants(): array
     {

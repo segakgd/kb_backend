@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Entity\Lead;
 
-use App\Controller\Admin\Product\DTO\Request\ProductReqDto;
-use App\Controller\Admin\Promotion\DTO\Request\PromotionReqDto;
-use App\Controller\Admin\Shipping\DTO\Request\ShippingReqDto;
+use App\Entity\Ecommerce\Product;
+use App\Entity\Ecommerce\ProductVariant;
+use App\Entity\Ecommerce\Promotion;
+use App\Entity\Ecommerce\Shipping;
 use App\Repository\Lead\OrderEntityRepository;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -22,16 +25,16 @@ class DealOrder
     private ?int $id = null;
 
     #[Groups(['administrator'])]
-    #[ORM\Column(nullable: true)]
-    private array $products = [];
+    #[ORM\ManyToMany(targetEntity: ProductVariant::class, cascade: ['persist'])]
+    private Collection $productVariants;
 
     #[Groups(['administrator'])]
-    #[ORM\Column(nullable: true)]
-    private array $shipping = [];
+    #[ORM\ManyToMany(targetEntity: Shipping::class, cascade: ['persist'])]
+    private Collection $shipping;
 
     #[Groups(['administrator'])]
-    #[ORM\Column(nullable: true)]
-    private array $promotions = [];
+    #[ORM\ManyToMany(targetEntity: Promotion::class, cascade: ['persist'])]
+    private Collection $promotions;
 
     #[ORM\Column]
     private ?int $totalAmount = null;
@@ -47,68 +50,15 @@ class DealOrder
         if ($this->createdAt === null){
             $this->createdAt = new DateTimeImmutable();
         }
+
+        $this->productVariants = new ArrayCollection();
+        $this->promotions = new ArrayCollection();
+        $this->shipping = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getProducts(): array
-    {
-        return $this->products;
-    }
-
-    public function setProducts(?array $products): static
-    {
-        $this->products = $products;
-
-        return $this;
-    }
-
-    public function addProduct(?ProductReqDto $product): static // todo  -> подумать над лежащим ДТО (думаю миинмум полей сюда)
-    {
-        $this->products[] = $product;
-
-        return $this;
-    }
-
-    public function getShipping(): array
-    {
-        return $this->shipping;
-    }
-
-    public function setShipping(?array $shipping): static
-    {
-        $this->shipping = $shipping;
-
-        return $this;
-    }
-
-    public function addShipping(ShippingReqDto $dto): static
-    {
-        $this->shipping[] = $dto;
-
-        return $this;
-    }
-
-    public function getPromotions(): array
-    {
-        return $this->promotions;
-    }
-
-    public function setPromotions(?array $promotions): static
-    {
-        $this->promotions = $promotions;
-
-        return $this;
-    }
-
-    public function addPromotion(PromotionReqDto $promotions): static
-    {
-        $this->promotions[] = $promotions;
-
-        return $this;
     }
 
     public function getTotalAmount(): ?int
@@ -150,6 +100,90 @@ class DealOrder
     public function markAsUpdated(): static
     {
         $this->updatedAt = new DateTimeImmutable();
+
+        return $this;
+    }
+
+    public function getProductVariants(): Collection
+    {
+        return $this->productVariants;
+    }
+
+    public function setProductVariants(Collection $productVariants): static
+    {
+        $this->productVariants = $productVariants;
+
+        return $this;
+    }
+
+    public function addProductVariant(ProductVariant $product): static
+    {
+        if (!$this->productVariants->contains($product)) {
+            $this->productVariants[] = $product;
+        }
+
+        return $this;
+    }
+
+    public function removeProductVariant(ProductVariant $product): static
+    {
+        $this->productVariants->removeElement($product);
+
+        return $this;
+    }
+
+    public function getShipping(): Collection
+    {
+        return $this->shipping;
+    }
+
+    public function setShipping(Collection $shipping): static
+    {
+        $this->shipping = $shipping;
+
+        return $this;
+    }
+
+    public function addShipping(Shipping $shipping): static
+    {
+        if (!$this->shipping->contains($shipping)) {
+            $this->shipping[] = $shipping;
+        }
+
+        return $this;
+    }
+
+    public function removeShipping(Shipping $shipping): static
+    {
+        $this->shipping->removeElement($shipping);
+
+        return $this;
+    }
+
+    public function getPromotions(): Collection
+    {
+        return $this->promotions;
+    }
+
+    public function setPromotions(Collection $promotions): static
+    {
+        $this->promotions = $promotions;
+
+        return $this;
+    }
+
+    public function addPromotion(Promotion $promotion): static
+    {
+        if (!$this->promotions->contains($promotion)) {
+            $this->promotions[] = $promotion;
+        }
+
+        return $this;
+    }
+
+    public function removePromotion(Promotion $promotion): static
+    {
+        $this->promotions->removeElement($promotion);
 
         return $this;
     }

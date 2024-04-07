@@ -22,7 +22,7 @@ class LeadContactsReqDto
     private ?LeadFieldReqDto $lastName = null;
 
     #[Assert\Callback]
-    public function validate(ExecutionContextInterface $context): void // todo -> Вообще тут бы хорошо подумть над валидацией филдов (раз уж такие ДТО =)).
+    public function validate(ExecutionContextInterface $context): void // todo -> Вообще тут бы хорошо подумть над валидацией филдов).
     {
         if ($this->phone === null && $this->email === null && $this->firstName === null && $this->lastName === null) {
             $context

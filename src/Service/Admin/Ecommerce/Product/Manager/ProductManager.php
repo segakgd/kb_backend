@@ -48,6 +48,7 @@ class ProductManager implements ProductManagerInterface
                 ->setArticle($productVariant->getArticle())
                 ->setPrice($productVariant->getPrice())
                 ->setImage($productVariant->getImages())
+                ->setIsLimitless($productVariant->isLimitless())
                 ->markAsUpdated()
             ;
 

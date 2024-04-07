@@ -11,6 +11,7 @@ use App\Controller\Admin\Lead\DTO\Request\Order\Promotion\OrderPromotionReqDto;
 use App\Controller\Admin\Lead\DTO\Request\Order\Shipping\OrderShippingReqDto;
 use App\Controller\Admin\Product\DTO\Request\ProductVariantReqDto;
 use App\Controller\Admin\Promotion\DTO\Request\PromotionReqDto;
+use App\Controller\Admin\Shipping\DTO\Request\ShippingReqDto;
 use App\Dto\Product\Variants\VariantPriceDto;
 use App\Entity\Ecommerce\ProductVariant;
 use App\Entity\Ecommerce\Shipping;
@@ -37,7 +38,39 @@ class OrderChecker
     {
         $this->checkShipping($project, $reqDto->getShipping());
         $this->checkPromotions($project, $reqDto->getShipping());
-        $this->checkProducts($project, $reqDto->getProducts());
+        $this->checkProducts($project, $reqDto->getProductVariants());
+
+        $this->checkOrderTotalSum($reqDto);
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function checkOrderTotalSum(OrderReqDto $reqDto): void
+    {
+        $totalAmountShipping = $totalAmountPromotion = $productsTotalPrice = 0;
+
+        /** @var OrderShippingReqDto $shippingDto */
+        foreach ($reqDto->getShipping() as $shippingDto) {
+            $totalAmountShipping += $shippingDto->getTotalAmount();
+        }
+
+        /** @var OrderPromotionReqDto $promotionDto */
+        foreach ($reqDto->getPromotions() as $promotionDto) {
+            $totalAmountPromotion += $promotionDto->getTotalAmount();
+        }
+
+        /** @var OrderProductReqDto $productDto */
+        foreach ($reqDto->getProductVariants() as $productDto) {
+            $productsTotalPrice += $productDto->getTotalAmount();
+        }
+
+
+        $totalAmount = max(max($productsTotalPrice - $totalAmountPromotion, 0) + $totalAmountShipping, 0);
+
+        if ($totalAmount !== $reqDto->getTotalAmount()) {
+            throw new Exception('Order total amount counted incorrect');
+        }
     }
 
     /**
@@ -103,28 +136,10 @@ class OrderChecker
      */
     private function checkProducts(Project $project, array $products): void
     {
-        /** @var OrderProductReqDto $product */
-        foreach ($products as $product) {
-            try {
-                $this->checkProductVariants($project, $product);
-            } catch (\Throwable $exception) {
-                dd($exception);
-            }
-        }
-    }
-
-    /**
-     * @throws Exception
-     */
-    private function checkProductVariants(Project $project, OrderProductReqDto $productReqDto): void
-    {
         $trackingVariants = [];
-        $totalAmount = $productReqDto->getTotalAmount();
 
-        $expectedTotalAmount = 0;
-
-        /** @var OrderVariantReqDto $variant */
-        foreach ($productReqDto->getVariants() as $variant) {
+        /** @var OrderVariantReqDto $variantReqDto */
+        foreach ($products as $variant) {
             $variantEntity = $this->productVariantService->getById($variant->getId());
 
             if (null === $variantEntity || $this->isVariantInProject($variantEntity, $project->getId())) {
@@ -140,12 +155,6 @@ class OrderChecker
             }
 
             $this->checkVariantCount($variantEntity, $variant, $trackingVariants);
-
-            $expectedTotalAmount += $variant->getPrice();
-        }
-
-        if ($totalAmount !== $expectedTotalAmount) {
-            throw new Exception('Provided count or amount does not match actual');
         }
     }
 
