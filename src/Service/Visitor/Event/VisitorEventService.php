@@ -48,8 +48,7 @@ class VisitorEventService
         $cache->setEventUUID($visitorEvent->getScenarioUUID());
         $cache->setContent($content);
 
-        if (!$cache->getEvent()->isFinished()) {
-
+        if ($visitorEvent->getStatus() === VisitorEventStatusEnum::Waiting) {
             $visitorSession->setCache($cache);
             $visitorEvent->setStatus(VisitorEventStatusEnum::New);
 

@@ -23,9 +23,9 @@ class StepResolver
     /**
      * @throws Throwable
      */
-    public function resolve(Contract $contract, CacheDto $cacheDto): void
+    public function resolve(Contract $contract): void
     {
-        $steps = $cacheDto->getEvent()->getSteps();
+        $steps = $contract->getCacheDto()->getEvent()->getSteps();
 
         try {
             foreach ($steps as $step) {

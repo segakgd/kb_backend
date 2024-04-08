@@ -11,7 +11,7 @@ class C4Chain extends AbstractChain
 {
     public function success(ContractInterface $contract): ContractInterface
     {
-        $content = $contract->getContent();
+        $content = $contract->getCacheDto()->getContent();
 
         $message = "Вы кликнули на $content";
 
@@ -47,7 +47,7 @@ class C4Chain extends AbstractChain
 
     public function validate(ContractInterface $contract): bool
     {
-        $content = $contract->getContent();
+        $content = $contract->getCacheDto()->getContent();
 
         $validData = [
             'Да',

@@ -63,7 +63,7 @@ class CacheStepDto extends AbstractDto
 
     public function hasChain(): bool
     {
-        return empty($this->chain);
+        return !empty($this->chains);
     }
 
     public function setChains(array $chains): static

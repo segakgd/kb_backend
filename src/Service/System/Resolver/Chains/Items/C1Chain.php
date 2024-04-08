@@ -11,9 +11,9 @@ class C1Chain extends AbstractChain
 {
     public function success(ContractInterface $contract): ContractInterface
     {
-        $content = $contract->getContent();
+        $content = $contract->getCacheDto()->getContent();
 
-        $cart = $contract->getCacheCart();
+        $cart = $contract->getCacheDto()->getCart();
 
         $shipping = [
             'address' => [ // todo need realization as DTO

@@ -41,7 +41,7 @@ abstract class AbstractChain
 
     private function gotoIsNavigate(ContractInterface $contract): bool
     {
-        $content = $contract->getContent();
+        $content = $contract->getCacheDto()->getContent();
 
         $jump = JumpHelper::getJumpFromNavigate($content);
 

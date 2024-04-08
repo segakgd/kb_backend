@@ -4,6 +4,7 @@ namespace App\Service\System\Resolver\Dto;
 
 use App\Dto\SessionCache\Cache\CacheCartDto;
 use App\Dto\SessionCache\Cache\CacheChainDto;
+use App\Dto\SessionCache\Cache\CacheDto;
 use App\Enum\JumpEnum;
 use App\Enum\VisitorEventStatusEnum;
 
@@ -15,7 +16,10 @@ class Contract implements ContractInterface
 
     private ?ResultInterface $result = null;
 
+    /** @deprecated */
     private ?CacheCartDto $cacheCart = null;
+
+    private ?CacheDto $cacheDto;
 
     private ?JumpEnum $jump = null;
 
@@ -23,6 +27,7 @@ class Contract implements ContractInterface
 
     private bool $stepsStatus = false;
 
+    /** @deprecated */
     private ?string $content = null;
 
     public function __construct()
@@ -68,11 +73,25 @@ class Contract implements ContractInterface
         return $this;
     }
 
+    public function getCacheDto(): ?CacheDto
+    {
+        return $this->cacheDto;
+    }
+
+    public function setCacheDto(?CacheDto $cacheDto): static
+    {
+        $this->cacheDto = $cacheDto;
+
+        return $this;
+    }
+
+    /** @deprecated */
     public function getCacheCart(): ?CacheCartDto
     {
         return $this->cacheCart;
     }
 
+    /** @deprecated */
     public function setCacheCart(?CacheCartDto $cacheCart): static
     {
         $this->cacheCart = $cacheCart;
@@ -104,11 +123,13 @@ class Contract implements ContractInterface
         return $this;
     }
 
+    /** @deprecated */
     public function getContent(): ?string
     {
         return $this->content;
     }
 
+    /** @deprecated */
     public function setContent(?string $content): static
     {
         $this->content = $content;

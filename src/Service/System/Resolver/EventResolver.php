@@ -47,18 +47,19 @@ class EventResolver
         $scenario = $this->scenarioService->findScenarioByUUID($visitorEvent->getScenarioUUID());
         $cacheDto = $visitorSession->getCache();
 
-        $content = $cacheDto->getContent();
-        $contract->setContent($content);
-        $contract->setCacheCart($cacheDto->getCart());
-
         $isEmptySteps = $cacheDto->getEvent()->isEmptySteps();
 
-        // todo надо разобраться со статусам
         if ($visitorEvent->getStatus() === VisitorEventStatusEnum::New || $isEmptySteps) {
             $cacheDto = $this->enrichStepsCache($scenario, $cacheDto);
         }
 
-        $this->stepResolver->resolve($contract, $cacheDto);
+        $contract->setCacheDto($cacheDto);
+
+        // todo дропнуть все прокидывания кеша... получать из контракта + всё что до этого можно вынести отсюда... и закинуть так же в контракт то что нужно
+
+
+        $this->stepResolver->resolve($contract);
+
 
         $jump = $contract->getJump();
 
