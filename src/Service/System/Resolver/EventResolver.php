@@ -59,8 +59,6 @@ class EventResolver
 
         $this->stepResolver->resolve($contract, $cacheDto);
 
-        dd($contract);
-
         $jump = $contract->getJump();
 
         if (is_null($jump)) {
@@ -71,12 +69,13 @@ class EventResolver
                 cacheDto: $cacheDto
             );
         } else {
-            $this->gotoResolver->resolveJump(
-                visitorEvent: $visitorEvent,
-                cacheDto: $cacheDto,
-                visitorSession: $visitorSession,
-                contract: $contract
-            );
+            dd('Вернуть jump');
+//            $this->gotoResolver->resolveJump(
+//                visitorEvent: $visitorEvent,
+//                cacheDto: $cacheDto,
+//                visitorSession: $visitorSession,
+//                contract: $contract
+//            );
         }
 
         if (isset($_SERVER['APP_ENV']) && $_SERVER['APP_ENV'] === 'dev') {
