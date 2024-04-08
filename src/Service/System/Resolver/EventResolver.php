@@ -81,6 +81,8 @@ class EventResolver
             $this->contractDtoRepository->save($visitorEvent, $contract);
         }
 
+        $visitorSession->setCache($cacheDto);
+
         $this->entityManager->persist($visitorEvent);
         $this->entityManager->persist($visitorSession);
         $this->entityManager->flush();

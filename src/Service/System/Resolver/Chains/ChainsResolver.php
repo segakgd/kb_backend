@@ -20,20 +20,16 @@ class ChainsResolver
      */
     public function resolve(Contract $contract, array $chains): array
     {
-        foreach ($chains as $key => $chain) {
-            $nextChain = $chains[1 + $key] ?? null;
+        foreach ($chains as $chain) {
+            if ($chain->isFinished()) {
+                continue;
+            }
+
+            $nextChain = next($chains) ?? null;
 
             $contract->setChain($chain);
 
             $this->chainResolver->resolve($contract, $nextChain?->getTarget());
-
-            if ($contract->getJump() !== null) {
-                break;
-            }
-
-            if ($chain->isFinished()) {
-                unset($chains[$key]);
-            }
 
             break;
         }
