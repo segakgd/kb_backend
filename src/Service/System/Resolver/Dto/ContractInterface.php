@@ -2,10 +2,8 @@
 
 namespace App\Service\System\Resolver\Dto;
 
-use App\Dto\SessionCache\Cache\CacheCartDto;
 use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Dto\SessionCache\Cache\CacheDto;
-use App\Enum\ChainStatusEnum;
 use App\Enum\JumpEnum;
 use App\Enum\VisitorEventStatusEnum;
 
@@ -27,10 +25,6 @@ interface ContractInterface
 
     public function setCacheDto(?CacheDto $cacheDto): static;
 
-    public function getCacheCart(): ?CacheCartDto;
-
-    public function setCacheCart(?CacheCartDto $cacheCart): static;
-
     public function getJump(): ?JumpEnum;
 
     public function setJump(?JumpEnum $jump): static;
@@ -39,7 +33,11 @@ interface ContractInterface
 
     public function setStatus(?VisitorEventStatusEnum $status): static;
 
-    public function getContent(): ?string;
+    public function isStepsStatus(): bool;
 
-    public function setContent(?string $content): static;
+    public function setStepsStatus(bool $stepsStatus): static;
+
+    public function getBotDto(): ?BotDto;
+
+    public function setBotDto(?BotDto $botDto): Contract;
 }

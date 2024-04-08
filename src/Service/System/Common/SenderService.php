@@ -3,7 +3,6 @@
 namespace App\Service\System\Common;
 
 use App\Dto\Contract\ContractMessageDto;
-use App\Entity\Visitor\VisitorSession;
 use App\Service\Integration\Telegram\TelegramService;
 use App\Service\System\Resolver\Dto\Contract;
 use Exception;
@@ -19,14 +18,16 @@ class SenderService
     /**
      * @throws Exception
      */
-    public function sendMessages(Contract $contract, string $token, VisitorSession $visitorSession): void
+    public function sendMessages(Contract $contract): void
     {
         $messages = $contract->getResult()->getMessages();
+        $token = $contract->getBotDto()->getToken();
+        $chatId = $contract->getBotDto()->getChatId();
 
         /** @var ContractMessageDto $message */
         foreach ($messages as $message) {
             if (isset($_SERVER['APP_ENV']) && $_SERVER['APP_ENV'] === 'prod') {
-                $this->sendProd($message, $token, $visitorSession->getChatId());
+                $this->sendProd($message, $token, $chatId);
             }
 
             $this->sendDev($message);

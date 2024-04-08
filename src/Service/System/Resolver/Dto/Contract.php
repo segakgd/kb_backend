@@ -2,7 +2,6 @@
 
 namespace App\Service\System\Resolver\Dto;
 
-use App\Dto\SessionCache\Cache\CacheCartDto;
 use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Enum\JumpEnum;
@@ -10,25 +9,21 @@ use App\Enum\VisitorEventStatusEnum;
 
 class Contract implements ContractInterface
 {
-    public ?CacheChainDto $chain = null;
+    public ?CacheChainDto $chain = null; // todo объеденить с $nextCondition
 
-    private ?ConditionInterface $nextCondition = null;
+    private ?ConditionInterface $nextCondition = null; // todo объеденить с $chain
 
     private ?ResultInterface $result = null;
 
-    /** @deprecated */
-    private ?CacheCartDto $cacheCart = null;
-
     private ?CacheDto $cacheDto;
 
-    private ?JumpEnum $jump = null;
+    private ?JumpEnum $jump = null; // todo закинуть в result
 
     private ?VisitorEventStatusEnum $status = VisitorEventStatusEnum::New;
 
-    private bool $stepsStatus = false;
+    private bool $stepsStatus = false; // todo точно нужен?
 
-    /** @deprecated */
-    private ?string $content = null;
+    private ?BotDto $botDto = null;
 
     public function __construct()
     {
@@ -85,20 +80,6 @@ class Contract implements ContractInterface
         return $this;
     }
 
-    /** @deprecated */
-    public function getCacheCart(): ?CacheCartDto
-    {
-        return $this->cacheCart;
-    }
-
-    /** @deprecated */
-    public function setCacheCart(?CacheCartDto $cacheCart): static
-    {
-        $this->cacheCart = $cacheCart;
-
-        return $this;
-    }
-
     public function getJump(): ?JumpEnum
     {
         return $this->jump;
@@ -123,20 +104,6 @@ class Contract implements ContractInterface
         return $this;
     }
 
-    /** @deprecated */
-    public function getContent(): ?string
-    {
-        return $this->content;
-    }
-
-    /** @deprecated */
-    public function setContent(?string $content): static
-    {
-        $this->content = $content;
-
-        return $this;
-    }
-
     public function isStepsStatus(): bool
     {
         return $this->stepsStatus;
@@ -146,6 +113,17 @@ class Contract implements ContractInterface
     {
         $this->stepsStatus = $stepsStatus;
 
+        return $this;
+    }
+
+    public function getBotDto(): ?BotDto
+    {
+        return $this->botDto;
+    }
+
+    public function setBotDto(?BotDto $botDto): Contract
+    {
+        $this->botDto = $botDto;
         return $this;
     }
 }

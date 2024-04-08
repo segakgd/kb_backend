@@ -23,8 +23,6 @@ class C1Chain extends AbstractChain
 
         $cart->setShipping($shipping);
 
-        $contract->setCacheCart($cart);
-
         $message = "Ваши апартаменты $content. \n\n Хотите что-то изменить?";
 
         $contractMessage = MessageHelper::createContractMessage(
