@@ -12,19 +12,19 @@ class ChainResolver
 {
     public function resolve(Contract $contract, ?JumpEnum $targetNext): void
     {
-        $chain = $this->getChain($contract);
+        $chainInstance = $this->getChainInstance($contract);
         $nextCondition = $this->getNextCondition($targetNext);
 
         $contract->setNextCondition($nextCondition);
 
-        $isHandled = $chain->chain($contract);
+        $isHandled = $chainInstance->chain($contract);
 
         if ($isHandled) {
             $contract->getChain()->setFinished(true);
         }
     }
 
-    private function getChain(Contract $contract): AbstractChain
+    private function getChainInstance(Contract $contract): AbstractChain
     {
         return ChainsGeneratorHelper::generate($contract->getChain()->getTarget());
     }

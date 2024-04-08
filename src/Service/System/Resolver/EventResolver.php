@@ -59,6 +59,8 @@ class EventResolver
 
         $this->stepResolver->resolve($contract, $cacheDto);
 
+        dd($contract);
+
         $jump = $contract->getJump();
 
         if (is_null($jump)) {

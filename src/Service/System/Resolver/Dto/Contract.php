@@ -19,7 +19,7 @@ class Contract implements ContractInterface
 
     private ?JumpEnum $jump = null;
 
-    private ?VisitorEventStatusEnum $status = null;
+    private ?VisitorEventStatusEnum $status = VisitorEventStatusEnum::New;
 
     private bool $stepsStatus = false;
 
