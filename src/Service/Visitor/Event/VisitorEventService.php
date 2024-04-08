@@ -49,7 +49,7 @@ class VisitorEventService
         $cache->setContent($content);
 
         if ($visitorEvent->getStatus() === VisitorEventStatusEnum::Waiting) {
-            $visitorSession->setCache($cache);
+            $visitorSession->setCache($cache); // todo зачем?
             $visitorEvent->setStatus(VisitorEventStatusEnum::New);
 
             $this->entityManager->persist($visitorSession);

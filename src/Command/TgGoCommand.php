@@ -80,7 +80,7 @@ class TgGoCommand extends Command
 
             $isEmptySteps = $cacheDto->getEvent()->isEmptySteps();
 
-            if ($visitorEvent->getStatus() === VisitorEventStatusEnum::New || $isEmptySteps) {
+            if ($cacheDto->getEvent()->isFinished() || $isEmptySteps) {
                 $cacheDto = $this->enrichStepsCache($scenario, $cacheDto);
             }
 
