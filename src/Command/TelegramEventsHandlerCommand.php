@@ -50,7 +50,7 @@ class TelegramEventsHandlerCommand extends Command
                 } catch (Throwable $throwable) {
                     $visitorEvent->setError($throwable->getMessage());
 
-                    $this->visitorEventRepository->updateChatEventStatus($visitorEvent, ChainStatusEnum::Failed);
+                    $this->visitorEventRepository->updateChatEventStatus($visitorEvent, VisitorEventStatusEnum::Failed);
 
                     $io->error($throwable->getMessage());
 

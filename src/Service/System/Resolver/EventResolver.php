@@ -8,6 +8,7 @@ use App\Entity\Scenario\Scenario;
 use App\Entity\User\Bot;
 use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
+use App\Enum\ChainStatusEnum;
 use App\Enum\VisitorEventStatusEnum;
 use App\Repository\User\BotRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
@@ -66,10 +67,15 @@ class EventResolver
                 contract: $contract,
                 bot: $bot,
                 visitorSession: $visitorSession,
-                cacheDto: $cacheDto
             );
+
+            $status = $contract->isStepsStatus() ? VisitorEventStatusEnum::Done : VisitorEventStatusEnum::Waiting;
         } else {
+            $status = VisitorEventStatusEnum::New;
+
+            // todo другая реализация...
             dd('Вернуть jump');
+
 //            $this->gotoResolver->resolveJump(
 //                visitorEvent: $visitorEvent,
 //                cacheDto: $cacheDto,
@@ -82,7 +88,12 @@ class EventResolver
             $this->contractDtoRepository->save($visitorEvent, $contract);
         }
 
+        if ($status === VisitorEventStatusEnum::Done) {
+            $cacheDto->clearEvent();
+        }
+
         $visitorSession->setCache($cacheDto);
+        $contract->setStatus($status);
 
         $this->entityManager->persist($visitorEvent);
         $this->entityManager->persist($visitorSession);
@@ -95,23 +106,9 @@ class EventResolver
     private function sendMessageAndMoveStatus(
         Contract $contract,
         Bot $bot,
-        VisitorSession $visitorSession,
-        CacheDto $cacheDto,
+        VisitorSession $visitorSession
     ): void {
         $this->senderService->sendMessages($contract, $bot->getToken(), $visitorSession);
-
-        $finishedChain = $contract->getChain()?->isFinished() ?? true;
-        $finished = $finishedChain && $contract->isStepsStatus();
-
-        $status = $finished ? VisitorEventStatusEnum::Done : VisitorEventStatusEnum::Waiting;
-
-        $contract->setStatus($status);
-
-        if ($contract->getStatus() === VisitorEventStatusEnum::Done) {
-            $cacheDto->clearEvent();
-        }
-
-        $visitorSession->setCache($cacheDto);
     }
 
     private function enrichStepsCache(Scenario $scenario, CacheDto $cacheDto): CacheDto

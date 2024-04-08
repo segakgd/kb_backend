@@ -31,6 +31,8 @@ class StepResolver
             foreach ($steps as $step) {
                 $this->resolveStep($contract, $step);
 
+                // todo если все chains прошли, то ставим степ как пройденный
+
                 break;
             }
         } catch (Throwable $exception) {
