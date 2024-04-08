@@ -2,6 +2,7 @@
 
 namespace App\Service\System\Resolver\Steps;
 
+use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Dto\SessionCache\Cache\CacheStepDto;
 use App\Service\System\Resolver\Chains\ChainsResolver;
@@ -29,11 +30,22 @@ class StepResolver
 
         try {
             foreach ($steps as $step) {
-                $this->resolveStep($contract, $step);
+                if (!$step->isFinished()) {
+                    $this->resolveStep($contract, $step);
 
-                // todo если все chains прошли, то ставим степ как пройденный
+                    $chains = array_filter(
+                        $step->getChains(),
+                        function (CacheChainDto $object) {
+                            return !$object->isFinished();
+                        }
+                    );
 
-                break;
+                    if (empty($chains)) {
+                        $step->setFinished(true);
+                    }
+
+                    break;
+                }
             }
         } catch (Throwable $exception) {
             $this->handleException($exception);
