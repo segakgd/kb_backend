@@ -3,7 +3,6 @@
 namespace App\Service\System\Resolver\Steps;
 
 use App\Dto\SessionCache\Cache\CacheChainDto;
-use App\Dto\SessionCache\Cache\CacheDto;
 use App\Dto\SessionCache\Cache\CacheStepDto;
 use App\Service\System\Resolver\Chains\ChainsResolver;
 use App\Service\System\Resolver\Dto\Contract;
@@ -46,6 +45,17 @@ class StepResolver
 
                     break;
                 }
+            }
+
+            $chains = array_filter(
+                $steps,
+                function (CacheStepDto $step) {
+                    return !$step->isFinished();
+                }
+            );
+
+            if (empty($chains)) {
+                $contract->setStepsStatus(true);
             }
         } catch (Throwable $exception) {
             $this->handleException($exception);
