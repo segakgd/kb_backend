@@ -38,7 +38,6 @@ class EventResolver
             $status = VisitorEventStatusEnum::New;
 
             // todo другая реализация...
-            dd('Вернуть jump');
 
 //            $this->gotoResolver->resolveJump(
 //                visitorEvent: $visitorEvent,
