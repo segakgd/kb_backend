@@ -142,7 +142,7 @@ class OrderChecker
         foreach ($products as $variant) {
             $variantEntity = $this->productVariantService->getById($variant->getId());
 
-            if (null === $variantEntity || $this->isVariantInProject($variantEntity, $project->getId())) {
+            if (null === $variantEntity || !$this->isVariantInProject($variantEntity, $project->getId())) {
                 throw new NotFoundResourceException(sprintf('Variant with id %d not found', $variant->getId()));
             }
 

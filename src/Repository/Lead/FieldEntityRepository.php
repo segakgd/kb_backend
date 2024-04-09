@@ -23,6 +23,10 @@ class FieldEntityRepository extends ServiceEntityRepository
 
     public function removeFieldsByIds(array $ids): void
     {
+        if (empty($ids)) {
+            return;
+        }
+
         $queryBuilder = $this->createQueryBuilder('field');
 
         $queryBuilder

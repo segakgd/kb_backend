@@ -71,7 +71,7 @@ class LeadManager
             $this->contactService->updateOrCreate($leadDto->getContacts(), $deal->getContacts());
         }
 
-        $this->fieldsService->handleUpdate($deal, $leadDto->getFields());
+        $this->fieldsService->handleBatchUpdate($deal, $leadDto->getFields());
 
         $this->leadService->save($deal);
 

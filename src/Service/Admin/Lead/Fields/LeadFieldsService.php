@@ -8,11 +8,14 @@ use App\Controller\Admin\Lead\DTO\Request\Field\LeadFieldReqDto;
 use App\Entity\Lead\Deal;
 use App\Entity\Lead\DealField;
 use App\Repository\Lead\FieldEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class LeadFieldsService
 {
-    public function __construct(private readonly FieldEntityRepository $fieldEntityRepository,)
-    {
+    public function __construct(
+        private readonly FieldEntityRepository $fieldEntityRepository,
+        private readonly EntityManagerInterface $entityManager,
+    ) {
     }
 
     public function add(Deal $deal, LeadFieldReqDto $leadFieldReqDto): DealField
@@ -30,7 +33,7 @@ class LeadFieldsService
      * @param LeadFieldReqDto[] $leadDtoFields
      * @return void
      */
-    public function handleUpdate(Deal $deal, array $leadDtoFields): void
+    public function handleBatchUpdate(Deal $deal, array $leadDtoFields): void
     {
         $existingFields = $updatingFields = $updatingFieldIds = [];
 
@@ -60,13 +63,31 @@ class LeadFieldsService
             }
         }
 
+        $this->batchSave($updatingFields);
+
         $removingIds = array_diff(array_keys($existingFields), $updatingFieldIds);
 
-        foreach ($updatingFields as $field) { // todo -> change
-            $this->save($field);
+        $this->fieldEntityRepository->removeFieldsByIds($removingIds);
+    }
+
+    private function batchSave(array $fieldsArray): void
+    {
+        if (empty($fieldsArray)) {
+            return;
         }
 
-        $this->fieldEntityRepository->removeFieldsByIds($removingIds);
+        $iterator = 0;
+        $batchSize = 20;
+
+        foreach ($fieldsArray as $field) {
+            $this->entityManager->persist($field);
+
+            if ((++$iterator) % $batchSize === 0) {
+                $this->entityManager->flush();
+            }
+        }
+
+        $this->entityManager->flush();
     }
 
     private function save(DealField $dealField): DealField
