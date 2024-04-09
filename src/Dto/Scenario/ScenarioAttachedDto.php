@@ -2,7 +2,9 @@
 
 namespace App\Dto\Scenario;
 
-class ScenarioAttachedDto
+use App\Dto\Common\AbstractDto;
+
+class ScenarioAttachedDto extends AbstractDto
 {
     private ?string $document = null;
 
@@ -72,5 +74,28 @@ class ScenarioAttachedDto
         $this->audios[] = $audio;
 
         return $this;
+    }
+
+    public static function fromArray(array $data): self
+    {
+        $attached = new self();
+        $attached->setDocument($data['document'] ?? null);
+        $attached->setLink($data['link'] ?? null);
+        $attached->addImages($data['images'] ?? null);
+        $attached->addVideos($data['videos'] ?? null);
+        $attached->addAudios($data['audios'] ?? null);
+
+        return $attached;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'document' => $this->getDocument(),
+            'link' => $this->getLink(),
+            'images' => $this->getImages(),
+            'videos' => $this->getVideos(),
+            'audios' => $this->getAudios(),
+        ];
     }
 }

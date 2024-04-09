@@ -2,7 +2,9 @@
 
 namespace App\Dto\SessionCache\Cache;
 
-class CacheDataDto
+use App\Dto\Common\AbstractDto;
+
+class CacheDataDto extends AbstractDto
 {
     private ?int $pageNow = null;
 
@@ -83,5 +85,29 @@ class CacheDataDto
     {
         $this->categoryId = $categoryId;
         return $this;
+    }
+
+    public static function fromArray(array $data): static
+    {
+        $cacheData = new self();
+        $cacheData->pageNow = $data['pageNow'] ?? null;
+        $cacheData->productId = $data['productId'] ?? null;
+        $cacheData->variantId = $data['variantId'] ?? null;
+        $cacheData->count = $data['count'] ?? null;
+        $cacheData->categoryName = $data['categoryName'] ?? null;
+        $cacheData->categoryId = $data['categoryId'] ?? null;
+        return $cacheData;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'pageNow' => $this->pageNow,
+            'productId' => $this->productId,
+            'variantId' => $this->variantId,
+            'count' => $this->count,
+            'categoryName' => $this->categoryName,
+            'categoryId' => $this->categoryId,
+        ];
     }
 }

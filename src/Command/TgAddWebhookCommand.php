@@ -26,7 +26,7 @@ class TgAddWebhookCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $myProjectId = 4842;
+        $myProjectId = 1;
 
         $bot = $this->botRepository->findOneBy(
             [

@@ -36,13 +36,15 @@ class MessageHelper
     }
 
     public static function createContractMessage(
-        string $message,
+        ?string $message = null,
         ?string $photo = null,
         ?array $keyBoard = null,
     ): ContractMessageDto {
-        $contractMessage = (new ContractMessageDto())
-            ->setMessage($message)
-        ;
+        $contractMessage = (new ContractMessageDto());
+
+        if ($message) {
+            $contractMessage->setMessage($message);
+        }
 
         if ($photo) {
             $contractMessage->setPhoto($photo);

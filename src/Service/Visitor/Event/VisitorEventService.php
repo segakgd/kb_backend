@@ -2,17 +2,16 @@
 
 namespace App\Service\Visitor\Event;
 
-use App\Dto\SessionCache\Cache\CacheDto;
 use App\Entity\Scenario\Scenario;
 use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
+use App\Enum\VisitorEventStatusEnum;
 use App\Repository\Visitor\VisitorEventRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Visitor\Scenario\ScenarioService;
 use App\Service\Visitor\Session\VisitorSessionService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class VisitorEventService
 {
@@ -22,7 +21,6 @@ class VisitorEventService
         private readonly VisitorSessionService $visitorSessionService,
         private readonly ScenarioService $scenarioService,
         private readonly EntityManagerInterface $entityManager,
-        private readonly SerializerInterface $serializer,
     ) {
     }
 
@@ -34,8 +32,7 @@ class VisitorEventService
         string $type,
         string $content,
     ): void {
-        /** @var CacheDto $cache */
-        $cache = $this->serializer->denormalize($visitorSession->getCache(), CacheDto::class);
+        $cache = $visitorSession->getCache();
 
         $visitorEvent = null;
         $eventUUID = $cache->getEventUUID();
@@ -51,13 +48,9 @@ class VisitorEventService
         $cache->setEventUUID($visitorEvent->getScenarioUUID());
         $cache->setContent($content);
 
-        if (!$cache->getEvent()->isFinished()) {
-            $cache->setContent($content);
-
-            $cacheNorm = $this->serializer->normalize($cache, CacheDto::class);
-
-            $visitorSession->setCache($cacheNorm);
-            $visitorEvent->setStatus('new');
+        if ($visitorEvent->getStatus() === VisitorEventStatusEnum::Waiting) {
+            $visitorSession->setCache($cache); // todo зачем?
+            $visitorEvent->setStatus(VisitorEventStatusEnum::New);
 
             $this->entityManager->persist($visitorSession);
             $this->entityManager->persist($visitorEvent);
@@ -66,8 +59,6 @@ class VisitorEventService
 
             return;
         }
-
-        $cache = $this->serializer->normalize($cache, 'array');
 
         $visitorSession->setCache($cache);
 

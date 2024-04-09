@@ -2,9 +2,10 @@
 
 namespace App\Entity\Visitor;
 
+use App\Doctrine\Types\VisitorSessionCacheDtoArrayType;
+use App\Dto\SessionCache\Cache\CacheDto;
 use App\Repository\Visitor\VisitorSessionRepository;
 use DateTimeImmutable;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /** Сессия пользователя */
@@ -31,8 +32,8 @@ class VisitorSession
     #[ORM\Column(nullable: true)]
     private ?int $projectId = null;
 
-    #[ORM\Column(type: Types::JSON)]
-    private array $cache = [];
+    #[ORM\Column(type: VisitorSessionCacheDtoArrayType::TYPE_NAME)]
+    private ?CacheDto $cache = null;
 
     #[ORM\Column]
     private ?int $botId = null;
@@ -42,7 +43,7 @@ class VisitorSession
 
     public function __construct()
     {
-        if ($this->createdAt === null){
+        if ($this->createdAt === null) {
             $this->createdAt = new DateTimeImmutable();
         }
     }
@@ -112,14 +113,15 @@ class VisitorSession
         return $this;
     }
 
-    public function getCache(): array
+    public function getCache(): CacheDto
     {
         return $this->cache;
     }
 
-    public function setCache(array $cache): static
+    public function setCache(CacheDto $cache): static
     {
-        $this->cache = $cache;
+        // clone потому что используем дто тип в ентити
+        $this->cache = clone $cache;
 
         return $this;
     }
@@ -132,15 +134,6 @@ class VisitorSession
     public function getCacheStatusEvent(): ?string
     {
         return $this->cache['event']['status'] ?? null;
-    }
-
-    public function setCacheByKey(string $key, string|int $value): static
-    {
-        if (key_exists($key, $this->cache)){
-            $this->cache[$key] = $value;
-        }
-
-        return $this;
     }
 
     public function getBotId(): ?int

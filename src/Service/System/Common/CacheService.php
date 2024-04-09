@@ -2,11 +2,12 @@
 
 namespace App\Service\System\Common;
 
+use App\Dto\Scenario\ScenarioChainDto;
 use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Dto\SessionCache\Cache\CacheDataDto;
-use App\Dto\SessionCache\Cache\CacheDto;
 use App\Dto\SessionCache\Cache\CacheEventDto;
-use App\Enum\ChainsEnum;
+use App\Dto\SessionCache\Cache\CacheStepDto;
+use App\Enum\JumpEnum;
 
 class CacheService
 {
@@ -14,24 +15,28 @@ class CacheService
     {
         return (new CacheEventDto())
             ->setFinished(false)
-            ->setChains([])
+            ->setSteps([])
             ->setData(
                 (new CacheDataDto)
                     ->setProductId(null)
                     ->setPageNow(null)
-            )
-        ;
+            );
     }
 
-    public static function enrichStepCache(array $stepChains, CacheDto $cacheDto): void
+    public static function enrichStepCache(array $stepChains, CacheStepDto $cacheStepDto): void
     {
+        /** @var ScenarioChainDto $stepChain */
         foreach ($stepChains as $stepChain) {
+            if (is_array($stepChain)) {
+                $stepChain = ScenarioChainDto::fromArray($stepChain);
+            }
+
             $chain = (new CacheChainDto)
-                ->setTarget(ChainsEnum::from($stepChain['target']))
-                ->setFinished($stepChain['finish'])
+                ->setTarget(JumpEnum::from($stepChain->getTarget()))
+                ->setFinished($stepChain->isFinish())
                 ->setRepeat(false);
 
-            $cacheDto->getEvent()->addChain($chain);
+            $cacheStepDto->addChain($chain);
         }
     }
 }

@@ -3,7 +3,8 @@
 namespace App\Helper;
 
 use App\Dto\SessionCache\Cache\CacheDto;
-use App\Service\System\Contract;
+use App\Enum\JumpEnum;
+use App\Service\System\Resolver\Dto\Contract;
 use Exception;
 
 class CommonHelper
@@ -39,13 +40,13 @@ class CommonHelper
         ];
     }
 
-    public static function translate(string $key): string
+    public static function translate(JumpEnum $jumpEnum): string
     {
-        return match ($key) {
+        return match ($jumpEnum->value) {
             'show.shop.products.category' => 'show.shop.products.category',
             'shop.products.category' => 'shop.products.category',
             'shop.products' => 'shop.products',
-            default => $key,
+            default => $jumpEnum->value,
         };
     }
 }

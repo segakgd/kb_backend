@@ -14,7 +14,8 @@
     {% endif %}
 
     {% for command in commands %}
-        <a class="btn btn-primary" href="/dev/project/{{ projectId }}/command/{{ command.commandCode }}/start/{{ session.id }}">
+        <a class="btn btn-primary"
+           href="/dev/project/{{ projectId }}/command/{{ command.commandCode }}/start/{{ session.id }}">
             {{ command.commandName }}
         </a>
     {% endfor %}
@@ -112,7 +113,7 @@
 
                             <section>
                                 <span>Статус события:</span>
-                                {% if event.status == 'fail' %}
+                                {% if event.status == 'failed' %}
                                     <span class="jj__color-red"> Провалено </span>
                                     <a class="jj__a-inline"
                                        href="/dev/project/{{ projectId }}/event/{{ event.id }}/restart/">Перезапустить</a>
@@ -120,28 +121,43 @@
                                     <span class="jj__color-green"> Успешно </span>
                                 {% elseif event.status == 'new' %}
                                     <span class="jj__color-blue"> Новое </span>
-                                {% elseif event.status == 'await' %}
+                                {% elseif event.status == 'waiting' %}
                                     <span class="jj__color-yellow"> Ожидает действий пользователя </span>
                                 {% else %}
                                     {{ event.status }}
                                 {% endif %}
                             </section>
 
-                            {% if event.chains is not null %}
-                                {% if event.chains is not empty %}
+                            {% if event.steps is not null %}
+                                {% if event.steps is not empty %}
                                     <br>
                                     <section style="padding: 10px; background: #ced6ea;">
-                                        Шаги:
                                         <ul>
-                                            {% for chain in event.chains %}
+                                            {% for step in event.steps %}
                                                 <li>
-                                                    {% if chain.status == 1 %}
-                                                        <span class="jj__color-green">Пройдено</span>
-                                                    {% else %}
-                                                        <span class="jj__color-red">Не пройдено</span>
-                                                    {% endif %}
+                                                    <span style="font-weight: bold; color: #18181b;">Шаг {{ step.number }}</span>
 
-                                                    {{ chain.name }}
+                                                    {% if step.chains is not null %}
+                                                        {% if step.chains is not empty %}
+                                                            <br>
+                                                            <section style="padding: 10px; background: #ced6ea;">
+                                                                Цепочка:
+                                                                <ul>
+                                                                    {% for chain in step.chains %}
+                                                                        <li>
+                                                                            {% if chain.status == 1 %}
+                                                                                <span class="jj__color-green">Пройдено</span>
+                                                                            {% else %}
+                                                                                <span class="jj__color-red">Не пройдено</span>
+                                                                            {% endif %}
+
+                                                                            {{ chain.name }}
+                                                                        </li>
+                                                                    {% endfor %}
+                                                                </ul>
+                                                            </section>
+                                                        {% endif %}
+                                                    {% endif %}
                                                 </li>
                                             {% endfor %}
                                         </ul>
@@ -164,5 +180,67 @@
     {% if event is not empty %}
         {{ event.contract|json_encode(constant('JSON_UNESCAPED_UNICODE')) }}
     {% endif %}
+
+    <br>
+    <br>
+
+    <div>
+        {% for deal in deals %}
+            <div style="border-radius: 15px; padding: 10px 0; background: #f6f6f6; font-size: 16px; display: flex; flex-wrap: wrap; margin-bottom: 20px;">
+                <div style="padding: 10px 20px; width: 100%; font-weight: bold;">
+                    сделка # {{ deal.id }}
+                </div>
+
+                <div style="padding: 10px 20px; margin: 10px; background: #fff; border-radius: 15px;">
+                    <div style="padding: 10px 0; font-weight: bold;">
+                        Контакты:
+                    </div>
+
+                    {% for key, contact in deal.contacts %}
+                        <div style="width: 100%;">
+                            {{ key }}:
+                            {% if contact is not empty %}
+                                {{ contact }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div style="padding: 10px 20px; margin: 10px; background: #fff; border-radius: 15px;">
+                    <div style="padding: 10px 0; font-weight: bold;">
+                        Продукты:
+                    </div>
+                    <div>
+                        {% for key, product in deal.order.products %}
+                            <div>
+                                <span style="padding-right: 20px;">variantParentId: {{ product.variantParentId }}</span>
+                                <span style="padding-right: 20px;">name: {{ product.name }}</span>
+                                <span style="padding-right: 20px;">count: {{ product.count }}</span>
+                                <span style="padding-right: 20px;">price: {{ product.price }}</span>
+                            </div>
+                        {% endfor %}
+                        <span style="color: #aa1111;">total amount: {{ deal.order.totalAmount }}</span>
+                    </div>
+                </div>
+
+                <div style="padding: 10px 20px; margin: 10px; background: #fff; border-radius: 15px;">
+                    <div style="padding: 10px 0; font-weight: bold;">
+                        Доставка:
+                    </div>
+                    <div>
+                        {% for key, shippingAddress in deal.order.shipping.address %}
+                            <div>
+                                {{ key }}:
+                                {{ shippingAddress }}
+                            </div>
+                        {% endfor %}
+                        <span style="color: #aa1111;">shipping type: {{ deal.order.shipping.type }}</span>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 
 {% endblock %}
