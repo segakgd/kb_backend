@@ -25,6 +25,50 @@ class LeadFieldsService
         return $this->save($dealField);
     }
 
+    /**
+     * @param Deal $deal
+     * @param LeadFieldReqDto[] $leadDtoFields
+     * @return void
+     */
+    public function handleUpdate(Deal $deal, array $leadDtoFields): void
+    {
+        $existingFields = $updatingFields = $updatingFieldIds = [];
+
+        foreach ($deal->getFields()->toArray() as $dealField) {
+            $existingFields[$dealField->getId()] = $dealField;
+        }
+
+        foreach ($leadDtoFields as $dtoField) {
+            if (null === $dtoField->getId()) {
+                $fieldEntity = (new DealField())
+                    ->setDeal($deal)
+                    ->setName($dtoField->getName())
+                    ->setValue($dtoField->getValue());
+
+                $updatingFields[] = $fieldEntity;
+            } else {
+                $updatingFieldIds[] = $dtoField->getId();
+                $fieldEntity = $existingFields[$dtoField->getId()] ?? null;
+
+                if (null !== $fieldEntity) {
+                    $fieldEntity
+                        ->setName($dtoField->getName())
+                        ->setValue($dtoField->getValue());
+
+                    $updatingFields[] = $fieldEntity;
+                }
+            }
+        }
+
+        $removingIds = array_diff(array_keys($existingFields), $updatingFieldIds);
+
+        foreach ($updatingFields as $field) { // todo -> change
+            $this->save($field);
+        }
+
+        $this->fieldEntityRepository->removeFieldsByIds($removingIds);
+    }
+
     private function save(DealField $dealField): DealField
     {
         $this->fieldEntityRepository->saveAndFlush($dealField);

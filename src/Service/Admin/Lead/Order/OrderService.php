@@ -67,6 +67,24 @@ class OrderService
         return $order;
     }
 
+    public function updateOrCreate(OrderReqDto $orderDto, ?DealOrder $dealOrder): ?DealOrder
+    {
+        if (null === $dealOrder) {
+            $dealOrder = (new DealOrder());
+        }
+
+        $dealOrder
+            ->setShipping($orderDto->getShipping())
+            ->setPromotions($orderDto->getShipping())
+            ->setProductVariants($orderDto->getProductVariants())
+            ->setTotalAmount($orderDto->getTotalAmount())
+        ;
+
+        $this->save($dealOrder);
+
+        return $dealOrder;
+    }
+
     private function save(DealOrder $order): void
     {
         $this->orderEntityRepository->saveAndFlush($order);

@@ -95,6 +95,20 @@ class Deal
         return $this;
     }
 
+    public function setFields(array $newFields): static
+    {
+        foreach ($this->fields as $existingField) {
+            $this->removeField($existingField);
+        }
+
+        foreach ($newFields as $field) {
+            $this->addField($field);
+            $field->setDeal($this);
+        }
+
+        return $this;
+    }
+
     public function getProjectId(): ?int
     {
         return $this->projectId;

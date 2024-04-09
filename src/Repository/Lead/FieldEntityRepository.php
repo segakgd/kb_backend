@@ -21,6 +21,18 @@ class FieldEntityRepository extends ServiceEntityRepository
         parent::__construct($registry, DealField::class);
     }
 
+    public function removeFieldsByIds(array $ids): void
+    {
+        $queryBuilder = $this->createQueryBuilder('field');
+
+        $queryBuilder
+            ->delete()
+            ->andWhere($queryBuilder->expr()->in('field.id', $ids))
+        ;
+
+        $queryBuilder->getQuery()->getResult();
+    }
+
     public function saveAndFlush(DealField $entity): void
     {
         $this->getEntityManager()->persist($entity);

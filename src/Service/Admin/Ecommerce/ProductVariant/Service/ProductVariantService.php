@@ -29,10 +29,7 @@ class ProductVariantService
 
                 $product->addVariant($productVariantEntity);
             } elseif (null !== $variantDto->getId()) {
-                $variantEntity = $this->getByProductAndId(
-                    $product->getId(),
-                    $variantDto->getId()
-                );
+                $variantEntity = $this->getByProductAndId($product->getId(), $variantDto->getId());
 
                 $variantEntity
                     ?->markAsUpdated()
@@ -44,7 +41,9 @@ class ProductVariantService
                     ->setActive($variantDto->isActive())
                     ->setProduct($product);
 
-                $this->save($variantEntity);
+                if ($variantEntity) {
+                    $this->save($variantEntity);
+                }
             }
         }
 

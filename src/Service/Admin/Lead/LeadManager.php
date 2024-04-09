@@ -55,6 +55,29 @@ class LeadManager
         return $deal;
     }
 
+    /**
+     * @throws Exception
+     */
+    public function update(LeadReqDto $leadDto, Deal $deal, Project $project): Deal
+    {
+        $orderDto = $leadDto->getOrder();
+
+        if ($orderDto) {
+            $this->orderChecker->checkOrderRequestByDtoAndProject($orderDto, $project);
+            $this->orderService->updateOrCreate($orderDto, $deal->getOrder());
+        }
+
+        if ($leadDto->getContacts()) {
+            $this->contactService->updateOrCreate($leadDto->getContacts(), $deal->getContacts());
+        }
+
+        $this->fieldsService->handleUpdate($deal, $leadDto->getFields());
+
+        $this->leadService->save($deal);
+
+        return $deal;
+    }
+
     public function remove(Deal $deal): void
     {
         $this->leadService->remove($deal);
