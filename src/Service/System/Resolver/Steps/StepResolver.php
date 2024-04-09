@@ -7,7 +7,6 @@ use App\Dto\SessionCache\Cache\CacheStepDto;
 use App\Service\System\Resolver\Chains\ChainsResolver;
 use App\Service\System\Resolver\Dto\Contract;
 use App\Service\System\Resolver\Scenario\ScenarioResolver;
-use Exception;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
@@ -32,14 +31,9 @@ class StepResolver
                 if (!$step->isFinished()) {
                     $this->resolveStep($contract, $step);
 
-                    $chains = array_filter(
-                        $step->getChains(),
-                        function (CacheChainDto $object) {
-                            return !$object->isFinished();
-                        }
-                    );
+                    $unfinishedChains = array_filter($step->getChains(), fn (CacheChainDto $chain) => !$chain->isFinished());
 
-                    if (empty($chains)) {
+                    if (empty($unfinishedChains)) {
                         $step->setFinished(true);
                     }
 
@@ -47,14 +41,9 @@ class StepResolver
                 }
             }
 
-            $chains = array_filter(
-                $steps,
-                function (CacheStepDto $step) {
-                    return !$step->isFinished();
-                }
-            );
+            $unfinishedSteps = array_filter($steps, fn (CacheStepDto $step) => !$step->isFinished());
 
-            if (empty($chains)) {
+            if (empty($unfinishedSteps)) {
                 $contract->setStepsStatus(true);
             }
         } catch (Throwable $exception) {
@@ -65,7 +54,7 @@ class StepResolver
     }
 
     /**
-     * @throws Exception
+     * @throws Throwable
      */
     private function resolveStep(Contract $contract, CacheStepDto $step): void
     {
@@ -78,7 +67,7 @@ class StepResolver
     }
 
     /**
-     * @throws Exception
+     * @throws Throwable
      */
     private function handleChain(Contract $contract, CacheStepDto $step): void
     {
