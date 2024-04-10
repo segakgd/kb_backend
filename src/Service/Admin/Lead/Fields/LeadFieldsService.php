@@ -50,7 +50,6 @@ class LeadFieldsService
 
                 $updatingFields[] = $fieldEntity;
             } else {
-                $updatingFieldIds[] = $dtoField->getId();
                 $fieldEntity = $existingFields[$dtoField->getId()] ?? null;
 
                 if (null !== $fieldEntity) {
@@ -58,6 +57,7 @@ class LeadFieldsService
                         ->setName($dtoField->getName())
                         ->setValue($dtoField->getValue());
 
+                    $updatingFieldIds[] = $dtoField->getId();
                     $updatingFields[] = $fieldEntity;
                 }
             }

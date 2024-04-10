@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository\Lead;
 
 use App\Entity\Lead\DealField;

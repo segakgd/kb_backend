@@ -95,7 +95,7 @@ class ProductManager implements ProductManagerInterface
             }
         }
 
-        $product = $this->productVariantService->handleRequestVariantsDto($product, $productReqDto->getVariants());
+        $product = $this->productVariantService->handleBatchUpdate($product, $productReqDto->getVariants());
 
         $product
             ->markAsUpdated()
