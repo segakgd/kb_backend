@@ -7,9 +7,12 @@ use App\Entity\Ecommerce\Product;
 use App\Helper\KeyboardHelper;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\Product\Service\ProductService;
-use App\Service\System\Contract;
+use App\Service\System\Resolver\Dto\Contract;
 use Exception;
 
+/**
+ * @deprecated need refactoring
+ */
 class PaginateService
 {
     public function __construct(
@@ -88,7 +91,7 @@ class PaginateService
 
         $contractMessage->setKeyBoard($replyMarkups);
 
-        $contract->addMessage($contractMessage);
+        $contract->getResult()->addMessage($contractMessage);
 
         return false;
     }

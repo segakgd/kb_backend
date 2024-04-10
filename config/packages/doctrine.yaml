@@ -4,6 +4,8 @@ doctrine:
         use_savepoints: true
         types:
             variant_price_type: App\Doctrine\Types\VariantPriceType
+            scenario_step_dto_array: App\Doctrine\Types\ScenarioStepDtoArrayType
+            visitor_session_cache_dto_array: App\Doctrine\Types\VisitorSessionCacheDtoArrayType
             order_variant: App\Doctrine\Types\OrderVariantType
 
         # IMPORTANT: You MUST configure your server version,

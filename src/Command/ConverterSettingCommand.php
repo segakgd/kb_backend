@@ -78,7 +78,7 @@ class ConverterSettingCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         try {
-            $this->settingConverter->convert(self::USER_SETTING, 4842);
+            $this->settingConverter->convert(self::USER_SETTING, 1);
 
         } catch (Throwable $throwable){
             $io->error($throwable->getMessage());

@@ -11,7 +11,7 @@ use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
 use App\Event\InitWebhookBotEvent;
 use App\Service\Admin\Bot\BotServiceInterface;
-use App\Service\System\MessageHistoryService;
+use App\Service\System\Common\MessageHistoryService;
 use App\Service\Visitor\Event\VisitorEventService;
 use App\Service\Visitor\Session\VisitorSessionService;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -109,6 +109,7 @@ class EventsDashboardController extends AbstractDashboardController
             $webhookData->getWebhookContent(),
         );
 
+        // запускаем команду для обработки
         $application = new Application($this->kernel);
         $application->setAutoExit(false);
 

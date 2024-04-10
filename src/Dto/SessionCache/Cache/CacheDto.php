@@ -2,15 +2,18 @@
 
 namespace App\Dto\SessionCache\Cache;
 
-class CacheDto
+use App\Dto\Common\AbstractDto;
+use App\Service\System\Common\CacheService;
+
+class CacheDto extends AbstractDto
 {
     private ?string $eventUUID = null;
+
+    private ?string $content = null;
 
     private ?CacheCartDto $cart = null;
 
     private ?CacheEventDto $event = null;
-
-    private ?string $content = null;
 
     public function __construct()
     {
@@ -31,6 +34,18 @@ class CacheDto
     public function setEventUUID(?string $eventUUID): static
     {
         $this->eventUUID = $eventUUID;
+
+        return $this;
+    }
+
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
+    public function setContent(?string $content): static
+    {
+        $this->content = $content;
 
         return $this;
     }
@@ -59,15 +74,45 @@ class CacheDto
         return $this;
     }
 
-    public function getContent(): ?string
+    public function clearEvent(): static
     {
-        return $this->content;
-    }
-
-    public function setContent(?string $content): static
-    {
-        $this->content = $content;
+        $this->event = CacheService::createCacheEventDto();
 
         return $this;
+    }
+
+    public static function fromArray(array $data): static
+    {
+        $step = new self();
+
+        if (isset($data['eventUUID'])) {
+            $step->eventUUID = $data['eventUUID'];
+        }
+
+        if (isset($data['cart'])) {
+            $step->cart = CacheCartDto::fromArray($data['cart']);
+        }
+
+        if (isset($data['event'])) {
+            $step->event = CacheEventDto::fromArray($data['event']);
+        }
+
+        if (isset($data['content'])) {
+            $step->content = $data['content'];
+        }
+
+        return $step;
+    }
+
+    public function toArray(): array
+    {
+        $data = [];
+
+        $data['eventUUID'] = $this->eventUUID;
+        $data['cart'] = $this->cart->toArray();
+        $data['event'] = $this->event->toArray();
+        $data['content'] = $this->content;
+
+        return $data;
     }
 }

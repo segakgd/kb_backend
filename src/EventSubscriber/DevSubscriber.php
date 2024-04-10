@@ -15,11 +15,12 @@ class DevSubscriber implements EventSubscriberInterface
 {
     private const ALLOWED_IP = [
         '89.190.240.56',
+        '5.142.186.143',
         '127.0.0.1',
     ];
 
     private const OPEN_UR = [
-        '/webhook/4842/telegram/',
+        '/webhook/1/telegram/',
     ];
 
     public static function getSubscribedEvents(): array

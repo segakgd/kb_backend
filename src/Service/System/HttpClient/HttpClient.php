@@ -26,7 +26,12 @@ class HttpClient implements HttpClientInterface
         $uri = "https://api.telegram.org/bot$token/$scenario";
         $responseArray = $this->curlRequest($uri, $request->getData() ?? [], $request->getMethod());
 
-        $code = $responseArray['ok'] === true ? 200 : 400;
+        $code = 400;
+
+        if (isset($responseArray['ok'])) {
+            $code = $responseArray['ok'] === true ? 200 : 400;
+        }
+
         $description = $responseArray['description'] ?? '';
 
         $result['result'] = $responseArray['result'] ?? [];
@@ -73,6 +78,6 @@ class HttpClient implements HttpClientInterface
             curl_close($ch);
         }
 
-        return json_decode($response ?? '', true);
+        return json_decode($response ?? '', true) ?? [];
     }
 }

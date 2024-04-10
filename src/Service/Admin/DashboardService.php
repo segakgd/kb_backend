@@ -8,6 +8,7 @@ use App\Entity\User\Project;
 use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
 use App\Helper\CommonHelper;
+use App\Repository\Lead\DealEntityRepository;
 use App\Repository\MessageHistoryRepository;
 use App\Repository\Visitor\VisitorEventRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
@@ -15,6 +16,7 @@ use App\Service\Admin\Bot\BotServiceInterface;
 use App\Service\Admin\Scenario\ScenarioTemplateService;
 use App\Service\Integration\Telegram\TelegramService;
 use App\Service\Visitor\Session\VisitorSessionService;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class DashboardService
 {
@@ -26,6 +28,8 @@ class DashboardService
         private readonly VisitorEventRepository $visitorEventRepository,
         private readonly ScenarioTemplateService $scenarioTemplateService,
         private readonly MessageHistoryRepository $historyRepository,
+        private readonly DealEntityRepository $dealEntityRepository,
+        private readonly SerializerInterface $serializer,
     ) {
     }
 
@@ -41,6 +45,7 @@ class DashboardService
             'messages' => $this->getMessageHistory(),
             'commands' => $this->getCommands(),
             'session' => $this->prepareSession($visitorSession),
+            'deals' => $this->getDeals(),
         ];
     }
 
@@ -54,6 +59,52 @@ class DashboardService
         }
 
         return array_reverse($prepareEvents); // todo не очень норм использовать array_reverse
+    }
+
+    private function prepareEvent(VisitorEvent $event): array
+    {
+        $visitorSession = $this->visitorSessionRepository->findOneBy(
+            [
+                'visitorEvent' => $event->getId()
+            ]
+        );
+
+        $steps = [];
+
+        if ($visitorSession) {
+            $cache = $visitorSession->getCache();
+            $cacheEvent = $cache->getEvent();
+
+            $cacheSteps = $cacheEvent->getSteps();
+
+            foreach ($cacheSteps as $key => $cacheStep) {
+                $cacheChains = $cacheStep->getChains();
+                $chains = [];
+
+                foreach ($cacheChains as $cacheChain) {
+                    $chains[] = [
+                        'name' => CommonHelper::translate($cacheChain->getTarget()),
+                        'status' => $cacheChain->isFinished(),
+                    ];
+                }
+
+                $steps[] = [
+                    'number' => $key + 1,
+                    'chains' => $chains,
+                    'finished' => $cacheStep->isFinished(),
+                ];
+            }
+        }
+
+        return [
+            'id' => $event->getId(),
+            'type' => $event->getType(),
+            'status' => $event->getStatus()->value,
+            'createdAt' => $event->getCreatedAt(),
+            'steps' => $steps,
+            'error' => $event->getError(),
+            'contract' => $event->getContract(),
+        ];
     }
 
     private function getLastEvent(int $projectId): array
@@ -103,18 +154,25 @@ class DashboardService
             'sessionName' => $session->getName(),
             'sessionChannel' => $session->getChannel(),
             'cache' => [
-                'content' => $cache['content'] ?? null
+                'content' => $cache->getContent() ?? null
             ]
         ];
 
         if ($visitorEvent) {
             $prepareSession['sessionVisitorEvent'] = [
                 'type' => $visitorEvent->getType(),
-                'status' => $visitorEvent->getStatus(),
+                'status' => $visitorEvent->getStatus()->value,
             ];
         }
 
         return $prepareSession;
+    }
+
+    private function getDeals(): array
+    {
+        $deals = $this->dealEntityRepository->findAll();
+
+        return $this->serializer->normalize(array_reverse($deals)); // todo array_reverse = костыль
     }
 
     public function getDashboardForProject(Project $project): array
@@ -135,22 +193,6 @@ class DashboardService
             'events' => $this->prepareEvents($events),
             'messages' => $this->getMessageHistory(),
         ];
-    }
-
-    private function getIconUri($name): string
-    {
-        return match ($name) {
-            'whatsapp' => '/assets/images/icons/whatsapp-svgrepo-com.svg',
-            'telegram' => '/assets/images/icons/telegram-svgrepo-com.svg',
-            'vk' => '/assets/images/icons/vk-svgrepo-com.svg',
-            'bitrix' => '/assets/images/icons/bitrix24-svgrepo-com.svg',
-            default => '/assets/images/icons/no-photo-svgrepo-com.svg',
-        };
-    }
-
-    private function getNormalizedErrorMessage(array $error): string
-    {
-        return $error['context'][0]['message'] ?? ''; // todo колхоз
     }
 
     private function prepareBots(array $bots, Project $project): array
@@ -211,39 +253,5 @@ class DashboardService
         }
 
         return $prepareSessions;
-    }
-
-    private function prepareEvent(VisitorEvent $event): array
-    {
-        $visitorSession = $this->visitorSessionRepository->findOneBy(
-            [
-                'visitorEvent' => $event->getId()
-            ]
-        );
-
-        $chains = [];
-
-        if ($visitorSession) {
-            $cache = $visitorSession->getCache();
-            $cacheEvent = $cache['event'];
-            $cacheChains = $cacheEvent['chains'];
-
-            foreach ($cacheChains as $cacheChain) {
-                $chains[] = [
-                    'name' => CommonHelper::translate($cacheChain['target']),
-                    'status' => $cacheChain['finished'],
-                ];
-            }
-        }
-
-        return [
-            'id' => $event->getId(),
-            'type' => $event->getType(),
-            'status' => $event->getStatus(),
-            'createdAt' => $event->getCreatedAt(),
-            'chains' => $chains,
-            'error' => $event->getError(),
-            'contract' => $event->getContract(),
-        ];
     }
 }

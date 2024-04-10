@@ -2,6 +2,7 @@
 
 namespace App\Entity\Visitor;
 
+use App\Enum\VisitorEventStatusEnum;
 use App\Repository\Visitor\VisitorEventRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,16 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: VisitorEventRepository::class)]
 class VisitorEvent
 {
-    public const STATUS_IN_PROCESS = 'in_process';
-
-    public const STATUS_NEW = 'new';
-
-    public const STATUS_AWAIT = 'await';
-
-    public const STATUS_DONE = 'done';
-
-    public const STATUS_FAIL = 'fail';
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -28,7 +19,7 @@ class VisitorEvent
     private ?string $type = null;
 
     #[ORM\Column(length: 15)]
-    private string $status = self::STATUS_NEW;
+    private string $status = 'new';
 
     #[ORM\Column(nullable: true)]
     private ?int $projectId = null;
@@ -42,6 +33,7 @@ class VisitorEvent
     #[ORM\Column(length: 36)]
     private ?string $scenarioUUID = null;
 
+    // todo переделать под работу с дто
     #[ORM\Column]
     private array $contract = [];
 
@@ -69,14 +61,14 @@ class VisitorEvent
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?VisitorEventStatusEnum
     {
-        return $this->status;
+        return VisitorEventStatusEnum::from($this->status);
     }
 
-    public function setStatus(string $status): self
+    public function setStatus(VisitorEventStatusEnum $status): self
     {
-        $this->status = $status;
+        $this->status = $status->value;
 
         return $this;
     }
