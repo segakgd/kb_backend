@@ -13,17 +13,7 @@ class C1Chain extends AbstractChain
     {
         $content = $contract->getCacheDto()->getContent();
 
-        $cart = $contract->getCacheDto()->getCart();
-
-        $shipping = [
-            'address' => [ // todo need realization as DTO
-                'apartment' => $content
-            ]
-        ];
-
-        $cart->setShipping($shipping);
-
-        $message = "Ваши апартаменты $content. \n\n Хотите что-то изменить?";
+        $message = "Вы тукнули на $content. \n\n Мб тыкнуть на что-то другое?";
 
         $contractMessage = MessageHelper::createContractMessage(
             message: $message,

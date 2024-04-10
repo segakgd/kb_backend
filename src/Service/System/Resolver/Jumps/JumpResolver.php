@@ -2,11 +2,13 @@
 
 namespace App\Service\System\Resolver\Jumps;
 
+use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Entity\Scenario\Scenario;
 use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
 use App\Enum\ChainStatusEnum;
+use App\Enum\VisitorEventStatusEnum;
 use App\Service\System\Common\CacheService;
 use App\Service\System\Resolver\Dto\Contract;
 use App\Service\Visitor\Scenario\ScenarioService;
@@ -24,8 +26,6 @@ class JumpResolver
      */
     public function resolveJump(
         VisitorEvent $visitorEvent,
-        CacheDto $cacheDto,
-        VisitorSession $visitorSession,
         Contract $contract,
     ): void {
         $jump = $contract->getJump();
@@ -38,14 +38,12 @@ class JumpResolver
 
         if ($scenario) {
             $visitorEvent->setScenarioUUID($scenario->getUUID());
-            $cacheDto->setEvent(CacheService::createCacheEventDto());
+            $contract->getCacheDto()->setEvent(CacheService::createCacheEventDto());
         } else {
-            $this->updateCacheChains($cacheDto, $jump->value);
+            $this->updateCacheSteps($contract->getCacheDto(), $jump->value);
         }
 
-        $visitorSession->setCache($cacheDto);
-
-        $contract->setStatus(ChainStatusEnum::New);
+        $contract->setStatus(VisitorEventStatusEnum::New);
     }
 
     private function resolveScenario(string $jumpValue): ?Scenario
@@ -57,11 +55,20 @@ class JumpResolver
         };
     }
 
-    private function updateCacheChains(CacheDto $cacheDto, string $jumpValue): void
+    private function updateCacheSteps(CacheDto $cacheDto, string $jumpValue): void
     {
-        $chains = $cacheDto->getEvent()->getChains();
+        $steps = $cacheDto->getEvent()->getSteps();
+
+        foreach ($steps as $step) {
+            $this->updateCacheChains($step->getChains(), $jumpValue);
+        }
+    }
+
+    private function updateCacheChains(array $chains, string $jumpValue): void
+    {
         $flag = true;
 
+        /** @var CacheChainDto $chain */
         foreach ($chains as $chain) {
             if ($chain->getTarget() === $jumpValue) {
                 $chain->setRepeat(true);

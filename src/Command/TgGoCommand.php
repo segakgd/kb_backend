@@ -10,12 +10,9 @@ use App\Helper\CommonHelper;
 use App\Repository\User\BotRepository;
 use App\Repository\Visitor\VisitorEventRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
-use App\Service\DtoRepository\ContractDtoRepository;
-use App\Service\System\Common\SenderService;
 use App\Service\System\Resolver\Dto\BotDto;
 use App\Service\System\Resolver\EventResolver;
 use App\Service\System\Resolver\Jumps\JumpResolver;
-use App\Service\System\Resolver\Steps\StepResolver;
 use App\Service\Visitor\Scenario\ScenarioService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -39,6 +36,7 @@ class TgGoCommand extends Command
         private readonly VisitorSessionRepository $visitorSessionRepository,
         private readonly BotRepository $botRepository,
         private readonly EntityManagerInterface $entityManager,
+        private readonly JumpResolver $jumpResolver,
         string $name = null
     ) {
         parent::__construct($name);
@@ -87,13 +85,19 @@ class TgGoCommand extends Command
             $botDto = (new BotDto())
                 ->setType($bot->getType())
                 ->setToken($bot->getToken())
-                ->setChatId($visitorSession->getChatId())
-            ;
+                ->setChatId($visitorSession->getChatId());
 
             $contract->setCacheDto($cacheDto);
             $contract->setBotDto($botDto);
 
             $contract = $this->eventResolver->resolve($visitorEvent, $contract);
+
+            if (!is_null($contract->getJump())) {
+                $this->jumpResolver->resolveJump(
+                    visitorEvent: $visitorEvent,
+                    contract: $contract
+                );
+            }
 
             $visitorSession->setCache($contract->getCacheDto());
 

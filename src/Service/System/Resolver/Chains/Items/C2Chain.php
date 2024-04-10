@@ -2,6 +2,7 @@
 
 namespace App\Service\System\Resolver\Chains\Items;
 
+use App\Enum\JumpEnum;
 use App\Helper\MessageHelper;
 use App\Service\System\Resolver\Dto\Condition;
 use App\Service\System\Resolver\Dto\ConditionInterface;
@@ -12,6 +13,12 @@ class C2Chain extends AbstractChain
     public function success(ContractInterface $contract): ContractInterface
     {
         $content = $contract->getCacheDto()->getContent();
+
+        if ($content === 'На на шаг 4') {
+            $contract->setJump(JumpEnum::refChain4);
+
+            return $contract;
+        }
 
         $message = "Вы кликнули на $content";
 
@@ -30,7 +37,10 @@ class C2Chain extends AbstractChain
         $replyMarkups = [
             [
                 [
-                    'text' => 'Да'
+                    'text' => 'На очко себе тыкни'
+                ],
+                [
+                    'text' => 'На на шаг 4'
                 ],
                 [
                     'text' => 'Нет'
@@ -50,7 +60,8 @@ class C2Chain extends AbstractChain
         $content = $contract->getCacheDto()->getContent();
 
         $validData = [
-            'Да',
+            'На очко себе тыкни',
+            'На на шаг 4',
             'Нет',
         ];
 

@@ -13,7 +13,7 @@ class C3Chain extends AbstractChain
     {
         $content = $contract->getCacheDto()->getContent();
 
-        $message = "Вы кликнули на $content";
+        $message = "Вы кликнули на $content. Перейти на шаг предыдущий желаете?";
 
         $contractMessage = MessageHelper::createContractMessage(
             message: $message,

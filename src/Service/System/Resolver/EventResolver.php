@@ -16,7 +16,7 @@ class EventResolver
     public function __construct(
         private readonly StepResolver $stepResolver,
         private readonly SenderService $senderService,
-        private readonly JumpResolver $gotoResolver,
+        private readonly JumpResolver $jumpResolver,
         private readonly ContractDtoRepository $contractDtoRepository,
     ) {
     }
@@ -30,22 +30,13 @@ class EventResolver
 
         $jump = $contract->getJump();
 
-        if (is_null($jump)) {
-            $this->senderService->sendMessages($contract);
-
-            $status = $contract->isStepsStatus() ? VisitorEventStatusEnum::Done : VisitorEventStatusEnum::Waiting;
-        } else {
-            $status = VisitorEventStatusEnum::New;
-
-            // todo другая реализация...
-
-//            $this->gotoResolver->resolveJump(
-//                visitorEvent: $visitorEvent,
-//                cacheDto: $cacheDto,
-//                visitorSession: $visitorSession,
-//                contract: $contract
-//            );
+        if (!is_null($jump)) {
+            return $contract;
         }
+
+        $this->senderService->sendMessages($contract);
+
+        $status = $contract->isStepsStatus() ? VisitorEventStatusEnum::Done : VisitorEventStatusEnum::Waiting;
 
         if (isset($_SERVER['APP_ENV']) && $_SERVER['APP_ENV'] === 'dev') {
             $this->contractDtoRepository->save($visitorEvent, $contract);
