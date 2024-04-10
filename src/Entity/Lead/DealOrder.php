@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Entity\Lead;
 
-use App\Controller\Admin\Product\DTO\Request\ProductReqDto;
-use App\Controller\Admin\Promotion\DTO\Request\PromotionReqDto;
-use App\Controller\Admin\Shipping\DTO\Request\ShippingReqDto;
+use App\Controller\Admin\Lead\DTO\Request\Order\Product\OrderVariantReqDto;
+use App\Controller\Admin\Lead\DTO\Request\Order\Promotion\OrderPromotionReqDto;
+use App\Controller\Admin\Lead\DTO\Request\Order\Shipping\OrderShippingReqDto;
+use App\Doctrine\Types\OrderVariantType;
 use App\Repository\Lead\OrderEntityRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
@@ -22,15 +23,15 @@ class DealOrder
     private ?int $id = null;
 
     #[Groups(['administrator'])]
-    #[ORM\Column(nullable: true)]
-    private array $products = [];
+    #[ORM\Column(type: OrderVariantType::NAME, nullable: true)]
+    private array $productVariants = [];
 
     #[Groups(['administrator'])]
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(type: "json", nullable: true)]
     private array $shipping = [];
 
     #[Groups(['administrator'])]
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(type: "json", nullable: true)]
     private array $promotions = [];
 
     #[ORM\Column]
@@ -52,63 +53,6 @@ class DealOrder
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getProducts(): array
-    {
-        return $this->products;
-    }
-
-    public function setProducts(?array $products): static
-    {
-        $this->products = $products;
-
-        return $this;
-    }
-
-    public function addProduct(?ProductReqDto $product): static // todo  -> подумать над лежащим ДТО (думаю миинмум полей сюда)
-    {
-        $this->products[] = $product;
-
-        return $this;
-    }
-
-    public function getShipping(): array
-    {
-        return $this->shipping;
-    }
-
-    public function setShipping(?array $shipping): static
-    {
-        $this->shipping = $shipping;
-
-        return $this;
-    }
-
-    public function addShipping(ShippingReqDto $dto): static
-    {
-        $this->shipping[] = $dto;
-
-        return $this;
-    }
-
-    public function getPromotions(): array
-    {
-        return $this->promotions;
-    }
-
-    public function setPromotions(?array $promotions): static
-    {
-        $this->promotions = $promotions;
-
-        return $this;
-    }
-
-    public function addPromotion(PromotionReqDto $promotions): static
-    {
-        $this->promotions[] = $promotions;
-
-        return $this;
     }
 
     public function getTotalAmount(): ?int
@@ -150,6 +94,63 @@ class DealOrder
     public function markAsUpdated(): static
     {
         $this->updatedAt = new DateTimeImmutable();
+
+        return $this;
+    }
+
+    public function getProductVariants(): array
+    {
+        return $this->productVariants;
+    }
+
+    public function setProductVariants(array $productVariants): static
+    {
+        $this->productVariants = $productVariants;
+
+        return $this;
+    }
+
+    public function addProductVariant(OrderVariantReqDto $variantReqDto): static
+    {
+        $this->productVariants[] = $variantReqDto;
+
+        return $this;
+    }
+
+    public function getShipping(): array
+    {
+        return $this->shipping;
+    }
+
+    public function setShipping(array $shipping): static
+    {
+        $this->shipping = $shipping;
+
+        return $this;
+    }
+
+    public function addShipping(OrderShippingReqDto $shipping): static
+    {
+       $this->shipping[] = $shipping;
+
+        return $this;
+    }
+
+    public function getPromotions(): array
+    {
+        return $this->promotions;
+    }
+
+    public function setPromotions(array $promotions): static
+    {
+        $this->promotions = $promotions;
+
+        return $this;
+    }
+
+    public function addPromotion(OrderPromotionReqDto $promotion): static
+    {
+        $this->promotions[] = $promotion;
 
         return $this;
     }

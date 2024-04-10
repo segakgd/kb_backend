@@ -7,6 +7,7 @@ namespace App\Controller\Admin\Lead;
 use App\Controller\Admin\Lead\DTO\Request\LeadReqDto;
 use App\Entity\User\Project;
 use App\Service\Admin\Lead\LeadManager;
+use Exception;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -39,7 +40,7 @@ class CreateController extends AbstractController
     }
 
     /** Создание лида
-     * @throws \Exception
+     * @throws Exception
      */
     #[Route('/api/admin/project/{project}/lead/', name: 'admin_lead_create', methods: ['POST'])]
     #[IsGranted('existUser', 'project')]

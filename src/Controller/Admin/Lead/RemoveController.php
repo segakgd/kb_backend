@@ -26,6 +26,7 @@ class RemoveController extends AbstractController
     {
     }
 
+    /** Удаление лида */
     #[Route('/api/admin/project/{project}/lead/{lead}/', name: 'admin_lead_remove', methods: ['DELETE'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project, ?Deal $lead): JsonResponse

@@ -22,6 +22,22 @@ class ProductVariantRepository extends ServiceEntityRepository
         parent::__construct($registry, ProductVariant::class);
     }
 
+    public function removeVariantsByIds(array $ids): void
+    {
+        if (empty($ids)) {
+            return;
+        }
+
+        $queryBuilder = $this->createQueryBuilder('variant');
+
+        $queryBuilder
+            ->delete()
+            ->andWhere($queryBuilder->expr()->in('variant.id', $ids))
+        ;
+
+        $queryBuilder->getQuery()->getResult();
+    }
+
     public function saveAndFlush(ProductVariant $entity): void
     {
         $entity->setUpdatedAt(new DateTimeImmutable());

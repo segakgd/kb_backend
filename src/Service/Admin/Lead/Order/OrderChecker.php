@@ -9,7 +9,10 @@ use App\Controller\Admin\Lead\DTO\Request\Order\Product\OrderProductReqDto;
 use App\Controller\Admin\Lead\DTO\Request\Order\Product\OrderVariantReqDto;
 use App\Controller\Admin\Lead\DTO\Request\Order\Promotion\OrderPromotionReqDto;
 use App\Controller\Admin\Lead\DTO\Request\Order\Shipping\OrderShippingReqDto;
+use App\Controller\Admin\Product\DTO\Request\ProductVariantReqDto;
 use App\Controller\Admin\Promotion\DTO\Request\PromotionReqDto;
+use App\Controller\Admin\Shipping\DTO\Request\ShippingReqDto;
+use App\Dto\Product\Variants\VariantPriceDto;
 use App\Entity\Ecommerce\ProductVariant;
 use App\Entity\Ecommerce\Shipping;
 use App\Entity\User\Project;
@@ -35,7 +38,39 @@ class OrderChecker
     {
         $this->checkShipping($project, $reqDto->getShipping());
         $this->checkPromotions($project, $reqDto->getShipping());
-        $this->checkProducts($project, $reqDto->getProducts());
+        $this->checkProducts($project, $reqDto->getProductVariants());
+
+        $this->checkOrderTotalSum($reqDto);
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function checkOrderTotalSum(OrderReqDto $reqDto): void // todo -> промоушены и доставка как бы еще нормально не сделаны
+    {
+        $totalAmountShipping = $totalAmountPromotion = $productsTotalPrice = 0;
+
+        /** @var OrderShippingReqDto $shippingDto */
+        foreach ($reqDto->getShipping() as $shippingDto) {
+            $totalAmountShipping += $shippingDto->getTotalAmount();
+        }
+
+        /** @var OrderPromotionReqDto $promotionDto */
+        foreach ($reqDto->getPromotions() as $promotionDto) {
+            $totalAmountPromotion += $promotionDto->getTotalAmount();
+        }
+
+        /** @var OrderVariantReqDto $variantDto */
+        foreach ($reqDto->getProductVariants() as $variantDto) {
+            $productsTotalPrice += $variantDto->getPrice();
+        }
+
+
+        $totalAmount = max(max($productsTotalPrice - $totalAmountPromotion, 0) + $totalAmountShipping, 0);
+
+        if ($totalAmount !== $reqDto->getTotalAmount()) {
+            throw new Exception('Order total amount counted incorrect');
+        }
     }
 
     /**
@@ -101,55 +136,48 @@ class OrderChecker
      */
     private function checkProducts(Project $project, array $products): void
     {
-        /** @var OrderProductReqDto $product */
-        foreach ($products as $product) {
-            $this->checkProductVariants($project, $product);
+        $trackingVariants = [];
+
+        /** @var OrderVariantReqDto $variantReqDto */
+        foreach ($products as $variant) {
+            $variantEntity = $this->productVariantService->getById($variant->getId());
+
+            if (null === $variantEntity || !$this->isVariantInProject($variantEntity, $project->getId())) {
+                throw new NotFoundResourceException(sprintf('Variant with id %d not found', $variant->getId()));
+            }
+
+            /** @var null|VariantPriceDto $variantPrice */
+            $variantPrice = current($variantEntity->getPrice()); // todo -> need to fix
+            $variantPrice = $variantPrice?->getPrice();
+
+            if ($variant->getPrice() !== $variantPrice) {
+                throw new Exception('Variant price does not match the requested price');
+            }
+
+            $this->checkVariantCount($variantEntity, $variant, $trackingVariants);
         }
     }
 
     /**
      * @throws Exception
      */
-    private function checkProductVariants(Project $project, OrderProductReqDto $productReqDto): void
-    {
-        $trackingVariants = [];
-        $totalAmount = $productReqDto->getTotalAmount();
-        $totalCount = $productReqDto->getTotalCount();
-
-        $expectedTotalCount = $expectedTotalAmount = 0;
-
-        /** @var OrderVariantReqDto $variant */
-        foreach ($productReqDto->getVariants() as $variant) {
-            if (!isset($trackingVariants[$variant->getId()]['count'])) {
-                $trackingVariants[$variant->getId()]['count'] = $variant->getCount();
-            } else {
-                $trackingVariants[$variant->getId()]['count'] += $variant->getCount();
-            }
-
-            $countVariant = $variant->getCount();
-            $price = $variant->getPrice();
-
-            $variantEntity = $this->productVariantService->getById($variant->getId());
-
-            if (null === $variantEntity || $this->isVariantInProject($variantEntity, $project->getId())) {
-                throw new NotFoundResourceException(sprintf('Variant with id %d not found', $variant->getId()));
-            }
-
-            $variantPrice = $variantEntity->getPrice();
-            $variantPrice = $variantPrice['price'] ?? null;
-
-            if ($price !== $variantPrice) {
-                throw new Exception('Variant price does not match the requested price');
-            } elseif ($trackingVariants[$variant->getId()]['count'] > $variantEntity->getCount()) {
-                throw new Exception('Requested variant count exceeds presented one');
-            }
-
-            $expectedTotalCount += $countVariant;
-            $expectedTotalAmount += $price;
+    private function checkVariantCount(
+        ProductVariant $variantEntity,
+        OrderVariantReqDto $variant,
+        array $trackingVariants
+    ): void {
+        if ($variantEntity->isLimitless()) {
+            return;
         }
 
-        if ($totalAmount !== $expectedTotalAmount || $totalCount !== $expectedTotalCount) {
-            throw new Exception('Provided count or amount does not match actual');
+        if (!isset($trackingVariants[$variant->getId()]['count'])) {
+            $trackingVariants[$variant->getId()]['count'] = $variant->getCount();
+        } else {
+            $trackingVariants[$variant->getId()]['count'] += $variant->getCount();
+        }
+
+        if ($trackingVariants[$variant->getId()]['count'] > $variantEntity->getCount()) {
+            throw new Exception('Requested variant count exceeds presented one');
         }
     }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Ecommerce;
 
+use App\Doctrine\Types\VariantPriceType;
 use App\Dto\Product\Variants\VariantPriceDto;
 use App\Repository\Ecommerce\ProductVariantRepository;
 use DateTimeImmutable;
@@ -15,7 +16,6 @@ use Doctrine\ORM\Mapping as ORM;
 class ProductVariant
 {
     // todo нужно добавить возможность резервировать товар резерв
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -30,13 +30,13 @@ class ProductVariant
     #[ORM\Column(nullable: true)]
     private array $image = [];
 
-    #[ORM\Column(type: 'variant_price_type')]
+    #[ORM\Column(type: VariantPriceType::VARIANT_PRICE_TYPE)]
     private array $price = [];
 
     #[ORM\Column(nullable: true)]
     private ?int $count = null;
 
-    #[ORM\ManyToOne(inversedBy: 'variants')]
+    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'variants')]
     private ?Product $product = null;
 
     #[ORM\Column(nullable: true)]
@@ -47,6 +47,9 @@ class ProductVariant
 
     #[ORM\Column(nullable: true)]
     private ?bool $active = null;
+
+    #[ORM\Column(nullable: false)]
+    private bool $isLimitless = false;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $activeFrom = null;
@@ -62,7 +65,7 @@ class ProductVariant
 
     public function __construct()
     {
-        if ($this->createdAt === null){
+        if ($this->createdAt === null) {
             $this->createdAt = new DateTimeImmutable();
         }
     }
@@ -236,6 +239,18 @@ class ProductVariant
     public function setProduct(?Product $product): static
     {
         $this->product = $product;
+
+        return $this;
+    }
+
+    public function isLimitless(): bool
+    {
+        return $this->isLimitless;
+    }
+
+    public function setIsLimitless(bool $isLimitless): self
+    {
+        $this->isLimitless = $isLimitless;
 
         return $this;
     }

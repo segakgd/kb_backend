@@ -7,7 +7,7 @@ namespace App\Controller\Admin\Product;
 use App\Controller\Admin\Product\DTO\Response\ProductRespDto;
 use App\Entity\Ecommerce\Product;
 use App\Entity\User\Project;
-use App\Service\Admin\Ecommerce\Product\Mapper\ProductMapper;
+use App\Helper\Ecommerce\ProductHelper;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,9 +28,8 @@ use Throwable;
 )]
 class ViewOneController extends AbstractController
 {
-    public function __construct(
-        private readonly ProductMapper $productMapper,
-    ) {
+    public function __construct()
+    {
     }
 
     /** Получение одного продукта */
@@ -47,7 +46,7 @@ class ViewOneController extends AbstractController
         }
 
         try {
-            return $this->json($this->productMapper->mapToResponse($product));
+            return $this->json(ProductHelper::mapToResponse($product));
         } catch (Throwable $exception) {
             return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }

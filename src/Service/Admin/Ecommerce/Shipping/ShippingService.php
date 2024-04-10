@@ -13,6 +13,10 @@ class ShippingService implements ShippingServiceInterface
     {
     }
 
+    public function getById(int $id): ?Shipping
+    {
+        return $this->shippingEntityRepository->find($id);
+    }
 
     public function findByIdAndProjectId(int $id, int $projectId): ?Shipping
     {

@@ -9,19 +9,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 class VariantPriceDto
 {
     #[Assert\GreaterThanOrEqual(0)]
-    private float $cost;
+    private int $price;
 
     #[Assert\NotBlank]
     private string $currency;
 
-    public function getCost(): float
+    public function getPrice(): int
     {
-        return $this->cost;
+        return $this->price;
     }
 
-    public function setCost(float $cost): self
+    public function setPrice(int $price): self
     {
-        $this->cost = $cost;
+        $this->price = $price;
 
         return $this;
     }
@@ -41,7 +41,7 @@ class VariantPriceDto
     public function toArray(): array
     {
         return [
-            'cost' => $this->cost,
+            'price' => $this->price,
             'currency' => $this->currency,
         ];
     }
@@ -49,7 +49,7 @@ class VariantPriceDto
     public static function fromArray(array $data): self
     {
         $dto = new self();
-        $dto->setCost($data['cost']);
+        $dto->setPrice($data['price']);
         $dto->setCurrency($data['currency']);
 
         return $dto;

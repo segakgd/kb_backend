@@ -48,6 +48,7 @@ class ViewAllController extends AbstractController
     ) {
     }
 
+    /** Получение коллекцию лидов */
     #[Route('/api/admin/project/{project}/lead/', name: 'admin_lead_get_all', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project): JsonResponse
@@ -64,12 +65,6 @@ class ViewAllController extends AbstractController
 
         $leads = $this->leadManager->getAllByProject($project);
 
-        $response = [];
-
-        foreach ($leads as $lead) {
-            $response[] = $this->leadMapper->mapToResponse($lead);
-        }
-
-        return $this->json($response);
+        return $this->json($this->leadMapper->mapArrayToResponse($leads));
     }
 }

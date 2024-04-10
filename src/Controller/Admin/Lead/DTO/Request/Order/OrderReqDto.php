@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Lead\DTO\Request\Order;
 
-use App\Controller\Admin\Lead\DTO\Request\Order\Product\OrderProductReqDto;
+use App\Controller\Admin\Lead\DTO\Request\Order\Product\OrderVariantReqDto;
 use App\Controller\Admin\Lead\DTO\Request\Order\Promotion\OrderPromotionReqDto;
 use App\Controller\Admin\Lead\DTO\Request\Order\Shipping\OrderShippingReqDto;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -11,7 +13,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 class OrderReqDto
 {
     #[Assert\Valid]
-    private array $products = [];
+    private array $productVariants = [];
 
     #[Assert\Valid]
     private array $shipping = [];
@@ -19,10 +21,14 @@ class OrderReqDto
     #[Assert\Valid]
     private array $promotions = [];
 
+    #[Assert\NotBlank]
+    #[Assert\GreaterThanOrEqual(0)]
+    private int $totalAmount = 0;
+
     #[Assert\Callback]
     public function validateExistence(ExecutionContextInterface $context): void
     {
-        if (empty($this->promotions) && empty($this->products) && empty($this->shipping)) {
+        if (empty($this->promotions) && empty($this->productVariants) && empty($this->shipping)) {
             $context
                 ->buildViolation('Order is empty')
                 ->addViolation()
@@ -30,14 +36,21 @@ class OrderReqDto
         }
     }
 
-    public function getProducts(): array
+    public function setProductVariants(array $productVariants): self
     {
-        return $this->products;
+        $this->productVariants = $productVariants;
+
+        return $this;
     }
 
-    public function addProduct(OrderProductReqDto $product): self
+    public function getProductVariants(): array
     {
-        $this->products[] = $product;
+        return $this->productVariants;
+    }
+
+    public function addProductVariant(OrderVariantReqDto $productVariant): self
+    {
+        $this->productVariants[] = $productVariant;
 
         return $this;
     }
@@ -64,5 +77,15 @@ class OrderReqDto
         $this->promotions[] = $promotion;
 
         return $this;
+    }
+
+    public function getTotalAmount(): int
+    {
+        return $this->totalAmount;
+    }
+
+    public function setTotalAmount(int $totalAmount): void
+    {
+        $this->totalAmount = $totalAmount;
     }
 }

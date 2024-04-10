@@ -8,47 +8,84 @@ use App\Controller\Admin\Product\DTO\Request\ProductVariantReqDto;
 use App\Entity\Ecommerce\Product;
 use App\Entity\Ecommerce\ProductVariant;
 use App\Repository\Ecommerce\ProductVariantRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class ProductVariantService
 {
-    public function __construct(private readonly ProductVariantRepository $productVariantRepository)
+    public function __construct(
+        private readonly ProductVariantRepository $productVariantRepository,
+        private readonly EntityManagerInterface $entityManager,
+    )
     {
     }
 
-    public function handleRequestVariantsDto(Product $product, array $variantsRequestDto): Product
+    public function handleBatchUpdate(Product $product, array $variantsRequestDto): Product
     {
+        $updatingVariants = $updatingVariantsIds = $existingVariants = [];
+
+        foreach ($product->getVariants()->toArray() as $variant) {
+            $existingVariants[$variant->getId()] = $variant;
+        }
+
         /** @var ProductVariantReqDto $variantDto */
         foreach ($variantsRequestDto as $variantDto) {
             if (null === $variantDto->getId()) {
-                $productVariantEntity = (new ProductVariant())
+                $variantEntity = (new ProductVariant())
                     ->setName($variantDto->getName())
                     ->setCount($variantDto->getCount())
                     ->setArticle($variantDto->getArticle())
                     ->setPrice($variantDto->getPrice())
-                    ->setImage($variantDto->getImages());
-
-                $product->addVariant($productVariantEntity);
-            } elseif (null !== $variantDto->getId()) {
-                $variantEntity = $this->getByProductAndId(
-                    $product->getId(),
-                    $variantDto->getId()
-                );
-
-                $variantEntity
-                    ?->markAsUpdated()
-                    ->setName($variantDto->getName())
-                    ->setCount($variantDto->getCount())
-                    ->setPrice($variantDto->getPrice())
-                    ->setArticle($variantDto->getArticle())
                     ->setImage($variantDto->getImages())
-                    ->setActive($variantDto->isActive())
                     ->setProduct($product);
 
-                $this->save($variantEntity);
+                $updatingVariants[] = $variantEntity;
+            } else {
+                $variantEntity = $existingVariants[$variantDto->getId()] ?? null;
+
+                if (null !== $variantEntity) {
+                    $variantEntity
+                        ->setName($variantDto->getName())
+                        ->setCount($variantDto->getCount())
+                        ->setPrice($variantDto->getPrice())
+                        ->setArticle($variantDto->getArticle())
+                        ->setImage($variantDto->getImages())
+                        ->setActive($variantDto->isActive())
+                        ->setProduct($product)
+                        ->markAsUpdated();
+
+                    $updatingVariants[] = $variantEntity;
+                    $updatingVariantsIds[] = $variantEntity->getId();
+                }
             }
         }
 
+        $this->batchSave($updatingVariants);
+
+        $removingIds = array_diff(array_keys($existingVariants), $updatingVariantsIds);
+
+        $this->productVariantRepository->removeVariantsByIds($removingIds);
+
         return $product;
+    }
+
+    public function batchSave(array $productVariants): void
+    {
+        if (empty($productVariants)) {
+            return;
+        }
+
+        $iterator = 0;
+        $batchSize = 20;
+
+        foreach ($productVariants as $productVariant) {
+            $this->entityManager->persist($productVariant);
+
+            if ((++$iterator) % $batchSize === 0) {
+                $this->entityManager->flush();
+            }
+        }
+
+        $this->entityManager->flush();;
     }
 
     public function save(ProductVariant $productVariant): ProductVariant
@@ -56,11 +93,6 @@ class ProductVariantService
         $this->productVariantRepository->saveAndFlush($productVariant);
 
         return $productVariant;
-    }
-
-    public function getByProductAndId(int $product, int $id): ?ProductVariant
-    {
-        return $this->productVariantRepository->findOneBy(['id' => $id, 'product' => $product]);
     }
 
     public function getById(int $id): ?ProductVariant

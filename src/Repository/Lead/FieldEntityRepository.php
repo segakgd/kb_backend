@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository\Lead;
 
 use App\Entity\Lead\DealField;
@@ -19,6 +21,22 @@ class FieldEntityRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, DealField::class);
+    }
+
+    public function removeFieldsByIds(array $ids): void
+    {
+        if (empty($ids)) {
+            return;
+        }
+
+        $queryBuilder = $this->createQueryBuilder('field');
+
+        $queryBuilder
+            ->delete()
+            ->andWhere($queryBuilder->expr()->in('field.id', $ids))
+        ;
+
+        $queryBuilder->getQuery()->getResult();
     }
 
     public function saveAndFlush(DealField $entity): void

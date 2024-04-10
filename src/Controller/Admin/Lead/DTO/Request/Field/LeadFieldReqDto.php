@@ -8,6 +8,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class LeadFieldReqDto
 {
+    private ?int $id = null;
+
     #[Assert\NotBlank]
     private string $name;
 
@@ -34,6 +36,18 @@ class LeadFieldReqDto
     public function setValue(int|string $value): self
     {
         $this->value = $value;
+
+        return $this;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function setId(?int $id): self
+    {
+        $this->id = $id;
 
         return $this;
     }

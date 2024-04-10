@@ -7,7 +7,7 @@ namespace App\Controller\Admin\ProductCategory;
 use App\Controller\Admin\ProductCategory\DTO\Response\ProductCategoryRespDto;
 use App\Entity\Ecommerce\ProductCategory;
 use App\Entity\User\Project;
-use App\Service\Admin\Ecommerce\ProductCategory\Mapper\ProductCategoryMapper;
+use App\Helper\Ecommerce\ProductCategoryHelper;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,9 +27,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 )]
 class ViewOneController extends AbstractController
 {
-    public function __construct(
-        private readonly ProductCategoryMapper $productCategoryMapper,
-    ) {
+    public function __construct()
+    {
     }
 
     /** Получение категории продуктов */
@@ -45,6 +44,6 @@ class ViewOneController extends AbstractController
             throw new AccessDeniedException('Access Denied.');
         }
 
-        return $this->json($this->productCategoryMapper->mapToResponse($productCategory));
+        return $this->json(ProductCategoryHelper::mapToResponse($productCategory));
     }
 }

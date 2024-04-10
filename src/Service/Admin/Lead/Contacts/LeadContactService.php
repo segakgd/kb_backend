@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service\Admin\Lead\Contacts;
 
 use App\Controller\Admin\Lead\DTO\Request\Field\LeadContactsReqDto;
+use App\Entity\Lead\Deal;
 use App\Entity\Lead\DealContacts;
 use App\Repository\Lead\ContactsEntityRepository;
 
@@ -29,6 +30,21 @@ class LeadContactService
             ->setLastName($lastName);
 
         return $this->save($contactsEntity);
+    }
+
+    public function updateOrCreate(LeadContactsReqDto $contactsReqDto, ?DealContacts $contacts): DealContacts
+    {
+        if (null === $contacts) {
+            $contacts = new DealContacts();
+        }
+
+        $contacts
+            ->setPhone($contactsReqDto->getPhone()->getValue())
+            ->setEmail($contactsReqDto->getEmail()->getValue())
+            ->setLastName($contactsReqDto->getLastName()->getValue())
+            ->setFirstName($contactsReqDto->getFirstName()->getValue());
+
+        return $this->save($contacts);
     }
 
     private function save(DealContacts $contacts): DealContacts
