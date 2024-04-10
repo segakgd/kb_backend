@@ -58,19 +58,18 @@ class JumpResolver
     private function updateCacheSteps(CacheDto $cacheDto, string $jumpValue): void
     {
         $steps = $cacheDto->getEvent()->getSteps();
+        $flag = true;
 
         foreach ($steps as $step) {
-            $this->updateCacheChains($step->getChains(), $jumpValue);
+            $this->updateCacheChains($step->getChains(), $jumpValue, $flag);
         }
     }
 
-    private function updateCacheChains(array $chains, string $jumpValue): void
+    private function updateCacheChains(array $chains, string $jumpValue, bool &$flag): void
     {
-        $flag = true;
-
         /** @var CacheChainDto $chain */
         foreach ($chains as $chain) {
-            if ($chain->getTarget() === $jumpValue) {
+            if ($chain->getTarget()->value === $jumpValue) {
                 $chain->setRepeat(true);
                 $flag = false;
             }
