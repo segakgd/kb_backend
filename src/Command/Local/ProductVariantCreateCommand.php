@@ -2,22 +2,14 @@
 
 namespace App\Command\Local;
 
-use App\Dto\Product\Variants\VariantPriceDto;
+use App\Dto\Ecommerce\Product\Variants\VariantPriceDto;
 use App\Entity\Ecommerce\ProductVariant;
-use App\Entity\Visitor\VisitorEvent;
-use App\Helper\CommonHelper;
-use App\Repository\User\BotRepository;
-use App\Repository\Visitor\VisitorEventRepository;
 use App\Service\System\Handler\MessageHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
-use Throwable;
-
-use function sleep;
 
 #[AsCommand(
     name: 'app:product-variant-create',

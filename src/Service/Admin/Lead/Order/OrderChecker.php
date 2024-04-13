@@ -5,14 +5,11 @@ declare(strict_types=1);
 namespace App\Service\Admin\Lead\Order;
 
 use App\Controller\Admin\Lead\DTO\Request\Order\OrderReqDto;
-use App\Controller\Admin\Lead\DTO\Request\Order\Product\OrderProductReqDto;
 use App\Controller\Admin\Lead\DTO\Request\Order\Product\OrderVariantReqDto;
 use App\Controller\Admin\Lead\DTO\Request\Order\Promotion\OrderPromotionReqDto;
 use App\Controller\Admin\Lead\DTO\Request\Order\Shipping\OrderShippingReqDto;
-use App\Controller\Admin\Product\DTO\Request\ProductVariantReqDto;
 use App\Controller\Admin\Promotion\DTO\Request\PromotionReqDto;
-use App\Controller\Admin\Shipping\DTO\Request\ShippingReqDto;
-use App\Dto\Product\Variants\VariantPriceDto;
+use App\Dto\Ecommerce\Product\Variants\VariantPriceDto;
 use App\Entity\Ecommerce\ProductVariant;
 use App\Entity\Ecommerce\Shipping;
 use App\Entity\User\Project;

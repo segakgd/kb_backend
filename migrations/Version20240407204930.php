@@ -20,12 +20,29 @@ final class Version20240407204930 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP TABLE deal_order_product_variant');
-        $this->addSql('DROP TABLE deal_order_promotion');
-        $this->addSql('DROP TABLE deal_order_shipping');
-        $this->addSql('ALTER TABLE deal_order ADD COLUMN product_variants CLOB DEFAULT NULL');
-        $this->addSql('ALTER TABLE deal_order ADD COLUMN shipping CLOB DEFAULT NULL');
-        $this->addSql('ALTER TABLE deal_order ADD COLUMN promotions CLOB DEFAULT NULL');
+        $this->addSql('DROP TABLE IF EXISTS deal_order_product_variant');
+        $this->addSql('DROP TABLE IF EXISTS deal_order_promotion');
+        $this->addSql('DROP TABLE IF EXISTS deal_order_shipping');
+
+//        $this->addSql('ALTER TABLE deal_order ADD COLUMN IF NOT EXISTS product_variants CLOB DEFAULT NULL');
+//        $this->addSql('ALTER TABLE deal_order ADD COLUMN IF NOT EXISTS shipping CLOB DEFAULT NULL');
+//        $this->addSql('ALTER TABLE deal_order ADD COLUMN IF NOT EXISTS promotions CLOB DEFAULT NULL');
+
+        $columns = $this->connection->fetchAllAssociative("PRAGMA table_info('deal_order')");
+
+        $existingColumns = array_column($columns, 'name');
+
+        if (!in_array('product_variants', $existingColumns)) {
+            $this->addSql('ALTER TABLE deal_order ADD COLUMN product_variants CLOB DEFAULT NULL');
+        }
+
+        if (!in_array('shipping', $existingColumns)) {
+            $this->addSql('ALTER TABLE deal_order ADD COLUMN shipping CLOB DEFAULT NULL');
+        }
+
+        if (!in_array('promotions', $existingColumns)) {
+            $this->addSql('ALTER TABLE deal_order ADD COLUMN promotions CLOB DEFAULT NULL');
+        }
     }
 
     public function down(Schema $schema): void

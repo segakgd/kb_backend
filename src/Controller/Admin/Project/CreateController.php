@@ -39,10 +39,11 @@ class CreateController extends AbstractController
     ) {
     }
 
+    /** Создание проекта */
     #[Route('/api/admin/project/', name: 'admin_project_create', methods: ['POST'])]
     public function execute(Request $request): JsonResponse
     {
-        if (null === $this->getUser()){
+        if (null === $this->getUser()) {
             return new JsonResponse([], Response::HTTP_FORBIDDEN);
         }
 
@@ -58,16 +59,14 @@ class CreateController extends AbstractController
 
         $user = $this->userRepository->find($this->getUser());
 
-        if (null === $user){
-            return new JsonResponse([], Response::HTTP_FORBIDDEN);
+        if (null === $user) {
+            return $this->json([], Response::HTTP_FORBIDDEN);
         }
 
         $project = $this->projectService->add($requestDto, $user);
         $response = $this->mapToResponse($project);
 
-        return new JsonResponse(
-            $this->serializer->normalize($response)
-        );
+        return $this->json($this->serializer->normalize($response));
     }
 
     private function mapToResponse(Project $project): ProjectRespDto
@@ -80,7 +79,6 @@ class CreateController extends AbstractController
             ->setStatus($project->getStatus())
             ->setStatistic($fakeStatisticsByProject)
             ->setActiveFrom($project->getActiveFrom())
-            ->setActiveTo($project->getActiveTo())
-            ;
+            ->setActiveTo($project->getActiveTo());
     }
 }

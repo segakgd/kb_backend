@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Product\DTO\Request;
 
-use App\Dto\Product\Variants\ImageDto;
-use App\Dto\Product\Variants\VariantPriceDto;
+use App\Dto\Ecommerce\Product\Variants\ImageDto;
+use App\Dto\Ecommerce\Product\Variants\VariantPriceDto;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 

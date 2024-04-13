@@ -37,6 +37,7 @@ class CreateController extends AbstractController
     ) {
     }
 
+    /** Создание бота */
     #[Route('/api/admin/project/{project}/bot/', name: 'admin_bot_add', methods: ['POST'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project): JsonResponse

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Dto\Product\Variants;
+namespace App\Dto\Ecommerce\Shipping;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class VariantPriceDto
+class ShippingPriceDto
 {
     #[Assert\GreaterThanOrEqual(0)]
     private int $price;

@@ -1,42 +1,53 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Shipping\DTO\Request;
+
+use App\Dto\Ecommerce\Shipping\ShippingPriceDto;
+use App\Enum\Shipping\ShippingCalculationTypeEnum;
+use App\Enum\Shipping\ShippingTypeEnum;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ShippingReqDto
 {
-    private string $name;
+    #[Assert\NotBlank]
+    private string $title;
 
-    private string $type; // самовывоз, курьером
-
-    private string $calculationType; // В проценнах, В валюте
-
-    private int $amount;
-
-    private string $amountWF;
-
-    private int $applyFromAmount;
-
-    private string $applyFromAmountWF;
-
-    private int $applyToAmount;
-
-    private string $applyToAmountWF;
-
+    #[Assert\NotBlank]
     private string $description;
 
-    private array $fields;
+    #[Assert\Choice([ShippingTypeEnum::COURIER->value, ShippingTypeEnum::PICK_UP->value])]
+    private string $type; // самовывоз, курьером
 
+    #[Assert\Choice([ShippingCalculationTypeEnum::CURRENCY->value, ShippingCalculationTypeEnum::PERCENT->value])]
+    private string $calculationType; // В проценнах, В валюте
+
+    #[Assert\Valid]
+    private ?ShippingPriceDto $price = null;
+
+    #[Assert\NotBlank]
     private bool $isActive;
 
+    private ?int $applyFromAmount = null;
 
-    public function getName(): string
+    private ?int $applyToAmount = null;
+
+    private ?int $freeFrom = null;
+
+    private bool $isNotFixed = false;
+
+    #[Assert\Valid]
+    private array $fields;
+
+    public function getTitle(): string
     {
-        return $this->name;
+        return $this->title;
     }
 
-    public function setName(string $name): void
+    public function setTitle(string $title): void
     {
-        $this->name = $name;
+        $this->title = $title;
     }
 
     public function getType(): string
@@ -59,26 +70,6 @@ class ShippingReqDto
         $this->calculationType = $calculationType;
     }
 
-    public function getAmount(): int
-    {
-        return $this->amount;
-    }
-
-    public function setAmount(int $amount): void
-    {
-        $this->amount = $amount;
-    }
-
-    public function getAmountWF(): string
-    {
-        return $this->amountWF;
-    }
-
-    public function setAmountWF(string $amountWF): void
-    {
-        $this->amountWF = $amountWF;
-    }
-
     public function getApplyFromAmount(): int
     {
         return $this->applyFromAmount;
@@ -89,14 +80,16 @@ class ShippingReqDto
         $this->applyFromAmount = $applyFromAmount;
     }
 
-    public function getApplyFromAmountWF(): string
+    public function getPrice(): ?ShippingPriceDto
     {
-        return $this->applyFromAmountWF;
+        return $this->price;
     }
 
-    public function setApplyFromAmountWF(string $applyFromAmountWF): void
+    public function setPrice(?ShippingPriceDto $price): self
     {
-        $this->applyFromAmountWF = $applyFromAmountWF;
+        $this->price = $price;
+
+        return $this;
     }
 
     public function getApplyToAmount(): int
@@ -107,16 +100,6 @@ class ShippingReqDto
     public function setApplyToAmount(int $applyToAmount): void
     {
         $this->applyToAmount = $applyToAmount;
-    }
-
-    public function getApplyToAmountWF(): string
-    {
-        return $this->applyToAmountWF;
-    }
-
-    public function setApplyToAmountWF(string $applyToAmountWF): void
-    {
-        $this->applyToAmountWF = $applyToAmountWF;
     }
 
     public function getDescription(): string
@@ -147,5 +130,29 @@ class ShippingReqDto
     public function setIsActive(bool $isActive): void
     {
         $this->isActive = $isActive;
+    }
+
+    public function getFreeFrom(): ?int
+    {
+        return $this->freeFrom;
+    }
+
+    public function setFreeFrom(?int $freeFrom): self
+    {
+        $this->freeFrom = $freeFrom;
+
+        return $this;
+    }
+
+    public function isNotFixed(): bool
+    {
+        return $this->isNotFixed;
+    }
+
+    public function setIsNotFixed(bool $isNotFixed): self
+    {
+        $this->isNotFixed = $isNotFixed;
+
+        return $this;
     }
 }

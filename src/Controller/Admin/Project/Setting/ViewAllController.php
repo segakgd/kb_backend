@@ -38,6 +38,7 @@ class ViewAllController extends AbstractController
     ) {
     }
 
+    /** Просмотр все настроек проекта */
     #[Route('/api/admin/project/{project}/setting/', name: 'admin_list_project_setting', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project): JsonResponse

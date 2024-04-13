@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Project\Tariff;
 
 use App\Controller\Admin\Project\DTO\Response\TariffSettingRespDto;
@@ -11,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\SerializerInterface;
 
 #[OA\Tag(name: 'Tariff')]
@@ -34,16 +37,17 @@ class ViewAllController extends AbstractController
     ) {
     }
 
+    /** Получение всех тарифов */
     #[Route('/api/admin/tariffs/', name: 'admin_list_tariffs', methods: ['GET'])]
     public function execute(): JsonResponse
     {
-        // todo проверить что пользователь в систему зашёл. На право на лево не стоит раскидываться апихами
+        if (!$this->getUser()) {
+            throw new AccessDeniedException('Access Denied.');
+        }
 
         $tariffs = $this->tariffService->getAllTariff();
 
-        return new JsonResponse(
-            $this->serializer->normalize($this->mapToResponse($tariffs))
-        );
+        return $this->json($this->serializer->normalize($this->mapToResponse($tariffs)));
     }
 
     private function mapToResponse(array $tariffs): array
@@ -51,7 +55,7 @@ class ViewAllController extends AbstractController
         $result = [];
 
         /** @var Tariff $tariff */
-        foreach ($tariffs as $tariff){
+        foreach ($tariffs as $tariff) {
             $result[] = (new TariffSettingRespDto())
                 ->setId($tariff->getId())
                 ->setName($tariff->getName())
@@ -59,8 +63,7 @@ class ViewAllController extends AbstractController
                 ->setPriceWF($tariff->getPriceWF())
                 ->setDescription($tariff->getDescription())
                 ->setCode($tariff->getCode())
-                ->setActive($tariff->isActive())
-            ;
+                ->setActive($tariff->isActive());
         }
 
         return $result;

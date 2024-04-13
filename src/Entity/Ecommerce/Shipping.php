@@ -1,7 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Ecommerce;
 
+use App\Controller\Admin\Shipping\DTO\Request\ShippingFieldReqDto;
+use App\Doctrine\Types\Shipping\ShippingFieldReqDtoArrayType;
+use App\Doctrine\Types\Shipping\ShippingPriceType;
+use App\Dto\Ecommerce\Shipping\ShippingPriceDto;
 use App\Repository\Ecommerce\ShippingEntityRepository;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
@@ -18,19 +24,42 @@ class Shipping
     private ?int $id = null;
 
     #[Groups(['administrator'])]
-    #[ORM\Column(length: 100)]
-    private ?string $title = null;
+    #[ORM\Column(length: 100, nullable: false)]
+    private string $title;
+
+    #[ORM\Column(length: 255, nullable: false)]
+    private string $description;
 
     #[Groups(['administrator'])]
-    #[ORM\Column(length: 20)]
-    private ?string $type = null;
+    #[ORM\Column(length: 20, nullable: false)]
+    private string $type;
 
-    #[ORM\Column]
-    private ?int $projectId = null;
+    #[ORM\Column(length: 50, nullable: false)]
+    private string $calculationType;
+
+    #[ORM\Column(nullable: false)]
+    private int $projectId;
 
     #[Groups(['administrator'])]
-    #[ORM\Column(type: Types::JSON, nullable: true)]
-    private array $price = [];
+    #[ORM\Column(type: ShippingPriceType::SHIPPING_PRICE_TYPE, nullable: true)]
+    private ?ShippingPriceDto $price;
+
+    #[ORM\Column(type: Types::BOOLEAN, nullable: false)]
+    private bool $isActive;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $applyFromAmount = null;
+    #[ORM\Column(nullable: true)]
+    private ?int $applyToAmount = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $freeFrom = null;
+
+    #[ORM\Column(nullable: false)]
+    private bool $isNotFixed = false;
+
+    #[ORM\Column(type: ShippingFieldReqDtoArrayType::SHIPPING_FIELD_REQ_DTO_ARRAY, nullable: false)]
+    private array $fields = [];
 
     #[ORM\Column]
     private ?DateTimeImmutable $createdAt = null;
@@ -40,7 +69,7 @@ class Shipping
 
     public function __construct()
     {
-        if ($this->createdAt === null){
+        if ($this->createdAt === null) {
             $this->createdAt = new DateTimeImmutable();
         }
     }
@@ -50,7 +79,7 @@ class Shipping
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -62,7 +91,7 @@ class Shipping
         return $this;
     }
 
-    public function getType(): ?string
+    public function getType(): string
     {
         return $this->type;
     }
@@ -74,7 +103,7 @@ class Shipping
         return $this;
     }
 
-    public function getProjectId(): ?int
+    public function getProjectId(): int
     {
         return $this->projectId;
     }
@@ -86,12 +115,12 @@ class Shipping
         return $this;
     }
 
-    public function getPrice(): array
+    public function getPrice(): ?ShippingPriceDto
     {
         return $this->price;
     }
 
-    public function setPrice(?array $price): static
+    public function setPrice(?ShippingPriceDto $price): static
     {
         $this->price = $price;
 
@@ -118,6 +147,110 @@ class Shipping
     public function setUpdatedAt(DateTimeImmutable $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getCalculationType(): string
+    {
+        return $this->calculationType;
+    }
+
+    public function setCalculationType(string $calculationType): static
+    {
+        $this->calculationType = $calculationType;
+
+        return $this;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): static
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+
+    public function getApplyFromAmount(): ?int
+    {
+        return $this->applyFromAmount;
+    }
+
+    public function setApplyFromAmount(?int $applyFromAmount): static
+    {
+        $this->applyFromAmount = $applyFromAmount;
+
+        return $this;
+    }
+
+    public function getApplyToAmount(): ?int
+    {
+        return $this->applyToAmount;
+    }
+
+    public function setApplyToAmount(?int $applyToAmount): static
+    {
+        $this->applyToAmount = $applyToAmount;
+
+        return $this;
+    }
+
+    public function getFreeFrom(): ?int
+    {
+        return $this->freeFrom;
+    }
+
+    public function setFreeFrom(?int $freeFrom): static
+    {
+        $this->freeFrom = $freeFrom;
+
+        return $this;
+    }
+
+    public function isNotFixed(): bool
+    {
+        return $this->isNotFixed;
+    }
+
+    public function setIsNotFixed(bool $isNotFixed): static
+    {
+        $this->isNotFixed = $isNotFixed;
+
+        return $this;
+    }
+
+    public function getFields(): array
+    {
+        return $this->fields;
+    }
+
+    public function setFields(array $fields): static
+    {
+        $this->fields = $fields;
+
+        return $this;
+    }
+
+    public function addField(ShippingFieldReqDto $field): static
+    {
+        $this->fields[] = $field;
 
         return $this;
     }

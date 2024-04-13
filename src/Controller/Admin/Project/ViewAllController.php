@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Project;
 
 use App\Controller\Admin\Project\DTO\Response\ProjectRespDto;
@@ -13,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 #[OA\Tag(name: 'Project')]
 #[OA\Response(
@@ -35,13 +38,16 @@ class ViewAllController extends AbstractController
     ) {
     }
 
+    /** Просмотр все проектов */
     #[Route('/api/admin/project/', name: 'admin_project_get_all', methods: ['GET'])]
     public function execute(): JsonResponse
     {
-        // todo ВНИМАНИЕ! нужно проерить права пользователя (не гость)
-
         /** @var User $user */
         $user = $this->getUser();
+
+        if (!$user) {
+            throw new AccessDeniedException('Access Denied.');
+        }
 
         $projects = $this->projectService->getAll($user);
         $response = $this->mapToResponse($projects);
@@ -54,7 +60,7 @@ class ViewAllController extends AbstractController
         $result = [];
 
         /** @var Project $project */
-        foreach ($projects as $project){
+        foreach ($projects as $project) {
             $fakeStatisticsByProject = $this->statisticsService->getStatisticForProject();
 
             $result[] = (new ProjectRespDto())
@@ -63,8 +69,7 @@ class ViewAllController extends AbstractController
                 ->setStatus($project->getStatus())
                 ->setStatistic($fakeStatisticsByProject)
                 ->setActiveFrom($project->getActiveFrom())
-                ->setActiveTo($project->getActiveTo())
-            ;
+                ->setActiveTo($project->getActiveTo());
         }
 
         return $result;
