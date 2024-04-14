@@ -68,18 +68,6 @@ class ShippingRespDto
         return $this;
     }
 
-    public function getAmount(): int
-    {
-        return $this->amount;
-    }
-
-    public function setAmount(int $amount): self
-    {
-        $this->amount = $amount;
-
-        return $this;
-    }
-
     public function getAmountWF(): string
     {
         return $this->amountWF;

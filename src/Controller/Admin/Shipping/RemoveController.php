@@ -23,7 +23,7 @@ use Throwable;
 )]
 class RemoveController extends AbstractController
 {
-    public function __construct(private readonly ShippingManagerInterface $shippingManager,)
+    public function __construct(private readonly ShippingManagerInterface $shippingManager)
     {
     }
 
