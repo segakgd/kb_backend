@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Helper\Ecommerce;
+namespace App\Helper\Ecommerce\Product;
 
 use App\Controller\Admin\Product\DTO\Response\ProductCategoryRespDto;
 use App\Entity\Ecommerce\ProductCategory;

@@ -1,16 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Shipping\DTO\Response;
+
+use App\Dto\Ecommerce\Shipping\ShippingPriceDto;
 
 class ShippingRespDto
 {
     private string $name;
 
-    private string $type; // самовывоз, курьером
+    private string $type;
 
-    private string $calculationType; // В проценнах, В валюте
+    private string $calculationType;
 
-    private int $amount;
+    private ShippingPriceDto $price;
 
     private string $amountWF;
 
@@ -160,6 +164,13 @@ class ShippingRespDto
         return $this;
     }
 
+    public function setFields(array $fields): self
+    {
+        $this->fields = $fields;
+
+        return $this;
+    }
+
     public function isActive(): bool
     {
         return $this->isActive;
@@ -168,6 +179,18 @@ class ShippingRespDto
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getPrice(): ShippingPriceDto
+    {
+        return $this->price;
+    }
+
+    public function setPrice(ShippingPriceDto $price): self
+    {
+        $this->price = $price;
 
         return $this;
     }

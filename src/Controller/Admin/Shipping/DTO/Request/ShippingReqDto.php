@@ -8,6 +8,7 @@ use App\Dto\Ecommerce\Shipping\ShippingPriceDto;
 use App\Enum\Shipping\ShippingCalculationTypeEnum;
 use App\Enum\Shipping\ShippingTypeEnum;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class ShippingReqDto
 {
@@ -40,14 +41,25 @@ class ShippingReqDto
     #[Assert\Valid]
     private array $fields;
 
+    public function validate(ExecutionContextInterface $context): void
+    {
+        if ($this->applyFromAmount !== null && $this->applyToAmount !== null && $this->applyFromAmount > $this->applyToAmount) {
+            $context
+                ->buildViolation('apply period has logical error')
+                ->addViolation();
+        }
+    }
+
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    public function setTitle(string $title): void
+    public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
     }
 
     public function getType(): string
@@ -55,9 +67,11 @@ class ShippingReqDto
         return $this->type;
     }
 
-    public function setType(string $type): void
+    public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
     }
 
     public function getCalculationType(): string
@@ -65,19 +79,23 @@ class ShippingReqDto
         return $this->calculationType;
     }
 
-    public function setCalculationType(string $calculationType): void
+    public function setCalculationType(string $calculationType): self
     {
         $this->calculationType = $calculationType;
+
+        return $this;
     }
 
-    public function getApplyFromAmount(): int
+    public function getApplyFromAmount(): ?int
     {
         return $this->applyFromAmount;
     }
 
-    public function setApplyFromAmount(int $applyFromAmount): void
+    public function setApplyFromAmount(?int $applyFromAmount): self
     {
         $this->applyFromAmount = $applyFromAmount;
+
+        return $this;
     }
 
     public function getPrice(): ?ShippingPriceDto
@@ -92,14 +110,16 @@ class ShippingReqDto
         return $this;
     }
 
-    public function getApplyToAmount(): int
+    public function getApplyToAmount(): ?int
     {
         return $this->applyToAmount;
     }
 
-    public function setApplyToAmount(int $applyToAmount): void
+    public function setApplyToAmount(?int $applyToAmount): self
     {
         $this->applyToAmount = $applyToAmount;
+
+        return $this;
     }
 
     public function getDescription(): string
@@ -107,9 +127,11 @@ class ShippingReqDto
         return $this->description;
     }
 
-    public function setDescription(string $description): void
+    public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
     }
 
     public function getFields(): array
@@ -117,9 +139,11 @@ class ShippingReqDto
         return $this->fields;
     }
 
-    public function addFields(ShippingFieldReqDto $field): void
+    public function addFields(ShippingFieldReqDto $field): self
     {
         $this->fields[] = $field;
+
+        return $this;
     }
 
     public function isActive(): bool
@@ -127,9 +151,11 @@ class ShippingReqDto
         return $this->isActive;
     }
 
-    public function setIsActive(bool $isActive): void
+    public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
+
+        return $this;
     }
 
     public function getFreeFrom(): ?int
