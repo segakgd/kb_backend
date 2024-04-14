@@ -19,7 +19,7 @@ class ProductCategoryHelper
     public static function mapArrayToResponse(array $productCategories): array
     {
         return array_map(function (ProductCategory $productCategory) {
-            return $this->mapToResponse($productCategory);
+            return self::mapToResponse($productCategory);
         }, $productCategories);
     }
 }

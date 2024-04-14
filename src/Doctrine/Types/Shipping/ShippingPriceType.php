@@ -20,21 +20,29 @@ class ShippingPriceType extends JsonType
 
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
+        if (empty($value)) {  // Checks for both null and empty string
+            return null;
+        }
+
         $data = json_decode($value, true);
-        if (!$data) {
+        if ($data === null) {
             return null;
         }
 
         return ShippingPriceDto::fromArray($data);
     }
 
-    public function convertToDatabaseValue($value, AbstractPlatform $platform): false|string|null
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
+        if ($value === null) {
+            return null;  // Return null directly if the value is null
+        }
+
         if ($value instanceof ShippingPriceDto) {
             return json_encode($value->toArray());
         }
 
-        throw new InvalidArgumentException('Value must be an instance of ShippingPriceDto');
+        throw new InvalidArgumentException('Value must be an instance of ShippingPriceDto or null');
     }
 
     public function getName(): string

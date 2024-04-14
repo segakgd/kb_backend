@@ -30,8 +30,12 @@ class RemoveController extends AbstractController
     /** Удаление доставки */
     #[Route('/api/admin/project/{project}/shipping/{shipping}/', name: 'admin_shipping_remove', methods: ['DELETE'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Project $project, Shipping $shipping): JsonResponse
+    public function execute(Project $project, ?Shipping $shipping): JsonResponse
     {
+        if ($shipping === null) {
+            return $this->json('Not found', Response::HTTP_NOT_FOUND);
+        }
+
         if ($shipping->getProjectId() !== $project->getId()) {
             throw new AccessDeniedException('Access Denied.');
         }

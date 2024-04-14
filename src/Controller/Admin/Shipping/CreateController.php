@@ -47,7 +47,6 @@ class CreateController extends AbstractController
 
         try {
             $requestDto = $this->serializer->deserialize($content, ShippingReqDto::class, 'json');
-
             $errors = $this->validator->validate($requestDto);
 
             if (count($errors) > 0) {
@@ -56,8 +55,9 @@ class CreateController extends AbstractController
 
             $this->shippingManager->create($requestDto, $project);
         } catch (Throwable $exception) {
-            $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
+            return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
+
         return $this->json([], Response::HTTP_NO_CONTENT);
     }
 }

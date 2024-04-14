@@ -27,7 +27,7 @@ class ProductHelper
     public static function mapArrayToResponse(array $products): array
     {
         return array_map(function (Product $product) {
-            return $this->mapToResponse($product);
+            return self::mapToResponse($product);
         }, $products);
     }
 }

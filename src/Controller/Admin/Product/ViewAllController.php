@@ -43,7 +43,7 @@ class ViewAllController extends AbstractController
     public function execute(Project $project): JsonResponse
     {
         try {
-            return $this->json(ProductHelper::mapArrayToResponse(($this->productManager->getAll($project))));
+            return $this->json(ProductHelper::mapArrayToResponse($this->productManager->getAll($project)));
         } catch (Throwable $exception) {
             return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }

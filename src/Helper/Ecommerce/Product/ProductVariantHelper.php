@@ -22,7 +22,7 @@ class ProductVariantHelper
     public static function mapArrayToResponse(array $variants): array
     {
         return array_map(function (ProductVariant $productCategory) {
-            return $this->mapToResponse($productCategory);
+            return self::mapToResponse($productCategory);
         }, $variants);
     }
 }

@@ -42,8 +42,12 @@ class UpdateController extends AbstractController
     /** Обновление категории продуктов */
     #[Route('/api/admin/project/{project}/productCategory/{productCategory}/', name: 'admin_product_category_update', methods: ['PATCH'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Request $request, Project $project, ProductCategory $productCategory): JsonResponse
+    public function execute(Request $request, Project $project, ?ProductCategory $productCategory): JsonResponse
     {
+        if (null === $productCategory) {
+            return new JsonResponse('Not found', Response::HTTP_NOT_FOUND);
+        }
+
         try {
             $requestDto = $this->serializer->deserialize($request->getContent(), ProductCategoryReqDto::class, 'json');
 

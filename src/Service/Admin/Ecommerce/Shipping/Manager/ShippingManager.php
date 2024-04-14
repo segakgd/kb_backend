@@ -43,8 +43,12 @@ class ShippingManager implements ShippingManagerInterface
 
     private function adjustShippingValues(ShippingReqDto $shippingReqDto): void
     {
-        if (null !== $shippingReqDto->isNotFixed()) {
-            $shippingReqDto->setApplyToAmount(null)->setApplyFromAmount(null)->setPrice(null);
+        if (false !== $shippingReqDto->isNotFixed()) {
+            $shippingReqDto
+                ->setApplyToAmount(null)
+                ->setApplyFromAmount(null)
+                ->setPrice(null)
+                ->setFreeFrom(null);
         }
     }
 

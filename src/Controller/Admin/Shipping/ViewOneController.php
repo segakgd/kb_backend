@@ -30,8 +30,12 @@ class ViewOneController extends AbstractController
     /** Получение доставки */
     #[Route('/api/admin/project/{project}/shipping/{shipping}/', name: 'admin_shipping_get_one', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Project $project, Shipping $shipping): JsonResponse
+    public function execute(Project $project, ?Shipping $shipping): JsonResponse
     {
+        if ($shipping === null) {
+            return $this->json('Not found', Response::HTTP_NOT_FOUND);
+        }
+
         if ($project->getId() !== $shipping->getProjectId()) {
             throw new AccessDeniedException('Access Denied.');
         }

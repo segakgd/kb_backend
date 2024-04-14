@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Shipping;
 
 use App\Controller\Admin\Lead\DTO\Response\Order\Shipping\ShippingRespDto;

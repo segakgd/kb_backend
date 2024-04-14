@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Helper\Ecommerce\Shipping;
 
 use App\Controller\Admin\Shipping\DTO\Request\ShippingReqDto;
-use App\Controller\Admin\Shipping\DTO\Response\ShippingFieldRespDto;
 use App\Controller\Admin\Shipping\DTO\Response\ShippingRespDto;
 use App\Entity\Ecommerce\Shipping;
 
@@ -44,8 +43,8 @@ class ShippingHelper
     public static function MapToResponseDto(Shipping $shipping): ShippingRespDto
     {
         return (new ShippingRespDto())
-            ->setName('Доставка до самого дома')
-            ->setType(\App\Controller\Admin\Lead\DTO\Response\Order\Shipping\ShippingRespDto::TYPE_PICKUP)
+            ->setName($shipping->getTitle())
+            ->setType($shipping->getType())
             ->setApplyFromAmount($shipping->getApplyFromAmount())
             ->setIsActive($shipping->isActive())
             ->setApplyToAmount($shipping->getApplyToAmount())

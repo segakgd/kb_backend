@@ -43,9 +43,9 @@ class UpdateController extends AbstractController
     /** Обновление доставки */
     #[Route('/api/admin/project/{project}/shipping/{shipping}/', name: 'admin_shipping_update', methods: ['PATCH'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Request $request, Project $project, Shipping $shippingId): JsonResponse
+    public function execute(Request $request, Project $project, Shipping $shipping): JsonResponse
     {
-        if ($project->getId() !== $shippingId->getProjectId()) {
+        if ($project->getId() !== $shipping->getProjectId()) {
             throw new AccessDeniedException('Access Denied.');
         }
 
@@ -58,7 +58,7 @@ class UpdateController extends AbstractController
                 return $this->json($errors->get(0)->getMessage(), Response::HTTP_BAD_REQUEST);
             }
 
-            $this->shippingManager->update($shippingDto, $shippingId, $project);
+            $this->shippingManager->update($shippingDto, $shipping, $project);
         } catch (Throwable $exception) {
             return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }

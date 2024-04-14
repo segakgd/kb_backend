@@ -41,11 +41,30 @@ class ShippingReqDto
     #[Assert\Valid]
     private array $fields;
 
+    #[Assert\Callback]
     public function validate(ExecutionContextInterface $context): void
     {
         if ($this->applyFromAmount !== null && $this->applyToAmount !== null && $this->applyFromAmount > $this->applyToAmount) {
             $context
                 ->buildViolation('apply period has logical error')
+                ->addViolation();
+        }
+
+        if (!$this->isNotFixed && $this->price === null) {
+            $context
+                ->buildViolation('price not fixed')
+                ->addViolation();
+        }
+
+        if ($this->applyToAmount !== null && $this->applyToAmount < 0 || $this->applyFromAmount !== null && $this->applyFromAmount < 0)  {
+            $context
+                ->buildViolation('applyFromAmount and applyToAmount must be greater than 0')
+                ->addViolation();
+        }
+
+        if ($this->freeFrom !== null && $this->freeFrom < 0) {
+            $context
+                ->buildViolation('freeFrom must be greater than 0')
                 ->addViolation();
         }
     }
