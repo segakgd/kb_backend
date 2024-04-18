@@ -51,7 +51,7 @@ class OrderVariantType extends Type
             return json_encode($dataArray);
         }
 
-        throw new \InvalidArgumentException('Array of OrderVariantReqDto Instances Expected');
+        throw new InvalidArgumentException('Array of OrderVariantReqDto Instances Expected');
     }
 
     public function getName(): string
@@ -59,7 +59,7 @@ class OrderVariantType extends Type
         return self::NAME;
     }
 
-    public function requiresSQLCommentHint(AbstractPlatform $platform): true
+    public function requiresSQLCommentHint(AbstractPlatform $platform): bool
     {
         return true;
     }
