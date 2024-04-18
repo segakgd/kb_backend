@@ -12,6 +12,7 @@ use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Throwable;
@@ -26,6 +27,21 @@ class MainWebhookController extends AbstractController
         private readonly BotServiceInterface $botService,
         private readonly MessageHistoryService $messageHistoryService,
     ) {
+    }
+
+    #[Route('/', name: 'app_main', methods: ['GET'])]
+    public function main(): Response
+    {
+        return new Response(
+            '
+                    <div>Авторизация</div>
+                    <form>
+                    <input >
+                    <input >
+                    <button>Войти</button>
+                    </form>
+                '
+        );
     }
 
     /**
