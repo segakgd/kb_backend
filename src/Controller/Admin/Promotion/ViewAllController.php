@@ -57,9 +57,6 @@ class ViewAllController extends AbstractController
             return $this->json(['message' => $errors->get(0)->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
-        $response = $this->promotionManager->getAllByProject($project);
-
-        return $this->json(
-        );
+        return $this->json($this->promotionManager->getAllByProject($project));
     }
 }
