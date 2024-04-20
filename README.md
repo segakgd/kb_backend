@@ -62,6 +62,14 @@ Service - логика и болото
 ---
 
 ~~~
+Запускаем на локалке:
+docker compose -f docker-compose-local.yml up
+
+Запускаем на локалке (в фоне):
+docker compose -f docker-compose-local.yml up -d
+~~~
+
+~~~
 Команда для генерации ключей jwt в системе:
 bin/console lexik:jwt:generate-keypair
 ~~~
