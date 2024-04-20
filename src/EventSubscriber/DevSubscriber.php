@@ -36,7 +36,7 @@ class DevSubscriber implements EventSubscriberInterface
     public function checkRequest(RequestEvent $event): void
     {
         if (!$this->checkUri($event) && !$this->checkIp($event)){
-            $event->setResponse(new Response(null, Response::HTTP_NOT_FOUND));
+            $event->setResponse(new Response('Не судьба...', Response::HTTP_NOT_FOUND));
         }
     }
 
