@@ -1,28 +1,53 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Promotion\DTO\Request;
 
-use DateTimeImmutable;
+use App\Enum\Promotion\PromotionDiscountTypeEnum;
+use App\Enum\Promotion\PromotionTypeEnum;
+use DateTimeInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class PromotionReqDto
 {
     private string $name;
 
-    private string $type; // percent current
-
     private string $code;
 
-    private int $triggersQuantity;
+    #[Assert\Choice([PromotionTypeEnum::PROMO_CODE->value, PromotionTypeEnum::DISCOUNT->value])]
+    private string $type;
+
+    #[Assert\Choice([
+        PromotionDiscountTypeEnum::PERCENT->value,
+        PromotionDiscountTypeEnum::CURRENCY->value,
+        PromotionDiscountTypeEnum::SHIPPING->value
+    ])]
+    private string $discountType;
+
+    #[Assert\GreaterThanOrEqual(0)]
+    private int $amount;
+
+    private ?int $count = null;
 
     private bool $isActive;
 
-    private int $amount;
+    private bool $usageWithAnyDiscount;
 
-    private string $amountWithFraction;
+    private ?DateTimeInterface $activeFrom = null;
 
-    private DateTimeImmutable $activeFrom;
+    private ?DateTimeInterface $activeTo = null;
 
-    private DateTimeImmutable $activeTo;
+    #[Assert\Callback]
+    public function validate(ExecutionContextInterface $context): void
+    {
+        if ($this->activeFrom !== null && $this->activeTo !== null && $this->activeFrom > $this->activeTo) {
+            $context->buildViolation('The start date must be before or equal to the end date.')
+                ->atPath('activeFrom')
+                ->addViolation();
+        }
+    }
 
     public function getName(): string
     {
@@ -36,16 +61,76 @@ class PromotionReqDto
         return $this;
     }
 
+    public function getDiscountType(): string
+    {
+        return $this->discountType;
+    }
+
+    public function setDiscountType(string $discountType): self
+    {
+        $this->discountType = $discountType;
+
+        return $this;
+    }
+
+    public function isUsageWithAnyDiscount(): bool
+    {
+        return $this->usageWithAnyDiscount;
+    }
+
+    public function setUsageWithAnyDiscount(bool $usageWithAnyDiscount): self
+    {
+        $this->usageWithAnyDiscount = $usageWithAnyDiscount;
+
+        return $this;
+    }
+
+    public function getCount(): ?int
+    {
+        return $this->count;
+    }
+
+    public function setCount(?int $count): self
+    {
+        $this->count = $count;
+
+        return $this;
+    }
+
+    // Continue defining setters and getters for remaining properties...
+
+    public function getActiveFrom(): ?DateTimeInterface
+    {
+        return $this->activeFrom;
+    }
+
+    public function setActiveFrom(?DateTimeInterface $activeFrom): self
+    {
+        $this->activeFrom = $activeFrom;
+
+        return $this;
+    }
+
+    public function getActiveTo(): ?DateTimeInterface
+    {
+        return $this->activeTo;
+    }
+
+    public function setActiveTo(?DateTimeInterface $activeTo): self
+    {
+        $this->activeTo = $activeTo;
+
+        return $this;
+    }
+
     public function getType(): string
     {
         return $this->type;
     }
 
-    public function setType(string $type): self
+    public function setType(string $type): void
     {
         $this->type = $type;
-
-        return $this;
     }
 
     public function getCode(): string
@@ -53,35 +138,9 @@ class PromotionReqDto
         return $this->code;
     }
 
-    public function setCode(string $code): self
+    public function setCode(string $code): void
     {
         $this->code = $code;
-
-        return $this;
-    }
-
-    public function getTriggersQuantity(): int
-    {
-        return $this->triggersQuantity;
-    }
-
-    public function setTriggersQuantity(int $triggersQuantity): self
-    {
-        $this->triggersQuantity = $triggersQuantity;
-
-        return $this;
-    }
-
-    public function isActive(): bool
-    {
-        return $this->isActive;
-    }
-
-    public function setIsActive(bool $isActive): self
-    {
-        $this->isActive = $isActive;
-
-        return $this;
     }
 
     public function getAmount(): int
@@ -89,46 +148,18 @@ class PromotionReqDto
         return $this->amount;
     }
 
-    public function setAmount(int $amount): self
+    public function setAmount(int $amount): void
     {
         $this->amount = $amount;
-
-        return $this;
     }
 
-    public function getAmountWithFraction(): string
+    public function setIsActive(bool $isActive): void
     {
-        return $this->amountWithFraction;
+        $this->isActive = $isActive;
     }
 
-    public function setAmountWithFraction(string $amountWithFraction): self
+    public function isActive(): bool
     {
-        $this->amountWithFraction = $amountWithFraction;
-
-        return $this;
-    }
-
-    public function getActiveFrom(): DateTimeImmutable
-    {
-        return $this->activeFrom;
-    }
-
-    public function setActiveFrom(DateTimeImmutable $activeFrom): self
-    {
-        $this->activeFrom = $activeFrom;
-
-        return $this;
-    }
-
-    public function getActiveTo(): DateTimeImmutable
-    {
-        return $this->activeTo;
-    }
-
-    public function setActiveTo(DateTimeImmutable $activeTo): self
-    {
-        $this->activeTo = $activeTo;
-
-        return $this;
+        return $this->isActive;
     }
 }

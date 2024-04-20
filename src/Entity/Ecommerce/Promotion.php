@@ -4,6 +4,7 @@ namespace App\Entity\Ecommerce;
 
 use App\Repository\Ecommerce\PromotionEntityRepository;
 use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -18,46 +19,51 @@ class Promotion
     private ?int $id = null;
 
     #[Groups(['administrator'])]
-    #[ORM\Column(length: 100)]
-    private ?string $name = null;
+    #[ORM\Column(length: 100, nullable: false)]
+    private string $name;
 
     #[Groups(['administrator'])]
-    #[ORM\Column]
-    private array $price = [];
+    #[ORM\Column(length: 20, nullable: false)]
+    private string $type;
 
-    #[Groups(['administrator'])]
+    #[ORM\Column(length: 255, nullable: false)]
+    private string $discountType;
+
+    #[ORM\Column(nullable: false)]
+    private int $projectId;
+
+    #[ORM\Column(nullable: false)]
+    private int $amount;
+
+    #[ORM\Column(length: 100, nullable: false)]
+    private string $code;
+
     #[ORM\Column(length: 20)]
-    private ?string $type = null;
-
-    #[ORM\Column]
-    private ?int $projectId = null;
-
-    #[ORM\Column]
-    private ?int $amount = null;
-
-    #[ORM\Column(length: 100, nullable: true)]
-    private ?string $code = null;
-
-    #[ORM\Column(length: 20)]
-    private ?string $discountForm = null;
+    private ?int $discountFrom = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $count = null;
 
-    #[ORM\Column]
-    private ?bool $active = null;
+    #[ORM\Column(nullable: false)]
+    private bool $active;
+
+    #[Orm\Column(nullable: false)]
+    private bool $usageWithAnyDiscount;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $activeFrom = null;
+    private ?DateTimeInterface $activeFrom = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $activeTo = null;
+    private ?DateTimeInterface $activeTo = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
-    private ?DateTimeImmutable $updatedAt = null;
+    private ?DateTimeInterface $updatedAt = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?DateTimeInterface $deletedAt = null;
 
     public function __construct()
     {
@@ -79,18 +85,6 @@ class Promotion
     public function setName(string $name): static
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getPrice(): array
-    {
-        return $this->price;
-    }
-
-    public function setPrice(array $price): static
-    {
-        $this->price = $price;
 
         return $this;
     }
@@ -143,14 +137,14 @@ class Promotion
         return $this;
     }
 
-    public function getDiscountForm(): ?string
+    public function getDiscountFrom(): ?string
     {
-        return $this->discountForm;
+        return $this->discountFrom;
     }
 
-    public function setDiscountForm(string $discountForm): static
+    public function setDiscountFrom(string $discountFrom): static
     {
-        $this->discountForm = $discountForm;
+        $this->discountFrom = $discountFrom;
 
         return $this;
     }
@@ -167,7 +161,7 @@ class Promotion
         return $this;
     }
 
-    public function isActive(): ?bool
+    public function isActive(): bool
     {
         return $this->active;
     }
@@ -179,24 +173,24 @@ class Promotion
         return $this;
     }
 
-    public function getActiveFrom(): ?\DateTimeInterface
+    public function getActiveFrom(): ?DateTimeInterface
     {
         return $this->activeFrom;
     }
 
-    public function setActiveFrom(?\DateTimeInterface $activeFrom): static
+    public function setActiveFrom(?DateTimeInterface $activeFrom): static
     {
         $this->activeFrom = $activeFrom;
 
         return $this;
     }
 
-    public function getActiveTo(): ?\DateTimeInterface
+    public function getActiveTo(): ?DateTimeInterface
     {
         return $this->activeTo;
     }
 
-    public function setActiveTo(?\DateTimeInterface $activeTo): static
+    public function setActiveTo(?DateTimeInterface $activeTo): static
     {
         $this->activeTo = $activeTo;
 
@@ -215,7 +209,7 @@ class Promotion
         return $this;
     }
 
-    public function getUpdatedAt(): ?DateTimeImmutable
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
@@ -223,6 +217,42 @@ class Promotion
     public function setUpdatedAt(DateTimeImmutable $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getDeletedAt(): ?DateTimeInterface
+    {
+        return $this->deletedAt;
+    }
+
+    public function setDeletedAt(?DateTimeInterface $deletedAt): static
+    {
+        $this->deletedAt = $deletedAt;
+
+        return $this;
+    }
+
+    public function isUsageWithAnyDiscount(): bool
+    {
+        return $this->usageWithAnyDiscount;
+    }
+
+    public function setUsageWithAnyDiscount(bool $usageWithAnyDiscount): static
+    {
+        $this->usageWithAnyDiscount = $usageWithAnyDiscount;
+
+        return $this;
+    }
+
+    public function getDiscountType(): string
+    {
+        return $this->discountType;
+    }
+
+    public function setDiscountType(string $discountType): static
+    {
+        $this->discountType = $discountType;
 
         return $this;
     }
