@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Service\Admin\Ecommerce\Promotion;
+namespace App\Service\Admin\Ecommerce\Promotion\Service;
 
 use App\Entity\Ecommerce\Promotion;
 use App\Entity\User\Project;

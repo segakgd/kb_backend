@@ -8,7 +8,7 @@ use App\Controller\Admin\Shipping\DTO\Request\ShippingReqDto;
 use App\Entity\Ecommerce\Shipping;
 use App\Entity\User\Project;
 use App\Helper\Ecommerce\Shipping\ShippingHelper;
-use App\Service\Admin\Ecommerce\Shipping\ShippingService;
+use App\Service\Admin\Ecommerce\Shipping\Service\ShippingService;
 
 class ShippingManager implements ShippingManagerInterface
 {

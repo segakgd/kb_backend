@@ -14,8 +14,8 @@ use App\Entity\Ecommerce\ProductVariant;
 use App\Entity\Ecommerce\Shipping;
 use App\Entity\User\Project;
 use App\Service\Admin\Ecommerce\ProductVariant\Service\ProductVariantService;
-use App\Service\Admin\Ecommerce\Promotion\PromotionService;
-use App\Service\Admin\Ecommerce\Shipping\ShippingService;
+use App\Service\Admin\Ecommerce\Promotion\Service\PromotionService;
+use App\Service\Admin\Ecommerce\Shipping\Service\ShippingService;
 use Exception;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 

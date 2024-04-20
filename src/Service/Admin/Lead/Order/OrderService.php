@@ -5,17 +5,14 @@ declare(strict_types=1);
 namespace App\Service\Admin\Lead\Order;
 
 use App\Controller\Admin\Lead\DTO\Request\Order\OrderReqDto;
-use App\Controller\Admin\Lead\DTO\Request\Order\Product\OrderProductReqDto;
 use App\Controller\Admin\Lead\DTO\Request\Order\Product\OrderVariantReqDto;
 use App\Controller\Admin\Lead\DTO\Request\Order\Promotion\OrderPromotionReqDto;
 use App\Controller\Admin\Lead\DTO\Request\Order\Shipping\OrderShippingReqDto;
 use App\Entity\Lead\DealOrder;
-use App\Entity\User\Project;
 use App\Repository\Lead\OrderEntityRepository;
 use App\Service\Admin\Ecommerce\ProductVariant\Service\ProductVariantService;
-use App\Service\Admin\Ecommerce\Promotion\PromotionService;
-use App\Service\Admin\Ecommerce\Shipping\ShippingService;
-use Doctrine\Common\Collections\Order;
+use App\Service\Admin\Ecommerce\Promotion\Service\PromotionService;
+use App\Service\Admin\Ecommerce\Shipping\Service\ShippingService;
 
 class OrderService
 {

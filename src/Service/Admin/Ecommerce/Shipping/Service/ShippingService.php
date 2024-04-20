@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Service\Admin\Ecommerce\Shipping;
+namespace App\Service\Admin\Ecommerce\Shipping\Service;
 
 use App\Entity\Ecommerce\Shipping;
-use App\Entity\User\Project;
 use App\Repository\Ecommerce\ShippingEntityRepository;
 
 class ShippingService implements ShippingServiceInterface

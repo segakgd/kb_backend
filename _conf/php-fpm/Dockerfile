@@ -1,4 +1,4 @@
-FROM devilbox/php-fpm:8.1-prod
+FROM devilbox/php-fpm:8.2-prod
 
 WORKDIR /var/www/kraiber-backend
 

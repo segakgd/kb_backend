@@ -8,7 +8,7 @@ use App\Controller\Admin\Promotion\DTO\Request\PromotionReqDto;
 use App\Entity\Ecommerce\Promotion;
 use App\Entity\User\Project;
 use App\Helper\Ecommerce\Promotion\PromotionHelper;
-use App\Service\Admin\Ecommerce\Promotion\PromotionService;
+use App\Service\Admin\Ecommerce\Promotion\Service\PromotionService;
 
 class PromotionManager implements PromotionManagerInterface
 {
