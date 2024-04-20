@@ -5,10 +5,9 @@ namespace App\Service\System\Resolver\Chains\Items\Items\Cart\Shipping;
 use App\Controller\Admin\Lead\DTO\Response\Order\Shipping\ShippingRespDto;
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\MessageHelper;
-use App\Service\System\Handler\Chain\AbstractChain;
 use App\Service\System\Resolver\Dto\Contract;
 
-class ShippingChain extends AbstractChain
+class ShippingChain // extends AbstractChain
 {
     public function success(Contract $contract, CacheDto $cacheDto): bool
     {
@@ -65,7 +64,7 @@ class ShippingChain extends AbstractChain
             ];
 
             $cart->setShipping($shipping);
-            $contract->setGoto('cart.finish');
+//            $contract->setGoto('cart.finish');
         }
 
         $contractMessage = MessageHelper::createContractMessage(

@@ -7,11 +7,10 @@ use App\Helper\KeyboardHelper;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\Product\Service\ProductService;
 use App\Service\System\Common\PaginateService;
-use App\Service\System\Handler\Chain\AbstractChain;
 use App\Service\System\Resolver\Dto\Contract;
 use Exception;
 
-class ShopProductPromoChain extends AbstractChain
+class ShopProductPromoChain // extends AbstractChain
 {
     public function __construct(
         private readonly ProductService $productService,
@@ -26,11 +25,11 @@ class ShopProductPromoChain extends AbstractChain
     {
         $content = $cacheDto->getContent();
 
-        if ($cacheDto->getEvent()->getCurrentChain()->isRepeat()) {
-            $cacheDto->getEvent()->getCurrentChain()->setRepeat(false);
-
-            $content = 'first'; // todo мб возвращать на тот товар с которого ушли?
-        }
+//        if ($cacheDto->getEvent()->getCurrentChain()->isRepeat()) {
+//            $cacheDto->getEvent()->getCurrentChain()->setRepeat(false);
+//
+//            $content = 'first'; // todo мб возвращать на тот товар с которого ушли?
+//        }
 
         $event = $cacheDto->getEvent();
 

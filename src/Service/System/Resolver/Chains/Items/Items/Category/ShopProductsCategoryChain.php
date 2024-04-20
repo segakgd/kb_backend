@@ -7,11 +7,10 @@ use App\Helper\KeyboardHelper;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\ProductCategory\Service\ProductCategoryService;
 use App\Service\System\Common\PaginateService;
-use App\Service\System\Handler\Chain\AbstractChain;
 use App\Service\System\Resolver\Dto\Contract;
 use Exception;
 
-class ShopProductsCategoryChain extends AbstractChain
+class ShopProductsCategoryChain // extends AbstractChain
 {
     public function __construct(
         private readonly ProductCategoryService $categoryService,

@@ -6,10 +6,9 @@ use App\Dto\SessionCache\Cache\CacheDto;
 use App\Entity\Ecommerce\ProductVariant;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\Product\Service\ProductService;
-use App\Service\System\Handler\Chain\Items\AbstractChai;
 use App\Service\System\Resolver\Dto\Contract;
 
-class ShopProductVariantChain extends AbstractChai
+class ShopProductVariantChain // extends AbstractChai
 {
     public function __construct(
         private readonly ProductService $productService,

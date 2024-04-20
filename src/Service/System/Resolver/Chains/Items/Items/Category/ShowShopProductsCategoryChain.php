@@ -6,10 +6,9 @@ use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\KeyboardHelper;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\ProductCategory\Service\ProductCategoryService;
-use App\Service\System\Handler\Chain\Items\Category\AbstractChain;
 use App\Service\System\Resolver\Dto\Contract;
 
-class ShowShopProductsCategoryChain extends AbstractChain
+class ShowShopProductsCategoryChain // extends AbstractChain
 {
     public function __construct(private readonly ProductCategoryService $categoryService)
     {

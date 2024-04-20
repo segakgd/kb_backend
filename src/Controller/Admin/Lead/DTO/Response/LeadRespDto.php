@@ -18,7 +18,7 @@ class LeadRespDto
 
     private array $fields;
 
-    private string $status = LeadStatusEnum::LEAD_STATUS_NEW->value; // new process suspended rejected successful
+    private string $status = 'new';
 
     private OrderRespDto $order;
 
