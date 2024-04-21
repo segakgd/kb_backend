@@ -10,18 +10,17 @@
                 <span class="loading_logo_text">Kraiber</span>
             </div>
 
-            <form class="logging--form" method="post">
+            <form class="logging--form" action="{{ path('app_login_check') }}" method="post">
                 <section>
                     <span>Эл. почта</span>
-                    <input type="text" name="_username" value="hi@mail.ru" placeholder="E-mail"/>
+                    <input type="text" id="username" name="_username" required>
                 </section>
                 <section>
                     <span>Пароль</span>
-                    <input type="password" name="_password" value="mypass" placeholder="Пароль"/>
-{#                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">#}
+                    <input type="password" id="password" name="_password" required>
                 </section>
 
-                <div class="logging--error"> {{ error }} </div>
+                <div class="logging--error"></div>
 
                 <button class="m--ntn logging--ntn" type="submit">Войти</button>
             </form>
