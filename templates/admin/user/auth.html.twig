@@ -10,14 +10,14 @@
                 <span class="loading_logo_text">Kraiber</span>
             </div>
 
-            <form class="logging--form" action="{{ path('login_admin') }}" method="post">
+            <form class="logging--form" action="{{ path('app_login_check') }}" method="post">
                 <section>
                     <span>Эл. почта</span>
-                    <input type="text" name="username" value="{{ last_username }}" placeholder="E-mail"/>
+                    <input type="text" name="_username" value="hi@mail.ru" placeholder="E-mail"/>
                 </section>
                 <section>
                     <span>Пароль</span>
-                    <input type="text" name="password" placeholder="Пароль"/>
+                    <input type="password" name="_password" value="mypass" placeholder="Пароль"/>
                 </section>
 
                 <div class="logging--error"> {{ error }} </div>

@@ -12,20 +12,20 @@ security:
                 property: email
 
     firewalls:
-        login:
+        login_admin:
+            pattern: ^/admin/login
+            form_login:
+                login_path: login_admin_form
+                check_path: app_login_check
+                default_target_path: /admin/dashboard
+
+        login_api:
             pattern: ^/api/user/authenticate/
             stateless: true
             json_login:
                 check_path: /api/user/authenticate/
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
-
-        login_admin:
-            pattern: ^/admin/login
-            form_login:
-                login_path: login-admin
-                check_path: login-admin
-                default_target_path: /admin/dashboard
 
         api:
             pattern: ^/api
