@@ -13,7 +13,7 @@ class MainController extends AbstractController
     public function main(): Response
     {
         if ($this->getUser()) {
-            dd('other view');
+            return new RedirectResponse("/admin");
         }
 
         return new RedirectResponse("/login-admin");
