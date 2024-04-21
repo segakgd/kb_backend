@@ -2,6 +2,7 @@ security:
     # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
         # used to reload user from session & other features (e.g. switch_user)
@@ -9,8 +10,20 @@ security:
             entity:
                 class: App\Entity\User\User
                 property: email
+
     firewalls:
-        login:
+        # Форма входа
+        main:
+            pattern: ^/login
+            form_login:
+                login_path: app_login
+                check_path: app_login_check
+                default_target_path: /admin
+            logout:
+                path: app_logout
+                target: app_login
+
+        login_api:
             pattern: ^/api/user/authenticate/
             stateless: true
             json_login:
@@ -22,9 +35,10 @@ security:
             pattern: ^/api
             stateless: true
             entry_point: jwt
-            jwt: ~
+            jwt:
+                ~
             refresh_jwt:
-                check_path: /api/user/refresh/ # or, you may use the `api_refresh_token` route name
+                check_path: /api/user/refresh/
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
