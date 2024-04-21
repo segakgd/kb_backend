@@ -29,21 +29,6 @@ class MainWebhookController extends AbstractController
     ) {
     }
 
-    #[Route('/', name: 'app_main', methods: ['GET'])]
-    public function main(): Response
-    {
-        return new Response(
-            '
-                    <div>Авторизация</div>
-                    <form>
-                    <input >
-                    <input >
-                    <button>Войти</button>
-                    </form>
-                '
-        );
-    }
-
     /**
      * Что происходит сейчас:
      *

@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Авторизация{% endblock %}
+
+{% block main %}
+    <div style="width: 100%; height: 100%; justify-content: center; align-items: center; display: flex;">
+        <div class="logging--wr">
+            <div class="logging-logo">
+                <div class="loading_logo_box"></div>
+                <span class="loading_logo_text">Kraiber</span>
+            </div>
+
+            <form class="logging--form" action="{{ path('login_admin') }}" method="post">
+                <section>
+                    <span>Эл. почта</span>
+                    <input type="text" name="username" value="{{ last_username }}" placeholder="E-mail"/>
+                </section>
+                <section>
+                    <span>Пароль</span>
+                    <input type="text" name="password" placeholder="Пароль"/>
+                </section>
+
+                <div class="logging--error"> {{ error }} </div>
+
+                <button class="m--ntn logging--ntn" type="submit">Войти</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
