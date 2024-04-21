@@ -16,6 +16,7 @@ class MainController extends AbstractController
             dd('other view');
         }
 
-        return new RedirectResponse("/login-admin");
+//        return new RedirectResponse("/login-admin");
+        return new Response('asda');
     }
 }
