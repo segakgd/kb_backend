@@ -2,12 +2,10 @@
 
 namespace App\Controller;
 
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Event\LogoutEvent;
 
 class SecurityController extends AbstractController
 {
@@ -19,12 +17,13 @@ class SecurityController extends AbstractController
 
     #[Route('/login_check', name: 'app_login_check', methods: ['POST'])]
     public function loginCheck(): void
-    {}
+    {
+    }
 
     #[Route('/logout', name: 'app_logout', methods: ['GET'])]
-    public function logout(EventDispatcherInterface $dispatcher, Request $request): Response
+    public function logout(Request $request): Response
     {
-        $dispatcher->dispatch(new LogoutEvent($request, null));
+        $request->getSession()->invalidate();
 
         return $this->redirectToRoute('login_admin_form');
     }
