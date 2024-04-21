@@ -21,21 +21,3 @@ app.swagger:
     path: /api/doc.json
     methods: GET
     defaults: { _controller: nelmio_api_doc.controller.swagger }
-
-
-app_login:
-    path: /login
-    controller: App\Controller\SecurityController::login
-
-login_admin:
-    path: /login-admin
-    controller: App\Controller\SecurityController::login
-
-app_login_check:
-    path: /login_check
-    controller: App\Controller\SecurityController::loginCheck
-
-app_logout:
-    path: /logout
-    controller: App\Controller\SecurityController::logout
-
