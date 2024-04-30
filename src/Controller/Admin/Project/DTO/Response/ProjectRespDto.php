@@ -63,6 +63,11 @@ class ProjectRespDto
         return $this->activeTo;
     }
 
+    public function getFormatActiveFrom(): ?string
+    {
+        return $this->activeFrom?->format('Y-m-d h:i:s');
+    }
+
     public function setActiveTo(?DateTimeImmutable $activeTo): self
     {
         $this->activeTo = $activeTo;
@@ -73,6 +78,11 @@ class ProjectRespDto
     public function getActiveFrom(): ?DateTimeImmutable
     {
         return $this->activeFrom;
+    }
+
+    public function getFormatActiveTo(): ?string
+    {
+        return $this->activeTo?->format('Y-m-d h:i:s');
     }
 
     public function setActiveFrom(?DateTimeImmutable $activeFrom): self
