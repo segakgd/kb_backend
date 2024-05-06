@@ -99,7 +99,11 @@ class LeadMapper
     private function mapOrderToResponse(Deal $deal): OrderRespDto
     {
         $order = $deal->getOrder();
-        $orderResponseDto = (new OrderRespDto())->setCreatedAt($order->getCreatedAt());
+        $orderResponseDto = (new OrderRespDto());
+
+        if ($order !== null) {
+            $orderResponseDto->setCreatedAt($order->getCreatedAt());
+        }
 
         $products = [];
 

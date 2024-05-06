@@ -44,7 +44,7 @@ class CreateController extends AbstractController
      */
     #[Route('/api/admin/project/{project}/lead/', name: 'admin_lead_create', methods: ['POST'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Request $request, Project $project): JsonResponse
+    public function execute(Request $request, ?Project $project): JsonResponse
     {
         try {
             $requestDto = $this->serializer->deserialize($request->getContent() ?? '{}', LeadReqDto::class, 'json');

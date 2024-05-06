@@ -20,7 +20,7 @@ class OrderVariantType extends Type
 
     public function convertToPHPValue($value, AbstractPlatform $platform): array
     {
-        $dataArray = json_decode($value, true);
+        $dataArray = json_decode($value ?? '{}', true);
         if (!is_array($dataArray)) {
             return [];
         }
