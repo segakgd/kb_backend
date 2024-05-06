@@ -20,4 +20,10 @@ class TariffRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Tariff::class);
     }
+
+    public function saveAndFlush(Tariff $entity): void
+    {
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
+    }
 }

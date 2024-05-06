@@ -7,7 +7,9 @@ use App\Entity\User\Tariff;
 
 interface TariffServiceInterface
 {
-    public function getTariffById(int $tariffId): Tariff;
+    public function getTariffById(int $tariffId): ?Tariff;
+
+    public function getTariffByCode(string $code): ?Tariff;
 
     public function getAllTariff(): array;
 

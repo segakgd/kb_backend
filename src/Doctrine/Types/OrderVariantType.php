@@ -11,11 +11,11 @@ use InvalidArgumentException;
 
 class OrderVariantType extends Type
 {
-    public const NAME = 'order_variant'; // Changed name to reflect it's an array now
+    public const NAME = 'order_variant';
 
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
-        return $platform->getJsonTypeDeclarationSQL($column); // JSON is a suitable type for storing arrays
+        return $platform->getJsonTypeDeclarationSQL($column);
     }
 
     public function convertToPHPValue($value, AbstractPlatform $platform): array
@@ -25,19 +25,20 @@ class OrderVariantType extends Type
             return [];
         }
 
-        $dtos = [];
+        $collectDto = [];
+
         foreach ($dataArray as $dataItem) {
             $dto = new OrderVariantReqDto();
             $dto->setId($dataItem['id'] ?? 0);
             $dto->setCount($dataItem['count'] ?? null);
             $dto->setPrice($dataItem['price'] ?? 0);
-            $dtos[] = $dto;
+            $collectDto[] = $dto;
         }
 
-        return $dtos;
+        return $collectDto;
     }
 
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): string|bool
     {
         if (is_array($value)) {
             $dataArray = array_map(function (OrderVariantReqDto $dto) {

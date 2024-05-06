@@ -98,6 +98,7 @@ class ViewAllController extends AbstractController
         ;
 
         return (new ProjectSettingRespDto())
+            ->setId($projectSetting->getId())
             ->setMainSettings($fakeMainSetting)
             ->setNotificationSetting($fakeNotificationSetting)
         ;
