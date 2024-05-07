@@ -41,7 +41,7 @@ class UpdateController extends AbstractController
     ) {
     }
 
-    #[Route('/api/admin/project/{project}/promotion/{promotion}/', name: 'admin_promotion_update', methods: ['PUT'])]
+    #[Route('/api/admin/project/{project}/promotion/{promotion}/', name: 'admin_promotion_update', methods: ['PATCH'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project, ?Promotion $promotion): JsonResponse
     {
