@@ -85,7 +85,7 @@ class PromotionRespDto
     {
         $this->amount = $amount;
 
-        $this->setAmountWithFraction(str_replace('.', ',', $amount * .01));
+        $this->setAmountWithFraction(str_replace('.', ',', (string) ($amount * .01)));
 
         return $this;
     }

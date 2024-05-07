@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Promotion;
 
-use App\Controller\Admin\Promotion\DTO\Request\PromotionReqDto;
 use App\Controller\Admin\Promotion\DTO\Response\PromotionRespDto;
-use App\Controller\Admin\Promotion\DTO\Response\ViewAllPromotionsRespDto;
 use App\Entity\User\Project;
 use App\Service\Admin\Ecommerce\Promotion\Manager\PromotionManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,8 +15,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[OA\Tag(name: 'Project')]
 #[OA\Response(
@@ -36,8 +32,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class ViewAllController extends AbstractController
 {
     public function __construct(
-        private readonly ValidatorInterface $validator,
-        private readonly SerializerInterface $serializer,
         private readonly PromotionManagerInterface $promotionManager,
     ) {
     }
@@ -45,18 +39,8 @@ class ViewAllController extends AbstractController
     /** Вывести все скидки и промокоды */
     #[Route('/api/admin/project/{project}/promotion/', name: 'admin_promotion_get_all', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Request $request, Project $project): JsonResponse
+    public function execute(Project $project): JsonResponse
     {
-        $content = $request->getContent();
-
-        $requestDto = $this->serializer->deserialize($content, PromotionReqDto::class, 'json');
-
-        $errors = $this->validator->validate($requestDto);
-
-        if (count($errors) > 0) {
-            return $this->json(['message' => $errors->get(0)->getMessage()], Response::HTTP_BAD_REQUEST);
-        }
-
         return $this->json($this->promotionManager->getAllByProject($project));
     }
 }

@@ -51,8 +51,8 @@ class PromotionHelper
             ->setIsActive($promotion->isActive())
             ->setActiveFrom($promotion->getActiveFrom())
             ->setActiveTo($promotion->getActiveTo())
-            ->setUsageWithAnyDiscount($promotion->isUsageWithAnyDiscount())
-            ->setCount($promotion->getCount());
+            ->setUsageWithAnyDiscount($promotion->isUsageWithAnyDiscount());
+//            ->setCount($promotion->getCount());
     }
 
     public static function mapArrayToResponseDto(array $promotionCollection): array

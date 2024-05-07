@@ -38,7 +38,7 @@ class Promotion
     #[ORM\Column(length: 100, nullable: false)]
     private string $code;
 
-    #[ORM\Column(length: 20)]
+    #[ORM\Column(length: 20, nullable: true)]
     private ?int $discountFrom = null;
 
     #[ORM\Column(nullable: true)]
@@ -56,10 +56,10 @@ class Promotion
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $activeTo = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
     private ?DateTimeImmutable $createdAt = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $updatedAt = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
@@ -137,12 +137,12 @@ class Promotion
         return $this;
     }
 
-    public function getDiscountFrom(): ?string
+    public function getDiscountFrom(): ?int
     {
         return $this->discountFrom;
     }
 
-    public function setDiscountFrom(string $discountFrom): static
+    public function setDiscountFrom(?int $discountFrom): static
     {
         $this->discountFrom = $discountFrom;
 
@@ -202,9 +202,9 @@ class Promotion
         return $this->createdAt;
     }
 
-    public function setCreatedAt(DateTimeImmutable $createdAt): static
+    public function setCreatedAt(DateTimeImmutable|\DateTime $createdAt): static
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = $createdAt instanceof \DateTime ? DateTimeImmutable::createFromMutable($createdAt) : $createdAt;
 
         return $this;
     }

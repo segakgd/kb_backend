@@ -97,7 +97,6 @@ class PromotionReqDto
         return $this;
     }
 
-    // Continue defining setters and getters for remaining properties...
 
     public function getActiveFrom(): ?DateTimeInterface
     {
