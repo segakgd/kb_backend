@@ -43,8 +43,12 @@ class UpdateController extends AbstractController
     /** Обновление доставки */
     #[Route('/api/admin/project/{project}/shipping/{shipping}/', name: 'admin_shipping_update', methods: ['PATCH'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Request $request, Project $project, Shipping $shipping): JsonResponse
+    public function execute(Request $request, ?Project $project, ?Shipping $shipping): JsonResponse
     {
+        if (null === $shipping || null === $project) {
+            return $this->json('Project or shipping not found', Response::HTTP_NOT_FOUND);
+        }
+
         if ($project->getId() !== $shipping->getProjectId()) {
             throw new AccessDeniedException('Access Denied.');
         }

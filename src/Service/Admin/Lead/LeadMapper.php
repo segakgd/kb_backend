@@ -108,7 +108,7 @@ class LeadMapper
         $products = [];
 
         /** @var OrderVariantReqDto $variantDto */
-        foreach ($order->getProductVariants() as $variantDto) {
+        foreach ($order?->getProductVariants() ?? [] as $variantDto) {
             $productVariant = $this->productVariantRepository->find($variantDto->getId());
 
             $name = $productVariant?->getProduct()?->getName();

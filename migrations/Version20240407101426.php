@@ -26,7 +26,7 @@ final class Version20240407101426 extends AbstractMigration
         , price CLOB NOT NULL --(DC2Type:variant_price_type)
         , count INTEGER DEFAULT NULL, promotion_distributed BOOLEAN DEFAULT NULL, percent_discount INTEGER DEFAULT NULL, active BOOLEAN DEFAULT NULL, active_from DATETIME DEFAULT NULL, active_to DATETIME DEFAULT NULL, created_at DATETIME NOT NULL --(DC2Type:datetime_immutable)
         , updated_at DATETIME DEFAULT NULL --(DC2Type:datetime_immutable)
-        , is_limitless BOOLEAN NOT NULL, CONSTRAINT FK_209AA41D4584665A FOREIGN KEY (product_id) REFERENCES product (id) ON UPDATE NO ACTION ON DELETE NO ACTION NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        , is_limitless BOOLEAN NOT NULL DEFAULT 0, CONSTRAINT FK_209AA41D4584665A FOREIGN KEY (product_id) REFERENCES product (id) ON UPDATE NO ACTION ON DELETE NO ACTION NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('INSERT INTO product_variant (id, product_id, name, article, image, price, count, promotion_distributed, percent_discount, active, active_from, active_to, created_at, updated_at) SELECT id, product_id, name, article, image, price, count, promotion_distributed, percent_discount, active, active_from, active_to, created_at, updated_at FROM __temp__product_variant');
         $this->addSql('DROP TABLE __temp__product_variant');
         $this->addSql('CREATE INDEX IDX_209AA41D4584665A ON product_variant (product_id)');

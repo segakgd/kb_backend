@@ -41,12 +41,14 @@ class CreateController extends AbstractController
     /** Создание доставки */
     #[Route('/api/admin/project/{project}/shipping/', name: 'admin_shipping_create', methods: ['POST'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Request $request, Project $project): JsonResponse
+    public function execute(Request $request, ?Project $project): JsonResponse
     {
-        $content = $request->getContent();
+        if (null === $project) {
+            return $this->json('Project not found', Response::HTTP_NOT_FOUND);
+        }
 
         try {
-            $requestDto = $this->serializer->deserialize($content, ShippingReqDto::class, 'json');
+            $requestDto = $this->serializer->deserialize($request->getContent(), ShippingReqDto::class, 'json');
             $errors = $this->validator->validate($requestDto);
 
             if (count($errors) > 0) {
