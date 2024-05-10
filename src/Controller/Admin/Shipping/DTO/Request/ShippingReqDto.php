@@ -1,42 +1,84 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Shipping\DTO\Request;
+
+use App\Dto\Ecommerce\Shipping\ShippingPriceDto;
+use App\Enum\Shipping\ShippingCalculationTypeEnum;
+use App\Enum\Shipping\ShippingTypeEnum;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class ShippingReqDto
 {
-    private string $name;
+    #[Assert\NotBlank]
+    private string $title;
 
-    private string $type; // самовывоз, курьером
-
-    private string $calculationType; // В проценнах, В валюте
-
-    private int $amount;
-
-    private string $amountWF;
-
-    private int $applyFromAmount;
-
-    private string $applyFromAmountWF;
-
-    private int $applyToAmount;
-
-    private string $applyToAmountWF;
-
+    #[Assert\NotBlank]
     private string $description;
 
-    private array $fields;
+    #[Assert\Choice([ShippingTypeEnum::COURIER->value, ShippingTypeEnum::PICK_UP->value])]
+    private string $type; // самовывоз, курьером
 
+    #[Assert\Choice([ShippingCalculationTypeEnum::CURRENCY->value, ShippingCalculationTypeEnum::PERCENT->value])]
+    private string $calculationType; // В проценнах, В валюте
+
+    #[Assert\Valid]
+    private ?ShippingPriceDto $price = null;
+
+    #[Assert\NotBlank]
     private bool $isActive;
 
+    private ?int $applyFromAmount = null;
 
-    public function getName(): string
+    private ?int $applyToAmount = null;
+
+    private ?int $freeFrom = null;
+
+    private bool $isNotFixed = false;
+
+    #[Assert\Valid]
+    private array $fields;
+
+    #[Assert\Callback]
+    public function validate(ExecutionContextInterface $context): void
     {
-        return $this->name;
+        if ($this->applyFromAmount !== null && $this->applyToAmount !== null && $this->applyFromAmount > $this->applyToAmount) {
+            $context
+                ->buildViolation('apply period has logical error')
+                ->addViolation();
+        }
+
+        if (!$this->isNotFixed && $this->price === null) {
+            $context
+                ->buildViolation('price not fixed')
+                ->addViolation();
+        }
+
+        if ($this->applyToAmount !== null && $this->applyToAmount < 0 || $this->applyFromAmount !== null && $this->applyFromAmount < 0)  {
+            $context
+                ->buildViolation('applyFromAmount and applyToAmount must be greater than 0')
+                ->addViolation();
+        }
+
+        if ($this->freeFrom !== null && $this->freeFrom < 0) {
+            $context
+                ->buildViolation('freeFrom must be greater than 0')
+                ->addViolation();
+        }
     }
 
-    public function setName(string $name): void
+    public function getTitle(): string
     {
-        $this->name = $name;
+        return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
     }
 
     public function getType(): string
@@ -44,9 +86,11 @@ class ShippingReqDto
         return $this->type;
     }
 
-    public function setType(string $type): void
+    public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
     }
 
     public function getCalculationType(): string
@@ -54,69 +98,47 @@ class ShippingReqDto
         return $this->calculationType;
     }
 
-    public function setCalculationType(string $calculationType): void
+    public function setCalculationType(string $calculationType): self
     {
         $this->calculationType = $calculationType;
+
+        return $this;
     }
 
-    public function getAmount(): int
-    {
-        return $this->amount;
-    }
-
-    public function setAmount(int $amount): void
-    {
-        $this->amount = $amount;
-    }
-
-    public function getAmountWF(): string
-    {
-        return $this->amountWF;
-    }
-
-    public function setAmountWF(string $amountWF): void
-    {
-        $this->amountWF = $amountWF;
-    }
-
-    public function getApplyFromAmount(): int
+    public function getApplyFromAmount(): ?int
     {
         return $this->applyFromAmount;
     }
 
-    public function setApplyFromAmount(int $applyFromAmount): void
+    public function setApplyFromAmount(?int $applyFromAmount): self
     {
         $this->applyFromAmount = $applyFromAmount;
+
+        return $this;
     }
 
-    public function getApplyFromAmountWF(): string
+    public function getPrice(): ?ShippingPriceDto
     {
-        return $this->applyFromAmountWF;
+        return $this->price;
     }
 
-    public function setApplyFromAmountWF(string $applyFromAmountWF): void
+    public function setPrice(?ShippingPriceDto $price): self
     {
-        $this->applyFromAmountWF = $applyFromAmountWF;
+        $this->price = $price;
+
+        return $this;
     }
 
-    public function getApplyToAmount(): int
+    public function getApplyToAmount(): ?int
     {
         return $this->applyToAmount;
     }
 
-    public function setApplyToAmount(int $applyToAmount): void
+    public function setApplyToAmount(?int $applyToAmount): self
     {
         $this->applyToAmount = $applyToAmount;
-    }
 
-    public function getApplyToAmountWF(): string
-    {
-        return $this->applyToAmountWF;
-    }
-
-    public function setApplyToAmountWF(string $applyToAmountWF): void
-    {
-        $this->applyToAmountWF = $applyToAmountWF;
+        return $this;
     }
 
     public function getDescription(): string
@@ -124,9 +146,11 @@ class ShippingReqDto
         return $this->description;
     }
 
-    public function setDescription(string $description): void
+    public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
     }
 
     public function getFields(): array
@@ -134,9 +158,11 @@ class ShippingReqDto
         return $this->fields;
     }
 
-    public function addFields(ShippingFieldReqDto $field): void
+    public function addFields(ShippingFieldReqDto $field): self
     {
         $this->fields[] = $field;
+
+        return $this;
     }
 
     public function isActive(): bool
@@ -144,8 +170,34 @@ class ShippingReqDto
         return $this->isActive;
     }
 
-    public function setIsActive(bool $isActive): void
+    public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getFreeFrom(): ?int
+    {
+        return $this->freeFrom;
+    }
+
+    public function setFreeFrom(?int $freeFrom): self
+    {
+        $this->freeFrom = $freeFrom;
+
+        return $this;
+    }
+
+    public function isNotFixed(): bool
+    {
+        return $this->isNotFixed;
+    }
+
+    public function setIsNotFixed(bool $isNotFixed): self
+    {
+        $this->isNotFixed = $isNotFixed;
+
+        return $this;
     }
 }

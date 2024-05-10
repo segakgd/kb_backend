@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Dto\Product\Variants;
+namespace App\Dto\Ecommerce\Product\Variants;
 
 class ImageDto
 {

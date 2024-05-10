@@ -6,7 +6,7 @@ namespace App\Controller\Admin\Product;
 
 use App\Controller\Admin\Product\DTO\Response\ProductRespDto;
 use App\Entity\User\Project;
-use App\Helper\Ecommerce\ProductHelper;
+use App\Helper\Ecommerce\Product\ProductHelper;
 use App\Service\Admin\Ecommerce\Product\Manager\ProductManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -43,7 +43,7 @@ class ViewAllController extends AbstractController
     public function execute(Project $project): JsonResponse
     {
         try {
-            return $this->json(ProductHelper::mapArrayToResponse(($this->productManager->getAll($project))));
+            return $this->json(ProductHelper::mapArrayToResponse($this->productManager->getAll($project)));
         } catch (Throwable $exception) {
             return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }

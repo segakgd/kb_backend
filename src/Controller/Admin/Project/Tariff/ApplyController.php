@@ -35,7 +35,7 @@ class ApplyController extends AbstractController
     ) {
     }
 
-    /** Применяем вабранный тариф к проекту */
+    /** Применяем выбранный тариф к проекту */
     #[Route('/api/admin/project/{project}/setting/tariff/', name: 'admin_project_update_tariff', methods: ['POST'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project): JsonResponse
@@ -56,6 +56,6 @@ class ApplyController extends AbstractController
             return new JsonResponse('Тариф не применился', Response::HTTP_CONFLICT);
         }
 
-        return new JsonResponse('', Response::HTTP_NO_CONTENT);
+        return $this->json([], Response::HTTP_NO_CONTENT);
     }
 }

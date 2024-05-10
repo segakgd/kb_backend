@@ -40,7 +40,7 @@ class UpdateController extends AbstractController
     ) {
     }
 
-    /** Обновлегние лида */
+    /** Обновление лида */
     #[OA\Tag(name: 'Lead')]
     #[Route('/api/admin/project/{project}/lead/{lead}/', name: 'admin_lead_update', methods: ['PATCH'])]
     #[IsGranted('existUser', 'project')]

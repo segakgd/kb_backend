@@ -61,7 +61,6 @@ class UpdateController extends AbstractController
 
             $this->productManager->update($requestDto, $product, $project);
         } catch (Throwable $exception) {
-            dd($exception);
             return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
 

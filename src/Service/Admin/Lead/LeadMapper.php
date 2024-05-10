@@ -99,12 +99,16 @@ class LeadMapper
     private function mapOrderToResponse(Deal $deal): OrderRespDto
     {
         $order = $deal->getOrder();
-        $orderResponseDto = (new OrderRespDto())->setCreatedAt($order->getCreatedAt());
+        $orderResponseDto = (new OrderRespDto());
+
+        if ($order !== null) {
+            $orderResponseDto->setCreatedAt($order->getCreatedAt());
+        }
 
         $products = [];
 
         /** @var OrderVariantReqDto $variantDto */
-        foreach ($order->getProductVariants() as $variantDto) {
+        foreach ($order?->getProductVariants() ?? [] as $variantDto) {
             $productVariant = $this->productVariantRepository->find($variantDto->getId());
 
             $name = $productVariant?->getProduct()?->getName();

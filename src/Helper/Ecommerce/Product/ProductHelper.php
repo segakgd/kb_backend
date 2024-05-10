@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Helper\Ecommerce;
+namespace App\Helper\Ecommerce\Product;
 
 use App\Controller\Admin\Product\DTO\Response\ProductRespDto;
 use App\Entity\Ecommerce\Product;
@@ -27,7 +27,7 @@ class ProductHelper
     public static function mapArrayToResponse(array $products): array
     {
         return array_map(function (Product $product) {
-            return $this->mapToResponse($product);
+            return self::mapToResponse($product);
         }, $products);
     }
 }

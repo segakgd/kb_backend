@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Entity\Ecommerce;
 
 use App\Doctrine\Types\VariantPriceType;
-use App\Dto\Product\Variants\VariantPriceDto;
+use App\Dto\Ecommerce\Product\Variants\VariantPriceDto;
 use App\Repository\Ecommerce\ProductVariantRepository;
 use DateTimeImmutable;
 use DateTimeInterface;

@@ -23,6 +23,7 @@ class RemoveController extends AbstractController
     ) {
     }
 
+    /** Удаление бота */
     #[Route('/api/admin/project/{project}/bot/{botId}/', name: 'admin_bot_remove', methods: ['DELETE'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project, int $botId): JsonResponse

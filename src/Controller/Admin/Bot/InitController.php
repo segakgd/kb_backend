@@ -36,7 +36,10 @@ class InitController extends AbstractController
     ) {
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     */
+    /** Инициализация бота */
     #[Route('/api/admin/project/{project}/bot/{botId}/init/', name: 'admin_bot_init', methods: ['POST'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project, int $botId): JsonResponse

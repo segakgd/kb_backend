@@ -23,18 +23,23 @@ class RemoveController extends AbstractController
     ) {
     }
 
+    /** Удаление проекта */
     #[Route('/api/admin/project/{project}/', name: 'admin_project_remove', methods: ['DELETE'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Project $project): JsonResponse
+    public function execute(?Project $project): JsonResponse
     {
+        if (!$project) {
+            return $this->json('Project not found', Response::HTTP_NOT_FOUND);
+        }
+
         // todo по хорошему бы как-то удостовериться в том, что пользователь хочет удалить проект. К примеру, отправить код на почту, ну или ссылку на удаление и тд.
 
         $isRemoved = $this->projectService->remove($project->getId());
 
         if (!$isRemoved){
-            return new JsonResponse([], Response::HTTP_CONFLICT);
+            return $this->json([], Response::HTTP_CONFLICT);
         }
 
-        return new JsonResponse([], Response::HTTP_NO_CONTENT);
+        return $this->json([], Response::HTTP_NO_CONTENT);
     }
 }

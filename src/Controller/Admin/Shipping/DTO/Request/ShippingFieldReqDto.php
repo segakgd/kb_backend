@@ -1,13 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Shipping\DTO\Request;
+
+use App\Enum\Shipping\ShippingFieldEnum;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ShippingFieldReqDto
 {
+    #[Assert\NotBlank]
     private string $name;
 
+    #[Assert\NotBlank]
     private string $value;
 
+    #[Assert\NotBlank]
+    #[Assert\Choice([
+        ShippingFieldEnum::CITY->value,
+        ShippingFieldEnum::DATETIME->value,
+        ShippingFieldEnum::TEXTAREA->value
+    ])]
     private string $type; // текстовое поле, дата и время, населённый пункт
 
     public function getName(): string

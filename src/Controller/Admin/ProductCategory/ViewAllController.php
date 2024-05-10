@@ -6,7 +6,7 @@ namespace App\Controller\Admin\ProductCategory;
 
 use App\Controller\Admin\ProductCategory\DTO\Response\ProductCategoryRespDto;
 use App\Entity\User\Project;
-use App\Helper\Ecommerce\ProductCategoryHelper;
+use App\Helper\Ecommerce\Product\ProductCategoryHelper;
 use App\Service\Admin\Ecommerce\ProductCategory\Manager\ProductCategoryManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;

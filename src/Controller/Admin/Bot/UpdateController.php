@@ -39,7 +39,7 @@ class UpdateController extends AbstractController
     }
 
     /** Обновление одного продукта */
-    #[Route('/api/admin/project/{project}/bot/{botId}/', name: 'admin_bot_update', methods: ['POST'])]
+    #[Route('/api/admin/project/{project}/bot/{botId}/', name: 'admin_bot_update', methods: ['PATCH'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project, int $botId): JsonResponse
     {

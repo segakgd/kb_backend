@@ -29,8 +29,12 @@ class RemoveController extends AbstractController
     /** Удаление лида */
     #[Route('/api/admin/project/{project}/lead/{lead}/', name: 'admin_lead_remove', methods: ['DELETE'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Project $project, ?Deal $lead): JsonResponse
+    public function execute(?Project $project, ?Deal $lead): JsonResponse
     {
+        if (null === $project) {
+            return $this->json('Project not found', Response::HTTP_NOT_FOUND);
+        }
+
         if (null === $lead) {
             return $this->json('Lead not found', Response::HTTP_NOT_FOUND);
         }

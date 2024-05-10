@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Helper\Ecommerce;
+namespace App\Helper\Ecommerce\Product;
 
 use App\Controller\Admin\Product\DTO\Response\ProductVariantRespDto;
 use App\Entity\Ecommerce\ProductVariant;
@@ -22,7 +22,7 @@ class ProductVariantHelper
     public static function mapArrayToResponse(array $variants): array
     {
         return array_map(function (ProductVariant $productCategory) {
-            return $this->mapToResponse($productCategory);
+            return self::mapToResponse($productCategory);
         }, $variants);
     }
 }
