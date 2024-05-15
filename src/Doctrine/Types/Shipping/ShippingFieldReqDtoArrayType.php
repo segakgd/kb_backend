@@ -18,7 +18,7 @@ class ShippingFieldReqDtoArrayType extends JsonType
         return $platform->getJsonTypeDeclarationSQL($column);
     }
 
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): array
     {
         $data = json_decode($value, true);
 
@@ -55,7 +55,7 @@ class ShippingFieldReqDtoArrayType extends JsonType
         return self::SHIPPING_FIELD_REQ_DTO_ARRAY;
     }
 
-    public function requiresSQLCommentHint(AbstractPlatform $platform): true
+    public function requiresSQLCommentHint(AbstractPlatform $platform): bool
     {
         return true;
     }

@@ -12,17 +12,6 @@ security:
                 property: email
 
     firewalls:
-        # Форма входа
-        main:
-            pattern: ^/login
-            form_login:
-                login_path: app_login
-                check_path: app_login_check
-                default_target_path: /admin
-            logout:
-                path: app_logout
-                target: app_login
-
         login_api:
             pattern: ^/api/user/authenticate/
             stateless: true

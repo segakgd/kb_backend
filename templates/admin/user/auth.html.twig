@@ -10,20 +10,34 @@
                 <span class="loading_logo_text">Kraiber</span>
             </div>
 
-            <form class="logging--form" action="{{ path('app_login_check') }}" method="post">
+            <div class="logging--form">
+                {{ form_start(form) }}
                 <section>
-                    <span>Эл. почта</span>
-                    <input type="text" id="username" name="_username" required>
+                    {{ form_row(form.email) }}
                 </section>
                 <section>
-                    <span>Пароль</span>
-                    <input type="password" id="password" name="_password" required>
+                    {{ form_row(form.password) }}
                 </section>
+                <section class="m-btn--wr">
+                    {{ form_row(form.submit) }}
+                </section>
+                {{ form_end(form) }}
+            </div>
 
-                <div class="logging--error"></div>
+            {#            <form class="logging--form" action="{{ path('app_login_check') }}" method="post"> #}
+            {#                <section> #}
+            {#                    <span>Эл. почта</span> #}
+            {#                    <input type="text" id="username" name="_username" required> #}
+            {#                </section> #}
+            {#                <section> #}
+            {#                    <span>Пароль</span> #}
+            {#                    <input type="password" id="password" name="_password" required> #}
+            {#                </section> #}
 
-                <button class="m--ntn logging--ntn" type="submit">Войти</button>
-            </form>
+            {#                <div class="logging--error"></div> #}
+
+            {#                <button class="m--ntn logging--ntn" type="submit">Войти</button> #}
+            {#            </form> #}
         </div>
     </div>
 {% endblock %}

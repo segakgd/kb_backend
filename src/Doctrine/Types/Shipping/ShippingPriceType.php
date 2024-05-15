@@ -18,7 +18,7 @@ class ShippingPriceType extends JsonType
         return $platform->getJsonTypeDeclarationSQL($column);
     }
 
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): ?ShippingPriceDto
     {
         if (empty($value)) {  // Checks for both null and empty string
             return null;
@@ -50,7 +50,7 @@ class ShippingPriceType extends JsonType
         return self::SHIPPING_PRICE_TYPE;
     }
 
-    public function requiresSQLCommentHint(AbstractPlatform $platform): true
+    public function requiresSQLCommentHint(AbstractPlatform $platform): bool
     {
         return true;
     }

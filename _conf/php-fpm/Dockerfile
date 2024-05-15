@@ -1,4 +1,4 @@
-FROM devilbox/php-fpm-8.3:latest
+FROM devilbox/php-fpm:8.2-prod
 
 WORKDIR /var/www/KBackend
 
