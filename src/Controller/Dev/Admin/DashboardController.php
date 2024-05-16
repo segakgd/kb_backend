@@ -29,7 +29,7 @@ class DashboardController extends AbstractDashboardController
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
-        $project = $this->projectService->findOneById(1);
+        $project = $this->projectService->findOneById(2);
 
         $dashboardData = $this->dashboardService->getDashboardForProject($project);
 
