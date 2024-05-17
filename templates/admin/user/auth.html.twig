@@ -9,54 +9,28 @@
             <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
 
-        <form action="{{ path('app_login') }}" method="post">
-            <label for="username">Email:</label>
-            <input type="text" id="username" name="_username" value="{{ last_username }}">
+        <div class="logging--wr">
+            <div class="logging-logo">
+                <div class="loading_logo_box"></div>
+                <span class="loading_logo_text">Kraiber</span>
+            </div>
 
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="_password">
+            <form class="logging--form" action="{{ path('app_login') }}" method="post">
+                <section>
+                    <label>Эл. почта</label>
+                    <input type="text" id="username" name="_username" value="{{ last_username }}" required>
+                </section>
+                <section>
+                    <label>Пароль</label>
+                    <input type="password" id="password" name="_password" required>
+                </section>
 
-            {# If you want to control the URL the user is redirected to on success
-            <input type="hidden" name="_target_path" value="/account"> #}
+                <div class="logging--error"></div>
 
-            <button type="submit">login</button>
-        </form>
-
-
-{#        <div class="logging--wr">#}
-{#            <div class="logging-logo">#}
-{#                <div class="loading_logo_box"></div>#}
-{#                <span class="loading_logo_text">Kraiber</span>#}
-{#            </div>#}
-
-{#            <div class="logging--form">#}
-{#                {{ form_start(form) }}#}
-{#                <section>#}
-{#                    {{ form_row(form.email) }}#}
-{#                </section>#}
-{#                <section>#}
-{#                    {{ form_row(form.password) }}#}
-{#                </section>#}
-{#                <section class="m-btn--wr">#}
-{#                    {{ form_row(form.submit) }}#}
-{#                </section>#}
-{#                {{ form_end(form) }}#}
-{#            </div>#}
-
-{#            #}{#            <form class="logging--form" action="{{ path('app_login_check') }}" method="post"> #}
-{#            #}{#                <section> #}
-{#            #}{#                    <span>Эл. почта</span> #}
-{#            #}{#                    <input type="text" id="username" name="_username" required> #}
-{#            #}{#                </section> #}
-{#            #}{#                <section> #}
-{#            #}{#                    <span>Пароль</span> #}
-{#            #}{#                    <input type="password" id="password" name="_password" required> #}
-{#            #}{#                </section> #}
-
-{#            #}{#                <div class="logging--error"></div> #}
-
-{#            #}{#                <button class="m--ntn logging--ntn" type="submit">Войти</button> #}
-{#            #}{#            </form> #}
-{#        </div>#}
+                <div class="m-btn--wr">
+                    <button type="submit">Войти</button>
+                </div>
+            </form>
+        </div>
     </div>
 {% endblock %}

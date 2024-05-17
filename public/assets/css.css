@@ -492,8 +492,12 @@ h1, h2 {
     width: 100%;
 }
 
+.m-btn--wr {
+    width: 100%;
+}
+
 .m-btn--wr button {
-    margin-top: 50px;
+    margin-top: 20px;
     width: 100%;
     border: none;
     background: linear-gradient(135deg, #7095FF 0%, #C57DFF 100%);

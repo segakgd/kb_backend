@@ -16,6 +16,6 @@ class MainController extends AbstractController
             return new RedirectResponse("/admin");
         }
 
-        return $this->redirectToRoute('form_login_admin');
+        return $this->redirectToRoute('app_login');
     }
 }
