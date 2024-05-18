@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Проекты{% endblock %}
+
+{% block main %}
+    {% if projects is empty %}
+        Данных нет
+    {% endif %}
+
+    {% for project in projects %}
+        <div class="wrapper--block wrapper--block--project">
+            {{ project.id }}
+
+            {{ project.name }}
+
+            {% if project.status == 'active' %}
+                <span style="font-weight: bold; color: rgba(0,191,3,0.54);">active</span>
+            {% elseif project.status == 'blocked' %}
+                <span style="font-weight: bold; color: rgba(191,29,0,0.54);">blocked</span>
+            {% elseif project.status == 'frozen' %}
+                <span style="font-weight: bold; color: rgba(77,0,191,0.54);">frozen</span>
+            {% endif %}
+
+            <a href="/admin/projects/{{ project.id }}/dashboard">Дашборд</a>
+
+
+
+        </div>
+    {% endfor %}
+{% endblock %}

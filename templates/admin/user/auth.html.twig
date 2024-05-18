@@ -5,9 +5,6 @@
 {% block main %}
     <div style="width: 100%; height: 100%; justify-content: center; align-items: center; display: flex;">
 
-        {% if error %}
-            <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
 
         <div class="logging--wr">
             <div class="logging-logo">
@@ -25,7 +22,11 @@
                     <input type="password" id="password" name="_password" required>
                 </section>
 
-                <div class="logging--error"></div>
+                <div class="logging--error">
+                    {% if error %}
+                        {{ error.messageKey|trans(error.messageData, 'security') }}
+                    {% endif %}
+                </div>
 
                 <div class="m-btn--wr">
                     <button type="submit">Войти</button>

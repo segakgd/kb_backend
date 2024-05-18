@@ -30,6 +30,7 @@ input:focus-visible {
 main {
     width: 100%;
     flex: 1 0 auto;
+    padding: 50px 0;
 }
 
 header {
@@ -512,4 +513,18 @@ h1, h2 {
     min-width: max-content;
     height: 50px;
     padding: 0 20px;
+}
+
+.wrapper--block {
+    padding: 20px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.12);
+    border-radius: 10px;
+}
+
+.wrapper--block--user {
+    margin-bottom: 20px;
+}
+
+.wrapper--block--project {
+    margin-bottom: 20px;
 }

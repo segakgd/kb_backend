@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Пользователи{% endblock %}
+
+{% block main %}
+    {% if users is empty %}
+        Данных нет
+    {% endif %}
+
+    {% for user in users %}
+        <div class="wrapper--block wrapper--block--user">
+            {{ user.id }}
+            {{ user.email }}
+        </div>
+    {% endfor %}
+{% endblock %}

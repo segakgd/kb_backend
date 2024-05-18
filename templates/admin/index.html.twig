@@ -1,15 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% block content_title %}Dashboard{% endblock %}
-{% block page_actions %}
-    {% for command in commands %}
-        <a class="btn btn-primary" href="/dev/project/{{ projectId }}/command/{{ command.commandCode }}/start/">
-            {{ command.commandName }}
-        </a>
-    {% endfor %}
-{% endblock %}
+{#{% block content_title %}Dashboard{% endblock %}#}
+{#{% block page_actions %}#}
+{#    {% for command in commands %}#}
+{#        <a class="btn btn-primary" href="/dev/project/{{ projectId }}/command/{{ command.commandCode }}/start/">#}
+{#            {{ command.commandName }}#}
+{#        </a>#}
+{#    {% endfor %}#}
+{#{% endblock %}#}
 
 {% block main %}
+
+    <div class="wrapper">
+        Проект
+    </div>
 
 {#    <div class="jj__main_wrapper jj__main_wrapper--line">#}
 

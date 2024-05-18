@@ -21,7 +21,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class DashboardController extends AbstractDashboardController
 {
     public function __construct(
-        private readonly ProjectServiceInterface $projectService,
         private readonly DashboardService $dashboardService,
     ) {
     }
@@ -29,13 +28,7 @@ class DashboardController extends AbstractDashboardController
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
-        $project = $this->projectService->findOneById(2);
-
-        $dashboardData = $this->dashboardService->getDashboardForProject($project);
-
-        return $this->render('admin/index.html.twig',
-            $dashboardData
-        );
+        return $this->render('admin/index.html.twig');
     }
 
     #[Route('/admin/session/{visitorSession}/', name: 'admin-session')]
