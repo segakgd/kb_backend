@@ -10,13 +10,12 @@ html {
 
 body {
     width: 100%;
-    max-width: 1600px;
-    margin: 0 auto;
-    padding: 0 20px;
+    margin: 0;
+    padding: 0;
     height: 100%;
     display: flex;
-    justify-content: center;
     flex-wrap: wrap;
+    align-content: flex-start;
 }
 
 input:focus {

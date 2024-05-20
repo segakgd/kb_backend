@@ -6,6 +6,7 @@
     <link rel="icon" href="/assets/images/logo.svg">
 
     <link rel="stylesheet" type="text/css" href="/assets/css.css">
+    <link rel="stylesheet" type="text/css" href="/assets/bootstrap/css/bootstrap-grid.css">
 
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
@@ -17,22 +18,26 @@
 </head>
 <body>
 {% if app.user %}
-    <header>
-        <div class="header__nav">
-            <ul>
-                <li>
-                    <a href="{{ path('admin_users') }}">Пользователи</a>
-                </li>
-                <li>
-                    <a href="{{ path('admin_projects') }}">Проекты</a>
-                </li>
-            </ul>
-        </div>
+    <div class="container">
+        <div class="row">
+            <header>
+                <div class="header__nav">
+                    <ul>
+                        <li>
+                            <a href="{{ path('admin_users') }}">Пользователи</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_projects') }}">Проекты</a>
+                        </li>
+                    </ul>
+                </div>
 
-        <div class="header__nav--exit">
-            <a href="/logout">Выйти</a>
+                <div class="header__nav--exit">
+                    <a href="/logout">Выйти</a>
+                </div>
+            </header>
         </div>
-    </header>
+    </div>
 {% endif %}
 <main>
     {% block main %}{% endblock %}
