@@ -14,9 +14,9 @@ use App\Service\Admin\Bot\BotServiceInterface;
 use App\Service\System\Common\MessageHistoryService;
 use App\Service\Visitor\Event\VisitorEventService;
 use App\Service\Visitor\Session\VisitorSessionService;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -26,7 +26,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Throwable;
 
-class EventsDashboardController extends AbstractDashboardController
+class EventsDashboardController extends AbstractController
 {
     public function __construct(
         private readonly BotServiceInterface $botService,

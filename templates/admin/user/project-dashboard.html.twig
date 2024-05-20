@@ -271,53 +271,53 @@
     </div>
 
 
-    {#    <div class="jj__main_wrapper jj__main_wrapper--line"> #}
-    {#        <div class="jj__wrapper jj__wrapper-50"> #}
-    {#            <div class="jj__h"> #}
-    {#                <h2>Сценарии</h2> #}
-    {#            </div> #}
+{#        <div class="jj__main_wrapper jj__main_wrapper--line"> #}
+{#            <div class="jj__wrapper jj__wrapper-50"> #}
+{#                <div class="jj__h"> #}
+{#                    <h2>Сценарии</h2> #}
+{#                </div> #}
 
-    {#            <div class="jj__items"> #}
-    {#                {% if scenarios is empty %} #}
-    {#                    <div class="jj__items-without-data"> #}
-    {#                        Данных нет #}
-    {#                    </div> #}
-    {#                {% endif %} #}
+{#                <div class="jj__items"> #}
+{#                    {% if scenarios is empty %} #}
+{#                        <div class="jj__items-without-data"> #}
+{#                            Данных нет #}
+{#                        </div> #}
+{#                    {% endif %} #}
 
-    {#                {% for scenarioItem in scenarios %} #}
-    {#                    <div class="jj__item"> #}
-    {#                        <div class="jj__item_name">Сценарий #{{ scenarioItem.id }}</div> #}
+{#                    {% for scenarioItem in scenarios %} #}
+{#                        <div class="jj__item"> #}
+{#                            <div class="jj__item_name">Сценарий #{{ scenarioItem.id }}</div> #}
 
-    {#                        <div class="jj__item_data jj__item_data--line"> #}
-    {#                            <section> #}
-    {#                                <span>Название:</span> {{ scenarioItem.name }} #}
-    {#                            </section> #}
-    {#                        </div> #}
+{#                            <div class="jj__item_data jj__item_data--line"> #}
+{#                                <section> #}
+{#                                    <span>Название:</span> {{ scenarioItem.name }} #}
+{#                                </section> #}
+{#                            </div> #}
 
-    {#                        <div class="jj__item_data jj__item_data--line"> #}
-    {#                            <section> #}
-    {#                                <form action="/dev/project/{{ projectId }}/scenario/{{ scenarioItem.id }}/apply/" #}
-    {#                                      method="GET"> #}
-    {#                                    <label> #}
-    {#                                        Подключить бот: #}
-    {#                                        <select name="botId"> #}
-    {#                                            {% for bot in bots %} #}
-    {#                                                <option value="{{ bot.botId }}">{{ bot.botName }}</option> #}
-    {#                                            {% endfor %} #}
-    {#                                        </select> #}
-    {#                                        к сценарию #}
-    {#                                    </label> #}
+{#                            <div class="jj__item_data jj__item_data--line"> #}
+{#                                <section> #}
+{#                                    <form action="/dev/project/{{ projectId }}/scenario/{{ scenarioItem.id }}/apply/" #}
+{#                                          method="GET"> #}
+{#                                        <label> #}
+{#                                            Подключить бот: #}
+{#                                            <select name="botId"> #}
+{#                                                {% for bot in bots %} #}
+{#                                                    <option value="{{ bot.botId }}">{{ bot.botName }}</option> #}
+{#                                                {% endfor %} #}
+{#                                            </select> #}
+{#                                            к сценарию #}
+{#                                        </label> #}
 
-    {#                                    <button> #}
-    {#                                        Подключить #}
-    {#                                    </button> #}
-    {#                                </form> #}
-    {#                            </section> #}
-    {#                        </div> #}
-    {#                    </div> #}
-    {#                {% endfor %} #}
-    {#            </div> #}
-    {#        </div> #}
-    {#    </div> #}
+{#                                        <button> #}
+{#                                            Подключить #}
+{#                                        </button> #}
+{#                                    </form> #}
+{#                                </section> #}
+{#                            </div> #}
+{#                        </div> #}
+{#                    {% endfor %} #}
+{#                </div> #}
+{#            </div> #}
+{#        </div> #}
 
 {% endblock %}
