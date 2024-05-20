@@ -622,7 +622,38 @@ h1, h2 {
     background: #546367;
 }
 
+.messenger-nav--input {
+    width: 100%;
+    height: 40px;
+    padding: 0 0 0 10px;
+    background: transparent;
+    border: 0;
+    outline:none;
+    color: #fff;
+}
 
+.messenger-nav--input:active {
+    border: none !important;
+    outline:none;
+}
+
+.messenger-nav--input:hover {
+    border: none !important;
+    outline:none;
+}
+
+.messenger-nav--input:blank {
+    border: none !important;
+    outline:none;
+}
+
+.messenger-nav--input-btn{
+    width: 100px;
+    height: 40px;
+    border: 0;
+    background: #425156;
+    color: #fff;
+}
 
 
 
