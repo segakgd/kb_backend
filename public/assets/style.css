@@ -302,11 +302,6 @@ h1, h2 {
 
 
 
-.jj__item_data--line {
-    display: flex;
-    padding: 5px 0 0 0;
-}
-
 .jj__item_data section {
     word-break: break-word;
     padding: 0 10px 0 0;
@@ -522,76 +517,4 @@ h1, h2 {
     color: #fff;
 }
 
-.messenger-wr {
-    display: flex;
-    flex-wrap: wrap;
-    width: 600px;
-    background: #ffffff;
-    flex-direction: column;
-}
 
-.messenger-block {
-    width: 600px;
-    flex: 1 0 auto;
-    background: url('https://i.pinimg.com/736x/8e/6b/e9/8e6be91a01ba06f18b9eddfb944b2b42.jpg');
-    background-size: cover;
-    overflow: auto;
-    height: 500px;
-}
-
-.messenger-message {
-    height: max-content;
-    width: 350px;
-    margin: 10px 30px;
-    background: #30383b;
-    border-radius: 15px;
-    overflow: hidden
-}
-
-.messenger-message--incoming {
-
-}
-
-.messenger-message--outgoing {
-    width: max-content;
-    max-width: 350px;
-    margin: 10px 30px 10px auto;
-}
-
-.messenger-message-image {
-    width: 100%;
-    min-width: 350px;
-    height: 250px;
-    background: #30383b;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.messenger-message-text {
-}
-
-.messenger-message-text p {
-    padding: 0 20px;
-    margin: 20px 0;
-    color: #fff;
-    white-space: pre-line;
-}
-
-.messenger-nav {
-    word-break: break-all;
-    padding: 20px 10px;
-    background: #425156;
-    color: #fff;
-    border-radius: 9px;
-    /*margin: 5px;*/
-    border: none;
-    width: 130px;
-    height: 90px;
-    /*margin: 10px;*/
-}
-
-.messenger-nav:hover {
-    background: #546367;
-}

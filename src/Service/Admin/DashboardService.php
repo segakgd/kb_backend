@@ -33,19 +33,19 @@ readonly class DashboardService
     ) {
     }
 
-//    public function getDashboardSessionData(VisitorSession $visitorSession): array
-//    {
-//        return [
-//            'botId' => $visitorSession->getBotId(),
-//            'projectId' => $visitorSession->getProjectId(),
-//            'events' => $this->prepareEvents($visitorSession),
-//            'event' => $this->getLastEvent($visitorSession->getProjectId()),
-//            'messages' => $this->getMessageHistory(),
-//            'commands' => $this->getCommands(),
-//            'session' => $this->prepareSession($visitorSession),
+    public function getDashboardSessionData(VisitorSession $visitorSession): array
+    {
+        return [
+            'botId' => $visitorSession->getBotId(),
+            'projectId' => $visitorSession->getProjectId(),
+            'events' => $this->prepareEvents($visitorSession),
+            'event' => $this->getLastEvent($visitorSession->getProjectId()),
+            'messages' => $this->getMessageHistory(),
+            'commands' => $this->getCommands(),
+            'session' => $this->prepareSession($visitorSession),
 //            'deals' => $this->getDeals(),
-//        ];
-//    }
+        ];
+    }
 
     public function prepareEvents(VisitorSession $visitorSession): array
     {
@@ -166,13 +166,13 @@ readonly class DashboardService
 
         return $prepareSession;
     }
-
-    public function getDeals(): array
-    {
-        $deals = $this->dealEntityRepository->findAll();
-
-        return $this->serializer->normalize(array_reverse($deals)); // todo array_reverse = костыль
-    }
+//
+//    public function getDeals(): array
+//    {
+//        $deals = $this->dealEntityRepository->findAll();
+//
+//        return $this->serializer->normalize(array_reverse($deals)); // todo array_reverse = костыль
+//    }
 
 //    public function getDashboardForProject(Project $project): array
 //    {
