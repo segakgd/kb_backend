@@ -206,6 +206,7 @@ readonly class DashboardService
                 'projectName' => $projectName,
                 'botId' => $bot->getId(),
                 'botName' => $bot->getName(),
+                'projectId' => $bot->getProjectId(),
                 'botType' => $bot->getType(),
                 'botToken' => $bot->getToken(),
                 'botActive' => $bot->isActive(),
