@@ -2,6 +2,7 @@
 
 namespace App\Controller\Dev;
 
+use App\Entity\User\Bot;
 use App\Entity\User\Project;
 use App\Entity\Visitor\VisitorSession;
 use App\Repository\User\ProjectRepository;
@@ -52,6 +53,19 @@ class DashboardController extends AbstractController
             [
                 'sessions' => $this->dashboardService->getSessions($project->getId()),
                 'bots' => $this->dashboardService->prepareBots($project),
+                'scenarios' => $this->dashboardService->prepareScenario($project->getId()),
+            ]
+        );
+    }
+
+    #[Route('/admin/projects/{project}/bot/{bot}/', name: 'admin_project_bot_dashboard')]
+    public function botDashboard(Project $project, Bot $bot): Response
+    {
+        return $this->render(
+            'admin/user/bot.html.twig',
+            [
+                'sessions' => $this->dashboardService->getSessions($project->getId()),
+                'bot' => $this->dashboardService->prepareBot($bot, $project),
                 'scenarios' => $this->dashboardService->prepareScenario($project->getId()),
             ]
         );

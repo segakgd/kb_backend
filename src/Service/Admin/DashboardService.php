@@ -196,32 +196,36 @@ readonly class DashboardService
         $prepareBots = [];
 
         $bots = $this->botService->findAll($project->getId());
-        $projectName = $project->getName();
 
         /** @var Bot $bot */
         foreach ($bots as $bot) {
-            $webhookBotInfo = $this->telegramService->getWebhookInfo($bot->getToken());
-
-            $prepareBot = [
-                'projectName' => $projectName,
-                'botId' => $bot->getId(),
-                'botName' => $bot->getName(),
-                'projectId' => $bot->getProjectId(),
-                'botType' => $bot->getType(),
-                'botToken' => $bot->getToken(),
-                'botActive' => $bot->isActive(),
-                'webhookUri' => $bot->getWebhookUri() ?? '',
-                'webhookInfo' => [
-                    'pendingUpdateCount' => $webhookBotInfo->getPendingUpdateCount() ?? 0,
-                    'lastErrorDate' => $webhookBotInfo->getLastErrorDate() ?? null,
-                    'lastErrorMessage' => $webhookBotInfo->getLastErrorMessage() ?? null,
-                ],
-            ];
-
-            $prepareBots[] = $prepareBot;
+            $prepareBots[] = $this->prepareBot($bot, $project);
         }
 
         return $prepareBots;
+    }
+
+
+    public function prepareBot(Bot $bot, Project $project): array
+    {
+        $webhookBotInfo = $this->telegramService->getWebhookInfo($bot->getToken());
+        $projectName = $project->getName();
+
+        return [
+            'projectName' => $projectName,
+            'botId' => $bot->getId(),
+            'botName' => $bot->getName(),
+            'projectId' => $bot->getProjectId(),
+            'botType' => $bot->getType(),
+            'botToken' => $bot->getToken(),
+            'botActive' => $bot->isActive(),
+            'webhookUri' => $bot->getWebhookUri() ?? '',
+            'webhookInfo' => [
+                'pendingUpdateCount' => $webhookBotInfo->getPendingUpdateCount() ?? 0,
+                'lastErrorDate' => $webhookBotInfo->getLastErrorDate() ?? null,
+                'lastErrorMessage' => $webhookBotInfo->getLastErrorMessage() ?? null,
+            ],
+        ];
     }
 
     public function prepareScenario(int $projectId): array
