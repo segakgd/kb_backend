@@ -8,7 +8,6 @@ use App\Entity\User\Project;
 use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
 use App\Helper\CommonHelper;
-use App\Repository\Lead\DealEntityRepository;
 use App\Repository\MessageHistoryRepository;
 use App\Repository\Visitor\VisitorEventRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
@@ -16,7 +15,6 @@ use App\Service\Admin\Bot\BotServiceInterface;
 use App\Service\Admin\Scenario\ScenarioTemplateService;
 use App\Service\Integration\Telegram\TelegramService;
 use App\Service\Visitor\Session\VisitorSessionService;
-use Symfony\Component\Serializer\SerializerInterface;
 
 readonly class DashboardService
 {
@@ -28,8 +26,6 @@ readonly class DashboardService
         private VisitorEventRepository $visitorEventRepository,
         private ScenarioTemplateService $scenarioTemplateService,
         private MessageHistoryRepository $historyRepository,
-        private DealEntityRepository $dealEntityRepository,
-        private SerializerInterface $serializer,
     ) {
     }
 
@@ -228,9 +224,9 @@ readonly class DashboardService
         ];
     }
 
-    public function prepareScenario(int $projectId): array
+    public function prepareScenario(Project $project): array
     {
-        $scenarios = $this->scenarioTemplateService->getAllByProjectId($projectId);
+        $scenarios = $this->scenarioTemplateService->getAllByProjectId($project->getId());
 
         $prepareScenarios = [];
 
@@ -247,9 +243,9 @@ readonly class DashboardService
         return $prepareScenarios;
     }
 
-    public function getSessions(int $projectId): array
+    public function getSessions(Bot $bot): array
     {
-        $sessions = $this->visitorSessionService->findAll($projectId);
+        $sessions = $this->visitorSessionService->findAllByBotId($bot->getId());
 
         $prepareSessions = [];
 

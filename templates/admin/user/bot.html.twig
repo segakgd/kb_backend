@@ -6,7 +6,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-8">
+            <div class="col-7">
                 <div class="wrapper--block">
                     <div class="admin--title--wrapper">
                         <h2>Бот</h2>
@@ -70,7 +70,7 @@
 
                                 <div class="">
                                     <div class="admin--title--wrapper">
-                                        <h4>Боты</h4>
+                                        <h4>Действия</h4>
                                     </div>
 
                                     <div style="display: flex; flex-wrap: wrap;">
@@ -166,47 +166,47 @@
                 </div>
             </div>
 
-{#            <div class="col-4">#}
-{#                <div class="wrapper--block">#}
-{#                    <div class="admin--title--wrapper">#}
-{#                        <h2>Сессии</h2>#}
-{#                    </div>#}
+            <div class="col-5">
+                <div class="wrapper--block">
+                    <div class="admin--title--wrapper">
+                        <h2>Сессии</h2>
+                    </div>
 
-{#                    <div class="">#}
-{#                        {% if sessions is empty %}#}
-{#                            <div class="">#}
-{#                                Данных нет#}
-{#                            </div>#}
-{#                        {% endif %}#}
+                    <div class="">
+                        {% if sessions is empty %}
+                            <div class="">
+                                Данных нет
+                            </div>
+                        {% endif %}
 
-{#                        {% for session in sessions %}#}
-{#                            <div class="">#}
-{#                                <a href="/admin/session/{{ session.id }}/" target="_blank">#}
-{#                                    <div class="">Название сессии: {{ session.sessionName }}</div>#}
+                        {% for session in sessions %}
+                            <div class="">
+                                <a href="/admin/session/{{ session.id }}/" target="_blank">
+                                    <div class="">Название сессии: {{ session.sessionName }}</div>
 
-{#                                    <div class="">#}
-{#                                        <section>#}
-{#                                            <span>Канал:</span> {{ session.sessionChannel }}#}
-{#                                        </section>#}
-{#                                        <section>#}
-{#                                            <span>Контент:</span> {{ session.cache.content }}#}
-{#                                        </section>#}
+                                    <div class="">
+                                        <section>
+                                            <span>Канал:</span> {{ session.sessionChannel }}
+                                        </section>
+                                        <section>
+                                            <span>Контент:</span> {{ session.cache.content }}
+                                        </section>
 
-{#                                        {% if session.sessionVisitorEvent is defined %}#}
-{#                                            <section>#}
-{#                                                <span>Тип события:</span> {{ session.sessionVisitorEvent.type }}#}
-{#                                            </section>#}
-{#                                            <section>#}
-{#                                                <span>Статус последнего события:</span> {{ session.sessionVisitorEvent.status }}#}
-{#                                            </section>#}
-{#                                        {% endif %}#}
-{#                                    </div>#}
-{#                                </a>#}
-{#                            </div>#}
-{#                        {% endfor %}#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
+                                        {% if session.sessionVisitorEvent is defined %}
+                                            <section>
+                                                <span>Тип события:</span> {{ session.sessionVisitorEvent.type }}
+                                            </section>
+                                            <section>
+                                                <span>Статус последнего события:</span> {{ session.sessionVisitorEvent.status }}
+                                            </section>
+                                        {% endif %}
+                                    </div>
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

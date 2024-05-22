@@ -46,27 +46,25 @@ class DashboardController extends AbstractController
     }
 
     #[Route('/admin/projects/{project}/dashboard/', name: 'admin_project_dashboard')]
-    public function projectDashboard(Project $project): Response
+    public function project(Project $project): Response
     {
         return $this->render(
             'admin/user/project-dashboard.html.twig',
             [
-                'sessions' => $this->dashboardService->getSessions($project->getId()),
                 'bots' => $this->dashboardService->prepareBots($project),
-                'scenarios' => $this->dashboardService->prepareScenario($project->getId()),
             ]
         );
     }
 
     #[Route('/admin/projects/{project}/bot/{bot}/', name: 'admin_project_bot_dashboard')]
-    public function botDashboard(Project $project, Bot $bot): Response
+    public function bot(Project $project, Bot $bot): Response
     {
         return $this->render(
             'admin/user/bot.html.twig',
             [
-                'sessions' => $this->dashboardService->getSessions($project->getId()),
+                'sessions' => $this->dashboardService->getSessions($bot),
                 'bot' => $this->dashboardService->prepareBot($bot, $project),
-                'scenarios' => $this->dashboardService->prepareScenario($project->getId()),
+                'scenarios' => $this->dashboardService->prepareScenario($project),
             ]
         );
     }

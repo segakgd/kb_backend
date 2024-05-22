@@ -23,6 +23,15 @@ class VisitorSessionService
         );
     }
 
+    public function findAllByBotId(int $botId): array
+    {
+        return $this->visitorSessionRepository->findBy(
+            [
+                'botId' => $botId
+            ]
+        );
+    }
+
     public function identifyByChannel(int $chatId, int $botId, string $channel): ?VisitorSession
     {
         return $this->visitorSessionRepository->findOneBy(
