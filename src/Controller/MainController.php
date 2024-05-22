@@ -13,7 +13,7 @@ class MainController extends AbstractController
     public function main(): Response
     {
         if ($this->getUser()) {
-            return new RedirectResponse("/admin");
+            return new RedirectResponse("/admin/projects/");
         }
 
         return $this->redirectToRoute('app_login');

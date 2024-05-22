@@ -92,89 +92,91 @@
             </div>
 
             <div class="col-7">
-                <div class="admin--title--wrapper">
-                    <h2>События</h2>
-                </div>
+                <div class="wrapper--block">
+                    <div class="admin--title--wrapper">
+                        <h2>События</h2>
+                    </div>
 
-                <div class="" style="height: 500px; overflow: auto;">
-                    {% if events is empty %}
-                        <div class="">
-                            Данных нет
-                        </div>
-                    {% endif %}
-
-                    {% for event in events %}
-                        <div class="" style="padding-bottom: 20px;">
-                            <div class="">Событие #{{ event.id }}</div>
-
+                    <div class="" style="height: 500px; overflow: auto;">
+                        {% if events is empty %}
                             <div class="">
-                                <section>
-                                    <span>Тип события:</span> {{ event.type }}
-                                </section>
+                                Данных нет
+                            </div>
+                        {% endif %}
 
-                                <section>
-                                    <span>Статус события:</span>
-                                    {% if event.status == 'failed' %}
-                                        <span class=""> Провалено </span>
-                                        <a class=""
-                                           href="/dev/project/{{ projectId }}/event/{{ event.id }}/restart/">Перезапустить</a>
-                                    {% elseif event.status == 'done' %}
-                                        <span class=""> Успешно </span>
-                                    {% elseif event.status == 'new' %}
-                                        <span class=""> Новое </span>
-                                    {% elseif event.status == 'waiting' %}
-                                        <span class=""> Ожидает действий пользователя </span>
-                                    {% else %}
-                                        {{ event.status }}
-                                    {% endif %}
-                                </section>
+                        {% for event in events %}
+                            <div class="" style="padding-bottom: 20px;">
+                                <div class="">Событие #{{ event.id }}</div>
 
-                                {% if event.steps is not null %}
-                                    {% if event.steps is not empty %}
-                                        <br>
-                                        <section style="padding: 10px; background: #ced6ea;">
-                                            <ul>
-                                                {% for step in event.steps %}
-                                                    <li>
-                                                        <span style="font-weight: bold; color: #18181b;">Шаг {{ step.number }}</span>
+                                <div class="">
+                                    <section>
+                                        <span>Тип события:</span> {{ event.type }}
+                                    </section>
 
-                                                        {% if step.chains is not null %}
-                                                            {% if step.chains is not empty %}
-                                                                <br>
-                                                                <section
-                                                                        style="padding: 10px; background: #ced6ea;">
-                                                                    Цепочка:
-                                                                    <ul>
-                                                                        {% for chain in step.chains %}
-                                                                            <li>
-                                                                                {% if chain.status == 1 %}
-                                                                                    <span class="">Пройдено</span>
-                                                                                {% else %}
-                                                                                    <span class="">Не пройдено</span>
-                                                                                {% endif %}
+                                    <section>
+                                        <span>Статус события:</span>
+                                        {% if event.status == 'failed' %}
+                                            <span class=""> Провалено </span>
+                                            <a class=""
+                                               href="/dev/project/{{ projectId }}/event/{{ event.id }}/restart/">Перезапустить</a>
+                                        {% elseif event.status == 'done' %}
+                                            <span class=""> Успешно </span>
+                                        {% elseif event.status == 'new' %}
+                                            <span class=""> Новое </span>
+                                        {% elseif event.status == 'waiting' %}
+                                            <span class=""> Ожидает действий пользователя </span>
+                                        {% else %}
+                                            {{ event.status }}
+                                        {% endif %}
+                                    </section>
 
-                                                                                {{ chain.name }}
-                                                                            </li>
-                                                                        {% endfor %}
-                                                                    </ul>
-                                                                </section>
+                                    {% if event.steps is not null %}
+                                        {% if event.steps is not empty %}
+                                            <br>
+                                            <section style="padding: 10px; background: #ced6ea;">
+                                                <ul>
+                                                    {% for step in event.steps %}
+                                                        <li>
+                                                            <span style="font-weight: bold; color: #18181b;">Шаг {{ step.number }}</span>
+
+                                                            {% if step.chains is not null %}
+                                                                {% if step.chains is not empty %}
+                                                                    <br>
+                                                                    <section
+                                                                            style="padding: 10px; background: #ced6ea;">
+                                                                        Цепочка:
+                                                                        <ul>
+                                                                            {% for chain in step.chains %}
+                                                                                <li>
+                                                                                    {% if chain.status == 1 %}
+                                                                                        <span class="">Пройдено</span>
+                                                                                    {% else %}
+                                                                                        <span class="">Не пройдено</span>
+                                                                                    {% endif %}
+
+                                                                                    {{ chain.name }}
+                                                                                </li>
+                                                                            {% endfor %}
+                                                                        </ul>
+                                                                    </section>
+                                                                {% endif %}
                                                             {% endif %}
-                                                        {% endif %}
-                                                    </li>
-                                                {% endfor %}
-                                            </ul>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </section>
+                                        {% endif %}
+                                    {% endif %}
+
+                                    {% if event.error is not null %}
+                                        <section class="">
+                                            <span>Последняя ошибка:</span> {{ event.error }}
                                         </section>
                                     {% endif %}
-                                {% endif %}
-
-                                {% if event.error is not null %}
-                                    <section class="">
-                                        <span>Последняя ошибка:</span> {{ event.error }}
-                                    </section>
-                                {% endif %}
+                                </div>
                             </div>
-                        </div>
-                    {% endfor %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
 

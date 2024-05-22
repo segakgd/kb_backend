@@ -6,10 +6,12 @@ use App\Converter\ScenarioConverter;
 use App\Dto\Scenario\WrapperScenarioDto;
 use App\Dto\Webhook\Telegram\TelegramWebhookDto;
 use App\Entity\Scenario\ScenarioTemplate;
+use App\Entity\User\Bot;
 use App\Entity\User\Project;
 use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
 use App\Event\InitWebhookBotEvent;
+use App\Repository\Scenario\ScenarioTemplateRepository;
 use App\Service\Admin\Bot\BotServiceInterface;
 use App\Service\System\Common\MessageHistoryService;
 use App\Service\Visitor\Event\VisitorEventService;
@@ -37,6 +39,7 @@ class EventsDashboardController extends AbstractController
         private readonly VisitorSessionService $visitorSessionService,
         private readonly VisitorEventService $visitorEventService,
         private readonly MessageHistoryService $messageHistoryService,
+        private readonly ScenarioTemplateRepository $scenarioTemplateRepository,
     ) {
     }
 
@@ -154,7 +157,7 @@ class EventsDashboardController extends AbstractController
 
         $this->eventDispatcher->dispatch(new InitWebhookBotEvent($bot));
 
-        return new RedirectResponse('/admin');
+        return new RedirectResponse('/admin/projects/');
     }
 
     /**
@@ -176,20 +179,22 @@ class EventsDashboardController extends AbstractController
 
         $application->run($input);
 
-        return new RedirectResponse('/admin');
+        return new RedirectResponse('/admin/projects/');
     }
 
     /**
      * @throws Exception
      * @throws Throwable
      */
-    #[Route('/dev/project/{project}/scenario/{scenarioTemplate}/apply/', name: 'apply_scenario_to_bot', methods: ['GET'])]
+    #[Route('/dev/project/{project}/bot/{bot}/apply-scenario/', name: 'apply_scenario_to_bot', methods: ['POST'])]
     public function applyScenarioToBot(
         Request $request,
         Project $project,
-        ScenarioTemplate $scenarioTemplate,
+        Bot $bot,
     ): RedirectResponse {
-        $botId = $request->query->get('botId') ?? throw new Exception('Нет параметра botId');
+        $scenarioId = $request->request->get('scenario') ?? throw new Exception('Нет параметра scenario');
+
+        $scenarioTemplate = $this->scenarioTemplateRepository->find($scenarioId);
 
         $scenarios = $scenarioTemplate->getScenario()[0];
         $scenarios = [
@@ -201,9 +206,9 @@ class EventsDashboardController extends AbstractController
             WrapperScenarioDto::class
         );
 
-        $this->settingConverter->convert($scenario, $project->getId(), $botId);
+        $this->settingConverter->convert($scenario, $project->getId(), $bot->getId());
 
-        return new RedirectResponse('/admin');
+        return new RedirectResponse('/admin/projects/');
     }
 
     /**
@@ -223,7 +228,7 @@ class EventsDashboardController extends AbstractController
 
         $application->run($input);
 
-        return new RedirectResponse('/admin');
+        return new RedirectResponse('/admin/projects/');
     }
 
     /**

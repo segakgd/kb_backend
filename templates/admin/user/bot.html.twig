@@ -74,7 +74,8 @@
                                     </div>
 
                                     <div style="display: flex; flex-wrap: wrap;">
-                                        <button type="button" class="btn btn-success admin--btn-left" data-bs-toggle="modal"
+                                        <button type="button" class="btn btn-success admin--btn-left"
+                                                data-bs-toggle="modal"
                                                 data-bs-target="#editWebhook">Установить вебхук
                                         </button>
 
@@ -92,7 +93,8 @@
                                             </section>
                                         {% endif %}
 
-                                        <button type="button" class="btn btn-success admin--btn-left" data-bs-toggle="modal"
+                                        <button type="button" class="btn btn-success admin--btn-left"
+                                                data-bs-toggle="modal"
                                                 data-bs-target="#sendMessage">
                                             Отправить сообщение
                                         </button>
@@ -158,8 +160,30 @@
                                         </div>
                                     </div>
                                     <!-- MODAL -- Отправить новое сообщение -->
-
                                 </div>
+
+                                <hr>
+
+                                <div class="admin--title--wrapper">
+                                    <h4>Сценарии</h4>
+                                </div>
+
+
+                                <form method="POST"
+                                      action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/apply-scenario/"
+                                        {#                                        action="/dev/project/{{ projectId }}/scenario/{{ scenarioItem.id }}/apply/" #}
+                                >
+                                    <div class="mb-3">
+                                        <label for="scenario" class="col-form-label">Установить сценарий:</label>
+                                        <select class="form-select" name="scenario" id="scenario">
+                                            {% for scenarioItem in scenarios %}
+                                                <option value="{{ scenarioItem.id }}">{{ scenarioItem.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                    <button class="btn btn-primary">Установить</button>
+                                </form>
                             </div>
                         {% endif %}
                     </div>
@@ -180,28 +204,32 @@
                         {% endif %}
 
                         {% for session in sessions %}
+                            <hr>
+
                             <div class="">
-                                <a href="/admin/session/{{ session.id }}/" target="_blank">
-                                    <div class="">Название сессии: {{ session.sessionName }}</div>
+                                <div class="">
+                                    <a href="/admin/projects/{{ projectId }}/sessions/{{ session.id }}/" target="_blank">
+                                        <div class="admin--title--wrapper">
+                                            <h4>{{ session.sessionName }}</h4>
+                                        </div>
+                                    </a>
 
-                                    <div class="">
+                                    <section>
+                                        <span>Канал:</span> {{ session.sessionChannel }}
+                                    </section>
+                                    <section>
+                                        <span>Контент:</span> {{ session.cache.content }}
+                                    </section>
+
+                                    {% if session.sessionVisitorEvent is defined %}
                                         <section>
-                                            <span>Канал:</span> {{ session.sessionChannel }}
+                                            <span>Тип события:</span> {{ session.sessionVisitorEvent.type }}
                                         </section>
                                         <section>
-                                            <span>Контент:</span> {{ session.cache.content }}
+                                            <span>Статус последнего события:</span> {{ session.sessionVisitorEvent.status }}
                                         </section>
-
-                                        {% if session.sessionVisitorEvent is defined %}
-                                            <section>
-                                                <span>Тип события:</span> {{ session.sessionVisitorEvent.type }}
-                                            </section>
-                                            <section>
-                                                <span>Статус последнего события:</span> {{ session.sessionVisitorEvent.status }}
-                                            </section>
-                                        {% endif %}
-                                    </div>
-                                </a>
+                                    {% endif %}
+                                </div>
                             </div>
                         {% endfor %}
                     </div>
@@ -211,53 +239,53 @@
     </div>
 
 
-{#        <div class="jj__main_wrapper jj__main_wrapper--line"> #}
-{#            <div class="jj__wrapper jj__wrapper-50"> #}
-{#                <div class="jj__h"> #}
-{#                    <h2>Сценарии</h2> #}
-{#                </div> #}
+    {#        <div class="jj__main_wrapper jj__main_wrapper--line"> #}
+    {#            <div class="jj__wrapper jj__wrapper-50"> #}
+    {#                <div class="jj__h"> #}
+    {#                    <h2>Сценарии</h2> #}
+    {#                </div> #}
 
-{#                <div class="jj__items"> #}
-{#                    {% if scenarios is empty %} #}
-{#                        <div class="jj__items-without-data"> #}
-{#                            Данных нет #}
-{#                        </div> #}
-{#                    {% endif %} #}
+    {#                <div class="jj__items"> #}
+    {#                    {% if scenarios is empty %} #}
+    {#                        <div class="jj__items-without-data"> #}
+    {#                            Данных нет #}
+    {#                        </div> #}
+    {#                    {% endif %} #}
 
-{#                    {% for scenarioItem in scenarios %} #}
-{#                        <div class="jj__item"> #}
-{#                            <div class="jj__item_name">Сценарий #{{ scenarioItem.id }}</div> #}
+    {#                    {% for scenarioItem in scenarios %} #}
+    {#                        <div class="jj__item"> #}
+    {#                            <div class="jj__item_name">Сценарий #{{ scenarioItem.id }}</div> #}
 
-{#                            <div class="jj__item_data jj__item_data--line"> #}
-{#                                <section> #}
-{#                                    <span>Название:</span> {{ scenarioItem.name }} #}
-{#                                </section> #}
-{#                            </div> #}
+    {#                            <div class="jj__item_data jj__item_data--line"> #}
+    {#                                <section> #}
+    {#                                    <span>Название:</span> {{ scenarioItem.name }} #}
+    {#                                </section> #}
+    {#                            </div> #}
 
-{#                            <div class="jj__item_data jj__item_data--line"> #}
-{#                                <section> #}
-{#                                    <form action="/dev/project/{{ projectId }}/scenario/{{ scenarioItem.id }}/apply/" #}
-{#                                          method="GET"> #}
-{#                                        <label> #}
-{#                                            Подключить бот: #}
-{#                                            <select name="botId"> #}
-{#                                                {% for bot in bots %} #}
-{#                                                    <option value="{{ bot.botId }}">{{ bot.botName }}</option> #}
-{#                                                {% endfor %} #}
-{#                                            </select> #}
-{#                                            к сценарию #}
-{#                                        </label> #}
+    {#                            <div class="jj__item_data jj__item_data--line"> #}
+    {#                                <section> #}
+    {#                                    <form action="/dev/project/{{ projectId }}/scenario/{{ scenarioItem.id }}/apply/" #}
+    {#                                          method="GET"> #}
+    {#                                        <label> #}
+    {#                                            Подключить бот: #}
+    {#                                            <select name="botId"> #}
+    {#                                                {% for bot in bots %} #}
+    {#                                                    <option value="{{ bot.botId }}">{{ bot.botName }}</option> #}
+    {#                                                {% endfor %} #}
+    {#                                            </select> #}
+    {#                                            к сценарию #}
+    {#                                        </label> #}
 
-{#                                        <button> #}
-{#                                            Подключить #}
-{#                                        </button> #}
-{#                                    </form> #}
-{#                                </section> #}
-{#                            </div> #}
-{#                        </div> #}
-{#                    {% endfor %} #}
-{#                </div> #}
-{#            </div> #}
-{#        </div> #}
+    {#                                        <button> #}
+    {#                                            Подключить #}
+    {#                                        </button> #}
+    {#                                    </form> #}
+    {#                                </section> #}
+    {#                            </div> #}
+    {#                        </div> #}
+    {#                    {% endfor %} #}
+    {#                </div> #}
+    {#            </div> #}
+    {#        </div> #}
 
 {% endblock %}

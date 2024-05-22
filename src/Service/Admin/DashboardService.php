@@ -9,6 +9,7 @@ use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
 use App\Helper\CommonHelper;
 use App\Repository\MessageHistoryRepository;
+use App\Repository\Scenario\ScenarioRepository;
 use App\Repository\Visitor\VisitorEventRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Admin\Bot\BotServiceInterface;
@@ -26,6 +27,7 @@ readonly class DashboardService
         private VisitorEventRepository $visitorEventRepository,
         private ScenarioTemplateService $scenarioTemplateService,
         private MessageHistoryRepository $historyRepository,
+        private ScenarioRepository $scenarioRepository,
     ) {
     }
 

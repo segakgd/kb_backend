@@ -65,19 +65,20 @@ class DashboardController extends AbstractController
                 'sessions' => $this->dashboardService->getSessions($bot),
                 'bot' => $this->dashboardService->prepareBot($bot, $project),
                 'scenarios' => $this->dashboardService->prepareScenario($project),
+                'projectId' => $project->getId(),
             ]
         );
     }
 
-    #[Route('/admin/projects/{project}/sessions/', name: 'admin_project_sessions')]
-    public function session(VisitorSession $visitorSession): Response
+    #[Route('/admin/projects/{project}/sessions/{visitorSession}/', name: 'admin_project_sessions')]
+    public function session(Project $project, VisitorSession $visitorSession): Response
     {
-        // Сообщения
-        // События
 
         return $this->render(
-            'admin/user/project-dashboard.html.twig',
+            'admin/session.html.twig',
             [
+                'projectId' => $project->getId(),
+                'botId' => $visitorSession->getBotId(),
                 'messages' => $this->dashboardService->getMessageHistory(),
                 'events' => $this->dashboardService->prepareEvents($visitorSession),
             ]
