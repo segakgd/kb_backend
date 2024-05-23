@@ -43,6 +43,7 @@ class ViewAllController extends AbstractController
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project): JsonResponse
     {
+        dd('asd');
         $bots = $this->botService->findAll($project->getId());
 
         return $this->json($this->serializer->normalize($this->mapToResponse($bots)));

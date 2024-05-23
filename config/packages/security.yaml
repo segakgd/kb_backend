@@ -13,6 +13,8 @@ security:
 
     firewalls:
         main:
+            access_token:
+                token_handler: App\Security\AccessTokenHandler
             form_login:
                 login_path: app_login
                 check_path: app_login

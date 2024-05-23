@@ -28,6 +28,7 @@ class ProjectVoter extends Voter
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
+        dd('asd');
 
         if (!$user instanceof User) {
             return false;

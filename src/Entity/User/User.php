@@ -26,14 +26,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private array $roles = [];
 
-    /**
-     * @var string The hashed password
-     */
     #[ORM\Column]
     private ?string $password = null;
 
     #[ORM\ManyToMany(targetEntity: Project::class, inversedBy: 'users')]
     private Collection $projects;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $accessToken = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $refreshTokens = null;
 
     public function __construct()
     {
@@ -130,6 +133,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeProject(Project $project): static
     {
         $this->projects->removeElement($project);
+
+        return $this;
+    }
+
+    public function getAccessToken(): ?string
+    {
+        return $this->accessToken;
+    }
+
+    public function setAccessToken(string $accessToken): static
+    {
+        $this->accessToken = $accessToken;
+
+        return $this;
+    }
+
+    public function getRefreshTokens(): ?string
+    {
+        return $this->refreshTokens;
+    }
+
+    public function setRefreshTokens(string $refreshTokens): static
+    {
+        $this->refreshTokens = $refreshTokens;
 
         return $this;
     }
