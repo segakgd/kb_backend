@@ -12,21 +12,6 @@ security:
                 property: email
 
     firewalls:
-        login_api:
-            pattern: ^/api/user/authenticate/
-            stateless: true
-            json_login:
-                check_path: /api/user/authenticate/
-                success_handler: lexik_jwt_authentication.handler.authentication_success
-                failure_handler: lexik_jwt_authentication.handler.authentication_failure
-        api:
-            pattern: ^/api
-            stateless: true
-            entry_point: jwt
-            jwt:
-                ~
-            refresh_jwt:
-                check_path: /api/user/refresh/
         main:
             form_login:
                 login_path: app_login
