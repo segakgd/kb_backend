@@ -124,7 +124,7 @@ class EventsDashboardController extends AbstractController
 
         $application->run($input);
 
-        return new RedirectResponse("/admin/session/{$visitorSession->getId()}");
+        return new RedirectResponse("/admin/projects/{$project->getId()}/sessions/{$visitorSession->getId()}/");
     }
 
     #[Route('/dev/project/{project}/bot/{botId}/activate/', name: 'dev_bot_activate', methods: ['GET'])]
@@ -248,6 +248,6 @@ class EventsDashboardController extends AbstractController
 
         $application->run($input);
 
-        return new RedirectResponse("/admin/session/{$session->getId()}/");
+        return new RedirectResponse("/admin/projects/{$project->getId()}/sessions/{$session->getId()}/");
     }
 }
