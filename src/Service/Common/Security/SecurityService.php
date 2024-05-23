@@ -12,12 +12,12 @@ use Exception;
 use Random\RandomException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class SecurityService
+readonly class SecurityService
 {
     public function __construct(
-        private readonly UserPasswordHasherInterface $userPasswordHasher,
-        private readonly EntityManagerInterface $entityManager,
-        private readonly UserRepository $userRepository,
+        private UserPasswordHasherInterface $userPasswordHasher,
+        private EntityManagerInterface $entityManager,
+        private UserRepository $userRepository,
     ) {
     }
 
@@ -42,6 +42,9 @@ class SecurityService
         return $user;
     }
 
+    /**
+     * @throws Exception
+     */
     public function identifyUser(AuthDto $authDto): User
     {
         $userName = $authDto->getUsername();
