@@ -6,17 +6,19 @@ use App\Converter\ScenarioConverter;
 use App\Dto\Scenario\WrapperScenarioDto;
 use App\Dto\Webhook\Telegram\TelegramWebhookDto;
 use App\Entity\Scenario\ScenarioTemplate;
+use App\Entity\User\Bot;
 use App\Entity\User\Project;
 use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
 use App\Event\InitWebhookBotEvent;
+use App\Repository\Scenario\ScenarioTemplateRepository;
 use App\Service\Admin\Bot\BotServiceInterface;
 use App\Service\System\Common\MessageHistoryService;
 use App\Service\Visitor\Event\VisitorEventService;
 use App\Service\Visitor\Session\VisitorSessionService;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -26,7 +28,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Throwable;
 
-class EventsDashboardController extends AbstractDashboardController
+class EventsDashboardController extends AbstractController
 {
     public function __construct(
         private readonly BotServiceInterface $botService,
@@ -37,6 +39,7 @@ class EventsDashboardController extends AbstractDashboardController
         private readonly VisitorSessionService $visitorSessionService,
         private readonly VisitorEventService $visitorEventService,
         private readonly MessageHistoryService $messageHistoryService,
+        private readonly ScenarioTemplateRepository $scenarioTemplateRepository,
     ) {
     }
 
@@ -121,7 +124,7 @@ class EventsDashboardController extends AbstractDashboardController
 
         $application->run($input);
 
-        return new RedirectResponse("/admin/session/{$visitorSession->getId()}");
+        return new RedirectResponse("/admin/projects/{$project->getId()}/sessions/{$visitorSession->getId()}/");
     }
 
     #[Route('/dev/project/{project}/bot/{botId}/activate/', name: 'dev_bot_activate', methods: ['GET'])]
@@ -154,7 +157,7 @@ class EventsDashboardController extends AbstractDashboardController
 
         $this->eventDispatcher->dispatch(new InitWebhookBotEvent($bot));
 
-        return new RedirectResponse('/admin');
+        return new RedirectResponse('/admin/projects/');
     }
 
     /**
@@ -176,20 +179,22 @@ class EventsDashboardController extends AbstractDashboardController
 
         $application->run($input);
 
-        return new RedirectResponse('/admin');
+        return new RedirectResponse('/admin/projects/');
     }
 
     /**
      * @throws Exception
      * @throws Throwable
      */
-    #[Route('/dev/project/{project}/scenario/{scenarioTemplate}/apply/', name: 'apply_scenario_to_bot', methods: ['GET'])]
+    #[Route('/dev/project/{project}/bot/{bot}/apply-scenario/', name: 'apply_scenario_to_bot', methods: ['POST'])]
     public function applyScenarioToBot(
         Request $request,
         Project $project,
-        ScenarioTemplate $scenarioTemplate,
+        Bot $bot,
     ): RedirectResponse {
-        $botId = $request->query->get('botId') ?? throw new Exception('Нет параметра botId');
+        $scenarioId = $request->request->get('scenario') ?? throw new Exception('Нет параметра scenario');
+
+        $scenarioTemplate = $this->scenarioTemplateRepository->find($scenarioId);
 
         $scenarios = $scenarioTemplate->getScenario()[0];
         $scenarios = [
@@ -201,9 +206,9 @@ class EventsDashboardController extends AbstractDashboardController
             WrapperScenarioDto::class
         );
 
-        $this->settingConverter->convert($scenario, $project->getId(), $botId);
+        $this->settingConverter->convert($scenario, $project->getId(), $bot->getId());
 
-        return new RedirectResponse('/admin');
+        return new RedirectResponse('/admin/projects/');
     }
 
     /**
@@ -223,7 +228,7 @@ class EventsDashboardController extends AbstractDashboardController
 
         $application->run($input);
 
-        return new RedirectResponse('/admin');
+        return new RedirectResponse('/admin/projects/');
     }
 
     /**
@@ -243,6 +248,6 @@ class EventsDashboardController extends AbstractDashboardController
 
         $application->run($input);
 
-        return new RedirectResponse("/admin/session/{$session->getId()}/");
+        return new RedirectResponse("/admin/projects/{$project->getId()}/sessions/{$session->getId()}/");
     }
 }

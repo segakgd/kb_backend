@@ -296,126 +296,11 @@ h1, h2 {
 }
 
 
-/* New style */
-.jj__main_wrapper {
-}
-
-.jj__main_wrapper--line {
-    display: flex;
-    justify-content: space-between;
-}
-
-.jj__wrapper {
-    font-family: "Roboto", sans-serif;
-    width: 100%;
-    padding: 20px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    font-size: 14px;
-    margin-bottom: 20px;
-    height: 500px;
-    overflow: auto;
-}
-
-.jj__wrapper-h-auto {
-    height: auto;
-}
-
-.jj__wrapper-30 {
-    width: 32%;
-}
-
-.jj__wrapper-50 {
-    width: 49%;
-}
-
-.jj__wrapper-65 {
-    width: 66%;
-}
 
 
-@media (max-width: 800px) {
-    .jj__main_wrapper--line {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .jj__wrapper-50 {
-        width: 80%;
-    }
-
-    .jj__wrapper-30 {
-        width: 80%;
-    }
-}
-
-@media (max-width: 550px) {
-    .jj__main_wrapper--line {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .jj__wrapper-50 {
-        width: 90%;
-    }
-
-    .jj__wrapper-30 {
-        width: 90%;
-    }
-}
-
-@media (max-width: 450px) {
-    .jj__main_wrapper--line {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .jj__wrapper-50 {
-        width: 100%;
-    }
-
-    .jj__wrapper-30 {
-        width: 100%;
-    }
-}
 
 
-.jj__h {
-    padding: 10px 0 20px 0;
-}
 
-.jj__h h2 {
-    font-size: 18px;
-    padding: 0;
-    margin: 0;
-}
-
-.jj__items {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-}
-
-.jj__items .jj__item {
-    width: 100%;
-    margin-bottom: 10px;
-    background: #e2e8f0;
-    padding: 10px 20px;
-}
-
-.jj__item_name {
-    display: flex;
-    font-weight: 500;
-    font-size: 15px;
-}
-
-.jj__item_data {
-}
-
-.jj__item_data--line {
-    display: flex;
-    padding: 5px 0 0 0;
-}
 
 .jj__item_data section {
     word-break: break-word;
@@ -475,29 +360,24 @@ h1, h2 {
     margin-top: 10px;
 }
 
-.jj__color-write {
+.color--write {
     color: #fff;
-    font-weight: 500;
 }
 
-.jj__color-red {
+.color--red {
     color: #e85574;
-    font-weight: 500;
 }
 
-.jj__color-green {
+.color--green {
     color: #059669;
-    font-weight: 500;
 }
 
-.jj__color-blue {
+.color--blue {
     color: #5368d5;
-    font-weight: 500;
 }
 
-.jj__color-yellow {
+.color--yellow {
     color: #d5c453;
-    font-weight: 500;
 }
 
 .jj__icon-soc--wrapper {
@@ -637,109 +517,4 @@ h1, h2 {
     color: #fff;
 }
 
-.messenger-wr {
-    display: flex;
-    flex-wrap: wrap;
-    width: 600px;
-    background: #ffffff;
-    flex-direction: column;
-}
 
-.messenger-block {
-    width: 600px;
-    flex: 1 0 auto;
-    background: url('https://i.pinimg.com/736x/8e/6b/e9/8e6be91a01ba06f18b9eddfb944b2b42.jpg');
-    background-size: cover;
-    overflow: auto;
-    height: 500px;
-}
-
-.messenger-message {
-    height: max-content;
-    width: 350px;
-    margin: 10px 30px;
-    background: #30383b;
-    border-radius: 15px;
-    overflow: hidden
-}
-
-.messenger-message--incoming {
-
-}
-
-.messenger-message--outgoing {
-    width: max-content;
-    max-width: 350px;
-    margin: 10px 30px 10px auto;
-}
-
-.messenger-message-image {
-    width: 100%;
-    min-width: 350px;
-    height: 250px;
-    background: #30383b;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.messenger-message-text {
-}
-
-.messenger-message-text p {
-    padding: 0 20px;
-    margin: 20px 0;
-    color: #fff;
-    white-space: pre-line;
-}
-
-.messenger-nav {
-    word-break: break-all;
-    padding: 20px 10px;
-    background: #425156;
-    color: #fff;
-    border-radius: 9px;
-    /*margin: 5px;*/
-    border: none;
-    width: 130px;
-    height: 90px;
-    /*margin: 10px;*/
-}
-
-.messenger-nav:hover {
-    background: #546367;
-}
-
-.messenger-nav--input {
-    width: 100%;
-    height: 40px;
-    padding: 0 0 0 10px;
-    background: transparent;
-    border: 0;
-    outline:none;
-    color: #fff;
-}
-
-.messenger-nav--input:active {
-    border: none !important;
-    outline:none;
-}
-
-.messenger-nav--input:hover {
-    border: none !important;
-    outline:none;
-}
-
-.messenger-nav--input:blank {
-    border: none !important;
-    outline:none;
-}
-
-.messenger-nav--input-btn{
-    width: 100px;
-    height: 40px;
-    border: 0;
-    background: #425156;
-    color: #fff;
-}

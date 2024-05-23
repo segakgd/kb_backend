@@ -3,7 +3,7 @@
 namespace App\Controller\Webhook;
 
 use App\Dto\Webhook\Telegram\TelegramWebhookDto;
-use App\Repository\User\ProjectEntityRepository;
+use App\Repository\User\ProjectRepository;
 use App\Service\Admin\Bot\BotServiceInterface;
 use App\Service\System\Common\MessageHistoryService;
 use App\Service\Visitor\Event\VisitorEventService;
@@ -20,11 +20,11 @@ use Throwable;
 class MainWebhookController extends AbstractController
 {
     public function __construct(
-        private readonly SerializerInterface $serializer,
+        private readonly SerializerInterface   $serializer,
         private readonly VisitorSessionService $visitorSessionService,
-        private readonly VisitorEventService $visitorEventService,
-        private readonly ProjectEntityRepository $projectEntityRepository,
-        private readonly BotServiceInterface $botService,
+        private readonly VisitorEventService   $visitorEventService,
+        private readonly ProjectRepository     $projectEntityRepository,
+        private readonly BotServiceInterface   $botService,
         private readonly MessageHistoryService $messageHistoryService,
     ) {
     }

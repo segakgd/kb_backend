@@ -2,14 +2,14 @@
 
 namespace App\Entity\User;
 
-use App\Repository\User\ProjectEntityRepository;
+use App\Repository\User\ProjectRepository;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: ProjectEntityRepository::class)]
+#[ORM\Entity(repositoryClass: ProjectRepository::class)]
 class Project
 {
     public const STATUS_ACTIVE = 'active';

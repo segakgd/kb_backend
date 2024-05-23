@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Security;
 
 use App\Entity\User\RefreshToken;
 use App\Entity\User\User;
@@ -9,34 +9,35 @@ use Doctrine\ORM\EntityManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
-    #[Route('/login-admin', name: 'login_admin', methods: ['GET'])]
-    public function login(): Response
+    #[Route('/login', name: 'app_login')]
+    public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        return $this->render('admin/user/auth.html.twig');
+        $error = $authenticationUtils->getLastAuthenticationError();
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        return $this->render('admin/user/auth.html.twig', [
+            'last_username' => $lastUsername,
+            'error' => $error,
+        ]);
     }
 
-    #[Route('/login_check', name: 'app_login_check', methods: ['POST'])]
-    public function loginCheck(): void
+    #[Route('/logout', name: 'app_logout')]
+    public function logout(): RedirectResponse
     {
+        return new RedirectResponse("/");
     }
 
-    #[Route('/logout', name: 'app_logout', methods: ['GET'])]
-    public function logout(Request $request): Response
-    {
-        $request->getSession()->invalidate();
-
-        return $this->redirectToRoute('login_admin_form');
-    }
-
-    #[Route('/api/user/authenticate/', name: 'app_login.authenticate', methods: ['POST'])]
+    #[Route('/api/user/authenticates/', name: 'app_login.authenticate', methods: ['POST', 'GET'])]
     public function loginAuthenticate(
         Request $request,
         JWTTokenManagerInterface $JWTManager,

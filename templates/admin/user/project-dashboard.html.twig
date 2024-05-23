@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Дашборд{% endblock %}
+
+{% block main %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="admin--title--wrapper">
+                    <h2>Боты</h2>
+                </div>
+
+                <div class="wrapper--block">
+                    <div class="">
+                        {% if bots is empty %}
+                            <div class="">
+                                Данных нет
+                            </div>
+                        {% endif %}
+
+                        {% for bot in bots %}
+                            <a href="/admin/projects/{{ bot.projectId }}/bot/{{ bot.botId }}/">
+                                <div class="">Название бота: {{ bot.botName }}</div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

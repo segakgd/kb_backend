@@ -23,9 +23,9 @@ class KeyboardDto extends AbstractDto
         return $this;
     }
 
-    public static function fromArray(array $data): self
+    public static function fromArray(array $data): static
     {
-        $keyboard = new self();
+        $keyboard = new static();
         $keyboard->setReplyMarkup($data['replyMarkup'] ?? null);
 
         return $keyboard;

@@ -1,27 +1,52 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="icon" href="/assets/images/logo.svg">
 
-        <link rel="stylesheet" type="text/css" href="/assets/css.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css.css">
+    <link rel="stylesheet" type="text/css" href="/assets/bootstrap/css/bootstrap.css">
 
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
 
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
-    </head>
-    <body>
-        <header>
-        </header>
-        <main>
-            {% block main %}{% endblock %}
-        </main>
-        <footer></footer>
-    </body>
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+</head>
+<body>
+{% if app.user %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+            <header>
+                <div class="header__nav">
+                    <ul>
+                        <li>
+                            <a href="{{ path('admin_users') }}">Пользователи</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_projects') }}">Проекты</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="header__nav--exit">
+                    <a href="/logout">Выйти</a>
+                </div>
+            </header>
+        </div>
+        </div>
+    </div>
+{% endif %}
+<main>
+    {% block main %}{% endblock %}
+</main>
+<footer></footer>
+
+<script src="/assets/bootstrap/js/bootstrap.js"></script>
+
+</body>
 </html>
