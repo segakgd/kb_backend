@@ -5,7 +5,6 @@ namespace App\Controller\Dev;
 use App\Converter\ScenarioConverter;
 use App\Dto\Scenario\WrapperScenarioDto;
 use App\Dto\Webhook\Telegram\TelegramWebhookDto;
-use App\Entity\Scenario\ScenarioTemplate;
 use App\Entity\User\Bot;
 use App\Entity\User\Project;
 use App\Entity\Visitor\VisitorEvent;
@@ -132,7 +131,7 @@ class EventsDashboardController extends AbstractController
     {
         $this->botService->updateStatus($botId, $project->getId(), true);
 
-        return new RedirectResponse('/admin');
+        return new RedirectResponse("/admin/projects/{$project->getId()}/dashboard/");
     }
 
     #[Route('/dev/project/{project}/bot/{botId}/deactivate/', name: 'dev_bot_deactivate', methods: ['GET'])]
@@ -140,7 +139,7 @@ class EventsDashboardController extends AbstractController
     {
         $this->botService->updateStatus($botId, $project->getId(), false);
 
-        return new RedirectResponse('/admin');
+        return new RedirectResponse("/admin/projects/{$project->getId()}/dashboard/");
     }
 
     /**
@@ -157,7 +156,7 @@ class EventsDashboardController extends AbstractController
 
         $this->eventDispatcher->dispatch(new InitWebhookBotEvent($bot));
 
-        return new RedirectResponse('/admin/projects/');
+        return new RedirectResponse("/admin/projects/{$project->getId()}/dashboard/");
     }
 
     /**
@@ -179,7 +178,7 @@ class EventsDashboardController extends AbstractController
 
         $application->run($input);
 
-        return new RedirectResponse('/admin/projects/');
+        return new RedirectResponse("/admin/projects/{$project->getId()}/dashboard/");
     }
 
     /**
@@ -208,7 +207,7 @@ class EventsDashboardController extends AbstractController
 
         $this->settingConverter->convert($scenario, $project->getId(), $bot->getId());
 
-        return new RedirectResponse('/admin/projects/');
+        return new RedirectResponse("/admin/projects/{$project->getId()}/dashboard/");
     }
 
     /**
@@ -228,7 +227,7 @@ class EventsDashboardController extends AbstractController
 
         $application->run($input);
 
-        return new RedirectResponse('/admin/projects/');
+        return new RedirectResponse("/admin/projects/{$project->getId()}/dashboard/");
     }
 
     /**
