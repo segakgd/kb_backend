@@ -24,6 +24,12 @@ class SecurityController extends AbstractController
     ) {
     }
 
+    #[Route('/lslslsls/', name: 'asdasdasdasd', methods: ['POST', 'GET'])]
+    public function lslsls(Request $request): JsonResponse
+    {
+        return new JsonResponse($request->getMethod());
+    }
+
     #[Route('/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
