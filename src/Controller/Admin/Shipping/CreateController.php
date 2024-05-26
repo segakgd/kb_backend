@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Shipping;
 
 use App\Controller\Admin\Shipping\DTO\Request\ShippingReqDto;
+use App\Controller\GeneralController;
 use App\Entity\User\Project;
 use App\Service\Admin\Ecommerce\Shipping\Manager\ShippingManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,35 +27,32 @@ use Throwable;
 )]
 #[OA\Response(
     response: Response::HTTP_NO_CONTENT,
-    description: 'Создание доставки',
+    description: 'Создание доставки для проекта',
 )]
-class CreateController extends AbstractController
+class CreateController extends GeneralController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,
         private readonly SerializerInterface $serializer,
         private readonly ShippingManagerInterface $shippingManager,
     ) {
+        parent::__construct(
+            $this->serializer,
+            $this->validator,
+        );
     }
 
-    /** Создание доставки */
     #[Route('/api/admin/project/{project}/shipping/', name: 'admin_shipping_create', methods: ['POST'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Request $request, ?Project $project): JsonResponse
+    public function execute(Request $request, Project $project): JsonResponse
     {
-        if (null === $project) {
-            return $this->json('Project not found', Response::HTTP_NOT_FOUND);
-        }
-
         try {
-            $requestDto = $this->serializer->deserialize($request->getContent(), ShippingReqDto::class, 'json');
-            $errors = $this->validator->validate($requestDto);
+            $shippingDto = $this->getValidDtoFromRequest($request, ShippingReqDto::class);
 
-            if (count($errors) > 0) {
-                return $this->json(['message' => $errors->get(0)->getMessage()], Response::HTTP_BAD_REQUEST);
-            }
-
-            $this->shippingManager->create($requestDto, $project);
+            $this->shippingManager->create(
+                shippingReqDto: $shippingDto,
+                project: $project,
+            );
         } catch (Throwable $exception) {
             return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }

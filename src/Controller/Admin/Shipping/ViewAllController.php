@@ -19,7 +19,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[OA\Tag(name: 'Shipping')]
 #[OA\Response(
     response: Response::HTTP_OK,
-    description: 'Коллекция доставок',
+    description: 'Получение коллекции доставок проекта',
     content: new OA\JsonContent(
         type: 'array',
         items: new OA\Items(
