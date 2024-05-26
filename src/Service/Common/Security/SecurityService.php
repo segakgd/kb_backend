@@ -50,9 +50,8 @@ readonly class SecurityService
         $userName = $authDto->getUsername();
 
         $user = $this->userRepository->findOneBy(['email' => $userName]);
-        $password = $this->userPasswordHasher->hashPassword($user, $authDto->getPassword());
 
-        if ($user->getPassword() !== $password) {
+        if (!$this->userPasswordHasher->isPasswordValid($user, $authDto->getPassword())) {
             throw new Exception('Wrong password for user: ' . $user->getEmail());
         }
 

@@ -2,10 +2,10 @@
 
 namespace App\Controller\Security;
 
+use App\Controller\GeneralController;
 use App\Controller\Security\DTO\AuthDto;
 use App\Service\Common\Security\SecurityService;
 use Exception;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,19 +15,17 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class SecurityController extends AbstractController
+class SecurityController extends GeneralController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,
         private readonly SerializerInterface $serializer,
         private readonly SecurityService $securityService,
     ) {
-    }
-
-    #[Route('/lslslsls/', name: 'asdasdasdasd', methods: ['POST', 'GET'])]
-    public function lslsls(Request $request): JsonResponse
-    {
-        return new JsonResponse($request->getMethod());
+        parent::__construct(
+            $this->serializer,
+            $this->validator,
+        );
     }
 
     #[Route('/login', name: 'app_login')]
@@ -51,24 +49,17 @@ class SecurityController extends AbstractController
     /**
      * @throws Exception
      */
-    #[Route('/api/authenticate/', name: 'api_auth', methods: ['POST'])]
+    #[Route('/api/user/authenticate/', name: 'api_auth', methods: ['POST'])]
     public function apiAuth(Request $request): JsonResponse
     {
-        $content = $request->getContent();
-
-        $requestDto = $this->serializer->deserialize($content, AuthDto::class, 'json');
-
-        $errors = $this->validator->validate($requestDto);
-
-        if (count($errors) > 0) {
-            return $this->json(['message' => $errors->get(0)->getMessage()], Response::HTTP_BAD_REQUEST);
-        }
+        $requestDto = $this->getValidDtoFromRequest($request, AuthDto::class);
 
         $user = $this->securityService->identifyUser($requestDto);
 
         return new JsonResponse(
             [
                 'access_token' => $this->securityService->refresh($user),
+                'token' => $this->securityService->refresh($user),
             ]
         );
     }
