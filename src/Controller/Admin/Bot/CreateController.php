@@ -4,12 +4,12 @@ namespace App\Controller\Admin\Bot;
 
 use App\Controller\Admin\Bot\DTO\Request\BotReqDto;
 use App\Controller\Admin\Bot\DTO\Response\BotResDto;
+use App\Controller\GeneralController;
 use App\Entity\User\Bot;
 use App\Entity\User\Project;
 use App\Service\Admin\Bot\BotServiceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Throwable;
 
 #[OA\Tag(name: 'Bot')]
 #[OA\RequestBody(
@@ -28,13 +29,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     response: Response::HTTP_NO_CONTENT,
     description: 'Возвращает 204 при создании',
 )]
-class CreateController extends AbstractController
+class CreateController extends GeneralController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,
         private readonly SerializerInterface $serializer,
         private readonly BotServiceInterface $botService,
     ) {
+        parent::__construct(
+            $this->serializer,
+            $this->validator,
+        );
     }
 
     /** Создание бота */
@@ -42,23 +47,19 @@ class CreateController extends AbstractController
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project): JsonResponse
     {
-        $content = $request->getContent();
+        try {
+            $requestDto = $this->getValidDtoFromRequest($request, BotReqDto::class);
 
-        $requestDto = $this->serializer->deserialize($content, BotReqDto::class, 'json');
+            $bot = $this->botService->add($requestDto, $project->getId());
 
-        $errors = $this->validator->validate($requestDto);
+            $response = $this->mapToResponse($bot);
 
-        if (count($errors) > 0) {
-            return $this->json(['message' => $errors->get(0)->getMessage()], Response::HTTP_BAD_REQUEST);
+            return new JsonResponse(
+                $this->serializer->normalize($response)
+            );
+        } catch (Throwable $exception) {
+            return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
-
-        $bot = $this->botService->add($requestDto, $project->getId());
-
-        $response = $this->mapToResponse($bot);
-
-        return new JsonResponse(
-            $this->serializer->normalize($response)
-        );
     }
 
     private function mapToResponse(Bot $bot): BotResDto

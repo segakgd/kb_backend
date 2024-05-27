@@ -16,6 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use OpenApi\Attributes as OA;
+use Throwable;
 
 #[OA\Response(
     response: Response::HTTP_OK,
@@ -42,9 +43,13 @@ class ViewAllController extends AbstractController
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project): JsonResponse
     {
-        $bots = $this->botService->findAll($project->getId());
+        try {
+            $bots = $this->botService->findAll($project->getId());
 
-        return $this->json($this->serializer->normalize($this->mapToResponse($bots)));
+            return $this->json($this->serializer->normalize($this->mapToResponse($bots)));
+        } catch (Throwable $exception) {
+            return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
+        }
     }
 
     private function mapToResponse(array $bots): array

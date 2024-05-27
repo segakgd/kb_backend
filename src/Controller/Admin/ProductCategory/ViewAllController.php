@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Throwable;
 
 #[OA\Tag(name: 'ProductCategory')]
 #[OA\Response(
@@ -41,8 +42,12 @@ class ViewAllController extends AbstractController
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project): JsonResponse
     {
-        return $this->json(
-            ProductCategoryHelper::mapArrayToResponse(($this->productCategoryManager->getAll($project)))
-        );
+        try {
+            return $this->json(
+                ProductCategoryHelper::mapArrayToResponse(($this->productCategoryManager->getAll($project)))
+            );
+        } catch (Throwable $exception) {
+            return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
+        }
     }
 }

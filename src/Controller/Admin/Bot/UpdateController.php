@@ -4,12 +4,12 @@ namespace App\Controller\Admin\Bot;
 
 use App\Controller\Admin\Bot\DTO\Request\UpdateBotReqDto;
 use App\Controller\Admin\Bot\DTO\Response\BotResDto;
+use App\Controller\GeneralController;
 use App\Entity\User\Bot;
 use App\Entity\User\Project;
 use App\Service\Admin\Bot\BotServiceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Throwable;
 
 #[OA\Tag(name: 'Bot')]
 #[OA\RequestBody(
@@ -28,7 +29,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     response: Response::HTTP_NO_CONTENT,
     description: 'Возвращает 204 при создании',
 )]
-class UpdateController extends AbstractController
+class UpdateController extends GeneralController
 {
 
     public function __construct(
@@ -36,30 +37,30 @@ class UpdateController extends AbstractController
         private readonly SerializerInterface $serializer,
         private readonly BotServiceInterface $botService,
     ) {
+        parent::__construct(
+            $this->serializer,
+            $this->validator,
+        );
     }
 
     /** Обновление одного продукта */
-    #[Route('/api/admin/project/{project}/bot/{botId}/', name: 'admin_bot_update', methods: ['PATCH'])]
+    #[Route('/api/admin/project/{project}/bot/{bot}/', name: 'admin_bot_update', methods: ['PATCH'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Request $request, Project $project, int $botId): JsonResponse
+    public function execute(Request $request, Project $project, Bot $bot): JsonResponse
     {
-        $content = $request->getContent();
+        try {
+            $requestDto = $this->getValidDtoFromRequest($request, UpdateBotReqDto::class);
 
-        $requestDto = $this->serializer->deserialize($content, UpdateBotReqDto::class, 'json');
+            $bot = $this->botService->update($requestDto, $bot->getId(), $project->getId());
 
-        $errors = $this->validator->validate($requestDto);
+            $response = $this->mapToResponse($bot);
 
-        if (count($errors) > 0) {
-            return $this->json(['message' => $errors->get(0)->getMessage()], Response::HTTP_BAD_REQUEST);
+            return new JsonResponse(
+                $this->serializer->normalize($response)
+            );
+        } catch (Throwable $exception) {
+            return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
-
-        $bot = $this->botService->update($requestDto, $botId, $project->getId());
-
-        $response = $this->mapToResponse($bot);
-
-        return new JsonResponse(
-            $this->serializer->normalize($response)
-        );
     }
 
     private function mapToResponse(Bot $bot): BotResDto

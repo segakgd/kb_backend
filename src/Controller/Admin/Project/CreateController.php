@@ -3,10 +3,8 @@
 namespace App\Controller\Admin\Project;
 
 use App\Controller\Admin\Project\DTO\Request\ProjectCreateReqDto;
-use App\Controller\Admin\Project\DTO\Response\ProjectRespDto;
 use App\Controller\Admin\Project\Response\ProjectResponse;
 use App\Controller\GeneralController;
-use App\Entity\User\Project;
 use App\Repository\User\UserRepository;
 use App\Service\Admin\Statistic\StatisticsServiceInterface;
 use App\Service\Common\Project\ProjectServiceInterface;
