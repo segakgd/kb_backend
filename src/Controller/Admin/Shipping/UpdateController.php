@@ -12,11 +12,11 @@ use App\Entity\User\Project;
 use App\Service\Admin\Ecommerce\Shipping\Manager\ShippingManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -38,6 +38,7 @@ class UpdateController extends GeneralController
         private readonly SerializerInterface $serializer,
         private readonly ValidatorInterface $validator,
         private readonly ShippingManagerInterface $shippingManager,
+        private readonly LoggerInterface $logger,
     ) {
         parent::__construct(
             $this->serializer,
@@ -45,22 +46,22 @@ class UpdateController extends GeneralController
         );
     }
 
-    /**
-     * @throws NotFoundShippingForProjectException
-     */
+    /** Обновление доставки */
     #[Route('/api/admin/project/{project}/shipping/{shipping}/', name: 'admin_shipping_update', methods: ['PATCH'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, ?Project $project, Shipping $shipping): JsonResponse
     {
-        if ($project->getId() !== $shipping->getProjectId()) {
-            throw new NotFoundShippingForProjectException();
-        }
-
         try {
+            if ($project->getId() !== $shipping->getProjectId()) {
+                throw new NotFoundShippingForProjectException();
+            }
+
             $shippingDto = $this->getValidDtoFromRequest($request, ShippingReqDto::class);
 
             $this->shippingManager->update($shippingDto, $shipping, $project);
         } catch (Throwable $exception) {
+            $this->logger->error($exception->getMessage());
+
             return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
 
