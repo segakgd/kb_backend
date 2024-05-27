@@ -3,10 +3,11 @@
 namespace App\Controller\Admin\Scenario;
 
 use App\Controller\Admin\Scenario\DTO\Request\ScenarioUpdateReqDto;
+use App\Controller\GeneralController;
+use App\Entity\Scenario\Scenario;
 use App\Entity\User\Project;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,13 +22,13 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 )]
 #[OA\Response(
     response: Response::HTTP_NO_CONTENT,
-    description: '', // todo You need to write a description
+    description: 'Обновить сценарий',
 )]
-class UpdateController extends AbstractController
+class UpdateController extends GeneralController
 {
-    #[Route('/api/admin/project/{project}/scenario/{scenarioId}/', name: 'admin_scenario_update', methods: ['PUT'])]
+    #[Route('/api/admin/project/{project}/scenario/{scenario}/', name: 'admin_scenario_update', methods: ['PUT'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Request $request, Project $project, int $promotionId): JsonResponse
+    public function execute(Request $request, Project $project, Scenario $scenario): JsonResponse
     {
         return new JsonResponse();
     }
