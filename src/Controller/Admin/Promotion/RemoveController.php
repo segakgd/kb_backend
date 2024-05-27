@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Promotion;
 
+use App\Controller\Admin\Promotion\Exception\NotFoundPromotionForProjectException;
 use App\Entity\Ecommerce\Promotion;
 use App\Entity\User\Project;
 use App\Service\Admin\Ecommerce\Promotion\Manager\PromotionManagerInterface;
@@ -19,26 +20,25 @@ use Throwable;
 #[OA\Tag(name: 'Promotion')]
 #[OA\Response(
     response: Response::HTTP_NO_CONTENT,
-    description: 'Если получилось удалить – возвращаем 204',
+    description: 'Удаление скидки',
 )]
 class RemoveController extends AbstractController
 {
     public function __construct(
         private readonly LoggerInterface $logger,
-        private readonly PromotionManagerInterface $promotionManager) {
+        private readonly PromotionManagerInterface $promotionManager,
+    ) {
     }
 
     #[Route('/api/admin/project/{project}/promotion/{promotion}/', name: 'admin_promotion_remove', methods: ['DELETE'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Project $project, ?Promotion $promotion): JsonResponse
+    public function execute(Project $project, Promotion $promotion): JsonResponse
     {
-        if (null === $promotion) {
-            return $this->json('Not found', Response::HTTP_NOT_FOUND);
-        } elseif ($promotion->getProjectId() !== $project->getId()) {
-            return $this->json('Promotion does not belong to the project', Response::HTTP_FORBIDDEN);
-        }
-
         try {
+            if ($promotion->getProjectId() !== $project->getId()) {
+                throw new NotFoundPromotionForProjectException();
+            }
+
             $this->promotionManager->delete($promotion);
         } catch (Throwable $exception) {
             $this->logger->error($exception->getMessage());
