@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Project;
 
 use App\Controller\Admin\Project\DTO\Response\ProjectRespDto;
+use App\Controller\Admin\Project\Response\ProjectsResponse;
 use App\Entity\User\Project;
 use App\Entity\User\User;
 use App\Service\Admin\Statistic\StatisticsServiceInterface;
@@ -38,7 +39,6 @@ class ViewAllController extends AbstractController
     ) {
     }
 
-    /** Просмотр все проектов */
     #[Route('/api/admin/project/', name: 'admin_project_get_all', methods: ['GET'])]
     public function execute(): JsonResponse
     {
@@ -50,28 +50,10 @@ class ViewAllController extends AbstractController
         }
 
         $projects = $this->projectService->getAll($user);
-        $response = $this->mapToResponse($projects);
+        $fakeStatisticsByProject = $this->statisticsService->getStatisticForProject();
 
-        return $this->json($response);
-    }
-
-    private function mapToResponse(array $projects): array
-    {
-        $result = [];
-
-        /** @var Project $project */
-        foreach ($projects as $project) {
-            $fakeStatisticsByProject = $this->statisticsService->getStatisticForProject();
-
-            $result[] = (new ProjectRespDto())
-                ->setId($project->getId())
-                ->setName($project->getName())
-                ->setStatus($project->getStatus())
-                ->setStatistic($fakeStatisticsByProject)
-                ->setActiveFrom($project->getActiveFrom())
-                ->setActiveTo($project->getActiveTo());
-        }
-
-        return $result;
+        return $this->json(
+            (new ProjectsResponse())->mapToResponse($projects, $fakeStatisticsByProject)
+        );
     }
 }
