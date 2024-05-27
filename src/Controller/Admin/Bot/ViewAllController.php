@@ -19,7 +19,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Response(
     response: Response::HTTP_OK,
-    description: 'Возвращает коллекцию товаров',
+    description: 'Получение колекции ботов',
     content: new OA\JsonContent(
         type: 'array',
         items: new OA\Items(
@@ -38,7 +38,6 @@ class ViewAllController extends AbstractController
     ) {
     }
 
-    /** Получение колекции ботов */
     #[Route('/api/admin/project/{project}/bot/', name: 'admin_bot_get_all', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project): JsonResponse

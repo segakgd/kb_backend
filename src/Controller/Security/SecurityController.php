@@ -2,23 +2,32 @@
 
 namespace App\Controller\Security;
 
-use App\Entity\User\RefreshToken;
-use App\Entity\User\User;
-use DateTime;
-use Doctrine\ORM\EntityManagerInterface;
-use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Controller\GeneralController;
+use App\Controller\Security\DTO\AuthDto;
+use App\Service\Common\Security\SecurityService;
+use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class SecurityController extends AbstractController
+class SecurityController extends GeneralController
 {
+    public function __construct(
+        private readonly ValidatorInterface $validator,
+        private readonly SerializerInterface $serializer,
+        private readonly SecurityService $securityService,
+    ) {
+        parent::__construct(
+            $this->serializer,
+            $this->validator,
+        );
+    }
+
     #[Route('/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
@@ -37,41 +46,21 @@ class SecurityController extends AbstractController
         return new RedirectResponse("/");
     }
 
-    #[Route('/api/user/authenticates/', name: 'app_login.authenticate', methods: ['POST', 'GET'])]
-    public function loginAuthenticate(
-        Request $request,
-        JWTTokenManagerInterface $JWTManager,
-        EntityManagerInterface $entityManager,
-        UserPasswordHasherInterface $passwordHasher
-    ): JsonResponse {
-        $data = json_decode($request->getContent(), true);
+    /**
+     * @throws Exception
+     */
+    #[Route('/api/user/authenticate/', name: 'api_auth', methods: ['POST'])]
+    public function apiAuth(Request $request): JsonResponse
+    {
+        $requestDto = $this->getValidDtoFromRequest($request, AuthDto::class);
 
-        if (!isset($data['email']) || !isset($data['password'])) {
-            throw new BadCredentialsException('Email and password are required.');
-        }
+        $user = $this->securityService->identifyUser($requestDto);
 
-        $user = $entityManager->getRepository(User::class)->findOneBy(['email' => $data['email']]);
-
-        if (!$user || !$passwordHasher->isPasswordValid($user, $data['password'])) {
-            throw new BadCredentialsException('Invalid email or password.');
-        }
-
-        $accessToken = $JWTManager->create($user); // Generate access token
-        $refreshToken = $JWTManager->create($user); // Generate refresh token
-
-        $refreshEntity = (new RefreshToken())
-            ->setRefreshToken($refreshToken)
-            ->setValid(new DateTime('+1 day'))
-            ->setUsername($user->getId())
-        ;
-
-        $entityManager->persist($refreshEntity);
-        $entityManager->flush();
-
-        // Return tokens in response
-        return new JsonResponse([
-            'access_token' => $accessToken,
-            'refresh_token' => $refreshToken,
-        ]);
+        return new JsonResponse(
+            [
+                'access_token' => $this->securityService->refresh($user),
+                'token' => $this->securityService->refresh($user),
+            ]
+        );
     }
 }

@@ -11,8 +11,6 @@
         "doctrine/doctrine-bundle": "^2.12",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.15",
-        "gesdinet/jwt-refresh-token-bundle": "^1.1",
-        "lexik/jwt-authentication-bundle": "^2.18",
         "nelmio/api-doc-bundle": "^4.12",
         "nelmio/cors-bundle": "^2.4",
         "stof/doctrine-extensions-bundle": "^1.10",

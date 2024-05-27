@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Shipping;
 
 use App\Controller\Admin\Shipping\DTO\Request\ShippingReqDto;
+use App\Controller\Admin\Shipping\Exception\NotFoundShippingForProjectException;
+use App\Controller\GeneralController;
 use App\Entity\Ecommerce\Shipping;
 use App\Entity\User\Project;
 use App\Service\Admin\Ecommerce\Shipping\Manager\ShippingManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,38 +30,34 @@ use Throwable;
 )]
 #[OA\Response(
     response: Response::HTTP_NO_CONTENT,
-    description: 'Обновление продукта',
+    description: 'Обновление доставки проекта',
 )]
-class UpdateController extends AbstractController
+class UpdateController extends GeneralController
 {
     public function __construct(
         private readonly SerializerInterface $serializer,
         private readonly ValidatorInterface $validator,
         private readonly ShippingManagerInterface $shippingManager,
     ) {
+        parent::__construct(
+            $this->serializer,
+            $this->validator,
+        );
     }
 
-    /** Обновление доставки */
+    /**
+     * @throws NotFoundShippingForProjectException
+     */
     #[Route('/api/admin/project/{project}/shipping/{shipping}/', name: 'admin_shipping_update', methods: ['PATCH'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Request $request, ?Project $project, ?Shipping $shipping): JsonResponse
+    public function execute(Request $request, ?Project $project, Shipping $shipping): JsonResponse
     {
-        if (null === $shipping || null === $project) {
-            return $this->json('Project or shipping not found', Response::HTTP_NOT_FOUND);
-        }
-
         if ($project->getId() !== $shipping->getProjectId()) {
-            throw new AccessDeniedException('Access Denied.');
+            throw new NotFoundShippingForProjectException();
         }
 
         try {
-            $shippingDto = $this->serializer->deserialize($request->getContent(), ShippingReqDto::class, 'json');
-
-            $errors = $this->validator->validate($shippingDto);
-
-            if (count($errors)) {
-                return $this->json($errors->get(0)->getMessage(), Response::HTTP_BAD_REQUEST);
-            }
+            $shippingDto = $this->getValidDtoFromRequest($request, ShippingReqDto::class);
 
             $this->shippingManager->update($shippingDto, $shipping, $project);
         } catch (Throwable $exception) {
