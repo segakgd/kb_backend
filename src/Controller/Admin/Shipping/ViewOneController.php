@@ -6,9 +6,9 @@ namespace App\Controller\Admin\Shipping;
 
 use App\Controller\Admin\Shipping\DTO\Response\ShippingRespDto;
 use App\Controller\Admin\Shipping\Exception\NotFoundShippingForProjectException;
+use App\Controller\Admin\Shipping\Response\ShippingViewOneResponse;
 use App\Entity\Ecommerce\Shipping;
 use App\Entity\User\Project;
-use App\Helper\Ecommerce\Shipping\ShippingHelper;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Psr\Log\LoggerInterface;
@@ -43,7 +43,9 @@ class ViewOneController extends AbstractController
             if ($project->getId() !== $shipping->getProjectId()) {
                 throw new NotFoundShippingForProjectException();
             }
-            return $this->json(ShippingHelper::MapToResponseDto($shipping), Response::HTTP_OK);
+            return $this->json(
+                (new ShippingViewOneResponse())->makeResponse($shipping)
+            );
         } catch (Throwable $exception) {
             $this->logger->error($exception->getMessage());
 

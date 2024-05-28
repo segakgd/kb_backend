@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Shipping;
 
 use App\Controller\Admin\Lead\DTO\Response\Order\Shipping\ShippingRespDto;
+use App\Controller\Admin\Shipping\Response\ShippingViewAllResponse;
 use App\Entity\User\Project;
-use App\Helper\Ecommerce\Shipping\ShippingHelper;
 use App\Service\Admin\Ecommerce\Shipping\Manager\ShippingManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -47,7 +47,9 @@ class ViewAllController extends AbstractController
         try {
             $shippingCollection = $this->shippingManager->getAllByByProject($project);
 
-            return $this->json(ShippingHelper::mapArrayToResponseDto($shippingCollection), Response::HTTP_OK);
+            return $this->json(
+                (new ShippingViewAllResponse())->makeResponse($shippingCollection)
+            );
 
         } catch (Throwable $exception) {
             $this->logger->error($exception->getMessage());
