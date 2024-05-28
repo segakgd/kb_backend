@@ -9,7 +9,6 @@ use App\Controller\Admin\Promotion\Exception\NotFoundPromotionForProjectExceptio
 use App\Controller\Admin\Promotion\Response\PromotionViewOneResponse;
 use App\Entity\Ecommerce\Promotion;
 use App\Entity\User\Project;
-use App\Helper\Ecommerce\Promotion\PromotionHelper;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Psr\Log\LoggerInterface;

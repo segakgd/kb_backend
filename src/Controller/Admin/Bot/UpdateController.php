@@ -3,7 +3,6 @@
 namespace App\Controller\Admin\Bot;
 
 use App\Controller\Admin\Bot\DTO\Request\UpdateBotReqDto;
-use App\Controller\Admin\Bot\DTO\Response\BotResDto;
 use App\Controller\Admin\Bot\Response\BotUpdateResponse;
 use App\Controller\GeneralController;
 use App\Entity\User\Bot;

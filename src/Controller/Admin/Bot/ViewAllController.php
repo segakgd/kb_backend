@@ -6,7 +6,6 @@ namespace App\Controller\Admin\Bot;
 
 use App\Controller\Admin\Bot\DTO\Response\BotResDto;
 use App\Controller\Admin\Bot\Response\BotViewAllResponse;
-use App\Entity\User\Bot;
 use App\Entity\User\Project;
 use App\Service\Admin\Bot\BotServiceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;

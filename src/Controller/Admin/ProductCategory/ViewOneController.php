@@ -9,7 +9,6 @@ use App\Controller\Admin\ProductCategory\Exception\NotFoundProductCategoryForPro
 use App\Controller\Admin\ProductCategory\Response\ProductCategoryViewOneResponse;
 use App\Entity\Ecommerce\ProductCategory;
 use App\Entity\User\Project;
-use App\Helper\Ecommerce\Product\ProductCategoryHelper;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
