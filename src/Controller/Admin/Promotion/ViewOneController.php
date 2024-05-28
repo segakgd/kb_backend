@@ -6,6 +6,7 @@ namespace App\Controller\Admin\Promotion;
 
 use App\Controller\Admin\Promotion\DTO\Response\PromotionRespDto;
 use App\Controller\Admin\Promotion\Exception\NotFoundPromotionForProjectException;
+use App\Controller\Admin\Promotion\Response\PromotionViewOneResponse;
 use App\Entity\Ecommerce\Promotion;
 use App\Entity\User\Project;
 use App\Helper\Ecommerce\Promotion\PromotionHelper;
@@ -43,7 +44,9 @@ class ViewOneController extends AbstractController
                 throw new NotFoundPromotionForProjectException();
             }
 
-            return $this->json(PromotionHelper::mapToResponseDto($promotion));
+            return $this->json(
+                (new PromotionViewOneResponse())->makeResponse($promotion)
+            );
         } catch (Throwable $exception) {
             $this->logger->error($exception->getMessage());
 

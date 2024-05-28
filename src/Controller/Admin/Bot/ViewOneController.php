@@ -3,6 +3,8 @@
 namespace App\Controller\Admin\Bot;
 
 use App\Controller\Admin\Bot\DTO\Response\BotResDto;
+use App\Controller\Admin\Bot\Exception\NotFoundBotForProjectException;
+use App\Controller\Admin\Bot\Response\BotViewOneResponse;
 use App\Entity\User\Bot;
 use App\Entity\User\Project;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -36,24 +38,17 @@ class ViewOneController extends AbstractController
     public function execute(Project $project, Bot $bot): JsonResponse
     {
         try {
-            $response = $this->mapToResponse($bot);
+            if ($bot->getProjectId() !== $project->getId()) {
+                throw new NotFoundBotForProjectException();
+            }
 
             return new JsonResponse(
                 $this->serializer->normalize(
-                    $response
+                    (new BotViewOneResponse)->mapToResponse($bot)
                 )
             );
         } catch (Throwable $exception) {
             return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
-    }
-
-    private function mapToResponse(Bot $bot): BotResDto
-    {
-        return (new BotResDto())
-            ->setId($bot->getId())
-            ->setName($bot->getName())
-            ->setType($bot->getType())
-        ;
     }
 }

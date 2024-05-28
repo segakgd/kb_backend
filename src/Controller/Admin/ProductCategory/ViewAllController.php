@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin\ProductCategory;
 
 use App\Controller\Admin\ProductCategory\DTO\Response\ProductCategoryRespDto;
+use App\Controller\Admin\ProductCategory\Response\ProductCategoryViewAllResponse;
 use App\Entity\User\Project;
 use App\Helper\Ecommerce\Product\ProductCategoryHelper;
 use App\Service\Admin\Ecommerce\ProductCategory\Manager\ProductCategoryManagerInterface;
@@ -44,7 +45,9 @@ class ViewAllController extends AbstractController
     {
         try {
             return $this->json(
-                ProductCategoryHelper::mapArrayToResponse(($this->productCategoryManager->getAll($project)))
+                (new ProductCategoryViewAllResponse())->mapArrayToResponse(
+                    $this->productCategoryManager->getAll($project)
+                )
             );
         } catch (Throwable $exception) {
             return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);

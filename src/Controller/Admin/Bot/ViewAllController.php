@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Bot;
 
 use App\Controller\Admin\Bot\DTO\Response\BotResDto;
+use App\Controller\Admin\Bot\Response\BotViewAllResponse;
 use App\Entity\User\Bot;
 use App\Entity\User\Project;
 use App\Service\Admin\Bot\BotServiceInterface;
@@ -46,24 +47,11 @@ class ViewAllController extends AbstractController
         try {
             $bots = $this->botService->findAll($project->getId());
 
-            return $this->json($this->serializer->normalize($this->mapToResponse($bots)));
+            return $this->json($this->serializer->normalize(
+                (new BotViewAllResponse())->mapToResponse($bots)
+            ));
         } catch (Throwable $exception) {
             return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
-    }
-
-    private function mapToResponse(array $bots): array
-    {
-        $result = [];
-
-        /** @var Bot $bot */
-        foreach ($bots as $bot) {
-            $result[] = (new BotResDto())
-                ->setId($bot->getId())
-                ->setName($bot->getName())
-                ->setType($bot->getType());
-        }
-
-        return $result;
     }
 }

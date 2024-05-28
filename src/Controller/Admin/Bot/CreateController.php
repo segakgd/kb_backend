@@ -4,6 +4,7 @@ namespace App\Controller\Admin\Bot;
 
 use App\Controller\Admin\Bot\DTO\Request\BotReqDto;
 use App\Controller\Admin\Bot\DTO\Response\BotResDto;
+use App\Controller\Admin\Bot\Response\BotCreateResponse;
 use App\Controller\GeneralController;
 use App\Entity\User\Bot;
 use App\Entity\User\Project;
@@ -52,22 +53,13 @@ class CreateController extends GeneralController
 
             $bot = $this->botService->add($requestDto, $project->getId());
 
-            $response = $this->mapToResponse($bot);
-
             return new JsonResponse(
-                $this->serializer->normalize($response)
+                $this->serializer->normalize(
+                    (new BotCreateResponse())->mapToResponse($bot)
+                )
             );
         } catch (Throwable $exception) {
             return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
-    }
-
-    private function mapToResponse(Bot $bot): BotResDto
-    {
-        return (new BotResDto())
-            ->setId($bot->getId())
-            ->setName($bot->getName())
-            ->setType($bot->getType())
-            ;
     }
 }

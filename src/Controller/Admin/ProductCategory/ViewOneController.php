@@ -6,6 +6,7 @@ namespace App\Controller\Admin\ProductCategory;
 
 use App\Controller\Admin\ProductCategory\DTO\Response\ProductCategoryRespDto;
 use App\Controller\Admin\ProductCategory\Exception\NotFoundProductCategoryForProjectException;
+use App\Controller\Admin\ProductCategory\Response\ProductCategoryViewOneResponse;
 use App\Entity\Ecommerce\ProductCategory;
 use App\Entity\User\Project;
 use App\Helper\Ecommerce\Product\ProductCategoryHelper;
@@ -38,7 +39,9 @@ class ViewOneController extends AbstractController
                 throw new NotFoundProductCategoryForProjectException();
             }
 
-            return $this->json(ProductCategoryHelper::mapToResponse($productCategory));
+            return $this->json(
+                (new ProductCategoryViewOneResponse())->makeResponse($productCategory)
+            );
         } catch (Throwable $exception) {
             return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
