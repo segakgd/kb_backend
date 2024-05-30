@@ -12,9 +12,26 @@
                 {% endif %}
 
                 {% for user in users %}
-                    <div class="wrapper--block wrapper--block--user">
-                        {{ user.id }}
-                        {{ user.email }}
+                    <div class="wrapper--block wrapper--block--user" style="display: flex; justify-content: space-between;">
+                        <div style="width: 200px">
+                            ID: {{ user.id }}
+                        </div>
+
+                        <div style="width: 300px">
+                            Почта: {{ user.email }}
+                        </div>
+
+                        <div style="width: 300px">
+                            Роль: {{ user.role }}
+                        </div>
+
+                        <div style="width: 200px">
+                            Проектов {{ user.projects_count }}
+                        </div>
+
+                        <div>
+                            Зарегистрирован: {{ user.created_at|date('Y-m-d') }}
+                        </div>
                     </div>
                 {% endfor %}
 
