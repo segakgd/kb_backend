@@ -7,9 +7,9 @@ namespace App\Service\Admin\Ecommerce\Shipping\Service;
 use App\Entity\Ecommerce\Shipping;
 use App\Repository\Ecommerce\ShippingEntityRepository;
 
-class ShippingService implements ShippingServiceInterface
+readonly class ShippingService implements ShippingServiceInterface
 {
-    public function __construct(private readonly ShippingEntityRepository $shippingEntityRepository)
+    public function __construct(private ShippingEntityRepository $shippingEntityRepository)
     {
     }
 

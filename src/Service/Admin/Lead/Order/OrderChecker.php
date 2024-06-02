@@ -17,14 +17,13 @@ use App\Service\Admin\Ecommerce\ProductVariant\Service\ProductVariantService;
 use App\Service\Admin\Ecommerce\Promotion\Service\PromotionService;
 use App\Service\Admin\Ecommerce\Shipping\Service\ShippingService;
 use Exception;
-use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
-class OrderChecker
+readonly class OrderChecker
 {
     public function __construct(
-        private readonly ShippingService $shippingService,
-        private readonly PromotionService $promotionService,
-        private readonly ProductVariantService $productVariantService,
+        private ShippingService       $shippingService,
+        private PromotionService      $promotionService,
+        private ProductVariantService $productVariantService,
     ) {
     }
 

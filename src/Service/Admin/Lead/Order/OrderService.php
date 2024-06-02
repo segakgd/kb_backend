@@ -14,13 +14,13 @@ use App\Service\Admin\Ecommerce\ProductVariant\Service\ProductVariantService;
 use App\Service\Admin\Ecommerce\Promotion\Service\PromotionService;
 use App\Service\Admin\Ecommerce\Shipping\Service\ShippingService;
 
-class OrderService
+readonly class OrderService
 {
     public function __construct(
-        private readonly OrderEntityRepository $orderEntityRepository,
-        private readonly ShippingService $shippingService,
-        private readonly PromotionService $promotionService,
-        private readonly ProductVariantService $productVariantService,
+        private OrderEntityRepository $orderEntityRepository,
+        private ShippingService       $shippingService,
+        private PromotionService      $promotionService,
+        private ProductVariantService $productVariantService,
     ) {
     }
 

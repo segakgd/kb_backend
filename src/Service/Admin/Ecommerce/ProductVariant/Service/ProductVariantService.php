@@ -10,13 +10,12 @@ use App\Entity\Ecommerce\ProductVariant;
 use App\Repository\Ecommerce\ProductVariantRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
-class ProductVariantService
+readonly class ProductVariantService
 {
     public function __construct(
-        private readonly ProductVariantRepository $productVariantRepository,
-        private readonly EntityManagerInterface $entityManager,
-    )
-    {
+        private ProductVariantRepository $productVariantRepository,
+        private EntityManagerInterface   $entityManager,
+    ) {
     }
 
     public function handleBatchUpdate(Product $product, array $variantsRequestDto): Product

@@ -13,12 +13,12 @@ use App\Service\Admin\Ecommerce\Product\Service\ProductService;
 use App\Service\Admin\Ecommerce\ProductCategory\Service\ProductCategoryService;
 use App\Service\Admin\Ecommerce\ProductVariant\Service\ProductVariantService;
 
-class ProductManager implements ProductManagerInterface
+readonly class ProductManager implements ProductManagerInterface
 {
     public function __construct(
-        private readonly ProductCategoryService $productCategoryService,
-        private readonly ProductService $productService,
-        private readonly ProductVariantService $productVariantService,
+        private ProductCategoryService $productCategoryService,
+        private ProductService $productService,
+        private ProductVariantService $productVariantService,
     ) {
     }
 
