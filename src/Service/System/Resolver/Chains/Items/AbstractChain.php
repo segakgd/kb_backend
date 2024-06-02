@@ -11,7 +11,7 @@ abstract class AbstractChain
 {
     public function chain(ContractInterface $contract): bool
     {
-        // todo если используем как стек, то не нужно будет проверять не повтор
+        // todo если используем как стек, то не нужно будет проверять на повтор
         if ($contract->getChain()->isRepeat()) {
             $this->success($contract);
 

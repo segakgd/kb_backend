@@ -13,11 +13,17 @@ class C10Chain extends AbstractChain
     {
         $content = $contract->getCacheDto()->getContent();
 
-        $message = "Вы кликнули на $content";
+        $message = "Отличео! Это шаг 2 элемент цепочки C10. \n\n Вы кликнули на $content";
 
         $contractMessage = MessageHelper::createContractMessage(
             message: $message,
-            keyBoard: $contract->getNextCondition()->getKeyBoard()
+            keyBoard: [
+                [
+                    [
+                        'text' => 'СИСТЕМНАЯ КНОПКА'
+                    ],
+                ],
+            ]
         );
 
         $contract->getResult()->addMessage($contractMessage);
@@ -30,10 +36,10 @@ class C10Chain extends AbstractChain
         $replyMarkups = [
             [
                 [
-                    'text' => 'Да'
+                    'text' => 'Да 10'
                 ],
                 [
-                    'text' => 'Нет'
+                    'text' => 'Нет 10'
                 ],
             ],
         ];
@@ -50,8 +56,8 @@ class C10Chain extends AbstractChain
         $content = $contract->getCacheDto()->getContent();
 
         $validData = [
-            'Да',
-            'Нет',
+            'Да 10',
+            'Нет 10',
         ];
 
         if (in_array($content, $validData)) {

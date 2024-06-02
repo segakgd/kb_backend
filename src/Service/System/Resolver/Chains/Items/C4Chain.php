@@ -13,7 +13,7 @@ class C4Chain extends AbstractChain
     {
         $content = $contract->getCacheDto()->getContent();
 
-        $message = "Вы кликнули на $content";
+        $message = "Это шаг 1 элемент цепочки C4. \n\n Вы кликнули на $content";
 
         $contractMessage = MessageHelper::createContractMessage(
             message: $message,
@@ -30,10 +30,10 @@ class C4Chain extends AbstractChain
         $replyMarkups = [
             [
                 [
-                    'text' => 'Да'
+                    'text' => 'Да 4'
                 ],
                 [
-                    'text' => 'Нет'
+                    'text' => 'Нет 4'
                 ],
             ],
         ];
@@ -50,8 +50,8 @@ class C4Chain extends AbstractChain
         $content = $contract->getCacheDto()->getContent();
 
         $validData = [
-            'Да',
-            'Нет',
+            'Да 4',
+            'Нет 4',
         ];
 
         if (in_array($content, $validData)) {
