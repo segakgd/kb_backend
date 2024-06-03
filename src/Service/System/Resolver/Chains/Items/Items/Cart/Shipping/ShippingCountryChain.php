@@ -4,10 +4,9 @@ namespace App\Service\System\Resolver\Chains\Items\Items\Cart\Shipping;
 
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\MessageHelper;
-use App\Service\System\Handler\Chain\AbstractChain;
 use App\Service\System\Resolver\Dto\Contract;
 
-class ShippingCountryChain extends AbstractChain
+class ShippingCountryChain //  extends AbstractChain
 {
     public function success(Contract $contract, CacheDto $cacheDto): bool
     {

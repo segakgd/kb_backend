@@ -22,7 +22,7 @@ class LeadContactsReqDto
     private ?LeadFieldReqDto $lastName = null;
 
     #[Assert\Callback]
-    public function validate(ExecutionContextInterface $context): void // todo -> Вообще тут бы хорошо подумть над валидацией филдов (раз уж такие ДТО =)).
+    public function validate(ExecutionContextInterface $context): void // todo -> Вообще тут бы хорошо подумть над валидацией филдов).
     {
         if ($this->phone === null && $this->email === null && $this->firstName === null && $this->lastName === null) {
             $context
@@ -30,14 +30,8 @@ class LeadContactsReqDto
                 ->addViolation();
         }
 
-//        if ($this->phone !== null) {
-//            $context
-//                ->buildViolation('Phone field invalid')
-//                ->atPath('phone.type')
-//                ->addViolation();
-//        }
 
-        if ($this->email !== null || !filter_var($this->email->getValue(), FILTER_VALIDATE_EMAIL)) {
+        if ($this->email !== null && !filter_var($this->email->getValue(), FILTER_VALIDATE_EMAIL)) {
             $context
                 ->buildViolation('Mail field invalid')
                 ->atPath('mail.type')

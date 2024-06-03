@@ -1,17 +1,36 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Bot;
 
 use App\Controller\Admin\Bot\DTO\Response\BotResDto;
-use App\Entity\User\Bot;
+use App\Controller\Admin\Bot\Response\BotViewAllResponse;
 use App\Entity\User\Project;
 use App\Service\Admin\Bot\BotServiceInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
+use OpenApi\Attributes as OA;
+use Throwable;
 
+#[OA\Response(
+    response: Response::HTTP_OK,
+    description: 'Получение колекции ботов',
+    content: new OA\JsonContent(
+        type: 'array',
+        items: new OA\Items(
+            ref: new Model(
+                type: BotResDto::class
+            )
+        )
+    ),
+)]
+#[OA\Tag(name: 'Bot')]
 class ViewAllController extends AbstractController
 {
     public function __construct(
@@ -24,29 +43,14 @@ class ViewAllController extends AbstractController
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project): JsonResponse
     {
-        $bots = $this->botService->findAll($project->getId());
+        try {
+            $bots = $this->botService->findAll($project->getId());
 
-        $response = $this->mapToResponse($bots);
-
-        return new JsonResponse(
-            $this->serializer->normalize($response)
-        );
-    }
-
-    private function mapToResponse(array $bots): array
-    {
-        $result = [];
-
-        /** @var Bot $bot */
-        foreach ($bots as $bot){
-
-            $result[] = (new BotResDto())
-                ->setId($bot->getId())
-                ->setName($bot->getName())
-                ->setType($bot->getType())
-            ;
+            return $this->json($this->serializer->normalize(
+                (new BotViewAllResponse())->mapToResponse($bots)
+            ));
+        } catch (Throwable $exception) {
+            return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
-
-        return $result;
     }
 }

@@ -4,17 +4,28 @@ declare(strict_types=1);
 
 namespace App\Service\Admin\Lead;
 
+use App\Controller\Admin\Lead\DTO\Request\Order\Product\OrderVariantReqDto;
 use App\Controller\Admin\Lead\DTO\Response\Fields\LeadContactsRespDto;
 use App\Controller\Admin\Lead\DTO\Response\Fields\LeadFieldRespDto;
 use App\Controller\Admin\Lead\DTO\Response\LeadRespDto;
 use App\Controller\Admin\Lead\DTO\Response\Order\OrderRespDto;
+use App\Controller\Admin\Lead\DTO\Response\Order\Product\ProductRespDto;
+use App\Controller\Admin\Lead\DTO\Response\Order\Product\ProductVariantRespDto;
 use App\Entity\Lead\Deal;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\Ecommerce\ProductVariantRepository;
 
-class LeadMapper
+readonly class LeadMapper
 {
-    public function __construct(private readonly EntityManagerInterface $manager,)
+    public function __construct(
+        private ProductVariantRepository $productVariantRepository,
+    ) {
+    }
+
+    public function mapArrayToResponse(array $deals): array
     {
+        return array_map(function (Deal $deal) {
+            return $this->mapToResponse($deal);
+        }, $deals);
     }
 
     public function mapToResponse(Deal $deal): LeadRespDto
@@ -39,12 +50,9 @@ class LeadMapper
             return $leadContactsRespDto;
         }
 
-        $this->manager->refresh($contacts); // temporary fix
-
         if ($contacts->getEmail()) {
             $emailField = (new LeadFieldRespDto())
                 ->setName('email')
-                ->setType('email')
                 ->setValue($contacts->getEmail());
 
             $leadContactsRespDto->setMail($emailField);
@@ -53,7 +61,6 @@ class LeadMapper
         if ($contacts->getPhone()) {
             $phoneField = (new LeadFieldRespDto())
                 ->setName('phone')
-                ->setType('phone')
                 ->setValue($contacts->getPhone());
 
             $leadContactsRespDto->setPhone($phoneField);
@@ -64,7 +71,6 @@ class LeadMapper
 
             $fullNameField = (new LeadFieldRespDto())
                 ->setName('fullName')
-                ->setType('full_name')
                 ->setValue($fullName);
 
             $leadContactsRespDto->setFullName($fullNameField);
@@ -81,7 +87,6 @@ class LeadMapper
 
         foreach ($fields as $field) {
             $fieldDto = (new LeadFieldRespDto())
-                ->setType('string')
                 ->setValue($field->getValue())
                 ->setName($field->getName());
 
@@ -91,9 +96,39 @@ class LeadMapper
         return $fieldsArray;
     }
 
-    private function mapOrderToResponse(Deal $deal
-    ): OrderRespDto // надо подумать тут, а то еще непонятно, какое дто лежит в ордере в базе
+    private function mapOrderToResponse(Deal $deal): OrderRespDto
     {
-        return new OrderRespDto();
+        $order = $deal->getOrder();
+        $orderResponseDto = (new OrderRespDto());
+
+        if ($order !== null) {
+            $orderResponseDto->setCreatedAt($order->getCreatedAt());
+        }
+
+        $products = [];
+
+        /** @var OrderVariantReqDto $variantDto */
+        foreach ($order?->getProductVariants() ?? [] as $variantDto) {
+            $productVariant = $this->productVariantRepository->find($variantDto->getId());
+
+            $name = $productVariant?->getProduct()?->getName();
+
+            $productRespDto = new ProductRespDto();
+
+            $productVariantRespDto = (new ProductVariantRespDto())
+                ->setPrice($variantDto->getPrice())
+                ->setCount($variantDto->getCount())
+                ->setName($productVariant->getName());
+
+            $productRespDto
+                ->setVariant($productVariantRespDto)
+                ->setName($name);
+
+            $products[] = $productRespDto;
+        }
+
+        $orderResponseDto->setProducts($products);
+
+        return $orderResponseDto;
     }
 }

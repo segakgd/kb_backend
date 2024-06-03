@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  php-fpm-local:
+    container_name: php-fpm-local
+    build:
+      context: _conf_local/php-fpm
+    environment:
+      - APP_ENV=${APP_ENV}
+      - APP_SECRET=${APP_SECRET}
+      - DATABASE_URL=${DATABASE_URL}
+    volumes:
+      - ./../kraiber-backend/:/var/www/KBackend
+
+  nginx-local:
+    container_name: nginx-local
+    build:
+      context: _conf_local/nginx
+    volumes:
+      - ./../kraiber-backend/:/var/www/KBackend
+      - ./_conf_local/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./_conf_local/nginx/sites/:/etc/nginx/sites-available
+      - ./_conf_local/nginx/conf.d/:/etc/nginx/conf.d
+      - ./_conf_local/logs:/var/log/nginx
+    depends_on:
+      - php-fpm-local
+    ports:
+      - "80:80"
+      - "443:443"

@@ -6,12 +6,12 @@ namespace App\Controller\Admin\Lead;
 
 use App\Controller\Admin\Lead\DTO\Request\FilterLeadsReqDto;
 use App\Controller\Admin\Lead\DTO\Response\AllLeadRespDto;
+use App\Controller\GeneralController;
 use App\Entity\User\Project;
 use App\Service\Admin\Lead\LeadManager;
 use App\Service\Admin\Lead\LeadMapper;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,6 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Throwable;
 
 #[OA\Tag(name: 'Lead')]
 #[OA\RequestBody(
@@ -38,7 +39,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         )
     ),
 )]
-class ViewAllController extends AbstractController
+class ViewAllController extends GeneralController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,
@@ -46,30 +47,27 @@ class ViewAllController extends AbstractController
         private readonly LeadManager $leadManager,
         private readonly LeadMapper $leadMapper,
     ) {
+        parent::__construct(
+            $this->serializer,
+            $this->validator,
+        );
     }
 
+    /** Получение коллекцию лидов */
     #[Route('/api/admin/project/{project}/lead/', name: 'admin_lead_get_all', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project): JsonResponse
     {
-        $content = $request->getContent();
+        try {
+            $requestDto = $this->getValidDtoFromRequest($request, FilterLeadsReqDto::class);
 
-        $requestDto = $this->serializer->deserialize($content, FilterLeadsReqDto::class, 'json');
+            // todo use filters
 
-        $errors = $this->validator->validate($requestDto); // todo -> пока не нашел применения
+            $leads = $this->leadManager->getAllByProject($project);
 
-        if (count($errors) > 0) {
-            return $this->json(['message' => $errors->get(0)->getMessage()], Response::HTTP_BAD_REQUEST);
+            return $this->json($this->leadMapper->mapArrayToResponse($leads));
+        } catch (Throwable $exception) {
+            return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
-
-        $leads = $this->leadManager->getAllByProject($project);
-
-        $response = [];
-
-        foreach ($leads as $lead) {
-            $response[] = $this->leadMapper->mapToResponse($lead);
-        }
-
-        return $this->json($response);
     }
 }

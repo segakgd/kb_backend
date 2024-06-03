@@ -5,4 +5,4 @@ nelmio_api_doc:
             version: 1.0.0
     areas:
         default:
-            path_patterns: [ /api/ ]
+            path_patterns: [ /api(?!/user) ]

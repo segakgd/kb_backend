@@ -8,9 +8,9 @@ use App\Controller\Admin\Lead\DTO\Request\Field\LeadContactsReqDto;
 use App\Entity\Lead\DealContacts;
 use App\Repository\Lead\ContactsEntityRepository;
 
-class LeadContactService
+readonly class LeadContactService
 {
-    public function __construct(private readonly ContactsEntityRepository $contactsEntityRepository)
+    public function __construct(private ContactsEntityRepository $contactsEntityRepository)
     {
     }
 
@@ -29,6 +29,21 @@ class LeadContactService
             ->setLastName($lastName);
 
         return $this->save($contactsEntity);
+    }
+
+    public function updateOrCreate(LeadContactsReqDto $contactsReqDto, ?DealContacts $contacts): DealContacts
+    {
+        if (is_null($contacts)) {
+            $contacts = new DealContacts();
+        }
+
+        $contacts
+            ->setPhone($contactsReqDto->getPhone()->getValue())
+            ->setEmail($contactsReqDto->getEmail()->getValue())
+            ->setLastName($contactsReqDto->getLastName()->getValue())
+            ->setFirstName($contactsReqDto->getFirstName()->getValue());
+
+        return $this->save($contacts);
     }
 
     private function save(DealContacts $contacts): DealContacts

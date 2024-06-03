@@ -7,8 +7,6 @@ use App\Service\System\HttpClient\Response\Response;
 use App\Service\System\HttpClient\Response\ResponseInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
-use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
-
 class HttpClient implements HttpClientInterface
 {
     public const METHOD_POST = 'POST';
@@ -41,7 +39,7 @@ class HttpClient implements HttpClientInterface
 
         $responseClassName = $request->getResponseClassName();
 
-        if ($code == 400 && env('APP_ENV') == 'dev') {
+        if ($code == 400) {
             dd('HTTP error!', $result, $request);
         }
 

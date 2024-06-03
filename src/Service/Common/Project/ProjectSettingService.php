@@ -10,11 +10,11 @@ use App\Repository\User\ProjectSettingRepository;
 use App\Repository\User\TariffRepository;
 use Exception;
 
-class ProjectSettingService implements ProjectSettingServiceInterface
+readonly class ProjectSettingService implements ProjectSettingServiceInterface
 {
     public function __construct(
-        private readonly ProjectSettingRepository $projectSettingRepository,
-        private readonly TariffRepository $tariffRepository,
+        private ProjectSettingRepository $projectSettingRepository,
+        private TariffRepository         $tariffRepository,
     ) {
     }
 

@@ -62,7 +62,7 @@ class DealManager
                 ->setCount($productCart['count'])
                 ->setPrice($price['price']);
 
-            $order->addProduct($productDto);
+            $order->addProductVariant($productDto);
 
             $totalByProduct = $price['price'] * $productCart['count'];
             $totalAmount += $totalByProduct;

@@ -13,14 +13,14 @@ use App\Service\Admin\Lead\Order\OrderChecker;
 use App\Service\Admin\Lead\Order\OrderService;
 use Exception;
 
-class LeadManager
+readonly class LeadManager
 {
     public function __construct(
-        private readonly LeadService $leadService,
-        private readonly LeadContactService $contactService,
-        private readonly LeadFieldsService $fieldsService,
-        private readonly OrderService $orderService,
-        private readonly OrderChecker $orderChecker,
+        private LeadService        $leadService,
+        private LeadContactService $contactService,
+        private LeadFieldsService  $fieldsService,
+        private OrderService       $orderService,
+        private OrderChecker       $orderChecker,
     ) {
     }
 
@@ -51,6 +51,29 @@ class LeadManager
         foreach ($leadDto->getFields() as $fieldDto) {
             $this->fieldsService->add($deal, $fieldDto);
         }
+
+        return $deal;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function update(LeadReqDto $leadDto, Deal $deal, Project $project): Deal
+    {
+        $orderDto = $leadDto->getOrder();
+
+        if ($orderDto) {
+            $this->orderChecker->checkOrderRequestByDtoAndProject($orderDto, $project);
+            $this->orderService->updateOrCreate($orderDto, $deal->getOrder());
+        }
+
+        if ($leadDto->getContacts()) {
+            $this->contactService->updateOrCreate($leadDto->getContacts(), $deal->getContacts());
+        }
+
+        $this->fieldsService->handleBatchUpdate($deal, $leadDto->getFields());
+
+        $this->leadService->save($deal);
 
         return $deal;
     }

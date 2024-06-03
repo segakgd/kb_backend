@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Doctrine\Types;
 
-use App\Dto\Product\Variants\VariantPriceDto;
+use App\Dto\Ecommerce\Product\Variants\VariantPriceDto;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\JsonType;
 
@@ -15,6 +15,7 @@ class VariantPriceType extends JsonType
     public function convertToPHPValue($value, AbstractPlatform $platform): array
     {
         $values = parent::convertToPHPValue($value, $platform);
+
         return array_map(function ($value) {
             return VariantPriceDto::fromArray($value);
         }, $values);
@@ -25,6 +26,7 @@ class VariantPriceType extends JsonType
         $values = array_map(function (VariantPriceDto $variantPriceDto) {
             return $variantPriceDto->toArray();
         }, $value);
+
         return parent::convertToDatabaseValue($values, $platform);
     }
 

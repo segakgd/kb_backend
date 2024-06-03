@@ -6,11 +6,10 @@ use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\Product\Service\ProductService;
 use App\Service\System\Common\PaginateService;
-use App\Service\System\Handler\Chain\AbstractChain;
 use App\Service\System\Resolver\Dto\Contract;
 use Exception;
 
-class ShopProductsPopularChain extends AbstractChain
+class ShopProductsPopularChain // extends AbstractChain
 {
     public function __construct(
         private readonly ProductService $productService,

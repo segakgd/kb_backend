@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Product;
 
 use App\Controller\Admin\Product\DTO\Response\ProductRespDto;
+use App\Controller\Admin\Product\Response\ProductViewAllResponse;
 use App\Entity\User\Project;
 use App\Service\Admin\Ecommerce\Product\Manager\ProductManagerInterface;
-use App\Service\Admin\Ecommerce\Product\Mapper\ProductMapper;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,7 +34,6 @@ class ViewAllController extends AbstractController
 {
     public function __construct(
         private readonly ProductManagerInterface $productManager,
-        private readonly ProductMapper $productMapper,
     ) {
     }
 
@@ -44,7 +43,9 @@ class ViewAllController extends AbstractController
     public function execute(Project $project): JsonResponse
     {
         try {
-            return $this->json($this->productMapper->mapArrayToResponse($this->productManager->getAll($project)));
+            return $this->json(
+                (new ProductViewAllResponse())->mapArrayToResponse($this->productManager->getAll($project))
+            );
         } catch (Throwable $exception) {
             return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }

@@ -13,7 +13,7 @@ class C9Chain extends AbstractChain
     {
         $content = $contract->getCacheDto()->getContent();
 
-        $message = "Вы кликнули на $content";
+        $message = "Это шаг 2 элемент цепочки C9. \n\n Вы кликнули на $content";
 
         $contractMessage = MessageHelper::createContractMessage(
             message: $message,
@@ -30,10 +30,10 @@ class C9Chain extends AbstractChain
         $replyMarkups = [
             [
                 [
-                    'text' => 'Да'
+                    'text' => 'Да 9'
                 ],
                 [
-                    'text' => 'Нет'
+                    'text' => 'Нет 9'
                 ],
             ],
         ];
@@ -50,8 +50,8 @@ class C9Chain extends AbstractChain
         $content = $contract->getCacheDto()->getContent();
 
         $validData = [
-            'Да',
-            'Нет',
+            'Да 9',
+            'Нет 9',
         ];
 
         if (in_array($content, $validData)) {

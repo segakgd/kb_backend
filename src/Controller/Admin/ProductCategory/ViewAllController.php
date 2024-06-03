@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Controller\Admin\ProductCategory;
 
 use App\Controller\Admin\ProductCategory\DTO\Response\ProductCategoryRespDto;
+use App\Controller\Admin\ProductCategory\Response\ProductCategoryViewAllResponse;
 use App\Entity\User\Project;
 use App\Service\Admin\Ecommerce\ProductCategory\Manager\ProductCategoryManagerInterface;
-use App\Service\Admin\Ecommerce\ProductCategory\Mapper\ProductCategoryMapper;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Throwable;
 
 #[OA\Tag(name: 'ProductCategory')]
 #[OA\Response(
@@ -33,7 +34,6 @@ class ViewAllController extends AbstractController
 {
     public function __construct(
         private readonly ProductCategoryManagerInterface $productCategoryManager,
-        private readonly ProductCategoryMapper $productCategoryMapper,
     ) {
     }
 
@@ -42,8 +42,14 @@ class ViewAllController extends AbstractController
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project): JsonResponse
     {
-        return $this->json(
-            $this->productCategoryMapper->mapArrayToResponse($this->productCategoryManager->getAll($project))
-        );
+        try {
+            return $this->json(
+                (new ProductCategoryViewAllResponse())->mapArrayToResponse(
+                    $this->productCategoryManager->getAll($project)
+                )
+            );
+        } catch (Throwable $exception) {
+            return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
+        }
     }
 }

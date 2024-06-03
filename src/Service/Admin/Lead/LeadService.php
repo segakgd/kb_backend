@@ -10,10 +10,10 @@ use App\Entity\Lead\DealOrder;
 use App\Entity\User\Project;
 use App\Repository\Lead\DealEntityRepository;
 
-class LeadService implements LeadServiceInterface
+readonly class LeadService implements LeadServiceInterface
 {
     public function __construct(
-        public readonly DealEntityRepository $dealEntityRepository,
+        public DealEntityRepository $dealEntityRepository,
     ) {
     }
 
@@ -37,7 +37,7 @@ class LeadService implements LeadServiceInterface
         return $this->dealEntityRepository->findBy(['projectId' => $project->getId()]);
     }
 
-    private function save(Deal $deal): Deal
+    public function save(Deal $deal): Deal
     {
         $this->dealEntityRepository->saveAndFlush($deal);
 

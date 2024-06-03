@@ -14,11 +14,13 @@ class C4Chain extends AbstractChain
     {
         $content = $contract->getCacheDto()->getContent();
 
-        if ($content === 'Да') {
-            $contract->setJump(JumpEnum::refChain1);
+        $message = "Это шаг 1 элемент цепочки C4. \n\n Вы кликнули на $content";
 
-            return $contract;
-        }
+//        if ($content === 'Да') {
+//            $contract->setJump(JumpEnum::refChain1);
+//
+//            return $contract;
+//        }
 
         $message = "Вы кликнули на $content";
 
@@ -37,10 +39,10 @@ class C4Chain extends AbstractChain
         $replyMarkups = [
             [
                 [
-                    'text' => 'Да'
+                    'text' => 'Да 4'
                 ],
                 [
-                    'text' => 'Нет'
+                    'text' => 'Нет 4'
                 ],
             ],
         ];
@@ -57,8 +59,8 @@ class C4Chain extends AbstractChain
         $content = $contract->getCacheDto()->getContent();
 
         $validData = [
-            'Да',
-            'Нет',
+            'Да 4',
+            'Нет 4',
         ];
 
         if (in_array($content, $validData)) {

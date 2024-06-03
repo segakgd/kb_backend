@@ -6,10 +6,10 @@ use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Service\System\Resolver\Dto\Contract;
 use Exception;
 
-class ChainsResolver
+readonly class ChainsResolver
 {
     public function __construct(
-        private readonly ChainResolver $chainResolver,
+        private ChainResolver $chainResolver,
     ) {
     }
 
@@ -20,12 +20,19 @@ class ChainsResolver
      */
     public function resolve(Contract $contract, array $chains): array
     {
-        foreach ($chains as $chain) {
+        $count = count($chains);
+        $now = 1;
+        $nextChain = null;
+
+        foreach ($chains as $key => $chain) {
             if ($chain->isFinished()) {
                 continue;
             }
 
-            $nextChain = next($chains) ?? null;
+            if ($now < $count) {
+                $nextKey = $key + 1;
+                $nextChain = $chains[$nextKey] ?? null;
+            }
 
             $contract->setChain($chain);
 

@@ -11,7 +11,7 @@ class OrderVariantReqDto
     #[Assert\GreaterThan(0)]
     private int $id;
 
-    private int $count;
+    private ?int $count = null;
 
     private int $price;
 
@@ -27,12 +27,12 @@ class OrderVariantReqDto
         return $this;
     }
 
-    public function getCount(): int
+    public function getCount(): ?int
     {
         return $this->count;
     }
 
-    public function setCount(int $count): self
+    public function setCount(?int $count): self
     {
         $this->count = $count;
 

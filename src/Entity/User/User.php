@@ -3,6 +3,7 @@
 namespace App\Entity\User;
 
 use App\Repository\User\UserRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -26,18 +27,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private array $roles = [];
 
-    /**
-     * @var string The hashed password
-     */
     #[ORM\Column]
     private ?string $password = null;
 
     #[ORM\ManyToMany(targetEntity: Project::class, inversedBy: 'users')]
     private Collection $projects;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $accessToken = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $refreshTokens = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?DateTimeImmutable $createdAt;
+
     public function __construct()
     {
         $this->projects = new ArrayCollection();
+        $this->createdAt = new DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -64,7 +72,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
@@ -104,7 +112,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
@@ -130,6 +138,42 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeProject(Project $project): static
     {
         $this->projects->removeElement($project);
+
+        return $this;
+    }
+
+    public function getAccessToken(): ?string
+    {
+        return $this->accessToken;
+    }
+
+    public function setAccessToken(string $accessToken): static
+    {
+        $this->accessToken = $accessToken;
+
+        return $this;
+    }
+
+    public function getRefreshTokens(): ?string
+    {
+        return $this->refreshTokens;
+    }
+
+    public function setRefreshTokens(string $refreshTokens): static
+    {
+        $this->refreshTokens = $refreshTokens;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }

@@ -1,22 +1,32 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Promotion\DTO\Response;
+
+use DateTimeInterface;
 
 class PromotionRespDto
 {
     private string $name;
 
+    private string $discountType;
+
     private string $type; // percent current
 
     private string $code;
 
-    private int $triggersQuantity;
+    private bool $usageWithAnyDiscount;
 
     private bool $isActive;
 
     private int $amount;
 
     private string $amountWithFraction;
+
+    private ?DateTimeInterface $activeFrom = null;
+
+    private ?DateTimeInterface $activeTo = null;
 
     public function getName(): string
     {
@@ -54,18 +64,6 @@ class PromotionRespDto
         return $this;
     }
 
-    public function getTriggersQuantity(): int
-    {
-        return $this->triggersQuantity;
-    }
-
-    public function setTriggersQuantity(int $triggersQuantity): self
-    {
-        $this->triggersQuantity = $triggersQuantity;
-
-        return $this;
-    }
-
     public function isActive(): bool
     {
         return $this->isActive;
@@ -87,6 +85,8 @@ class PromotionRespDto
     {
         $this->amount = $amount;
 
+        $this->setAmountWithFraction(str_replace('.', ',', (string) ($amount * .01)));
+
         return $this;
     }
 
@@ -98,6 +98,54 @@ class PromotionRespDto
     public function setAmountWithFraction(string $amountWithFraction): self
     {
         $this->amountWithFraction = $amountWithFraction;
+
+        return $this;
+    }
+
+    public function getDiscountType(): string
+    {
+        return $this->discountType;
+    }
+
+    public function setDiscountType(string $discountType): self
+    {
+        $this->discountType = $discountType;
+
+        return $this;
+    }
+
+    public function getActiveFrom(): ?DateTimeInterface
+    {
+        return $this->activeFrom;
+    }
+
+    public function setActiveFrom(?DateTimeInterface $activeFrom): self
+    {
+        $this->activeFrom = $activeFrom;
+
+        return $this;
+    }
+
+    public function getActiveTo(): ?DateTimeInterface
+    {
+        return $this->activeTo;
+    }
+
+    public function setActiveTo(?DateTimeInterface $activeTo): self
+    {
+        $this->activeTo = $activeTo;
+
+        return $this;
+    }
+
+    public function isUsageWithAnyDiscount(): bool
+    {
+        return $this->usageWithAnyDiscount;
+    }
+
+    public function setUsageWithAnyDiscount(bool $usageWithAnyDiscount): self
+    {
+        $this->usageWithAnyDiscount = $usageWithAnyDiscount;
 
         return $this;
     }

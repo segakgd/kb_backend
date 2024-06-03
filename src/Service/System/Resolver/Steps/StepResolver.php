@@ -10,12 +10,12 @@ use App\Service\System\Resolver\Scenario\ScenarioResolver;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
-class StepResolver
+readonly class StepResolver
 {
     public function __construct(
-        private readonly ChainsResolver $chainsResolver,
-        private readonly ScenarioResolver $scenarioResolver,
-        private readonly LoggerInterface $logger,
+        private ChainsResolver   $chainsResolver,
+        private ScenarioResolver $scenarioResolver,
+        private LoggerInterface  $logger,
     ) {
     }
 

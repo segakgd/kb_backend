@@ -5,17 +5,18 @@ declare(strict_types=1);
 namespace App\Controller\Admin\ProductCategory;
 
 use App\Controller\Admin\ProductCategory\DTO\Response\ProductCategoryRespDto;
+use App\Controller\Admin\ProductCategory\Exception\NotFoundProductCategoryForProjectException;
+use App\Controller\Admin\ProductCategory\Response\ProductCategoryViewOneResponse;
 use App\Entity\Ecommerce\ProductCategory;
 use App\Entity\User\Project;
-use App\Service\Admin\Ecommerce\ProductCategory\Mapper\ProductCategoryMapper;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Throwable;
 
 #[OA\Tag(name: 'ProductCategory')]
 #[OA\Response(
@@ -27,24 +28,21 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 )]
 class ViewOneController extends AbstractController
 {
-    public function __construct(
-        private readonly ProductCategoryMapper $productCategoryMapper,
-    ) {
-    }
-
     /** Получение категории продуктов */
     #[Route('/api/admin/project/{project}/productCategory/{productCategory}/', name: 'admin_product_category_get_one', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Project $project, ?ProductCategory $productCategory): JsonResponse
+    public function execute(Project $project, ProductCategory $productCategory): JsonResponse
     {
-        if (null === $productCategory) {
-            return $this->json('Not found', Response::HTTP_NOT_FOUND);
-        }
+        try {
+            if ($productCategory->getProjectId() !== $project->getId()) {
+                throw new NotFoundProductCategoryForProjectException();
+            }
 
-        if ($productCategory->getProjectId() !== $project->getId()) {
-            throw new AccessDeniedException('Access Denied.');
+            return $this->json(
+                (new ProductCategoryViewOneResponse())->makeResponse($productCategory)
+            );
+        } catch (Throwable $exception) {
+            return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
-
-        return $this->json($this->productCategoryMapper->mapToResponse($productCategory));
     }
 }

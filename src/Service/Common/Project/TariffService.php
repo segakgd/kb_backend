@@ -10,6 +10,7 @@ use Exception;
 
 class TariffService implements TariffServiceInterface
 {
+    // todo завести enum под тарифы
     public const DEFAULT_TARIFF_CODE = 'TRIAL'; // todo нужно запрещать переходить на такой тариф. так как он системный.
 
     public function __construct(
@@ -18,9 +19,18 @@ class TariffService implements TariffServiceInterface
     ) {
     }
 
-    public function getTariffById(int $tariffId): Tariff
+    public function getTariffById(int $tariffId): ?Tariff
     {
         return $this->tariffRepository->find($tariffId);
+    }
+
+    public function getTariffByCode(string $code): ?Tariff
+    {
+        return $this->tariffRepository->findOneBy(
+            [
+                'code' => $code,
+            ]
+        );
     }
 
     public function getAllTariff(): array

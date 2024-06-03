@@ -1,39 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Lead\DTO\Response;
 
-use App\Controller\Admin\Lead\DTO\Response\Chanel\LeadChanelRespDto;
 use App\Controller\Admin\Lead\DTO\Response\Fields\LeadContactsRespDto;
 use App\Controller\Admin\Lead\DTO\Response\Fields\LeadFieldRespDto;
 use App\Controller\Admin\Lead\DTO\Response\Order\OrderRespDto;
-use App\Controller\Admin\Lead\DTO\Response\Script\LeadScriptRespDto;
+use App\Enum\Lead\LeadStatusEnum;
 use DateTimeImmutable;
 
 class LeadRespDto
 {
-    public const LEAD_STATUS_NEW = 'new';
-
-    public const LEAD_STATUS_PROCESS = 'process';
-
-    public const LEAD_STATUS_SUSPENDED = 'suspended';
-
-    public const LEAD_STATUS_REJECTED = 'rejected';
-
-    public const LEAD_STATUS_SUCCESSFUL = 'successful';
-
     private int $number;
 
     private LeadContactsRespDto $contacts;
 
     private array $fields;
 
-    private string $status; // new process suspended rejected successful
+    private string $status = 'new';
 
     private OrderRespDto $order;
-
-    private LeadChanelRespDto $chanel;
-
-    private LeadScriptRespDto $script;
 
     private DateTimeImmutable $createdAt;
 
@@ -100,30 +87,6 @@ class LeadRespDto
     public function setOrder(OrderRespDto $order): self
     {
         $this->order = $order;
-
-        return $this;
-    }
-
-    public function getChanel(): LeadChanelRespDto
-    {
-        return $this->chanel;
-    }
-
-    public function setChanel(LeadChanelRespDto $chanel): self
-    {
-        $this->chanel = $chanel;
-
-        return $this;
-    }
-
-    public function getScript(): LeadScriptRespDto
-    {
-        return $this->script;
-    }
-
-    public function setScript(LeadScriptRespDto $script): self
-    {
-        $this->script = $script;
 
         return $this;
     }

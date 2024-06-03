@@ -8,10 +8,10 @@ use App\Controller\Admin\Product\DTO\Request\ProductCategoryReqDto;
 use App\Entity\Ecommerce\ProductCategory;
 use App\Repository\Ecommerce\ProductCategoryEntityRepository;
 
-class ProductCategoryService implements ProductCategoryServiceInterface
+readonly class ProductCategoryService implements ProductCategoryServiceInterface
 {
     public function __construct(
-        private readonly ProductCategoryEntityRepository $productCategoryEntityRepository,
+        private ProductCategoryEntityRepository $productCategoryEntityRepository,
     ) {
     }
 
@@ -24,16 +24,6 @@ class ProductCategoryService implements ProductCategoryServiceInterface
         if (empty($categoriesId)) {
             return [];
         }
-//
-//        $qb = $this->productCategoryEntityRepository->createQueryBuilder('pc');
-//
-//        $query = $qb->where('pc.projectId = :projectId')
-//            ->andWhere($qb->expr()->in('pc.id', ':categoriesId'))
-//            ->setParameter('projectId', $projectId)
-//            ->setParameter('categoriesId', $categoriesId)
-//            ->getQuery();
-//
-//        return $query->getResult();
 
         return $this->productCategoryEntityRepository->findBy(['projectId' => $projectId, 'id' => $categoriesId]);
     }

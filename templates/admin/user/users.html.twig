@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Пользователи{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+
+                {% if users is empty %}
+                    Данных нет
+                {% endif %}
+
+                {% for user in users %}
+                    <div class="wrapper--block wrapper--block--user" style="display: flex; justify-content: space-between;">
+                        <div style="width: 200px">
+                            ID: {{ user.id }}
+                        </div>
+
+                        <div style="width: 300px">
+                            Почта: {{ user.email }}
+                        </div>
+
+                        <div style="width: 300px">
+                            Роль:
+                            {% if user.role == 'admin'%}
+                                <span style="
+                                    border-radius: 20px;
+                                    border: 2px solid #d32323;
+                                    padding: 3px 10px;"
+                                > {{ user.role }} </span>
+                            {% else %}
+                                <span style="
+                                    border-radius: 20px;
+                                    border: 2px solid #29d323;
+                                    padding: 3px 10px;"
+                                > {{ user.role }} </span>
+                            {% endif %}
+                        </div>
+
+                        <div style="width: 200px">
+                            <a target="_blank" href="/admin/user/{{ user.id }}/projects/"
+                                style="
+                                    text-decoration: none;
+                                    background: linear-gradient(135deg, #ffec70 0%, #ff7dfd 100%);
+                                    border-radius: 10px;
+                                    color: #000;
+                                    padding: 3px 10px;"
+                            >Проектов: {{ user.projects_count }} </a>
+                        </div>
+
+                        <div>
+                            Зарегистрирован: {{ user.created_at|date('Y-m-d') }}
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

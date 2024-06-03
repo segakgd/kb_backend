@@ -3,11 +3,12 @@
 namespace App\Controller\Admin\Project\Tariff;
 
 use App\Controller\Admin\Project\DTO\Request\TariffSettingReqDto;
+use App\Controller\GeneralController;
 use App\Entity\User\Project;
 use App\Service\Common\Project\TariffServiceInterface;
+use Exception;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,29 +27,27 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     response: Response::HTTP_NO_CONTENT,
     description: 'Возвращает 204 если новый тариф применён',
 )]
-class ApplyController extends AbstractController
+class ApplyController extends GeneralController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,
         private readonly SerializerInterface $serializer,
         private readonly TariffServiceInterface $tariffService,
     ) {
+        parent::__construct(
+            $this->serializer,
+            $this->validator,
+        );
     }
 
-    /** Применяем вабранный тариф к проекту */
+    /**
+     * @throws Exception
+     */
     #[Route('/api/admin/project/{project}/setting/tariff/', name: 'admin_project_update_tariff', methods: ['POST'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project): JsonResponse
     {
-        $content = $request->getContent();
-
-        $requestDto = $this->serializer->deserialize($content, TariffSettingReqDto::class, 'json');
-
-        $errors = $this->validator->validate($requestDto);
-
-        if (count($errors) > 0) {
-            return $this->json(['message' => $errors->get(0)->getMessage()], Response::HTTP_BAD_REQUEST);
-        }
+        $requestDto = $this->getValidDtoFromRequest($request, TariffSettingReqDto::class);
 
         $isApply = $this->tariffService->applyTariff($project, $requestDto->getCode());
 
@@ -56,6 +55,6 @@ class ApplyController extends AbstractController
             return new JsonResponse('Тариф не применился', Response::HTTP_CONFLICT);
         }
 
-        return new JsonResponse('', Response::HTTP_NO_CONTENT);
+        return $this->json([], Response::HTTP_NO_CONTENT);
     }
 }

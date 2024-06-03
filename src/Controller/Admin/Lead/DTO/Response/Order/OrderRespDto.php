@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Lead\DTO\Response\Order;
 
-use App\Controller\Admin\Lead\DTO\Response\Order\Payment\PaymentRespDto;
 use App\Controller\Admin\Lead\DTO\Response\Order\Product\ProductRespDto;
 use App\Controller\Admin\Lead\DTO\Response\Order\Promotion\PromotionRespDto;
 use App\Controller\Admin\Lead\DTO\Response\Order\Shipping\ShippingRespDto;
@@ -12,19 +11,24 @@ use DateTimeImmutable;
 
 class OrderRespDto
 {
-    private array $products;
+    private array $products = [];
 
-    private ShippingRespDto $shipping;
+    private array $shipping = [];
 
-    private array $promotions;
-
-    private PaymentRespDto $payment;
+    private array $promotions = [];
 
     private DateTimeImmutable $createdAt;
 
     public function getProducts(): array
     {
         return $this->products;
+    }
+
+    public function setProducts(array $products): self
+    {
+        $this->products = $products;
+
+        return $this;
     }
 
     public function addProduct(ProductRespDto $product): self
@@ -34,14 +38,24 @@ class OrderRespDto
         return $this;
     }
 
-    public function getShipping(): ShippingRespDto
+    /**
+     * @return ShippingRespDto[]
+     */
+    public function getShipping(): array
     {
         return $this->shipping;
     }
 
-    public function setShipping(ShippingRespDto $shipping): self
+    public function setShipping(array $shipping): self
     {
         $this->shipping = $shipping;
+
+        return $this;
+    }
+
+    public function addShipping(ShippingRespDto $respDto): self
+    {
+        $this->shipping[] = $respDto;
 
         return $this;
     }
@@ -54,18 +68,6 @@ class OrderRespDto
     public function addPromotion(PromotionRespDto $promotion): self
     {
         $this->promotions[] = $promotion;
-
-        return $this;
-    }
-
-    public function getPayment(): PaymentRespDto
-    {
-        return $this->payment;
-    }
-
-    public function setPayment(PaymentRespDto $payment): self
-    {
-        $this->payment = $payment;
 
         return $this;
     }

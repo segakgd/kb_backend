@@ -3,6 +3,7 @@
 namespace App\Controller\Admin\Scenario;
 
 use App\Controller\Admin\Scenario\DTO\Response\ScenarioRespDto;
+use App\Entity\Scenario\Scenario;
 use App\Entity\User\Project;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -16,7 +17,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 #[OA\Tag(name: 'Scenario')]
 #[OA\Response(
     response: Response::HTTP_OK,
-    description: '', // todo You need to write a description
+    description: 'Получение одного сценария',
     content: new Model(
         type: ScenarioRespDto::class
     ),
@@ -28,9 +29,9 @@ class ViewOneController extends AbstractController
     ) {
     }
 
-    #[Route('/api/admin/project/{project}/scenario/{scenarioId}/', name: 'admin_scenario_get_one', methods: ['GET'])]
+    #[Route('/api/admin/project/{project}/scenario/{scenario}/', name: 'admin_scenario_get_one', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Project $project, int $promotionId): JsonResponse
+    public function execute(Project $project, Scenario $scenario): JsonResponse
     {
         return new JsonResponse(
             $this->serializer->normalize(new ScenarioRespDto())

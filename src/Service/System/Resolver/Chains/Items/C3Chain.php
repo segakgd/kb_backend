@@ -13,7 +13,7 @@ class C3Chain extends AbstractChain
     {
         $content = $contract->getCacheDto()->getContent();
 
-        $message = "Вы кликнули на $content. Перейти на шаг предыдущий желаете?";
+        $message = "Это шаг 1 элемент цепочки C3. \n\n Вы кликнули на $content";
 
         $contractMessage = MessageHelper::createContractMessage(
             message: $message,
@@ -30,10 +30,10 @@ class C3Chain extends AbstractChain
         $replyMarkups = [
             [
                 [
-                    'text' => 'Да'
+                    'text' => 'Да 3'
                 ],
                 [
-                    'text' => 'Нет'
+                    'text' => 'Нет 3'
                 ],
             ],
         ];
@@ -50,8 +50,8 @@ class C3Chain extends AbstractChain
         $content = $contract->getCacheDto()->getContent();
 
         $validData = [
-            'Да',
-            'Нет',
+            'Да 3',
+            'Нет 3',
         ];
 
         if (in_array($content, $validData)) {

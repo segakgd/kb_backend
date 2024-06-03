@@ -4,12 +4,6 @@ controllers:
         namespace: App\Controller
     type: attribute
 
-api_login_check:
-    path: /api/user/authenticate/
-
-api_refresh_token:
-    path: /api/user/refresh/
-
 # config/routes.yaml
 app.swagger_ui:
     path: /api/doc

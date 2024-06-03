@@ -4,11 +4,10 @@ namespace App\Service\System\Resolver\Chains\Items\Items;
 
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\MessageHelper;
-use App\Service\System\Handler\Chain\AbstractChain;
 use App\Service\System\Resolver\Dto\Contract;
 use Exception;
 
-class End extends AbstractChain // todo удалить
+class End // extends AbstractChain // todo удалить
 {
     /**
      * @throws Exception

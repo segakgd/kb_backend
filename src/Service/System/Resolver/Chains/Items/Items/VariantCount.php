@@ -5,10 +5,9 @@ namespace App\Service\System\Resolver\Chains\Items\Items;
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\Product\Service\ProductService;
-use App\Service\System\Handler\Chain\Items\AbstractChain;
 use App\Service\System\Resolver\Dto\Contract;
 
-class VariantCount extends AbstractChain
+class VariantCount// extends AbstractChain
 {
     public function __construct(
         private readonly ProductService $productService,

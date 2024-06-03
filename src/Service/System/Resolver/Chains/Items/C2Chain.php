@@ -14,13 +14,7 @@ class C2Chain extends AbstractChain
     {
         $content = $contract->getCacheDto()->getContent();
 
-        if ($content === 'На на шаг 4') {
-            $contract->setJump(JumpEnum::refChain4);
-
-            return $contract;
-        }
-
-        $message = "Вы кликнули на $content";
+        $message = "Это шаг 1 элемент цепочки C2. \n\n Контент $content";
 
         $contractMessage = MessageHelper::createContractMessage(
             message: $message,
@@ -37,13 +31,10 @@ class C2Chain extends AbstractChain
         $replyMarkups = [
             [
                 [
-                    'text' => 'На очко себе тыкни'
+                    'text' => 'Да 2'
                 ],
                 [
-                    'text' => 'На на шаг 4'
-                ],
-                [
-                    'text' => 'Нет'
+                    'text' => 'Нет 2'
                 ],
             ],
         ];
@@ -60,9 +51,8 @@ class C2Chain extends AbstractChain
         $content = $contract->getCacheDto()->getContent();
 
         $validData = [
-            'На очко себе тыкни',
-            'На на шаг 4',
-            'Нет',
+            'Да 2',
+            'Нет 2',
         ];
 
         if (in_array($content, $validData)) {

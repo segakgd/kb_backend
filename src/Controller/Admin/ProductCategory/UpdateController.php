@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace App\Controller\Admin\ProductCategory;
 
 use App\Controller\Admin\ProductCategory\DTO\Request\ProductCategoryReqDto;
+use App\Controller\Admin\ProductCategory\Exception\NotFoundProductCategoryForProjectException;
+use App\Controller\GeneralController;
 use App\Entity\Ecommerce\ProductCategory;
 use App\Entity\User\Project;
 use App\Service\Admin\Ecommerce\ProductCategory\Manager\ProductCategoryManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,13 +31,17 @@ use Throwable;
     response: Response::HTTP_NO_CONTENT,
     description: 'Обновляет категорию продукта',
 )]
-class UpdateController extends AbstractController
+class UpdateController extends GeneralController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,
         private readonly SerializerInterface $serializer,
         private readonly ProductCategoryManagerInterface $productCategoryManager
     ) {
+        parent::__construct(
+            $this->serializer,
+            $this->validator,
+        );
     }
 
     /** Обновление категории продуктов */
@@ -45,13 +50,11 @@ class UpdateController extends AbstractController
     public function execute(Request $request, Project $project, ProductCategory $productCategory): JsonResponse
     {
         try {
-            $requestDto = $this->serializer->deserialize($request->getContent(), ProductCategoryReqDto::class, 'json');
-
-            $errors = $this->validator->validate($requestDto);
-
-            if (count($errors) > 0) {
-                return $this->json(['message' => $errors->get(0)->getMessage()], Response::HTTP_BAD_REQUEST);
+            if ($productCategory->getProjectId() !== $project->getId()) {
+                throw new NotFoundProductCategoryForProjectException();
             }
+
+            $requestDto = $this->getValidDtoFromRequest($request, ProductCategoryReqDto::class);
 
             $this->productCategoryManager->update($requestDto, $productCategory, $project);
 

@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Product\DTO\Request;
 
-use App\Dto\Product\Variants\ImageDto;
-use App\Dto\Product\Variants\VariantPriceDto;
+use App\Dto\Ecommerce\Product\Variants\ImageDto;
+use App\Dto\Ecommerce\Product\Variants\VariantPriceDto;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class ProductVariantReqDto
 {
@@ -18,8 +19,9 @@ class ProductVariantReqDto
     #[Assert\NotBlank]
     private string $name;
 
-    #[Assert\GreaterThan(0)]
     private ?int $count = null;
+
+    private bool $isLimitless = false;
 
     #[Assert\Valid]
     private array $price = [];
@@ -27,6 +29,17 @@ class ProductVariantReqDto
     private array $images = [];
 
     private bool $isActive = false;
+
+    #[Assert\Callback]
+    public function validateVariantCount(ExecutionContextInterface $context): void
+    {
+        if (false === $this->isLimitless && null === $this->count) {
+            $context
+                ->buildViolation('Count of variant not defined')
+                ->addViolation()
+            ;
+        }
+    }
 
     public function getId(): ?int
     {
@@ -120,6 +133,18 @@ class ProductVariantReqDto
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function isLimitless(): bool
+    {
+        return $this->isLimitless;
+    }
+
+    public function setIsLimitless(bool $isLimitless): self
+    {
+        $this->isLimitless = $isLimitless;
 
         return $this;
     }

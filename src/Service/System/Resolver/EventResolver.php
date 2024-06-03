@@ -14,10 +14,10 @@ use Throwable;
 class EventResolver
 {
     public function __construct(
-        private readonly StepResolver $stepResolver,
-        private readonly SenderService $senderService,
-        private readonly JumpResolver $jumpResolver,
-        private readonly ContractDtoRepository $contractDtoRepository,
+        private StepResolver          $stepResolver,
+        private SenderService         $senderService,
+        private JumpResolver          $jumpResolver,
+        private ContractDtoRepository $contractDtoRepository,
     ) {
     }
 

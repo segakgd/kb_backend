@@ -1,14 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Shipping;
 
+use App\Controller\Admin\Shipping\Exception\NotFoundShippingForProjectException;
+use App\Entity\Ecommerce\Shipping;
 use App\Entity\User\Project;
+use App\Service\Admin\Ecommerce\Shipping\Manager\ShippingManagerInterface;
 use OpenApi\Attributes as OA;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Throwable;
 
 #[OA\Tag(name: 'Shipping')]
 #[OA\Response(
@@ -17,10 +24,29 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 )]
 class RemoveController extends AbstractController
 {
-    #[Route('/api/admin/project/{project}/shipping/{shippingId}/', name: 'admin_shipping_remove', methods: ['DELETE'])]
+    public function __construct(
+        private readonly ShippingManagerInterface $shippingManager,
+        private readonly LoggerInterface $logger,
+    ) {
+    }
+
+    /** Удаление доставки */
+    #[Route('/api/admin/project/{project}/shipping/{shipping}/', name: 'admin_shipping_remove', methods: ['DELETE'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Project $project, int $shippingId): JsonResponse
+    public function execute(Project $project, Shipping $shipping): JsonResponse
     {
-        return new JsonResponse('', Response::HTTP_NO_CONTENT);
+        try {
+            if ($project->getId() !== $shipping->getProjectId()) {
+                throw new NotFoundShippingForProjectException();
+            }
+
+            $this->shippingManager->delete($shipping);
+        } catch (Throwable $exception) {
+            $this->logger->error($exception->getMessage());
+
+            return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
+        }
+
+        return $this->json([], Response::HTTP_NO_CONTENT);
     }
 }

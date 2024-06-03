@@ -2,7 +2,7 @@
 
 namespace App\Command\Dev;
 
-use App\Dto\Product\Variants\VariantPriceDto;
+use App\Dto\Ecommerce\Product\Variants\VariantPriceDto;
 use App\Entity\Ecommerce\ProductVariant;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;

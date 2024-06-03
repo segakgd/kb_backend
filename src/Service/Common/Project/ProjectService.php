@@ -5,16 +5,16 @@ namespace App\Service\Common\Project;
 use App\Controller\Admin\Project\DTO\Request\ProjectCreateReqDto;
 use App\Entity\User\Project;
 use App\Entity\User\User;
-use App\Repository\User\ProjectEntityRepository;
+use App\Repository\User\ProjectRepository;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
-class ProjectService implements ProjectServiceInterface
+readonly class ProjectService implements ProjectServiceInterface
 {
     public function __construct(
-        private readonly ProjectEntityRepository $projectEntityRepository,
-        private readonly ProjectSettingServiceInterface $projectSettingService,
-        private readonly LoggerInterface $logger,
+        private ProjectRepository              $projectEntityRepository,
+        private ProjectSettingServiceInterface $projectSettingService,
+        private LoggerInterface                $logger,
     ) {
     }
 
