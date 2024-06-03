@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Lead;
 
 use App\Controller\Admin\Lead\DTO\Request\LeadReqDto;
+use App\Controller\Admin\Lead\Exception\NotFoundLeadForProjectException;
+use App\Controller\GeneralController;
 use App\Entity\Lead\Deal;
 use App\Entity\User\Project;
 use App\Service\Admin\Lead\LeadManager;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -31,43 +31,37 @@ use Throwable;
     response: Response::HTTP_NO_CONTENT,
     description: 'Возвращает 204 при создании',
 )]
-class UpdateController extends AbstractController
+class UpdateController extends GeneralController
 {
     public function __construct(
         private readonly LeadManager $leadManager,
         private readonly SerializerInterface $serializer,
         private readonly ValidatorInterface $validator
     ) {
+        parent::__construct(
+            $this->serializer,
+            $this->validator,
+        );
     }
 
     /** Обновление лида */
     #[OA\Tag(name: 'Lead')]
     #[Route('/api/admin/project/{project}/lead/{lead}/', name: 'admin_lead_update', methods: ['PATCH'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Request $request, Project $project, ?Deal $lead): JsonResponse
+    public function execute(Request $request, Project $project, Deal $lead): JsonResponse
     {
-        if (null === $lead) {
-            return $this->json('Not found', Response::HTTP_NOT_FOUND);
-        }
-
-        if ($lead->getProjectId() !== $project->getId()) {
-            throw new AccessDeniedException('Access Denied.');
-        }
-
         try {
-            $requestDto = $this->serializer->deserialize($request->getContent(), LeadReqDto::class, 'json');
-
-            $errors = $this->validator->validate($requestDto);
-
-            if (count($errors) > 0) {
-                return $this->json(['message' => $errors->get(0)->getMessage()], Response::HTTP_BAD_REQUEST);
+            if ($project->getId() !== $lead->getProjectId()) {
+                throw new NotFoundLeadForProjectException();
             }
 
+            $requestDto = $this->getValidDtoFromRequest($request, LeadReqDto::class);
+
             $this->leadManager->update($requestDto, $lead, $project);
+
+            return $this->json([], Response::HTTP_NO_CONTENT);
         } catch (Throwable $exception) {
             return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
-
-        return $this->json([], Response::HTTP_NO_CONTENT); // todo пока что оставил, позже сделаем этот функционал
     }
 }

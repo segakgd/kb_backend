@@ -2,6 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}Welcome!{% endblock %}</title>
     <link rel="icon" href="/assets/images/logo.svg">
 
@@ -26,9 +27,6 @@
                     <ul>
                         <li>
                             <a href="{{ path('admin_users') }}">Пользователи</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('admin_projects') }}">Проекты</a>
                         </li>
                     </ul>
                 </div>

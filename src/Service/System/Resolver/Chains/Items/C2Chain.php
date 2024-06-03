@@ -13,7 +13,7 @@ class C2Chain extends AbstractChain
     {
         $content = $contract->getCacheDto()->getContent();
 
-        $message = "Вы кликнули на $content";
+        $message = "Это шаг 1 элемент цепочки C2. \n\n Контент $content";
 
         $contractMessage = MessageHelper::createContractMessage(
             message: $message,
@@ -30,10 +30,10 @@ class C2Chain extends AbstractChain
         $replyMarkups = [
             [
                 [
-                    'text' => 'Да'
+                    'text' => 'Да 2'
                 ],
                 [
-                    'text' => 'Нет'
+                    'text' => 'Нет 2'
                 ],
             ],
         ];
@@ -50,8 +50,8 @@ class C2Chain extends AbstractChain
         $content = $contract->getCacheDto()->getContent();
 
         $validData = [
-            'Да',
-            'Нет',
+            'Да 2',
+            'Нет 2',
         ];
 
         if (in_array($content, $validData)) {

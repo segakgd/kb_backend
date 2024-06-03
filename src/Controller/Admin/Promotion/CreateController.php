@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Promotion;
 
 use App\Controller\Admin\Promotion\DTO\Request\PromotionReqDto;
+use App\Controller\GeneralController;
 use App\Entity\User\Project;
 use App\Service\Admin\Ecommerce\Promotion\Manager\PromotionManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Psr\Log\LoggerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,9 +28,9 @@ use Throwable;
 )]
 #[OA\Response(
     response: Response::HTTP_NO_CONTENT,
-    description: 'Создания промокода',
+    description: 'Создания скидки',
 )]
-class CreateController extends AbstractController
+class CreateController extends GeneralController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,
@@ -38,6 +38,10 @@ class CreateController extends AbstractController
         private readonly PromotionManagerInterface $promotionManager,
         private readonly LoggerInterface $logger,
     ) {
+        parent::__construct(
+            $this->serializer,
+            $this->validator,
+        );
     }
 
     #[Route('/api/admin/project/{project}/promotion/', name: 'admin_promotion_create', methods: ['POST'])]
@@ -45,13 +49,7 @@ class CreateController extends AbstractController
     public function execute(Request $request, Project $project): JsonResponse
     {
         try {
-            $requestDto = $this->serializer->deserialize($request->getContent(), PromotionReqDto::class, 'json');
-
-            $errors = $this->validator->validate($requestDto);
-
-            if (count($errors) > 0) {
-                return $this->json(['message' => $errors->get(0)->getMessage()], Response::HTTP_BAD_REQUEST);
-            }
+            $requestDto = $this->getValidDtoFromRequest($request, PromotionReqDto::class);
 
             $this->promotionManager->create($requestDto, $project);
         } catch (Throwable $exception) {

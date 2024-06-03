@@ -12,10 +12,10 @@ use App\Service\System\Resolver\Dto\Contract;
 use App\Service\Visitor\Scenario\ScenarioService;
 use Exception;
 
-class JumpResolver
+readonly class JumpResolver
 {
     public function __construct(
-        private readonly ScenarioService $scenarioService,
+        private ScenarioService $scenarioService,
     ) {
     }
 

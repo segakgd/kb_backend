@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Project\Tariff;
 
 use App\Controller\Admin\Project\DTO\Response\TariffSettingRespDto;
-use App\Entity\User\Tariff;
+use App\Controller\Admin\Project\Response\Tariff\ViewAllTariffResponse;
 use App\Service\Common\Project\TariffServiceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -37,7 +37,6 @@ class ViewAllController extends AbstractController
     ) {
     }
 
-    /** Получение всех тарифов */
     #[Route('/api/admin/tariffs/', name: 'admin_list_tariffs', methods: ['GET'])]
     public function execute(): JsonResponse
     {
@@ -47,25 +46,8 @@ class ViewAllController extends AbstractController
 
         $tariffs = $this->tariffService->getAllTariff();
 
-        return $this->json($this->serializer->normalize($this->mapToResponse($tariffs)));
-    }
-
-    private function mapToResponse(array $tariffs): array
-    {
-        $result = [];
-
-        /** @var Tariff $tariff */
-        foreach ($tariffs as $tariff) {
-            $result[] = (new TariffSettingRespDto())
-                ->setId($tariff->getId())
-                ->setName($tariff->getName())
-                ->setPrice($tariff->getPrice())
-                ->setPriceWF($tariff->getPriceWF())
-                ->setDescription($tariff->getDescription())
-                ->setCode($tariff->getCode())
-                ->setActive($tariff->isActive());
-        }
-
-        return $result;
+        return $this->json($this->serializer->normalize(
+            (new ViewAllTariffResponse())->mapResponse($tariffs)
+        ));
     }
 }

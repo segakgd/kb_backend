@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Controller\Admin\ProductCategory;
 
 use App\Controller\Admin\ProductCategory\DTO\Request\ProductCategoryReqDto;
+use App\Controller\GeneralController;
 use App\Entity\User\Project;
 use App\Service\Admin\Ecommerce\ProductCategory\Manager\ProductCategoryManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,13 +29,17 @@ use Throwable;
     response: Response::HTTP_NO_CONTENT,
     description: 'Возвращает созданную категорию',
 )]
-class CreateController extends AbstractController
+class CreateController extends GeneralController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,
         private readonly SerializerInterface $serializer,
         private readonly ProductCategoryManagerInterface $productCategoryManager,
     ) {
+        parent::__construct(
+            $this->serializer,
+            $this->validator,
+        );
     }
 
     /** Создание категории продуктов */
@@ -44,13 +48,7 @@ class CreateController extends AbstractController
     public function execute(Request $request, Project $project): JsonResponse
     {
         try {
-            $requestDto = $this->serializer->deserialize($request->getContent(), ProductCategoryReqDto::class, 'json');
-
-            $errors = $this->validator->validate($requestDto);
-
-            if (count($errors) > 0) {
-                return $this->json(['message' => $errors->get(0)->getMessage()], Response::HTTP_BAD_REQUEST);
-            }
+            $requestDto = $this->getValidDtoFromRequest($request, ProductCategoryReqDto::class);
 
             $this->productCategoryManager->create($requestDto, $project);
 

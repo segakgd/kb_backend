@@ -6,10 +6,10 @@ use App\Controller\Admin\Scenario\DTO\Request\ScenarioReqDto;
 use App\Entity\Scenario\ScenarioTemplate;
 use App\Repository\Scenario\ScenarioTemplateRepository;
 
-class ScenarioTemplateService
+readonly class ScenarioTemplateService
 {
     public function __construct(
-        private readonly ScenarioTemplateRepository $scenarioTemplateRepository,
+        private ScenarioTemplateRepository $scenarioTemplateRepository,
     ) {
     }
 

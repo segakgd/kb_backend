@@ -10,11 +10,11 @@ use App\Entity\Lead\DealField;
 use App\Repository\Lead\FieldEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
-class LeadFieldsService
+readonly class LeadFieldsService
 {
     public function __construct(
-        private readonly FieldEntityRepository $fieldEntityRepository,
-        private readonly EntityManagerInterface $entityManager,
+        private FieldEntityRepository $fieldEntityRepository,
+        private EntityManagerInterface $entityManager,
     ) {
     }
 

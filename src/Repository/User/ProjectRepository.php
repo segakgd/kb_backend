@@ -5,6 +5,8 @@ namespace App\Repository\User;
 use App\Entity\User\Project;
 use App\Entity\User\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -34,6 +36,23 @@ class ProjectRepository extends ServiceEntityRepository
         $query = $qb->getQuery();
 
         return $query->execute();
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
+    public function projectsCountByUser(User $user): int
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->select('COUNT(p.id)')
+            ->leftJoin('p.users', 'u')
+            ->where('u.id = :userId')
+            ->setParameter('userId', $user->getId());
+
+        $query = $qb->getQuery();
+
+        return (int) $query->getSingleScalarResult();
     }
 
     public function saveAndFlush(Project $entity): void

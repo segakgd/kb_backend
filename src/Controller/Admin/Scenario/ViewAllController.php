@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 #[OA\Tag(name: 'Scenario')]
 #[OA\Response(
     response: Response::HTTP_OK,
-    description: 'Возвращает коллекцию товаров',
+    description: 'Возвращает коллекцию сценариев',
     content: new OA\JsonContent(
         type: 'array',
         items: new OA\Items(
@@ -35,7 +35,6 @@ class ViewAllController extends AbstractController
     ) {
     }
 
-    /** Вывести все скидки и промокоды */
     #[Route('/api/admin/project/{project}/scenario/', name: 'admin_scenario_get_all', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project): JsonResponse

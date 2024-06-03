@@ -8,9 +8,9 @@ use App\Entity\Ecommerce\Promotion;
 use App\Entity\User\Project;
 use App\Repository\Ecommerce\PromotionRepository;
 
-class PromotionService implements PromotionServiceInterface
+readonly class PromotionService implements PromotionServiceInterface
 {
-    public function __construct(private readonly PromotionRepository $promotionRepository)
+    public function __construct(private PromotionRepository $promotionRepository)
     {
     }
 

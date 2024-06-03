@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Project;
 
 use App\Controller\Admin\Project\DTO\Response\ProjectRespDto;
+use App\Controller\Admin\Project\Response\ProjectResponse;
 use App\Entity\User\Project;
 use App\Service\Admin\Statistic\StatisticsService;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -18,14 +19,14 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[OA\Tag(name: 'Bot')]
 #[OA\Response(
     response: Response::HTTP_OK,
-    description: 'Возвращает продукт',
+    description: 'Возвращает проект',
     content: new Model(
         type: ProjectRespDto::class
     ),
 )]
 class ViewOneController extends AbstractController
 {
-    public function __construct(private readonly StatisticsService $statisticsService,)
+    public function __construct(private readonly StatisticsService $statisticsService)
     {
     }
 
@@ -35,14 +36,8 @@ class ViewOneController extends AbstractController
     {
         $fakeStatisticsByProject = $this->statisticsService->getStatisticForProject();
 
-        (new ProjectRespDto())
-            ->setId($project->getId())
-            ->setName($project->getName())
-            ->setStatus($project->getStatus())
-            ->setStatistic($fakeStatisticsByProject)
-            ->setActiveFrom($project->getActiveFrom())
-            ->setActiveTo($project->getActiveTo());
-
-        return $this->json($fakeStatisticsByProject);
+        return $this->json(
+            (new ProjectResponse())->mapToResponse($project, $fakeStatisticsByProject)
+        );
     }
 }

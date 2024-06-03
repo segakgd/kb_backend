@@ -13,17 +13,17 @@ class C1Chain extends AbstractChain
     {
         $content = $contract->getCacheDto()->getContent();
 
-        $cart = $contract->getCacheDto()->getCart();
+//        $cart = $contract->getCacheDto()->getCart();
+//
+//        $shipping = [
+//            'address' => [ // todo need realization as DTO
+//                'apartment' => $content
+//            ]
+//        ];
+//
+//        $cart->setShipping($shipping);
 
-        $shipping = [
-            'address' => [ // todo need realization as DTO
-                'apartment' => $content
-            ]
-        ];
-
-        $cart->setShipping($shipping);
-
-        $message = "Ваши апартаменты $content. \n\n Хотите что-то изменить?";
+        $message = "Это шаг 1 элемент цепочки C1. \n\n Сама цепочка была запущена с помощью конпки $content. \n\n Хотите что-то изменить?";
 
         $contractMessage = MessageHelper::createContractMessage(
             message: $message,

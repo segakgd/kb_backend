@@ -11,9 +11,9 @@ use App\Exception\Ecommerce\ProductCategoryExistException;
 use App\Service\Admin\Ecommerce\ProductCategory\Service\ProductCategoryService;
 use Exception;
 
-class ProductCategoryManager implements ProductCategoryManagerInterface
+readonly class ProductCategoryManager implements ProductCategoryManagerInterface
 {
-    public function __construct(private readonly ProductCategoryService $productCategoryService)
+    public function __construct(private ProductCategoryService $productCategoryService)
     {
     }
 

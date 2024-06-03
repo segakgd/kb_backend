@@ -10,6 +10,7 @@ use App\Entity\User\Project;
 use App\Service\Admin\Ecommerce\Shipping\Manager\ShippingManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,6 +36,7 @@ class CreateController extends GeneralController
         private readonly ValidatorInterface $validator,
         private readonly SerializerInterface $serializer,
         private readonly ShippingManagerInterface $shippingManager,
+        private readonly LoggerInterface $logger,
     ) {
         parent::__construct(
             $this->serializer,
@@ -42,6 +44,7 @@ class CreateController extends GeneralController
         );
     }
 
+    /** Создание доставки */
     #[Route('/api/admin/project/{project}/shipping/', name: 'admin_shipping_create', methods: ['POST'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project): JsonResponse
@@ -54,6 +57,8 @@ class CreateController extends GeneralController
                 project: $project,
             );
         } catch (Throwable $exception) {
+            $this->logger->error($exception->getMessage());
+
             return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
 

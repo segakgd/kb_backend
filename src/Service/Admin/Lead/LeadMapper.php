@@ -14,10 +14,10 @@ use App\Controller\Admin\Lead\DTO\Response\Order\Product\ProductVariantRespDto;
 use App\Entity\Lead\Deal;
 use App\Repository\Ecommerce\ProductVariantRepository;
 
-class LeadMapper
+readonly class LeadMapper
 {
     public function __construct(
-        private readonly ProductVariantRepository $productVariantRepository,
+        private ProductVariantRepository $productVariantRepository,
     ) {
     }
 

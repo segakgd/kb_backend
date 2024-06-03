@@ -6,12 +6,16 @@ use App\Dto\Common\AbstractDto;
 
 class CacheCartDto extends AbstractDto
 {
+    // todo use CacheContactDto.php
     private array $contacts = [];
 
+    // todo use CacheProductDto.php
     private array $products = [];
 
+    // todo use CacheShippingDto.php
     private array $shipping = [];
 
+    // todo use CachePromotionDto.php
     private array $promotion = [];
 
     private bool $pay = false;

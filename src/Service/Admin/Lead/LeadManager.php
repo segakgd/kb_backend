@@ -13,14 +13,14 @@ use App\Service\Admin\Lead\Order\OrderChecker;
 use App\Service\Admin\Lead\Order\OrderService;
 use Exception;
 
-class LeadManager
+readonly class LeadManager
 {
     public function __construct(
-        private readonly LeadService $leadService,
-        private readonly LeadContactService $contactService,
-        private readonly LeadFieldsService $fieldsService,
-        private readonly OrderService $orderService,
-        private readonly OrderChecker $orderChecker,
+        private LeadService        $leadService,
+        private LeadContactService $contactService,
+        private LeadFieldsService  $fieldsService,
+        private OrderService       $orderService,
+        private OrderChecker       $orderChecker,
     ) {
     }
 

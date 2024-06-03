@@ -10,9 +10,9 @@ use App\Entity\User\Project;
 use App\Helper\Ecommerce\Shipping\ShippingHelper;
 use App\Service\Admin\Ecommerce\Shipping\Service\ShippingService;
 
-class ShippingManager implements ShippingManagerInterface
+readonly class ShippingManager implements ShippingManagerInterface
 {
-    public function __construct(private readonly ShippingService $shippingService)
+    public function __construct(private ShippingService $shippingService)
     {
     }
 

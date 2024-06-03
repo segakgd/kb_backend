@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace App\Service\Admin\Lead\Contacts;
 
 use App\Controller\Admin\Lead\DTO\Request\Field\LeadContactsReqDto;
-use App\Entity\Lead\Deal;
 use App\Entity\Lead\DealContacts;
 use App\Repository\Lead\ContactsEntityRepository;
 
-class LeadContactService
+readonly class LeadContactService
 {
-    public function __construct(private readonly ContactsEntityRepository $contactsEntityRepository)
+    public function __construct(private ContactsEntityRepository $contactsEntityRepository)
     {
     }
 
@@ -34,7 +33,7 @@ class LeadContactService
 
     public function updateOrCreate(LeadContactsReqDto $contactsReqDto, ?DealContacts $contacts): DealContacts
     {
-        if (null === $contacts) {
+        if (is_null($contacts)) {
             $contacts = new DealContacts();
         }
 

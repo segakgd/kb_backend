@@ -11,11 +11,11 @@ use App\Repository\User\BotRepository;
 use Exception;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
-class BotService implements BotServiceInterface
+readonly class BotService implements BotServiceInterface
 {
     public function __construct(
-        private readonly BotRepository $botRepository,
-        private readonly EventDispatcherInterface $eventDispatcher,
+        private BotRepository $botRepository,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -95,7 +95,7 @@ class BotService implements BotServiceInterface
             ]
         );
 
-        if (null === $bot){
+        if (is_null($bot)){
             throw new Exception('Бот не найден');
         }
 

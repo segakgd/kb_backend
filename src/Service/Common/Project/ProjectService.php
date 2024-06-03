@@ -9,12 +9,12 @@ use App\Repository\User\ProjectRepository;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
-class ProjectService implements ProjectServiceInterface
+readonly class ProjectService implements ProjectServiceInterface
 {
     public function __construct(
-        private readonly ProjectRepository              $projectEntityRepository,
-        private readonly ProjectSettingServiceInterface $projectSettingService,
-        private readonly LoggerInterface                $logger,
+        private ProjectRepository              $projectEntityRepository,
+        private ProjectSettingServiceInterface $projectSettingService,
+        private LoggerInterface                $logger,
     ) {
     }
 

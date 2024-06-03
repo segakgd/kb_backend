@@ -10,12 +10,12 @@ use App\Repository\Ecommerce\ProductEntityRepository;
 use App\Repository\Ecommerce\ProductVariantRepository;
 use Exception;
 
-class ProductService implements ProductServiceInterface
+readonly class ProductService implements ProductServiceInterface
 {
     public function __construct(
-        private readonly ProductEntityRepository $productEntityRepository,
-        private readonly ProductCategoryEntityRepository $productCategoryEntityRepository,
-        private readonly ProductVariantRepository $productVariantRepository,
+        private ProductEntityRepository $productEntityRepository,
+        private ProductCategoryEntityRepository $productCategoryEntityRepository,
+        private ProductVariantRepository $productVariantRepository,
     ) {
     }
 

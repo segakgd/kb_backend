@@ -10,10 +10,10 @@ use App\Entity\User\Project;
 use App\Helper\Ecommerce\Promotion\PromotionHelper;
 use App\Service\Admin\Ecommerce\Promotion\Service\PromotionService;
 
-class PromotionManager implements PromotionManagerInterface
+readonly class PromotionManager implements PromotionManagerInterface
 {
     public function __construct(
-        private readonly PromotionService $promotionService
+        private PromotionService $promotionService
     ) {
     }
 

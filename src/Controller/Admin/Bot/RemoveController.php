@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Throwable;
 
 #[OA\Tag(name: 'Bot')]
 #[OA\Response(
@@ -28,8 +29,12 @@ class RemoveController extends AbstractController
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project, int $botId): JsonResponse
     {
-        $this->botService->remove($botId, $project->getId());
+        try {
+            $this->botService->remove($botId, $project->getId());
 
-        return new JsonResponse([], Response::HTTP_NO_CONTENT);
+            return new JsonResponse([], Response::HTTP_NO_CONTENT);
+        } catch (Throwable $exception) {
+            return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
+        }
     }
 }

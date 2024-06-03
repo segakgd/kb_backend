@@ -3,6 +3,7 @@
 namespace App\Entity\User;
 
 use App\Repository\User\UserRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -38,9 +39,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $refreshTokens = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?DateTimeImmutable $createdAt;
+
     public function __construct()
     {
         $this->projects = new ArrayCollection();
+        $this->createdAt = new DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -67,7 +72,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
@@ -157,6 +162,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRefreshTokens(string $refreshTokens): static
     {
         $this->refreshTokens = $refreshTokens;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }
