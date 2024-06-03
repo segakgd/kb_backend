@@ -11,13 +11,13 @@ use App\Service\System\Resolver\Jumps\JumpResolver;
 use App\Service\System\Resolver\Steps\StepResolver;
 use Throwable;
 
-class EventResolver
+readonly class EventResolver
 {
     public function __construct(
-        private readonly StepResolver $stepResolver,
-        private readonly SenderService $senderService,
-        private readonly JumpResolver $gotoResolver,
-        private readonly ContractDtoRepository $contractDtoRepository,
+        private StepResolver          $stepResolver,
+        private SenderService         $senderService,
+        private JumpResolver          $jumpResolver,
+        private ContractDtoRepository $contractDtoRepository,
     ) {
     }
 
@@ -40,7 +40,7 @@ class EventResolver
             // todo другая реализация...
             dd('Вернуть jump');
 
-//            $this->gotoResolver->resolveJump(
+//            $this->jumpResolver->resolveJump(
 //                visitorEvent: $visitorEvent,
 //                cacheDto: $cacheDto,
 //                visitorSession: $visitorSession,
