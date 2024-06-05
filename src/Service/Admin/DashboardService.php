@@ -66,13 +66,13 @@ readonly class DashboardService
             ]
         );
 
-        $steps = [];
+        $contracts = [];
 
         if ($visitorSession) {
             $cache = $visitorSession->getCache();
             $cacheEvent = $cache->getEvent();
 
-            $cacheSteps = $cacheEvent->getSteps();
+            $cacheSteps = $cacheEvent->getContracts();
 
             foreach ($cacheSteps as $key => $cacheStep) {
                 $cacheChains = $cacheStep->getChains();
@@ -85,7 +85,7 @@ readonly class DashboardService
                     ];
                 }
 
-                $steps[] = [
+                $contracts[] = [
                     'number' => $key + 1,
                     'chains' => $chains,
                     'finished' => $cacheStep->isFinished(),
@@ -98,7 +98,7 @@ readonly class DashboardService
             'type' => $event->getType(),
             'status' => $event->getStatus()->value,
             'createdAt' => $event->getCreatedAt(),
-            'steps' => $steps,
+            'steps' => $contracts,
             'error' => $event->getError(),
             'responsible' => $event->getResponsible(),
         ];

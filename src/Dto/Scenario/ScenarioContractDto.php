@@ -4,7 +4,7 @@ namespace App\Dto\Scenario;
 
 use App\Entity\Scenario\Scenario;
 
-class ScenarioStepDto
+class ScenarioContractDto
 {
     private ?string $message = null;
 

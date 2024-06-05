@@ -3,14 +3,14 @@
 namespace App\Service\System\Resolver\Scenario;
 
 use App\Dto\Responsible\ResponsibleMessageDto;
-use App\Dto\SessionCache\Cache\CacheStepDto;
+use App\Dto\SessionCache\Cache\CacheContractDto;
 use App\Helper\KeyboardHelper;
 use App\Helper\MessageHelper;
 use App\Service\System\Resolver\Dto\Responsible;
 
 class ScenarioResolver
 {
-    public function resolve(Responsible $responsible, CacheStepDto $scenarioStep): Responsible
+    public function resolve(Responsible $responsible, CacheContractDto $scenarioStep): Responsible
     {
         $responsibleMessage = MessageHelper::createResponsibleMessage();
 
@@ -22,7 +22,7 @@ class ScenarioResolver
         return $responsible;
     }
 
-    private function setMessage(ResponsibleMessageDto $responsibleMessageDto, CacheStepDto $scenarioStep): void
+    private function setMessage(ResponsibleMessageDto $responsibleMessageDto, CacheContractDto $scenarioStep): void
     {
         if (!$scenarioStep->getMessage()) {
             return;
@@ -31,7 +31,7 @@ class ScenarioResolver
         $responsibleMessageDto->setMessage($scenarioStep->getMessage());
     }
 
-    private function setKeyboard(ResponsibleMessageDto $responsibleMessageDto, CacheStepDto $scenarioStep): void
+    private function setKeyboard(ResponsibleMessageDto $responsibleMessageDto, CacheContractDto $scenarioStep): void
     {
         if (empty($scenarioStep->getKeyboard())) {
             return;

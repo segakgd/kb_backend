@@ -3,7 +3,7 @@
 namespace App\Entity\Scenario;
 
 use App\Doctrine\Types\ScenarioStepDtoArrayType;
-use App\Dto\Scenario\ScenarioStepDto;
+use App\Dto\Scenario\ScenarioContractDto;
 use App\Repository\Scenario\ScenarioRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
@@ -32,10 +32,10 @@ class Scenario
     private ?int $botId = null;
 
     /**
-     * @var array<ScenarioStepDto>
+     * @var array<ScenarioContractDto>
      */
     #[ORM\Column(type: ScenarioStepDtoArrayType::TYPE_NAME, nullable: true)]
-    private array $steps = [];
+    private array $contracts = [];
 
     #[ORM\Column(nullable: true)]
     private ?DateTimeImmutable $deletedAt = null;
@@ -84,28 +84,28 @@ class Scenario
         return $this;
     }
 
-    public function getSteps(): array
+    public function getContracts(): array
     {
-        return $this->steps;
+        return $this->contracts;
     }
 
-    public function setSteps(array $steps): self
+    public function setContracts(array $contracts): self
     {
-        $this->steps = $steps;
+        $this->contracts = $contracts;
 
         return $this;
     }
 
-    public function addStep(ScenarioStepDto $step): self
+    public function addContract(ScenarioContractDto $step): self
     {
-        $this->steps[] = $step;
+        $this->contracts[] = $step;
 
         return $this;
     }
 
-    public function removeStep(ScenarioStepDto $stepToRemove): self
+    public function removeStep(ScenarioContractDto $stepToRemove): self
     {
-        $this->steps = array_filter($this->steps, function (ScenarioStepDto $step) use ($stepToRemove) {
+        $this->contracts = array_filter($this->contracts, function (ScenarioContractDto $step) use ($stepToRemove) {
             return $step !== $stepToRemove;
         });
 

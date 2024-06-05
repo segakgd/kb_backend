@@ -33,9 +33,9 @@ interface ResponsibleInterface
 
     public function setStatus(?VisitorEventStatusEnum $status): static;
 
-    public function isStepsStatus(): bool;
+    public function isContractsStatus(): bool;
 
-    public function setStepsStatus(bool $stepsStatus): static;
+    public function setContractsStatus(bool $contractsStatus): static;
 
     public function getBotDto(): ?BotDto;
 

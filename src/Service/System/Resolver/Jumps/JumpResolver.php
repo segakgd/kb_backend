@@ -40,7 +40,7 @@ readonly class JumpResolver
             $visitorEvent->setScenarioUUID($scenario->getUUID());
             $responsible->getCacheDto()->setEvent(CacheService::createCacheEventDto());
         } else {
-            $this->updateCacheSteps($responsible->getCacheDto(), $jump->value);
+            $this->updateCacheContracts($responsible->getCacheDto(), $jump->value);
         }
 
         $responsible->setStatus(VisitorEventStatusEnum::New);
@@ -55,9 +55,9 @@ readonly class JumpResolver
         };
     }
 
-    private function updateCacheSteps(CacheDto $cacheDto, string $jumpValue): void
+    private function updateCacheContracts(CacheDto $cacheDto, string $jumpValue): void
     {
-        $steps = $cacheDto->getEvent()->getSteps();
+        $steps = $cacheDto->getEvent()->getContracts();
         $flag = true;
 
         foreach ($steps as $step) {

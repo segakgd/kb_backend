@@ -11,7 +11,7 @@ class EcommerceScenarioHelper
             "ownerUUID" => null,
             "name" => "Сценарий оформления заказа",
             "type" => "message",
-            "steps" => [
+            "contracts" => [
                 [
                     "message" => "Добро пожаловать в нашем шопе. Хотите приобрести товар? Выберите одну из категорий:",
                     "keyboard" => [
@@ -58,76 +58,76 @@ class EcommerceScenarioHelper
                     "ownerUUID" => null,
                     "name" => "Товары по категориям",
                     "type" => "message",
-                    "steps" => static::getProductByCategory()
+                    "contracts" => static::getProductByCategory()
                 ],
                 [
                     "UUID" => "8e261322-0002-4dd0-a627-4253a01da002",
                     "ownerUUID" => null,
                     "name" => "Популярные товары",
                     "type" => "message",
-                    "steps" => static::getPopularProducts()
+                    "contracts" => static::getPopularProducts()
                 ],
                 [
                     "UUID" => "8e261332-0003-4dd0-a627-4253a01da003",
                     "ownerUUID" => null,
                     "name" => "Акционные товары",
                     "type" => "message",
-                    "steps" => static::getPromoProducts()
+                    "contracts" => static::getPromoProducts()
                 ],
                 [
                     "UUID" => "78bc84e3-0004-4ebe-bbb4-4253a01da004",
                     "ownerUUID" => null,
                     "name" => "Моя корзина",
                     "type" => "message",
-                    "steps" => static::getCartSteps()
+                    "contracts" => static::getCartContracts()
                 ],
                 [
                     "UUID" => "78bc84e3-0004-4ebe-bbb4-4253a01da005",
                     "ownerUUID" => null,
                     "name" => "Оформить заказ",
                     "type" => "message",
-                    "steps" => static::getPlaceAnOrderSteps()
+                    "contracts" => static::getPlaceAnOrderContracts()
                 ],
                 [
                     "UUID" => "8e261322-0002-4dd0-a627-4253a01da006",
                     "ownerUUID" => null,
                     "name" => "Изменить доставку",
                     "type" => "message",
-                    "steps" => static::changeShippingSteps()
+                    "contracts" => static::changeShippingContracts()
                 ],
                 [
                     "UUID" => "8e261322-0002-4dd0-a627-4253a01da007",
                     "ownerUUID" => null,
                     "name" => "Изменить контакты",
                     "type" => "message",
-                    "steps" => static::changeContactsSteps()
+                    "contracts" => static::changeContactsContracts()
                 ],
                 [
                     "UUID" => "8e261332-0003-4dd0-a627-4253a01da008",
                     "ownerUUID" => null,
                     "name" => "Изменить продукты",
                     "type" => "message",
-                    "steps" => static::changeProductsSteps()
+                    "contracts" => static::changeProductsContracts()
                 ],
                 [
                     "UUID" => "8e261332-0003-4dd0-a627-4253a01da009",
                     "ownerUUID" => null,
                     "name" => "Удалить заказ",
                     "type" => "message",
-                    "steps" => static::removeOrderSteps()
+                    "contracts" => static::removeOrderContracts()
                 ],
                 [
                     "UUID" => "78bc84e3-0004-4ebe-bbb4-4253a01da010",
                     "ownerUUID" => null,
                     "name" => "Оплатить",
                     "type" => "message",
-                    "steps" => static::paymentSteps()
+                    "contracts" => static::paymentContracts()
                 ]
             ]
         ];
     }
 
-    private static function removeOrderSteps(): array
+    private static function removeOrderContracts(): array
     {
         return [
             [
@@ -144,7 +144,7 @@ class EcommerceScenarioHelper
         ];
     }
 
-    private static function paymentSteps(): array
+    private static function paymentContracts(): array
     {
         return [
             [
@@ -260,7 +260,7 @@ class EcommerceScenarioHelper
         ];
     }
 
-    private static function getCartSteps(): array
+    private static function getCartContracts(): array
     {
         return [
             [
@@ -359,7 +359,7 @@ class EcommerceScenarioHelper
         ];
     }
 
-    private static function getPlaceAnOrderSteps(): array
+    private static function getPlaceAnOrderContracts(): array
     {
         return [
             [
@@ -424,7 +424,7 @@ class EcommerceScenarioHelper
         ];
     }
 
-    private static function changeShippingSteps(): array
+    private static function changeShippingContracts(): array
     {
         return [
             [
@@ -441,7 +441,7 @@ class EcommerceScenarioHelper
         ];
     }
 
-    private static function changeContactsSteps(): array
+    private static function changeContactsContracts(): array
     {
         return [
             [
@@ -458,7 +458,7 @@ class EcommerceScenarioHelper
         ];
     }
 
-    private static function changeProductsSteps(): array
+    private static function changeProductsContracts(): array
     {
         return [
             [

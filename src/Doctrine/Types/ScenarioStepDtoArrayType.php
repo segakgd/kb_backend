@@ -2,7 +2,7 @@
 
 namespace App\Doctrine\Types;
 
-use App\Dto\Scenario\ScenarioStepDto;
+use App\Dto\Scenario\ScenarioContractDto;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\JsonType;
 
@@ -21,7 +21,7 @@ class ScenarioStepDtoArrayType extends JsonType
         $result = [];
 
         foreach ($decodedValue as $item) {
-            $result[] = ScenarioStepDto::fromArray($item);
+            $result[] = ScenarioContractDto::fromArray($item);
         }
 
         return $result;
@@ -31,7 +31,7 @@ class ScenarioStepDtoArrayType extends JsonType
     {
         $serializedValue = [];
 
-        /** @var ScenarioStepDto $item */
+        /** @var ScenarioContractDto $item */
         foreach ($value as $item) {
             $serializedValue[] = $item->toArray();
         }

@@ -3,7 +3,7 @@
 namespace App\Command;
 
 use App\Dto\SessionCache\Cache\CacheDto;
-use App\Dto\SessionCache\Cache\CacheStepDto;
+use App\Dto\SessionCache\Cache\CacheContractDto;
 use App\Entity\Scenario\Scenario;
 use App\Enum\VisitorEventStatusEnum;
 use App\Helper\CommonHelper;
@@ -76,9 +76,9 @@ class TgGoCommand extends Command
             $scenario = $this->scenarioService->findScenarioByUUID($visitorEvent->getScenarioUUID());
             $cacheDto = $visitorSession->getCache();
 
-            $isEmptySteps = $cacheDto->getEvent()->isEmptySteps();
+            $isEmptyContracts = $cacheDto->getEvent()->isEmptyContracts();
 
-            if ($cacheDto->getEvent()->isFinished() || $isEmptySteps) {
+            if ($cacheDto->getEvent()->isFinished() || $isEmptyContracts) {
                 $cacheDto = $this->enrichStepsCache($scenario, $cacheDto);
             }
 
@@ -121,16 +121,16 @@ class TgGoCommand extends Command
 
     private function enrichStepsCache(Scenario $scenario, CacheDto $cacheDto): CacheDto
     {
-        $arraySteps = [];
-        $scenarioSteps = $scenario->getSteps();
+        $arrayContracts = [];
+        $scenarioContracts = $scenario->getContracts();
 
-        foreach ($scenarioSteps as $scenarioStep) {
-            $cacheStepDto = CacheStepDto::fromArray($scenarioStep->toArray());
+        foreach ($scenarioContracts as $scenarioContract) {
+            $cacheContractDto = CacheContractDto::fromArray($scenarioContract->toArray());
 
-            $arraySteps[] = $cacheStepDto;
+            $arrayContracts[] = $cacheContractDto;
         }
 
-        $cacheDto->getEvent()->setSteps($arraySteps);
+        $cacheDto->getEvent()->setContracts($arrayContracts);
 
         return $cacheDto;
     }

@@ -4,7 +4,7 @@ namespace App\Dto\SessionCache\Cache;
 
 use App\Dto\Common\AbstractDto;
 
-class CacheStepDto extends AbstractDto
+class CacheContractDto extends AbstractDto
 {
     private ?string $message = null;
 
