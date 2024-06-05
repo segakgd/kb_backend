@@ -5,7 +5,7 @@ namespace App\Service\System\Resolver\Steps;
 use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Dto\SessionCache\Cache\CacheStepDto;
 use App\Service\System\Resolver\Chains\ChainsResolver;
-use App\Service\System\Resolver\Dto\Contract;
+use App\Service\System\Resolver\Dto\Responsible;
 use App\Service\System\Resolver\Scenario\ScenarioResolver;
 use Psr\Log\LoggerInterface;
 use Throwable;
@@ -22,14 +22,14 @@ readonly class StepResolver
     /**
      * @throws Throwable
      */
-    public function resolve(Contract $contract): void
+    public function resolve(Responsible $responsible): void
     {
-        $steps = $contract->getCacheDto()->getEvent()->getSteps();
+        $steps = $responsible->getCacheDto()->getEvent()->getSteps();
 
         try {
             foreach ($steps as $step) {
                 if (!$step->isFinished()) {
-                    $this->resolveStep($contract, $step);
+                    $this->resolveStep($responsible, $step);
 
                     $unfinishedChains = array_filter($step->getChains(), fn (CacheChainDto $chain) => !$chain->isFinished());
 
@@ -44,7 +44,7 @@ readonly class StepResolver
             $unfinishedSteps = array_filter($steps, fn (CacheStepDto $step) => !$step->isFinished());
 
             if (empty($unfinishedSteps)) {
-                $contract->setStepsStatus(true);
+                $responsible->setStepsStatus(true);
             }
         } catch (Throwable $exception) {
             $this->handleException($exception);
@@ -56,27 +56,27 @@ readonly class StepResolver
     /**
      * @throws Throwable
      */
-    private function resolveStep(Contract $contract, CacheStepDto $step): void
+    private function resolveStep(Responsible $responsible, CacheStepDto $step): void
     {
         if ($step->hasChain()) {
-            $this->handleChain($contract, $step);
+            $this->handleChain($responsible, $step);
         } else {
-            $this->handleScenario($contract, $step);
-            $contract->setStepsStatus(true);
+            $this->handleScenario($responsible, $step);
+            $responsible->setStepsStatus(true);
         }
     }
 
     /**
      * @throws Throwable
      */
-    private function handleChain(Contract $contract, CacheStepDto $step): void
+    private function handleChain(Responsible $responsible, CacheStepDto $step): void
     {
-        $this->chainsResolver->resolve($contract, $step->getChains());
+        $this->chainsResolver->resolve($responsible, $step->getChains());
     }
 
-    private function handleScenario(Contract $contract, CacheStepDto $step): void
+    private function handleScenario(Responsible $responsible, CacheStepDto $step): void
     {
-        $this->scenarioResolver->resolve($contract, $step);
+        $this->scenarioResolver->resolve($responsible, $step);
     }
 
     private function handleException(Throwable $exception): void

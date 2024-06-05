@@ -2,7 +2,7 @@
 
 namespace App\Service\System\Resolver\Dto;
 
-use App\Dto\Contract\ContractMessageDto;
+use App\Dto\Contract\ResponsibleMessageDto;
 
 interface ResultInterface
 {
@@ -10,5 +10,5 @@ interface ResultInterface
 
     public function setMessages(array $messages): static;
 
-    public function addMessage(ContractMessageDto $message): static;
+    public function addMessage(ResponsibleMessageDto $message): static;
 }

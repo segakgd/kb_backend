@@ -6,16 +6,16 @@ use App\Dto\SessionCache\Cache\CacheDto;
 use App\Entity\Ecommerce\ProductVariant;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\Product\Service\ProductService;
-use App\Service\System\Resolver\Dto\Contract;
+use App\Service\System\Resolver\Dto\Responsible;
 
-class ShopProductVariantChain // extends AbstractChai
+readonly class ShopProductVariantChain // extends AbstractChai
 {
     public function __construct(
-        private readonly ProductService $productService,
+        private ProductService $productService,
     ) {
     }
 
-    public function success(Contract $contract, CacheDto $cacheDto): bool
+    public function success(Responsible $responsible, CacheDto $cacheDto): bool
     {
         $content = $cacheDto->getContent();
 
@@ -61,13 +61,13 @@ class ShopProductVariantChain // extends AbstractChai
                 ]
             ];
 
-            $contractMessage = MessageHelper::createContractMessage(
+            $responsibleMessage = MessageHelper::createResponsibleMessage(
                 'Вы выбрали вариант: ' . $variant->getName() . "\n\n" . 'Выберите желаемое количество или отправьте вручную: ',
             );
 
-            $contractMessage->setKeyBoard($replyMarkups);
+            $responsibleMessage->setKeyBoard($replyMarkups);
 
-            $contract->getResult()->addMessage($contractMessage);
+            $responsible->getResult()->addMessage($responsibleMessage);
 
             return true;
         }
@@ -75,13 +75,13 @@ class ShopProductVariantChain // extends AbstractChai
         return false;
     }
 
-    public function fall(Contract $contract, CacheDto $cacheDto): bool
+    public function fall(Responsible $responsible, CacheDto $cacheDto): bool
     {
-        $contractMessage = MessageHelper::createContractMessage(
+        $responsibleMessage = MessageHelper::createResponsibleMessage(
             'Не понимаю о чем вы, выберите один из вариантов:',
         );
 
-        $contract->getResult()->addMessage($contractMessage);
+        $responsible->getResult()->addMessage($responsibleMessage);
 
         return false;
     }

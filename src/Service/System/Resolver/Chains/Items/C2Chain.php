@@ -6,24 +6,24 @@ use App\Enum\JumpEnum;
 use App\Helper\MessageHelper;
 use App\Service\System\Resolver\Dto\Condition;
 use App\Service\System\Resolver\Dto\ConditionInterface;
-use App\Service\System\Resolver\Dto\ContractInterface;
+use App\Service\System\Resolver\Dto\ResponsibleInterface;
 
 class C2Chain extends AbstractChain
 {
-    public function success(ContractInterface $contract): ContractInterface
+    public function success(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        $content = $contract->getCacheDto()->getContent();
+        $content = $responsible->getCacheDto()->getContent();
 
         $message = "Это шаг 1 элемент цепочки C2. \n\n Контент $content";
 
-        $contractMessage = MessageHelper::createContractMessage(
+        $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,
-            keyBoard: $contract->getNextCondition()->getKeyBoard()
+            keyBoard: $responsible->getNextCondition()->getKeyBoard()
         );
 
-        $contract->getResult()->addMessage($contractMessage);
+        $responsible->getResult()->addMessage($responsibleMessage);
 
-        return $contract;
+        return $responsible;
     }
 
     public function condition(): ConditionInterface
@@ -46,9 +46,9 @@ class C2Chain extends AbstractChain
         return $condition;
     }
 
-    public function validate(ContractInterface $contract): bool
+    public function validate(ResponsibleInterface $responsible): bool
     {
-        $content = $contract->getCacheDto()->getContent();
+        $content = $responsible->getCacheDto()->getContent();
 
         $validData = [
             'Да 2',

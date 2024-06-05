@@ -10,7 +10,7 @@ use App\Entity\Visitor\VisitorSession;
 use App\Enum\ChainStatusEnum;
 use App\Enum\VisitorEventStatusEnum;
 use App\Service\System\Common\CacheService;
-use App\Service\System\Resolver\Dto\Contract;
+use App\Service\System\Resolver\Dto\Responsible;
 use App\Service\Visitor\Scenario\ScenarioService;
 use Exception;
 
@@ -26,24 +26,24 @@ readonly class JumpResolver
      */
     public function resolveJump(
         VisitorEvent $visitorEvent,
-        Contract $contract,
+        Responsible  $responsible,
     ): void {
-        $jump = $contract->getJump();
+        $jump = $responsible->getJump();
 
         if (!$jump) {
             throw new Exception('Непредвиденная ситуация: переход не существует.');
         }
 
-        $scenario = $this->resolveScenario($contract->getJump()->value);
+        $scenario = $this->resolveScenario($responsible->getJump()->value);
 
         if ($scenario) {
             $visitorEvent->setScenarioUUID($scenario->getUUID());
-            $contract->getCacheDto()->setEvent(CacheService::createCacheEventDto());
+            $responsible->getCacheDto()->setEvent(CacheService::createCacheEventDto());
         } else {
-            $this->updateCacheSteps($contract->getCacheDto(), $jump->value);
+            $this->updateCacheSteps($responsible->getCacheDto(), $jump->value);
         }
 
-        $contract->setStatus(VisitorEventStatusEnum::New);
+        $responsible->setStatus(VisitorEventStatusEnum::New);
     }
 
     private function resolveScenario(string $jumpValue): ?Scenario

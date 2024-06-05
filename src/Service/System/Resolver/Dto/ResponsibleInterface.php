@@ -7,7 +7,7 @@ use App\Dto\SessionCache\Cache\CacheDto;
 use App\Enum\JumpEnum;
 use App\Enum\VisitorEventStatusEnum;
 
-interface ContractInterface
+interface ResponsibleInterface
 {
     public function getChain(): ?CacheChainDto;
 
@@ -39,5 +39,5 @@ interface ContractInterface
 
     public function getBotDto(): ?BotDto;
 
-    public function setBotDto(?BotDto $botDto): Contract;
+    public function setBotDto(?BotDto $botDto): Responsible;
 }

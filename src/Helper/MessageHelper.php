@@ -2,7 +2,7 @@
 
 namespace App\Helper;
 
-use App\Dto\Contract\ContractMessageDto;
+use App\Dto\Contract\ResponsibleMessageDto;
 use App\Entity\Ecommerce\Product;
 use App\Entity\Ecommerce\ProductVariant;
 
@@ -35,25 +35,25 @@ class MessageHelper
         return $message;
     }
 
-    public static function createContractMessage(
+    public static function createResponsibleMessage(
         ?string $message = null,
         ?string $photo = null,
         ?array $keyBoard = null,
-    ): ContractMessageDto {
-        $contractMessage = (new ContractMessageDto());
+    ): ResponsibleMessageDto {
+        $responsibleMessageDto = (new ResponsibleMessageDto());
 
         if ($message) {
-            $contractMessage->setMessage($message);
+            $responsibleMessageDto->setMessage($message);
         }
 
         if ($photo) {
-            $contractMessage->setPhoto($photo);
+            $responsibleMessageDto->setPhoto($photo);
         }
 
         if ($keyBoard) {
-            $contractMessage->setKeyBoard($keyBoard);
+            $responsibleMessageDto->setKeyBoard($keyBoard);
         }
 
-        return $contractMessage;
+        return $responsibleMessageDto;
     }
 }

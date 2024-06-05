@@ -7,7 +7,7 @@ use App\Dto\SessionCache\Cache\CacheDto;
 use App\Enum\JumpEnum;
 use App\Enum\VisitorEventStatusEnum;
 
-class Contract implements ContractInterface
+class Responsible implements ResponsibleInterface
 {
     public ?CacheChainDto $chain = null; // todo объеденить с $nextCondition
 
@@ -121,7 +121,7 @@ class Contract implements ContractInterface
         return $this->botDto;
     }
 
-    public function setBotDto(?BotDto $botDto): Contract
+    public function setBotDto(?BotDto $botDto): Responsible
     {
         $this->botDto = $botDto;
         return $this;

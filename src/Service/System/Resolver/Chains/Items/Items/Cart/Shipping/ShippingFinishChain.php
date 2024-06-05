@@ -3,18 +3,18 @@
 namespace App\Service\System\Resolver\Chains\Items\Items\Cart\Shipping;
 
 use App\Dto\SessionCache\Cache\CacheDto;
-use App\Service\System\Resolver\Dto\Contract;
+use App\Service\System\Resolver\Dto\Responsible;
 
 class ShippingFinishChain // extends AbstractChain
 {
-    public function success(Contract $contract, CacheDto $cacheDto): bool
+    public function success(Responsible $responsible, CacheDto $cacheDto): bool
     {
         $content = $cacheDto->getContent();
 
         return true;
     }
 
-    public function fall(Contract $contract, CacheDto $cacheDto): bool
+    public function fall(Responsible $responsible, CacheDto $cacheDto): bool
     {
         return false;
     }

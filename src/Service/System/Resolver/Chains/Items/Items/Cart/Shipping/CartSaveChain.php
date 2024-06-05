@@ -6,7 +6,7 @@ use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\DealManager;
 use App\Service\Common\Project\ProjectService;
-use App\Service\System\Resolver\Dto\Contract;
+use App\Service\System\Resolver\Dto\Responsible;
 
 class CartSaveChain // extends AbstractChain
 {
@@ -16,7 +16,7 @@ class CartSaveChain // extends AbstractChain
     ) {
     }
 
-    public function success(Contract $contract, CacheDto $cacheDto): bool
+    public function success(Responsible $responsible, CacheDto $cacheDto): bool
     {
         $content = $cacheDto->getContent();
         $project = $this->projectService->findOneById(1);
@@ -41,18 +41,18 @@ class CartSaveChain // extends AbstractChain
             ],
         ];
 
-        $contractMessage = MessageHelper::createContractMessage(
+        $responsibleMessage = MessageHelper::createResponsibleMessage(
             $message,
             null,
             $replyMarkups,
         );
 
-        $contract->getResult()->addMessage($contractMessage);
+        $responsible->getResult()->addMessage($responsibleMessage);
 
         return true;
     }
 
-    public function fall(Contract $contract, CacheDto $cacheDto): bool
+    public function fall(Responsible $responsible, CacheDto $cacheDto): bool
     {
         return false;
     }

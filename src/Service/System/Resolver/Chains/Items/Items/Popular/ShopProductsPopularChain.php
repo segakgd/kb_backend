@@ -6,7 +6,7 @@ use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\Product\Service\ProductService;
 use App\Service\System\Common\PaginateService;
-use App\Service\System\Resolver\Dto\Contract;
+use App\Service\System\Resolver\Dto\Responsible;
 use Exception;
 
 class ShopProductsPopularChain // extends AbstractChain
@@ -20,22 +20,22 @@ class ShopProductsPopularChain // extends AbstractChain
     /**
      * @throws Exception
      */
-    public function success(Contract $contract, CacheDto $cacheDto): bool
+    public function success(Responsible $responsible, CacheDto $cacheDto): bool
     {
         $products = $this->productService->getPopularProducts(1, 'first');
 
-        $this->paginateService->pug($contract, $products, $cacheDto->getEvent()->getData());
+        $this->paginateService->pug($responsible, $products, $cacheDto->getEvent()->getData());
 
         return true;
     }
 
-    public function fall(Contract $contract, CacheDto $cacheDto): bool
+    public function fall(Responsible $responsible, CacheDto $cacheDto): bool
     {
-        $contractMessage = MessageHelper::createContractMessage(
+        $responsibleMessage = MessageHelper::createResponsibleMessage(
             'Не понимаю о чем вы...',
         );
 
-        $contract->getResult()->addMessage($contractMessage);
+        $responsible->getResult()->addMessage($responsibleMessage);
 
         return false;
     }

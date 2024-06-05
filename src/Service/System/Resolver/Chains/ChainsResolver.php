@@ -3,7 +3,7 @@
 namespace App\Service\System\Resolver\Chains;
 
 use App\Dto\SessionCache\Cache\CacheChainDto;
-use App\Service\System\Resolver\Dto\Contract;
+use App\Service\System\Resolver\Dto\Responsible;
 use Exception;
 
 readonly class ChainsResolver
@@ -18,7 +18,7 @@ readonly class ChainsResolver
      *
      * @throws Exception
      */
-    public function resolve(Contract $contract, array $chains): array
+    public function resolve(Responsible $responsible, array $chains): array
     {
         $count = count($chains);
         $now = 1;
@@ -34,9 +34,9 @@ readonly class ChainsResolver
                 $nextChain = $chains[$nextKey] ?? null;
             }
 
-            $contract->setChain($chain);
+            $responsible->setChain($chain);
 
-            $this->chainResolver->resolve($contract, $nextChain?->getTarget());
+            $this->chainResolver->resolve($responsible, $nextChain?->getTarget());
 
             break;
         }

@@ -2,7 +2,7 @@
 
 namespace App\Service\System\Resolver\Dto;
 
-use App\Dto\Contract\ContractMessageDto;
+use App\Dto\Contract\ResponsibleMessageDto;
 
 class Result implements ResultInterface
 {
@@ -20,7 +20,7 @@ class Result implements ResultInterface
         return $this;
     }
 
-    public function addMessage(ContractMessageDto $message): static
+    public function addMessage(ResponsibleMessageDto $message): static
     {
         $this->messages[] = $message;
 

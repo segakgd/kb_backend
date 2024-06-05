@@ -2,36 +2,36 @@
 
 namespace App\Service\System\Resolver\Scenario;
 
-use App\Dto\Contract\ContractMessageDto;
+use App\Dto\Contract\ResponsibleMessageDto;
 use App\Dto\SessionCache\Cache\CacheStepDto;
 use App\Helper\KeyboardHelper;
 use App\Helper\MessageHelper;
-use App\Service\System\Resolver\Dto\Contract;
+use App\Service\System\Resolver\Dto\Responsible;
 
 class ScenarioResolver
 {
-    public function resolve(Contract $contract, CacheStepDto $scenarioStep): Contract
+    public function resolve(Responsible $responsible, CacheStepDto $scenarioStep): Responsible
     {
-        $contractMessage = MessageHelper::createContractMessage();
+        $responsibleMessage = MessageHelper::createResponsibleMessage();
 
-        $this->setMessage($contractMessage, $scenarioStep);
-        $this->setKeyboard($contractMessage, $scenarioStep);
+        $this->setMessage($responsibleMessage, $scenarioStep);
+        $this->setKeyboard($responsibleMessage, $scenarioStep);
 
-        $contract->getResult()->addMessage($contractMessage);
+        $responsible->getResult()->addMessage($responsibleMessage);
 
-        return $contract;
+        return $responsible;
     }
 
-    private function setMessage(ContractMessageDto $contractMessage, CacheStepDto $scenarioStep): void
+    private function setMessage(ResponsibleMessageDto $responsibleMessageDto, CacheStepDto $scenarioStep): void
     {
         if (!$scenarioStep->getMessage()) {
             return;
         }
 
-        $contractMessage->setMessage($scenarioStep->getMessage());
+        $responsibleMessageDto->setMessage($scenarioStep->getMessage());
     }
 
-    private function setKeyboard(ContractMessageDto $contractMessage, CacheStepDto $scenarioStep): void
+    private function setKeyboard(ResponsibleMessageDto $responsibleMessageDto, CacheStepDto $scenarioStep): void
     {
         if (empty($scenarioStep->getKeyboard())) {
             return;
@@ -43,7 +43,7 @@ class ScenarioResolver
             return;
         }
 
-        $contractMessage->setKeyBoard($replyMarkups);
+        $responsibleMessageDto->setKeyBoard($replyMarkups);
     }
 
     private function handleAttached(array $attachedData): void

@@ -2,7 +2,7 @@
 
 namespace App\Dto\Contract;
 
-class ContractMessageDto
+class ResponsibleMessageDto
 {
     private string $message = '';
 

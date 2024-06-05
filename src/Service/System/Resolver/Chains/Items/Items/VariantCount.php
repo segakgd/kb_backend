@@ -5,7 +5,7 @@ namespace App\Service\System\Resolver\Chains\Items\Items;
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\Product\Service\ProductService;
-use App\Service\System\Resolver\Dto\Contract;
+use App\Service\System\Resolver\Dto\Responsible;
 
 class VariantCount// extends AbstractChain
 {
@@ -14,7 +14,7 @@ class VariantCount// extends AbstractChain
     ) {
     }
 
-    public function success(Contract $contract, CacheDto $cacheDto): bool
+    public function success(Responsible $responsible, CacheDto $cacheDto): bool
     {
         $count = $cacheDto->getContent();
 
@@ -64,18 +64,18 @@ class VariantCount// extends AbstractChain
             ],
         ];
 
-        $contractMessage = MessageHelper::createContractMessage(
+        $responsibleMessage = MessageHelper::createResponsibleMessage(
             $message,
             null,
             $replyMarkups,
         );
 
-        $contract->getResult()->addMessage($contractMessage);
+        $responsible->getResult()->addMessage($responsibleMessage);
 
         return true;
     }
 
-    public function fall(Contract $contract, CacheDto $cacheDto): bool
+    public function fall(Responsible $responsible, CacheDto $cacheDto): bool
     {
         $replyMarkups = [
             [
@@ -85,13 +85,13 @@ class VariantCount// extends AbstractChain
             ]
         ];
 
-        $contractMessage = MessageHelper::createContractMessage(
+        $responsibleMessage = MessageHelper::createResponsibleMessage(
             'Не понимаю о чем вы... мб вам...',
             null,
             $replyMarkups,
         );
 
-        $contract->getResult()->addMessage($contractMessage);
+        $responsible->getResult()->addMessage($responsibleMessage);
 
         return false;
     }

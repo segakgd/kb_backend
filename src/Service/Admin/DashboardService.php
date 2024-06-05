@@ -100,7 +100,7 @@ readonly class DashboardService
             'createdAt' => $event->getCreatedAt(),
             'steps' => $steps,
             'error' => $event->getError(),
-            'contract' => $event->getContract(),
+            'responsible' => $event->getResponsible(),
         ];
     }
 

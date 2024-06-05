@@ -7,23 +7,23 @@ use App\Helper\KeyboardHelper;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\ProductCategory\Service\ProductCategoryService;
 use App\Service\System\Common\PaginateService;
-use App\Service\System\Resolver\Dto\Contract;
+use App\Service\System\Resolver\Dto\Responsible;
 use Exception;
 
-class ShopProductsCategoryChain // extends AbstractChain
+readonly class ShopProductsCategoryChain // extends AbstractChain
 {
     public function __construct(
-        private readonly ProductCategoryService $categoryService,
-        private readonly PaginateService $paginateService,
+        private ProductCategoryService $categoryService,
+        private PaginateService        $paginateService,
     ) {
     }
 
     /**
      * @throws Exception
      */
-    public function success(Contract $contract, CacheDto $cacheDto): bool
+    public function success(Responsible $responsible, CacheDto $cacheDto): bool
     {
-        $contractMessage = MessageHelper::createContractMessage('');
+        $responsibleMessage = MessageHelper::createResponsibleMessage('');
         $content = $cacheDto->getContent();
 
         $availableCategory = $this->categoryService->getCategoryByName($content);
@@ -37,29 +37,29 @@ class ShopProductsCategoryChain // extends AbstractChain
         $event->getData()->setCategoryId($availableCategory->getId());
         $event->getData()->setCategoryName($availableCategory->getName());
 
-        $this->paginateService->first($contract, $event->getData());
+        $this->paginateService->first($responsible, $event->getData());
 
         $replyMarkups = KeyboardHelper::getProductNav();
 
-        $contractMessage->setKeyBoard($replyMarkups);
+        $responsibleMessage->setKeyBoard($replyMarkups);
 
         return true;
     }
 
-    public function fall(Contract $contract, CacheDto $cacheDto): bool
+    public function fall(Responsible $responsible, CacheDto $cacheDto): bool
     {
-        $contractMessage = MessageHelper::createContractMessage('');
+        $responsibleMessage = MessageHelper::createResponsibleMessage('');
 
         $availableCategory = $this->categoryService->getAvailableCategory(1);
 
         $replyMarkups = KeyboardHelper::getProductCategoryNav($availableCategory);
 
-        $contractMessage->setMessage(
+        $responsibleMessage->setMessage(
             'Не понимаю вашего сообщения, выберите доступную категорию товара или вернитесь в глваное меню'
         );
-        $contractMessage->setKeyBoard($replyMarkups);
+        $responsibleMessage->setKeyBoard($replyMarkups);
 
-        $contract->getResult()->addMessage($contractMessage);
+        $responsible->getResult()->addMessage($responsibleMessage);
 
         return false;
     }

@@ -6,30 +6,30 @@ use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\KeyboardHelper;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\ProductCategory\Service\ProductCategoryService;
-use App\Service\System\Resolver\Dto\Contract;
+use App\Service\System\Resolver\Dto\Responsible;
 
-class ShowShopProductsCategoryChain // extends AbstractChain
+readonly class ShowShopProductsCategoryChain // extends AbstractChain
 {
-    public function __construct(private readonly ProductCategoryService $categoryService)
+    public function __construct(private ProductCategoryService $categoryService)
     {
     }
 
-    public function success(Contract $contract, CacheDto $cacheDto): bool
+    public function success(Responsible $responsible, CacheDto $cacheDto): bool
     {
         $availableCategory = $this->categoryService->getAvailableCategory(1);
 
-        $contractMessage = MessageHelper::createContractMessage(
+        $responsibleMessage = MessageHelper::createResponsibleMessage(
             'Отлично, 😜 выберите одну из категорий 🤘',
             null,
             KeyboardHelper::getProductCategoryNav($availableCategory)
         );
 
-        $contract->getResult()->addMessage($contractMessage);
+        $responsible->getResult()->addMessage($responsibleMessage);
 
         return true;
     }
 
-    public function fall(Contract $contract, CacheDto $cacheDto): bool
+    public function fall(Responsible $responsible, CacheDto $cacheDto): bool
     {
         return false;
     }

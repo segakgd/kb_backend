@@ -2,29 +2,29 @@
 
 namespace App\Service\System\Common;
 
-use App\Dto\Contract\ContractMessageDto;
+use App\Dto\Contract\ResponsibleMessageDto;
 use App\Service\Integration\Telegram\TelegramService;
-use App\Service\System\Resolver\Dto\Contract;
+use App\Service\System\Resolver\Dto\Responsible;
 use Exception;
 
-class SenderService
+readonly class SenderService
 {
     public function __construct(
-        private readonly TelegramService $telegramService,
-        private readonly MessageHistoryService $messageHistoryService,
+        private TelegramService       $telegramService,
+        private MessageHistoryService $messageHistoryService,
     ) {
     }
 
     /**
      * @throws Exception
      */
-    public function sendMessages(Contract $contract): void
+    public function sendMessages(Responsible $responsible): void
     {
-        $messages = $contract->getResult()->getMessages();
-        $token = $contract->getBotDto()->getToken();
-        $chatId = $contract->getBotDto()->getChatId();
+        $messages = $responsible->getResult()->getMessages();
+        $token = $responsible->getBotDto()->getToken();
+        $chatId = $responsible->getBotDto()->getChatId();
 
-        /** @var ContractMessageDto $message */
+        /** @var ResponsibleMessageDto $message */
         foreach ($messages as $message) {
             if (isset($_SERVER['APP_ENV']) && $_SERVER['APP_ENV'] === 'prod') {
                 $this->sendProd($message, $token, $chatId);
@@ -37,11 +37,11 @@ class SenderService
     /**
      * @throws Exception
      */
-    private function sendProd(ContractMessageDto $message, string $token, int $chatId): void
+    private function sendProd(ResponsibleMessageDto $message, string $token, int $chatId): void
     {
         if ($message->getPhoto()) {
             $this->telegramService->sendPhoto(
-                contractMessageDto: $message,
+                responsibleMessageDto: $message,
                 token: $token,
                 chatId: $chatId
             );
@@ -51,7 +51,7 @@ class SenderService
 
         if ($message->getMessage()) {
             $this->telegramService->sendMessage(
-                contractMessageDto: $message,
+                responsibleMessageDto: $message,
                 token: $token,
                 chatId: $chatId
             );
@@ -60,7 +60,7 @@ class SenderService
         }
     }
 
-    private function sendDev(ContractMessageDto $message): void
+    private function sendDev(ResponsibleMessageDto $message): void
     {
         $this->messageHistoryService->create(
             message: $message->getMessage(),

@@ -7,21 +7,21 @@ use App\Helper\KeyboardHelper;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\Product\Service\ProductService;
 use App\Service\System\Common\PaginateService;
-use App\Service\System\Resolver\Dto\Contract;
+use App\Service\System\Resolver\Dto\Responsible;
 use Exception;
 
-class ShopProductPromoChain // extends AbstractChain
+readonly class ShopProductPromoChain // extends AbstractChain
 {
     public function __construct(
-        private readonly ProductService $productService,
-        private readonly PaginateService $paginateService,
+        private ProductService  $productService,
+        private PaginateService $paginateService,
     ) {
     }
 
     /**
      * @throws Exception
      */
-    public function success(Contract $contract, CacheDto $cacheDto): bool
+    public function success(Responsible $responsible, CacheDto $cacheDto): bool
     {
         $content = $cacheDto->getContent();
 
@@ -34,7 +34,7 @@ class ShopProductPromoChain // extends AbstractChain
         $event = $cacheDto->getEvent();
 
         if ($content === 'добавить в корзину') {
-            return $this->addToCart($contract, $cacheDto);
+            return $this->addToCart($responsible, $cacheDto);
         }
 
         $products = match ($content) {
@@ -45,7 +45,7 @@ class ShopProductPromoChain // extends AbstractChain
         };
 
         if ($products) {
-            $this->paginateService->pug($contract, $products, $cacheDto->getEvent()->getData());
+            $this->paginateService->pug($responsible, $products, $cacheDto->getEvent()->getData());
 
             return false;
         }
@@ -53,17 +53,17 @@ class ShopProductPromoChain // extends AbstractChain
         return false;
     }
 
-    public function fall(Contract $contract, CacheDto $cacheDto): bool
+    public function fall(Responsible $responsible, CacheDto $cacheDto): bool
     {
         $replyMarkups = KeyboardHelper::getProductNav();
 
-        $contractMessage = MessageHelper::createContractMessage(
+        $responsibleMessage = MessageHelper::createResponsibleMessage(
             'Не понимаю о чем вы... мб вам выбрать доступные варианты из меню? К примеру, вы можете посмотреть более подробную информациюю о товаре.',
             null,
             $replyMarkups,
         );
 
-        $contract->getResult()->addMessage($contractMessage);
+        $responsible->getResult()->addMessage($responsibleMessage);
 
         return false;
     }
@@ -79,20 +79,20 @@ class ShopProductPromoChain // extends AbstractChain
         return false;
     }
 
-    private function addToCart(Contract $contract, CacheDto $cacheDto): bool
+    private function addToCart(Responsible $responsible, CacheDto $cacheDto): bool
     {
         $productId = $cacheDto->getEvent()->getData()->getProductId();
-        $contractMessage = MessageHelper::createContractMessage('');
+        $responsibleMessage = MessageHelper::createResponsibleMessage('');
 
         $product = $this->productService->find($productId);
         $variants = $product->getVariants();
 
         $variantsNav = KeyboardHelper::getVariantsNav($variants);
 
-        $contractMessage->setKeyBoard($variantsNav);
-        $contractMessage->setMessage('Добавить в корзину вариант:');
+        $responsibleMessage->setKeyBoard($variantsNav);
+        $responsibleMessage->setMessage('Добавить в корзину вариант:');
 
-        $contract->getResult()->addMessage($contractMessage);
+        $responsible->getResult()->addMessage($responsibleMessage);
 
         return true;
     }

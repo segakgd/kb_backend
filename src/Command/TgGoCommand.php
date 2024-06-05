@@ -68,7 +68,7 @@ class TgGoCommand extends Command
         }
 
         try {
-            $contract = CommonHelper::createDefaultContract();
+            $responsible = CommonHelper::createDefaultResponsible();
 
             $visitorSession = $this->visitorSessionRepository->findByEventId($visitorEvent->getId());
             $bot = $this->botRepository->find($visitorSession->getBotId());
@@ -87,25 +87,25 @@ class TgGoCommand extends Command
                 ->setToken($bot->getToken())
                 ->setChatId($visitorSession->getChatId());
 
-            $contract->setCacheDto($cacheDto);
-            $contract->setBotDto($botDto);
+            $responsible->setCacheDto($cacheDto);
+            $responsible->setBotDto($botDto);
 
-            $contract = $this->eventResolver->resolve($visitorEvent, $contract);
+            $responsible = $this->eventResolver->resolve($visitorEvent, $responsible);
 
-            if (!is_null($contract->getJump())) {
+            if (!is_null($responsible->getJump())) {
                 $this->jumpResolver->resolveJump(
                     visitorEvent: $visitorEvent,
-                    contract: $contract
+                    responsible: $responsible
                 );
             }
 
-            $visitorSession->setCache($contract->getCacheDto());
+            $visitorSession->setCache($responsible->getCacheDto());
 
             $this->entityManager->persist($visitorEvent);
             $this->entityManager->persist($visitorSession);
             $this->entityManager->flush();
 
-            $this->visitorEventRepository->updateChatEventStatus($visitorEvent, $contract->getStatus());
+            $this->visitorEventRepository->updateChatEventStatus($visitorEvent, $responsible->getStatus());
         } catch (Throwable $throwable) {
             $visitorEvent->setError($throwable->getMessage());
 

@@ -6,27 +6,27 @@ use App\Enum\JumpEnum;
 use App\Helper\ChainsGeneratorHelper;
 use App\Service\System\Resolver\Chains\Items\AbstractChain;
 use App\Service\System\Resolver\Dto\ConditionInterface;
-use App\Service\System\Resolver\Dto\Contract;
+use App\Service\System\Resolver\Dto\Responsible;
 
 class ChainResolver
 {
-    public function resolve(Contract $contract, ?JumpEnum $targetNext): void
+    public function resolve(Responsible $responsible, ?JumpEnum $targetNext): void
     {
-        $chainInstance = $this->getChainInstance($contract);
+        $chainInstance = $this->getChainInstance($responsible);
         $nextCondition = $this->getNextCondition($targetNext);
 
-        $contract->setNextCondition($nextCondition);
+        $responsible->setNextCondition($nextCondition);
 
-        $isHandled = $chainInstance->chain($contract);
+        $isHandled = $chainInstance->chain($responsible);
 
         if ($isHandled) {
-            $contract->getChain()->setFinished(true);
+            $responsible->getChain()->setFinished(true);
         }
     }
 
-    private function getChainInstance(Contract $contract): AbstractChain
+    private function getChainInstance(Responsible $responsible): AbstractChain
     {
-        return ChainsGeneratorHelper::generate($contract->getChain()->getTarget());
+        return ChainsGeneratorHelper::generate($responsible->getChain()->getTarget());
     }
 
     private function getNextCondition(?JumpEnum $targetNext): ?ConditionInterface

@@ -7,23 +7,23 @@ use App\Entity\Ecommerce\Product;
 use App\Helper\KeyboardHelper;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\Product\Service\ProductService;
-use App\Service\System\Resolver\Dto\Contract;
+use App\Service\System\Resolver\Dto\Responsible;
 use Exception;
 
 /**
  * @deprecated need refactoring
  */
-class PaginateService
+readonly class PaginateService
 {
     public function __construct(
-        private readonly ProductService $productService,
+        private ProductService $productService,
     ) {
     }
 
     /**
      * @throws Exception
      */
-    public function first(Contract $contract, CacheDataDto $cacheDataDto): bool
+    public function first(Responsible $responsible, CacheDataDto $cacheDataDto): bool
     {
         $products = $this->productService->getProductsByCategory(
             $cacheDataDto->getPageNow(),
@@ -31,13 +31,13 @@ class PaginateService
             'product.first'
         );
 
-        return $this->pug($contract, $products, $cacheDataDto);
+        return $this->pug($responsible, $products, $cacheDataDto);
     }
 
     /**
      * @throws Exception
      */
-    public function prev(Contract $contract, CacheDataDto $cacheDataDto): bool
+    public function prev(Responsible $responsible, CacheDataDto $cacheDataDto): bool
     {
         $products = $this->productService->getProductsByCategory(
             $cacheDataDto->getPageNow(),
@@ -45,13 +45,13 @@ class PaginateService
             'product.prev'
         );
 
-        return $this->pug($contract, $products, $cacheDataDto);
+        return $this->pug($responsible, $products, $cacheDataDto);
     }
 
     /**
      * @throws Exception
      */
-    public function next(Contract $contract, CacheDataDto $cacheDataDto): bool
+    public function next(Responsible $responsible, CacheDataDto $cacheDataDto): bool
     {
         $products = $this->productService->getProductsByCategory(
             $cacheDataDto->getPageNow(),
@@ -59,15 +59,15 @@ class PaginateService
             'product.next'
         );
 
-        return $this->pug($contract, $products, $cacheDataDto);
+        return $this->pug($responsible, $products, $cacheDataDto);
     }
 
-    public function pug(Contract $contract, array $products, CacheDataDto $cacheDataDto): bool
+    public function pug(Responsible $responsible, array $products, CacheDataDto $cacheDataDto): bool
     {
         /** @var Product $product */
         $product = $products['items'][0];
 
-        $contractMessage = MessageHelper::createContractMessage('');
+        $responsibleMessage = MessageHelper::createResponsibleMessage('');
 
         $cacheDataDto->setPageNow($products['paginate']['now']);
         $cacheDataDto->setProductId($product->getId());
@@ -78,8 +78,8 @@ class PaginateService
             $products['paginate']['total'],
         );
 
-        $contractMessage->setMessage($message);
-        $contractMessage->setPhoto($product->getMainImage());
+        $responsibleMessage->setMessage($message);
+        $responsibleMessage->setPhoto($product->getMainImage());
 
         if ($products['paginate']['next'] === null) {
             $replyMarkups = KeyboardHelper::getProductNav(['prev' => true]);
@@ -89,9 +89,9 @@ class PaginateService
             $replyMarkups = KeyboardHelper::getProductNav();
         }
 
-        $contractMessage->setKeyBoard($replyMarkups);
+        $responsibleMessage->setKeyBoard($replyMarkups);
 
-        $contract->getResult()->addMessage($contractMessage);
+        $responsible->getResult()->addMessage($responsibleMessage);
 
         return false;
     }
