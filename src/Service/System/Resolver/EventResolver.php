@@ -14,7 +14,7 @@ use Throwable;
 class EventResolver
 {
     public function __construct(
-        private ContractResolver         $stepResolver,
+        private ContractResolver         $contractResolver,
         private SenderService            $senderService,
         private JumpResolver             $jumpResolver,
         private ResponsibleDtoRepository $responsibleDtoRepository,
@@ -26,7 +26,7 @@ class EventResolver
      */
     public function resolve(VisitorEvent $visitorEvent, Responsible $responsible): Responsible
     {
-        $this->stepResolver->resolve($responsible);
+        $this->contractResolver->resolve($responsible);
 
         $jump = $responsible->getJump();
 

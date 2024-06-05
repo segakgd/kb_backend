@@ -57,8 +57,8 @@ readonly class ScenarioConverter
                 ->setBotId($botId)
                 ->setProjectId($projectId);
 
-            foreach ($scenario->getContracts() as $step) {
-                $scenarioEntity->addContract($step);
+            foreach ($scenario->getContracts() as $contract) {
+                $scenarioEntity->addContract($contract);
             }
 
             $this->entityManager->persist($scenarioEntity);

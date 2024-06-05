@@ -2,7 +2,7 @@
 
 namespace App\Entity\Scenario;
 
-use App\Doctrine\Types\ScenarioStepDtoArrayType;
+use App\Doctrine\Types\ScenarioContractDtoArrayType;
 use App\Dto\Scenario\ScenarioContractDto;
 use App\Repository\Scenario\ScenarioRepository;
 use DateTimeImmutable;
@@ -34,7 +34,7 @@ class Scenario
     /**
      * @var array<ScenarioContractDto>
      */
-    #[ORM\Column(type: ScenarioStepDtoArrayType::TYPE_NAME, nullable: true)]
+    #[ORM\Column(type: ScenarioContractDtoArrayType::TYPE_NAME, nullable: true)]
     private array $contracts = [];
 
     #[ORM\Column(nullable: true)]

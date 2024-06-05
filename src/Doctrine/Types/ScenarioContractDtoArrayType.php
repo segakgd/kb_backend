@@ -6,9 +6,9 @@ use App\Dto\Scenario\ScenarioContractDto;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\JsonType;
 
-class ScenarioStepDtoArrayType extends JsonType
+class ScenarioContractDtoArrayType extends JsonType
 {
-    public const TYPE_NAME = 'scenario_step_dto_array';
+    public const TYPE_NAME = 'scenario_contract_dto_array';
 
     public function convertToPHPValue($value, AbstractPlatform $platform): array
     {

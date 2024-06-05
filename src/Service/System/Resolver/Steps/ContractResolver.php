@@ -24,24 +24,24 @@ readonly class ContractResolver
      */
     public function resolve(Responsible $responsible): void
     {
-        $steps = $responsible->getCacheDto()->getEvent()->getContracts();
+        $contracts = $responsible->getCacheDto()->getEvent()->getContracts();
 
         try {
-            foreach ($steps as $step) {
-                if (!$step->isFinished()) {
-                    $this->resolveStep($responsible, $step);
+            foreach ($contracts as $cacheContractDto) {
+                if (!$cacheContractDto->isFinished()) {
+                    $this->resolveStep($responsible, $cacheContractDto);
 
-                    $unfinishedChains = array_filter($step->getChains(), fn (CacheChainDto $chain) => !$chain->isFinished());
+                    $unfinishedChains = array_filter($cacheContractDto->getChains(), fn (CacheChainDto $chain) => !$chain->isFinished());
 
                     if (empty($unfinishedChains)) {
-                        $step->setFinished(true);
+                        $cacheContractDto->setFinished(true);
                     }
 
                     break;
                 }
             }
 
-            $unfinishedSteps = array_filter($steps, fn (CacheContractDto $step) => !$step->isFinished());
+            $unfinishedSteps = array_filter($contracts, fn (CacheContractDto $step) => !$cacheContractDto->isFinished());
 
             if (empty($unfinishedSteps)) {
                 $responsible->setContractsStatus(true);
@@ -56,12 +56,12 @@ readonly class ContractResolver
     /**
      * @throws Throwable
      */
-    private function resolveStep(Responsible $responsible, CacheContractDto $step): void
+    private function resolveStep(Responsible $responsible, CacheContractDto $cacheContractDto): void
     {
-        if ($step->hasChain()) {
-            $this->handleChain($responsible, $step);
+        if ($cacheContractDto->hasChain()) {
+            $this->handleChain($responsible, $cacheContractDto);
         } else {
-            $this->handleScenario($responsible, $step);
+            $this->handleScenario($responsible, $cacheContractDto);
             $responsible->setContractsStatus(true);
         }
     }
@@ -69,14 +69,14 @@ readonly class ContractResolver
     /**
      * @throws Throwable
      */
-    private function handleChain(Responsible $responsible, CacheContractDto $step): void
+    private function handleChain(Responsible $responsible, CacheContractDto $cacheContractDto): void
     {
-        $this->chainsResolver->resolve($responsible, $step->getChains());
+        $this->chainsResolver->resolve($responsible, $cacheContractDto->getChains());
     }
 
-    private function handleScenario(Responsible $responsible, CacheContractDto $step): void
+    private function handleScenario(Responsible $responsible, CacheContractDto $cacheContractDto): void
     {
-        $this->scenarioResolver->resolve($responsible, $step);
+        $this->scenarioResolver->resolve($responsible, $cacheContractDto);
     }
 
     private function handleException(Throwable $exception): void
