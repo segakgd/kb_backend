@@ -42,11 +42,11 @@ class TelegramEventsHandlerCommand extends Command
 
             if ($visitorEvent) {
                 try {
-                    $contract = CommonHelper::createDefaultContract();
+                    $responsible = CommonHelper::createDefaultResponsible();
 
-                    $this->eventResolver->resolve($visitorEvent, $contract);
+                    $this->eventResolver->resolve($visitorEvent, $responsible);
 
-                    $this->visitorEventRepository->updateChatEventStatus($visitorEvent, $contract->getStatus());
+                    $this->visitorEventRepository->updateChatEventStatus($visitorEvent, $responsible->getStatus());
                 } catch (Throwable $throwable) {
                     $visitorEvent->setError($throwable->getMessage());
 
