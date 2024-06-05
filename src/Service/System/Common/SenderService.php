@@ -2,7 +2,7 @@
 
 namespace App\Service\System\Common;
 
-use App\Dto\Contract\ResponsibleMessageDto;
+use App\Dto\Responsible\ResponsibleMessageDto;
 use App\Service\Integration\Telegram\TelegramService;
 use App\Service\System\Resolver\Dto\Responsible;
 use Exception;

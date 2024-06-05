@@ -2,7 +2,7 @@
 
 namespace App\Helper;
 
-use App\Dto\Contract\ResponsibleMessageDto;
+use App\Dto\Responsible\ResponsibleMessageDto;
 use App\Entity\Ecommerce\Product;
 use App\Entity\Ecommerce\ProductVariant;
 

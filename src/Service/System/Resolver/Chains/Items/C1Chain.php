@@ -13,7 +13,7 @@ class C1Chain extends AbstractChain
     {
         $content = $responsible->getCacheDto()->getContent();
 
-//        $cart = $contract->getCacheDto()->getCart();
+//        $cart = $responsible->getCacheDto()->getCart();
 //
 //        $shipping = [
 //            'address' => [ // todo need realization as DTO

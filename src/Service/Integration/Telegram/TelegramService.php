@@ -2,7 +2,7 @@
 
 namespace App\Service\Integration\Telegram;
 
-use App\Dto\Contract\ResponsibleMessageDto;
+use App\Dto\Responsible\ResponsibleMessageDto;
 use App\Dto\Core\Telegram\Request\Invoice\InvoiceDto;
 use App\Dto\Core\Telegram\Request\Message\MessageDto;
 use App\Dto\Core\Telegram\Request\Message\PhotoDto;

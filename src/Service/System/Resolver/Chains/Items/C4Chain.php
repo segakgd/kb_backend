@@ -17,9 +17,9 @@ class C4Chain extends AbstractChain
         $message = "Это шаг 1 элемент цепочки C4. \n\n Вы кликнули на $content";
 
 //        if ($content === 'Да') {
-//            $contract->setJump(JumpEnum::refChain1);
+//            $responsible->setJump(JumpEnum::refChain1);
 //
-//            return $contract;
+//            return $responsible;
 //        }
 
         $message = "Вы кликнули на $content";

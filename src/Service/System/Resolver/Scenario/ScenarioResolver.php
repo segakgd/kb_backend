@@ -2,7 +2,7 @@
 
 namespace App\Service\System\Resolver\Scenario;
 
-use App\Dto\Contract\ResponsibleMessageDto;
+use App\Dto\Responsible\ResponsibleMessageDto;
 use App\Dto\SessionCache\Cache\CacheStepDto;
 use App\Helper\KeyboardHelper;
 use App\Helper\MessageHelper;

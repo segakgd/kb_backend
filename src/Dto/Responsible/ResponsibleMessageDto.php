@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dto\Contract;
+namespace App\Dto\Responsible;
 
 class ResponsibleMessageDto
 {

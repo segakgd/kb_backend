@@ -2,7 +2,7 @@
 
 namespace App\Service\System\Resolver\Dto;
 
-use App\Dto\Contract\ResponsibleMessageDto;
+use App\Dto\Responsible\ResponsibleMessageDto;
 
 interface ResultInterface
 {
