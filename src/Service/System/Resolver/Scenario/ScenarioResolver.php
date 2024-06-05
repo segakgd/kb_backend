@@ -10,34 +10,34 @@ use App\Service\System\Resolver\Dto\Responsible;
 
 class ScenarioResolver
 {
-    public function resolve(Responsible $responsible, CacheContractDto $scenarioStep): Responsible
+    public function resolve(Responsible $responsible, CacheContractDto $cacheContractDto): Responsible
     {
         $responsibleMessage = MessageHelper::createResponsibleMessage();
 
-        $this->setMessage($responsibleMessage, $scenarioStep);
-        $this->setKeyboard($responsibleMessage, $scenarioStep);
+        $this->setMessage($responsibleMessage, $cacheContractDto);
+        $this->setKeyboard($responsibleMessage, $cacheContractDto);
 
         $responsible->getResult()->addMessage($responsibleMessage);
 
         return $responsible;
     }
 
-    private function setMessage(ResponsibleMessageDto $responsibleMessageDto, CacheContractDto $scenarioStep): void
+    private function setMessage(ResponsibleMessageDto $responsibleMessageDto, CacheContractDto $cacheContractDto): void
     {
-        if (!$scenarioStep->getMessage()) {
+        if (!$cacheContractDto->getMessage()) {
             return;
         }
 
-        $responsibleMessageDto->setMessage($scenarioStep->getMessage());
+        $responsibleMessageDto->setMessage($cacheContractDto->getMessage());
     }
 
-    private function setKeyboard(ResponsibleMessageDto $responsibleMessageDto, CacheContractDto $scenarioStep): void
+    private function setKeyboard(ResponsibleMessageDto $responsibleMessageDto, CacheContractDto $cacheContractDto): void
     {
-        if (empty($scenarioStep->getKeyboard())) {
+        if (empty($cacheContractDto->getKeyboard())) {
             return;
         }
 
-        $replyMarkups = KeyboardHelper::mapKeyboard($scenarioStep->getKeyboard());
+        $replyMarkups = KeyboardHelper::mapKeyboard($cacheContractDto->getKeyboard());
 
         if (empty($replyMarkups)) {
             return;

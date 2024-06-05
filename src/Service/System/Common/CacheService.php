@@ -23,7 +23,7 @@ class CacheService
             );
     }
 
-    public static function enrichContractCache(array $chains, CacheContractDto $cacheStepDto): void
+    public static function enrichContractCache(array $chains, CacheContractDto $cacheContractDto): void
     {
         /** @var ScenarioChainDto $chain */
         foreach ($chains as $chain) {
@@ -36,7 +36,7 @@ class CacheService
                 ->setFinished($chain->isFinish())
                 ->setRepeat(false);
 
-            $cacheStepDto->addChain($chain);
+            $cacheContractDto->addChain($chain);
         }
     }
 }

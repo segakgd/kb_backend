@@ -96,17 +96,17 @@ class Scenario
         return $this;
     }
 
-    public function addContract(ScenarioContractDto $step): self
+    public function addContract(ScenarioContractDto $scenarioContractDto): self
     {
-        $this->contracts[] = $step;
+        $this->contracts[] = $scenarioContractDto;
 
         return $this;
     }
 
-    public function removeStep(ScenarioContractDto $stepToRemove): self
+    public function removeContract(ScenarioContractDto $scenarioContractToRemoveDto): self
     {
-        $this->contracts = array_filter($this->contracts, function (ScenarioContractDto $step) use ($stepToRemove) {
-            return $step !== $stepToRemove;
+        $this->contracts = array_filter($this->contracts, function (ScenarioContractDto $scenarioContractDto) use ($scenarioContractToRemoveDto) {
+            return $scenarioContractDto !== $scenarioContractToRemoveDto;
         });
 
         return $this;

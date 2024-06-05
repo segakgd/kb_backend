@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\System\Resolver\Steps;
+namespace App\Service\System\Resolver\Contracts;
 
 use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Dto\SessionCache\Cache\CacheContractDto;
@@ -29,7 +29,7 @@ readonly class ContractResolver
         try {
             foreach ($contracts as $cacheContractDto) {
                 if (!$cacheContractDto->isFinished()) {
-                    $this->resolveStep($responsible, $cacheContractDto);
+                    $this->resolveContract($responsible, $cacheContractDto);
 
                     $unfinishedChains = array_filter($cacheContractDto->getChains(), fn (CacheChainDto $chain) => !$chain->isFinished());
 
@@ -41,9 +41,9 @@ readonly class ContractResolver
                 }
             }
 
-            $unfinishedSteps = array_filter($contracts, fn (CacheContractDto $step) => !$cacheContractDto->isFinished());
+            $unfinishedContracts = array_filter($contracts, fn (CacheContractDto $cacheContractDto) => !$cacheContractDto->isFinished());
 
-            if (empty($unfinishedSteps)) {
+            if (empty($unfinishedContracts)) {
                 $responsible->setContractsStatus(true);
             }
         } catch (Throwable $exception) {
@@ -56,7 +56,7 @@ readonly class ContractResolver
     /**
      * @throws Throwable
      */
-    private function resolveStep(Responsible $responsible, CacheContractDto $cacheContractDto): void
+    private function resolveContract(Responsible $responsible, CacheContractDto $cacheContractDto): void
     {
         if ($cacheContractDto->hasChain()) {
             $this->handleChain($responsible, $cacheContractDto);

@@ -117,7 +117,7 @@ class ScenarioService
      */
     public function generateDefaultScenario(int $projectId, int $botId): Scenario
     {
-        $step = (new ScenarioContractDto())
+        $scenarioContractDto = (new ScenarioContractDto())
             ->setMessage('Не знаю что вам ответить');
 
         $scenarioEntity = (new Scenario())
@@ -127,7 +127,7 @@ class ScenarioService
             ->setName('default')
             ->setProjectId($projectId)
             ->setBotId($botId)
-            ->addContract($step);
+            ->addContract($scenarioContractDto);
 
         $this->scenarioRepository->saveAndFlush($scenarioEntity);
 

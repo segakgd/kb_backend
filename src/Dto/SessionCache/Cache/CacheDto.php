@@ -83,25 +83,25 @@ class CacheDto extends AbstractDto
 
     public static function fromArray(array $data): static
     {
-        $step = new self();
+        $cacheDto = new self();
 
         if (isset($data['eventUUID'])) {
-            $step->eventUUID = $data['eventUUID'];
+            $cacheDto->eventUUID = $data['eventUUID'];
         }
 
         if (isset($data['cart'])) {
-            $step->cart = CacheCartDto::fromArray($data['cart']);
+            $cacheDto->cart = CacheCartDto::fromArray($data['cart']);
         }
 
         if (isset($data['event'])) {
-            $step->event = CacheEventDto::fromArray($data['event']);
+            $cacheDto->event = CacheEventDto::fromArray($data['event']);
         }
 
         if (isset($data['content'])) {
-            $step->content = $data['content'];
+            $cacheDto->content = $data['content'];
         }
 
-        return $step;
+        return $cacheDto;
     }
 
     public function toArray(): array

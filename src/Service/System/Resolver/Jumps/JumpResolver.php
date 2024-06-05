@@ -57,11 +57,11 @@ readonly class JumpResolver
 
     private function updateCacheContracts(CacheDto $cacheDto, string $jumpValue): void
     {
-        $steps = $cacheDto->getEvent()->getContracts();
+        $contracts = $cacheDto->getEvent()->getContracts();
         $flag = true;
 
-        foreach ($steps as $step) {
-            $this->updateCacheChains($step->getChains(), $jumpValue, $flag);
+        foreach ($contracts as $contract) {
+            $this->updateCacheChains($contract->getChains(), $jumpValue, $flag);
         }
     }
 

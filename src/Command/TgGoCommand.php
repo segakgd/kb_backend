@@ -79,7 +79,7 @@ class TgGoCommand extends Command
             $isEmptyContracts = $cacheDto->getEvent()->isEmptyContracts();
 
             if ($cacheDto->getEvent()->isFinished() || $isEmptyContracts) {
-                $cacheDto = $this->enrichStepsCache($scenario, $cacheDto);
+                $cacheDto = $this->enrichContractCache($scenario, $cacheDto);
             }
 
             $botDto = (new BotDto())
@@ -119,7 +119,7 @@ class TgGoCommand extends Command
         return Command::SUCCESS;
     }
 
-    private function enrichStepsCache(Scenario $scenario, CacheDto $cacheDto): CacheDto
+    private function enrichContractCache(Scenario $scenario, CacheDto $cacheDto): CacheDto
     {
         $arrayContracts = [];
         $scenarioContracts = $scenario->getContracts();

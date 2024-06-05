@@ -115,9 +115,9 @@ class CacheContractDto extends AbstractDto
 
     public static function fromArray(array $data): static
     {
-        $step = new self();
-        $step->finished = $data['finished'] ?? false;
-        $step->message = $data['message'] ?? null;
+        $cacheContractDto = new self();
+        $cacheContractDto->finished = $data['finished'] ?? false;
+        $cacheContractDto->message = $data['message'] ?? null;
 
         $chains = [];
 
@@ -135,9 +135,9 @@ class CacheContractDto extends AbstractDto
             }
         }
 
-        $step->chains = $chains;
+        $cacheContractDto->chains = $chains;
 
-        return $step;
+        return $cacheContractDto;
     }
 
     public function toArray(): array

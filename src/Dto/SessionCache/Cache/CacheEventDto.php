@@ -90,8 +90,8 @@ class CacheEventDto extends AbstractDto
 
         $contracts = [];
 
-        foreach ($data['contracts'] ?? [] as $stepData) {
-            $contracts[] = CacheContractDto::fromArray($stepData);
+        foreach ($data['contracts'] ?? [] as $value) {
+            $contracts[] = CacheContractDto::fromArray($value);
         }
 
         $event->contracts = $contracts;
@@ -105,8 +105,8 @@ class CacheEventDto extends AbstractDto
     {
         $contractsArray = [];
 
-        foreach ($this->contracts as $step) {
-            $contractsArray[] = $step->toArray();
+        foreach ($this->contracts as $contract) {
+            $contractsArray[] = $contract->toArray();
         }
 
         return [

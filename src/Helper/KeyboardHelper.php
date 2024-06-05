@@ -8,13 +8,13 @@ use Doctrine\Common\Collections\Collection;
 
 class KeyboardHelper
 {
-    public static function mapKeyboard(KeyboardDto $scenarioStep): array
+    public static function mapKeyboard(KeyboardDto $keyboardDto): array
     {
         $replyMarkups = [];
 
-        $replyMarkupsFromSteps = $scenarioStep->getReplyMarkup();
+        $replyMarkupsFromContracts = $keyboardDto->getReplyMarkup();
 
-        foreach ($replyMarkupsFromSteps as $key => $replyMarkup) {
+        foreach ($replyMarkupsFromContracts as $key => $replyMarkup) {
             foreach ($replyMarkup as $keyItem => $replyMarkupItem) {
                 $replyMarkups[$key][$keyItem]['text'] = $replyMarkupItem['text'];
             }

@@ -8,7 +8,7 @@ use App\Service\DtoRepository\ResponsibleDtoRepository;
 use App\Service\System\Common\SenderService;
 use App\Service\System\Resolver\Dto\Responsible;
 use App\Service\System\Resolver\Jumps\JumpResolver;
-use App\Service\System\Resolver\Steps\ContractResolver;
+use App\Service\System\Resolver\Contracts\ContractResolver;
 use Throwable;
 
 class EventResolver

@@ -119,10 +119,10 @@ class ScenarioContractDto
 
     public static function fromArray(array $data): self
     {
-        $step = new self();
+        $scenarioContractDto = new self();
 
-        $step->setMessage($data['message'] ?? null);
-        $step->setKeyboard(isset($data['keyboard']) ? ScenarioKeyboardDto::fromArray($data['keyboard']) : null);
+        $scenarioContractDto->setMessage($data['message'] ?? null);
+        $scenarioContractDto->setKeyboard(isset($data['keyboard']) ? ScenarioKeyboardDto::fromArray($data['keyboard']) : null);
 
         $chainData = $data['chain'] ?? null;
         $chain = [];
@@ -137,12 +137,12 @@ class ScenarioContractDto
             }
         }
 
-        $step->setChain($chain);
+        $scenarioContractDto->setChain($chain);
 
-        $step->setAttached(isset($data['attached']) ? ScenarioAttachedDto::fromArray($data['attached']) : null);
-        $step->setFinish($data['finish'] ?? false);
+        $scenarioContractDto->setAttached(isset($data['attached']) ? ScenarioAttachedDto::fromArray($data['attached']) : null);
+        $scenarioContractDto->setFinish($data['finish'] ?? false);
 
-        return $step;
+        return $scenarioContractDto;
     }
 
     public function toArray(): array

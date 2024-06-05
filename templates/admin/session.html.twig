@@ -130,23 +130,23 @@
                                         {% endif %}
                                     </section>
 
-                                    {% if event.steps is not null %}
-                                        {% if event.steps is not empty %}
+                                    {% if event.contracts is not null %}
+                                        {% if event.contracts is not empty %}
                                             <br>
                                             <section style="padding: 10px; background: #ced6ea;">
                                                 <ul>
-                                                    {% for step in event.steps %}
+                                                    {% for contract in event.contracts %}
                                                         <li>
-                                                            <span style="font-weight: bold; color: #18181b;">Шаг {{ step.number }}</span>
+                                                            <span style="font-weight: bold; color: #18181b;">Шаг {{ contract.number }}</span>
 
-                                                            {% if step.chains is not null %}
-                                                                {% if step.chains is not empty %}
+                                                            {% if contract.chains is not null %}
+                                                                {% if contract.chains is not empty %}
                                                                     <br>
                                                                     <section
                                                                             style="padding: 10px; background: #ced6ea;">
                                                                         Цепочка:
                                                                         <ul>
-                                                                            {% for chain in step.chains %}
+                                                                            {% for chain in contract.chains %}
                                                                                 <li>
                                                                                     {% if chain.status == 1 %}
                                                                                         <span class="">Пройдено</span>
