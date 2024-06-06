@@ -127,7 +127,7 @@ class ScenarioService
             ->setName('default')
             ->setProjectId($projectId)
             ->setBotId($botId)
-            ->addContract($scenarioContractDto);
+            ->setContract($scenarioContractDto);
 
         $this->scenarioRepository->saveAndFlush($scenarioEntity);
 

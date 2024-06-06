@@ -31,11 +31,8 @@ class Scenario
     #[ORM\Column(nullable: true)]
     private ?int $botId = null;
 
-    /**
-     * @var array<ScenarioContractDto>
-     */
     #[ORM\Column(type: ScenarioContractDtoArrayType::TYPE_NAME, nullable: true)]
-    private array $contracts = [];
+    private ?ScenarioContractDto $contract = null;
 
     #[ORM\Column(nullable: true)]
     private ?DateTimeImmutable $deletedAt = null;
@@ -84,30 +81,14 @@ class Scenario
         return $this;
     }
 
-    public function getContracts(): array
+    public function getContract(): ScenarioContractDto
     {
-        return $this->contracts;
+        return $this->contract;
     }
 
-    public function setContracts(array $contracts): self
+    public function setContract(ScenarioContractDto $contract): self
     {
-        $this->contracts = $contracts;
-
-        return $this;
-    }
-
-    public function addContract(ScenarioContractDto $scenarioContractDto): self
-    {
-        $this->contracts[] = $scenarioContractDto;
-
-        return $this;
-    }
-
-    public function removeContract(ScenarioContractDto $scenarioContractToRemoveDto): self
-    {
-        $this->contracts = array_filter($this->contracts, function (ScenarioContractDto $scenarioContractDto) use ($scenarioContractToRemoveDto) {
-            return $scenarioContractDto !== $scenarioContractToRemoveDto;
-        });
+        $this->contract = $contract;
 
         return $this;
     }

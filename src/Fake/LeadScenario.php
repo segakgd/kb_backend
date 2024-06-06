@@ -32,7 +32,7 @@ class LeadScenario
             ->setUUID('8e261302-d5d7-4dd0-a621-4253a01da31e')
             ->setName('Сценарий оформления заказа')
             ->setType('message')
-            ->addContract(
+            ->setContract(
                 (new ScenarioContractDto())
                     ->setMessage(
                         'Добро пожаловать в нашем шопе. Хотите приобрести товар? Выберите одну из категорий:'
@@ -77,7 +77,7 @@ class LeadScenario
             ->setUUID('8e261312-0001-4dd0-a627-4253a01da001')
             ->setName('Товары по категориям')
             ->setType('message')
-            ->addContract(
+            ->setContract(
                 (new ScenarioContractDto())
                     ->addChain(
                         (new ScenarioChainDto())
@@ -118,7 +118,7 @@ class LeadScenario
             ->setUUID('8e261322-0002-4dd0-a627-4253a01da002')
             ->setName('Популярные товары')
             ->setType('message')
-            ->addContract(
+            ->setContract(
                 (new ScenarioContractDto())
                     ->addChain(
                         (new ScenarioChainDto())
@@ -159,7 +159,7 @@ class LeadScenario
             ->setUUID('8e261332-0003-4dd0-a627-4253a01da003')
             ->setName('Акционные товары')
             ->setType('message')
-            ->addContract(
+            ->setContract(
                 (new ScenarioContractDto())
 //                    ->addChain(
 //                        (new ScenarioChainDto())
@@ -200,7 +200,7 @@ class LeadScenario
             ->setUUID('78bc84e3-0004-4ebe-bbb4-4253a01da004')
             ->setName('Моя корзина')
             ->setType('message')
-            ->addContract(
+            ->setContract(
                 (new ScenarioContractDto())
                     ->setMessage(
                         'Добро пожаловать в нашем шопе. Хотите приобрести товар? Выберите одну из категорий:'
@@ -305,7 +305,7 @@ class LeadScenario
             ->setUUID('78bc84e3-0004-4ebe-bbb4-4253a01da005')
             ->setName('Оформить заказ')
             ->setType('message')
-            ->addContract(
+            ->setContract(
                 (new ScenarioContractDto())
                     ->addChain(
                         (new ScenarioChainDto())
@@ -336,7 +336,7 @@ class LeadScenario
             ->setUUID('8e261322-0002-4dd0-a627-4253a01da006')
             ->setName('Изменить доставку')
             ->setType('message')
-            ->addContract(
+            ->setContract(
                 (new ScenarioContractDto())
                     ->addChain(
                         (new ScenarioChainDto())
@@ -352,7 +352,7 @@ class LeadScenario
             ->setUUID('8e261322-0002-4dd0-a627-4253a01da007')
             ->setName('Изменить контакты')
             ->setType('message')
-            ->addContract(
+            ->setContract(
                 (new ScenarioContractDto())
                     ->addChain(
                         (new ScenarioChainDto())
@@ -368,7 +368,7 @@ class LeadScenario
             ->setUUID('8e261332-0003-4dd0-a627-4253a01da008')
             ->setName('Изменить продукты')
             ->setType('message')
-            ->addContract(
+            ->setContract(
                 (new ScenarioContractDto())
                     ->addChain(
                         (new ScenarioChainDto())
@@ -384,7 +384,7 @@ class LeadScenario
             ->setUUID('8e261332-0003-4dd0-a627-4253a01da009')
             ->setName('Удалить заказ')
             ->setType('message')
-            ->addContract(
+            ->setContract(
                 (new ScenarioContractDto())
                     ->addChain(
                         (new ScenarioChainDto())
@@ -400,7 +400,7 @@ class LeadScenario
             ->setUUID('78bc84e3-0004-4ebe-bbb4-4253a01da010')
             ->setName('Оплатить')
             ->setType('message')
-            ->addContract(
+            ->setContract(
                 (new ScenarioContractDto())
                     ->addChain(
                         (new ScenarioChainDto())
