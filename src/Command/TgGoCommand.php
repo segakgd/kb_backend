@@ -121,16 +121,10 @@ class TgGoCommand extends Command
 
     private function enrichContractCache(Scenario $scenario, CacheDto $cacheDto): CacheDto
     {
-        $arrayContracts = [];
-        $scenarioContracts = $scenario->getContracts();
+        $scenarioContract = $scenario->getContracts();
+        $cacheContractDto = CacheContractDto::fromArray($scenarioContract->toArray());
 
-        foreach ($scenarioContracts as $scenarioContract) {
-            $cacheContractDto = CacheContractDto::fromArray($scenarioContract->toArray());
-
-            $arrayContracts[] = $cacheContractDto;
-        }
-
-        $cacheDto->getEvent()->setContracts($arrayContracts);
+        $cacheDto->getEvent()->setContract($cacheContractDto);
 
         return $cacheDto;
     }

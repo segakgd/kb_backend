@@ -8,13 +8,16 @@ class CacheEventDto extends AbstractDto
 {
     private bool $finished = false;
 
-    /** @var array<CacheContractDto> */
-    private array $contracts = [];
+    private ?CacheContractDto $contract = null;
 
     private ?CacheDataDto $data = null;
 
     public function __construct()
     {
+        if (!$this->contract) {
+            $this->contract = new CacheContractDto;
+        }
+
         if (!$this->data) {
             $this->data = new CacheDataDto;
         }
@@ -32,41 +35,19 @@ class CacheEventDto extends AbstractDto
         return $this;
     }
 
-    public function getContracts(): array
+    public function getContract(): CacheContractDto
     {
-        return $this->contracts;
+        return $this->contract;
     }
 
     public function isEmptyContracts(): bool
     {
-        return empty($this->contracts);
+        return empty($this->contract);
     }
 
-    public function getCurrentContract(): ?CacheContractDto
+    public function setContract(CacheContractDto $contract): static
     {
-        if (empty($this->contracts)) {
-            return null;
-        }
-
-        foreach ($this->contracts as $contract) {
-            if (!$contract->isFinished()) {
-                return $contract;
-            }
-        }
-
-        return null;
-    }
-
-    public function setContracts(array $contracts): static
-    {
-        $this->contracts = $contracts;
-
-        return $this;
-    }
-
-    public function addContract(CacheContractDto $contract): static
-    {
-        $this->contracts[] = $contract;
+        $this->contract = $contract;
 
         return $this;
     }
@@ -88,14 +69,7 @@ class CacheEventDto extends AbstractDto
         $event = new self();
         $event->finished = $data['finished'] ?? false;
 
-        $contracts = [];
-
-        foreach ($data['contracts'] ?? [] as $value) {
-            $contracts[] = CacheContractDto::fromArray($value);
-        }
-
-        $event->contracts = $contracts;
-
+        $event->contract = CacheContractDto::fromArray($data['contract']);
         $event->data = CacheDataDto::fromArray($data['data'] ?? []);
 
         return $event;
@@ -105,7 +79,7 @@ class CacheEventDto extends AbstractDto
     {
         $contractsArray = [];
 
-        foreach ($this->contracts as $contract) {
+        foreach ($this->contract as $contract) {
             $contractsArray[] = $contract->toArray();
         }
 

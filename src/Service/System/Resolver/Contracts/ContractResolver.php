@@ -24,28 +24,24 @@ readonly class ContractResolver
      */
     public function resolve(Responsible $responsible): void
     {
-        $contracts = $responsible->getCacheDto()->getEvent()->getContracts();
+        $cacheContractDto = $responsible->getCacheDto()->getEvent()->getContract();
 
         try {
-            foreach ($contracts as $cacheContractDto) {
-                if (!$cacheContractDto->isFinished()) {
-                    $this->resolveContract($responsible, $cacheContractDto);
+            if (!$cacheContractDto->isFinished()) {
+                $this->resolveContract($responsible, $cacheContractDto);
 
-                    $unfinishedChains = array_filter($cacheContractDto->getChains(), fn (CacheChainDto $chain) => !$chain->isFinished());
+                $unfinishedChains = array_filter($cacheContractDto->getChains(), fn (CacheChainDto $chain) => !$chain->isFinished());
 
-                    if (empty($unfinishedChains)) {
-                        $cacheContractDto->setFinished(true);
-                    }
-
-                    break;
+                if (empty($unfinishedChains)) {
+                    $cacheContractDto->setFinished(true);
                 }
             }
 
-            $unfinishedContracts = array_filter($contracts, fn (CacheContractDto $cacheContractDto) => !$cacheContractDto->isFinished());
+//            $unfinishedContracts = array_filter($contracts, fn (CacheContractDto $cacheContractDto) => !$cacheContractDto->isFinished());
 
-            if (empty($unfinishedContracts)) {
-                $responsible->setContractsStatus(true);
-            }
+//            if (empty($unfinishedContracts)) {
+//                $responsible->setContractsStatus(true);
+//            }
         } catch (Throwable $exception) {
             $this->handleException($exception);
 

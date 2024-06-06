@@ -72,25 +72,23 @@ readonly class DashboardService
             $cache = $visitorSession->getCache();
             $cacheEvent = $cache->getEvent();
 
-            $cacheContracts = $cacheEvent->getContracts();
+            $cacheContract = $cacheEvent->getContract();
 
-            foreach ($cacheContracts as $key => $cacheContract) {
-                $cacheChains = $cacheContract->getChains();
-                $chains = [];
+            $cacheChains = $cacheContract->getChains();
+            $chains = [];
 
-                foreach ($cacheChains as $cacheChain) {
-                    $chains[] = [
-                        'name' => CommonHelper::translate($cacheChain->getTarget()),
-                        'status' => $cacheChain->isFinished(),
-                    ];
-                }
-
-                $contracts[] = [
-                    'number' => $key + 1,
-                    'chains' => $chains,
-                    'finished' => $cacheContract->isFinished(),
+            foreach ($cacheChains as $cacheChain) {
+                $chains[] = [
+                    'name' => CommonHelper::translate($cacheChain->getTarget()),
+                    'status' => $cacheChain->isFinished(),
                 ];
             }
+
+            $contracts[] = [
+                'number' => 1,
+                'chains' => $chains,
+                'finished' => $cacheContract->isFinished(),
+            ];
         }
 
         return [

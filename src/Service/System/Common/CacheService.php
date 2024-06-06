@@ -15,7 +15,6 @@ class CacheService
     {
         return (new CacheEventDto())
             ->setFinished(false)
-            ->setContracts([])
             ->setData(
                 (new CacheDataDto)
                     ->setProductId(null)
