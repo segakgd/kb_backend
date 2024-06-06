@@ -7,7 +7,7 @@ use App\Enum\ChainStatusEnum;
 use App\Enum\VisitorEventStatusEnum;
 use App\Helper\CommonHelper;
 use App\Repository\Visitor\VisitorEventRepository;
-use App\Service\System\Resolver\EventResolver;
+use App\Service\System\Core\EventResolver;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

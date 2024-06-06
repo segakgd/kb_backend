@@ -7,7 +7,7 @@ use App\Entity\Ecommerce\Product;
 use App\Helper\KeyboardHelper;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\Product\Service\ProductService;
-use App\Service\System\Resolver\Dto\Responsible;
+use App\Service\System\Core\Dto\Responsible;
 use Exception;
 
 /**

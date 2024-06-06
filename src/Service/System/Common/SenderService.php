@@ -4,7 +4,7 @@ namespace App\Service\System\Common;
 
 use App\Dto\Responsible\ResponsibleMessageDto;
 use App\Service\Integration\Telegram\TelegramService;
-use App\Service\System\Resolver\Dto\Responsible;
+use App\Service\System\Core\Dto\Responsible;
 use Exception;
 
 readonly class SenderService
