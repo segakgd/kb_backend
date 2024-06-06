@@ -13,14 +13,14 @@ use App\Service\Visitor\Session\VisitorSessionService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 
-class VisitorEventService
+readonly class VisitorEventService
 {
     public function __construct(
-        private readonly VisitorEventRepository $visitorEventRepository,
-        private readonly VisitorSessionRepository $visitorSessionRepository,
-        private readonly VisitorSessionService $visitorSessionService,
-        private readonly ScenarioService $scenarioService,
-        private readonly EntityManagerInterface $entityManager,
+        private VisitorEventRepository   $visitorEventRepository,
+        private VisitorSessionRepository $visitorSessionRepository,
+        private VisitorSessionService    $visitorSessionService,
+        private ScenarioService          $scenarioService,
+        private EntityManagerInterface   $entityManager,
     ) {
     }
 

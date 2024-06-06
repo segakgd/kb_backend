@@ -10,12 +10,15 @@ class CacheEventDto extends AbstractDto
 
     private ?CacheContractDto $contract = null;
 
+    private bool $emptyContract;
+
     private ?CacheDataDto $data = null;
 
     public function __construct()
     {
         if (!$this->contract) {
             $this->contract = new CacheContractDto;
+            $this->emptyContract = true;
         }
 
         if (!$this->data) {
@@ -42,7 +45,7 @@ class CacheEventDto extends AbstractDto
 
     public function isEmptyContract(): bool
     {
-        return empty($this->contract);
+        return $this->emptyContract;
     }
 
     public function setContract(CacheContractDto $contract): static

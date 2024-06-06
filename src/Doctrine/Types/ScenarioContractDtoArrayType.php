@@ -23,12 +23,8 @@ class ScenarioContractDtoArrayType extends JsonType
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
-        $serializedValue = [];
-
-        /** @var ScenarioContractDto $item */
-        foreach ($value as $item) {
-            $serializedValue[] = $item->toArray();
-        }
+        /** @var ScenarioContractDto $value */
+        $serializedValue = $value->toArray();
 
         return parent::convertToDatabaseValue($serializedValue, $platform);
     }
