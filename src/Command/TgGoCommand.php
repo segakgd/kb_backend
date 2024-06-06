@@ -76,9 +76,9 @@ class TgGoCommand extends Command
             $scenario = $this->scenarioService->findScenarioByUUID($visitorEvent->getScenarioUUID());
             $cacheDto = $visitorSession->getCache();
 
-            $isEmptyContracts = $cacheDto->getEvent()->isEmptyContracts();
+            $isEmptyContract = $cacheDto->getEvent()->isEmptyContract();
 
-            if ($cacheDto->getEvent()->isFinished() || $isEmptyContracts) {
+            if ($cacheDto->getEvent()->isFinished() || $isEmptyContract) {
                 $cacheDto = $this->enrichContractCache($scenario, $cacheDto);
             }
 

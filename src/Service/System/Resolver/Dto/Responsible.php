@@ -21,7 +21,7 @@ class Responsible implements ResponsibleInterface
 
     private ?VisitorEventStatusEnum $status = VisitorEventStatusEnum::New;
 
-    private bool $contractsStatus = false; // todo точно нужен?
+    private bool $contractStatus = false; // todo точно нужен?
 
     private ?BotDto $botDto = null;
 
@@ -104,14 +104,14 @@ class Responsible implements ResponsibleInterface
         return $this;
     }
 
-    public function isContractsStatus(): bool
+    public function isContractStatus(): bool
     {
-        return $this->contractsStatus;
+        return $this->contractStatus;
     }
 
-    public function setContractsStatus(bool $contractsStatus): static
+    public function setContractStatus(bool $contractStatus): static
     {
-        $this->contractsStatus = $contractsStatus;
+        $this->contractStatus = $contractStatus;
 
         return $this;
     }

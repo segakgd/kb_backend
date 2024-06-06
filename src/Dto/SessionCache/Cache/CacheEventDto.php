@@ -40,7 +40,7 @@ class CacheEventDto extends AbstractDto
         return $this->contract;
     }
 
-    public function isEmptyContracts(): bool
+    public function isEmptyContract(): bool
     {
         return empty($this->contract);
     }
@@ -77,15 +77,9 @@ class CacheEventDto extends AbstractDto
 
     public function toArray(): array
     {
-        $contractsArray = [];
-
-        foreach ($this->contract as $contract) {
-            $contractsArray[] = $contract->toArray();
-        }
-
         return [
             'finished' => $this->finished,
-            'contracts' => $contractsArray,
+            'contract' => $this->contract->toArray(),
             'data' => $this->data->toArray(),
         ];
     }

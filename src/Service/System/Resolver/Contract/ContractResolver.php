@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\System\Resolver\Contracts;
+namespace App\Service\System\Resolver\Contract;
 
 use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Dto\SessionCache\Cache\CacheContractDto;
@@ -58,7 +58,7 @@ readonly class ContractResolver
             $this->handleChain($responsible, $cacheContractDto);
         } else {
             $this->handleScenario($responsible, $cacheContractDto);
-            $responsible->setContractsStatus(true);
+            $responsible->setContractStatus(true);
         }
     }
 

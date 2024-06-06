@@ -12,9 +12,9 @@ class KeyboardHelper
     {
         $replyMarkups = [];
 
-        $replyMarkupsFromContracts = $keyboardDto->getReplyMarkup();
+        $replyMarkupsFromContract = $keyboardDto->getReplyMarkup();
 
-        foreach ($replyMarkupsFromContracts as $key => $replyMarkup) {
+        foreach ($replyMarkupsFromContract as $key => $replyMarkup) {
             foreach ($replyMarkup as $keyItem => $replyMarkupItem) {
                 $replyMarkups[$key][$keyItem]['text'] = $replyMarkupItem['text'];
             }

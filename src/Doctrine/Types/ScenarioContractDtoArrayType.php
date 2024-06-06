@@ -10,21 +10,15 @@ class ScenarioContractDtoArrayType extends JsonType
 {
     public const TYPE_NAME = 'scenario_contract_dto_array';
 
-    public function convertToPHPValue($value, AbstractPlatform $platform): array
+    public function convertToPHPValue($value, AbstractPlatform $platform): ?ScenarioContractDto
     {
         if ($value === null) {
-            return [];
+            return null;
         }
 
         $decodedValue = parent::convertToPHPValue($value, $platform);
 
-        $result = [];
-
-        foreach ($decodedValue as $item) {
-            $result[] = ScenarioContractDto::fromArray($item);
-        }
-
-        return $result;
+        return ScenarioContractDto::fromArray($decodedValue);
     }
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string

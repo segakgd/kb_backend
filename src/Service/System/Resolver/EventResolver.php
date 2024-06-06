@@ -8,7 +8,7 @@ use App\Service\DtoRepository\ResponsibleDtoRepository;
 use App\Service\System\Common\SenderService;
 use App\Service\System\Resolver\Dto\Responsible;
 use App\Service\System\Resolver\Jumps\JumpResolver;
-use App\Service\System\Resolver\Contracts\ContractResolver;
+use App\Service\System\Resolver\Contract\ContractResolver;
 use Throwable;
 
 class EventResolver
@@ -36,7 +36,7 @@ class EventResolver
 
         $this->senderService->sendMessages($responsible);
 
-        $status = $responsible->isContractsStatus() ? VisitorEventStatusEnum::Done : VisitorEventStatusEnum::Waiting;
+        $status = $responsible->isContractStatus() ? VisitorEventStatusEnum::Done : VisitorEventStatusEnum::Waiting;
 
         if (isset($_SERVER['APP_ENV']) && $_SERVER['APP_ENV'] === 'dev') {
             $this->responsibleDtoRepository->save($visitorEvent, $responsible);

@@ -66,7 +66,7 @@ readonly class DashboardService
             ]
         );
 
-        $contracts = [];
+        $contract = [];
 
         if ($visitorSession) {
             $cache = $visitorSession->getCache();
@@ -84,7 +84,7 @@ readonly class DashboardService
                 ];
             }
 
-            $contracts[] = [
+            $contract[] = [
                 'number' => 1,
                 'chains' => $chains,
                 'finished' => $cacheContract->isFinished(),
@@ -96,7 +96,7 @@ readonly class DashboardService
             'type' => $event->getType(),
             'status' => $event->getStatus()->value,
             'createdAt' => $event->getCreatedAt(),
-            'contracts' => $contracts,
+            'contract' => $contract,
             'error' => $event->getError(),
             'responsible' => $event->getResponsible(),
         ];
