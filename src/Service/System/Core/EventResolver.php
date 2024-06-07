@@ -26,9 +26,7 @@ readonly class EventResolver
     {
         $this->contractResolver->resolve($responsible);
 
-        $jump = $responsible->getJump();
-
-        if (!is_null($jump)) {
+        if ($responsible->isExistJump()) {
             return $responsible;
         }
 

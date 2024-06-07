@@ -92,6 +92,11 @@ class Responsible implements ResponsibleInterface
         return $this;
     }
 
+    public function isExistJump(): bool
+    {
+        return !is_null($this->jump);
+    }
+
     public function getStatus(): ?VisitorEventStatusEnum
     {
         return $this->status;
