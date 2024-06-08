@@ -12,7 +12,6 @@ use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Throwable;
@@ -94,19 +93,19 @@ class MainWebhookController extends AbstractController
 
             if (!$visitorSession) {
                 $visitorSession = $this->visitorSessionService->createVisitorSession(
-                    $visitorName,
-                    $chatId,
-                    $botId,
-                    'telegram',
-                    $project->getId()
+                    visitorName: $visitorName,
+                    chatId: $chatId,
+                    botId: $botId,
+                    chanel: 'telegram',
+                    projectId: $project->getId(),
                 );
             }
 
             // определяем событие
             $this->visitorEventService->createVisitorEventForSession(
-                $visitorSession,
-                $webhookData->getWebhookType(),
-                $webhookData->getWebhookContent(),
+                visitorSession: $visitorSession,
+                type: $webhookData->getWebhookType(),
+                content: $webhookData->getWebhookContent(),
             );
         } catch (Throwable $exception) {
             return new JsonResponse('ok', 200);

@@ -2,7 +2,7 @@
 
 namespace App\Service\Visitor\Scenario;
 
-use App\Dto\Scenario\ScenarioStepDto;
+use App\Dto\Scenario\ScenarioContractDto;
 use App\Entity\Scenario\Scenario;
 use App\Repository\Scenario\ScenarioRepository;
 use Exception;
@@ -18,16 +18,6 @@ class ScenarioService
     public function __construct(
         private readonly ScenarioRepository $scenarioRepository,
     ) {
-    }
-
-    public function getAllByProjectId(string $projectId): array
-    {
-        return $this->scenarioRepository->findBy(
-            [
-                'projectId' => $projectId,
-                'deletedAt' => null,
-            ]
-        );
     }
 
     /**
@@ -117,7 +107,7 @@ class ScenarioService
      */
     public function generateDefaultScenario(int $projectId, int $botId): Scenario
     {
-        $step = (new ScenarioStepDto())
+        $scenarioContractDto = (new ScenarioContractDto())
             ->setMessage('Не знаю что вам ответить');
 
         $scenarioEntity = (new Scenario())
@@ -127,7 +117,7 @@ class ScenarioService
             ->setName('default')
             ->setProjectId($projectId)
             ->setBotId($botId)
-            ->addStep($step);
+            ->setContract($scenarioContractDto);
 
         $this->scenarioRepository->saveAndFlush($scenarioEntity);
 

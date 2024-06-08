@@ -3,17 +3,17 @@
 namespace App\Helper;
 
 use App\Enum\JumpEnum;
-use App\Service\System\Resolver\Chains\Items\AbstractChain;
-use App\Service\System\Resolver\Chains\Items\C10Chain;
-use App\Service\System\Resolver\Chains\Items\C1Chain;
-use App\Service\System\Resolver\Chains\Items\C2Chain;
-use App\Service\System\Resolver\Chains\Items\C3Chain;
-use App\Service\System\Resolver\Chains\Items\C4Chain;
-use App\Service\System\Resolver\Chains\Items\C5Chain;
-use App\Service\System\Resolver\Chains\Items\C6Chain;
-use App\Service\System\Resolver\Chains\Items\C7Chain;
-use App\Service\System\Resolver\Chains\Items\C8Chain;
-use App\Service\System\Resolver\Chains\Items\C9Chain;
+use App\Service\System\Core\Chains\Items\AbstractChain;
+use App\Service\System\Core\Chains\Items\C10Chain;
+use App\Service\System\Core\Chains\Items\C1Chain;
+use App\Service\System\Core\Chains\Items\C2Chain;
+use App\Service\System\Core\Chains\Items\C3Chain;
+use App\Service\System\Core\Chains\Items\C4Chain;
+use App\Service\System\Core\Chains\Items\C5Chain;
+use App\Service\System\Core\Chains\Items\C6Chain;
+use App\Service\System\Core\Chains\Items\C7Chain;
+use App\Service\System\Core\Chains\Items\C8Chain;
+use App\Service\System\Core\Chains\Items\C9Chain;
 
 class ChainsGeneratorHelper
 {

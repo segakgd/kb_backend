@@ -35,7 +35,7 @@ class VisitorEvent
 
     // todo переделать под работу с дто
     #[ORM\Column]
-    private array $contract = [];
+    private array $responsible = [];
 
     public function __construct()
     {
@@ -121,14 +121,14 @@ class VisitorEvent
         return $this;
     }
 
-    public function getContract(): array
+    public function getResponsible(): array
     {
-        return $this->contract;
+        return $this->responsible;
     }
 
-    public function setContract(array $contract): static
+    public function setResponsible(array $responsible): static
     {
-        $this->contract = $contract;
+        $this->responsible = $responsible;
 
         return $this;
     }

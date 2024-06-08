@@ -66,31 +66,28 @@ readonly class DashboardService
             ]
         );
 
-        $steps = [];
+        $contract = [];
 
         if ($visitorSession) {
             $cache = $visitorSession->getCache();
             $cacheEvent = $cache->getEvent();
 
-            $cacheSteps = $cacheEvent->getSteps();
+            $cacheContract = $cacheEvent->getContract();
 
-            foreach ($cacheSteps as $key => $cacheStep) {
-                $cacheChains = $cacheStep->getChains();
-                $chains = [];
+            $cacheChains = $cacheContract->getChains();
+            $chains = [];
 
-                foreach ($cacheChains as $cacheChain) {
-                    $chains[] = [
-                        'name' => CommonHelper::translate($cacheChain->getTarget()),
-                        'status' => $cacheChain->isFinished(),
-                    ];
-                }
-
-                $steps[] = [
-                    'number' => $key + 1,
-                    'chains' => $chains,
-                    'finished' => $cacheStep->isFinished(),
+            foreach ($cacheChains as $cacheChain) {
+                $chains[] = [
+                    'name' => CommonHelper::translate($cacheChain->getTarget()),
+                    'status' => $cacheChain->isFinished(),
                 ];
             }
+
+            $contract = [
+                'chains' => $chains,
+                'finished' => $cacheContract->isFinished(),
+            ];
         }
 
         return [
@@ -98,9 +95,9 @@ readonly class DashboardService
             'type' => $event->getType(),
             'status' => $event->getStatus()->value,
             'createdAt' => $event->getCreatedAt(),
-            'steps' => $steps,
+            'contract' => $contract,
             'error' => $event->getError(),
-            'contract' => $event->getContract(),
+            'responsible' => $event->getResponsible(),
         ];
     }
 

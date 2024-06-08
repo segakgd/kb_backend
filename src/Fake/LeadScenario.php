@@ -5,7 +5,7 @@ namespace App\Fake;
 use App\Dto\Scenario\ScenarioChainDto;
 use App\Dto\Scenario\ScenarioDto;
 use App\Dto\Scenario\ScenarioKeyboardDto;
-use App\Dto\Scenario\ScenarioStepDto;
+use App\Dto\Scenario\ScenarioContractDto;
 
 class LeadScenario
 {
@@ -32,8 +32,8 @@ class LeadScenario
             ->setUUID('8e261302-d5d7-4dd0-a621-4253a01da31e')
             ->setName('Сценарий оформления заказа')
             ->setType('message')
-            ->addStep(
-                (new ScenarioStepDto())
+            ->setContract(
+                (new ScenarioContractDto())
                     ->setMessage(
                         'Добро пожаловать в нашем шопе. Хотите приобрести товар? Выберите одну из категорий:'
                     )
@@ -77,8 +77,8 @@ class LeadScenario
             ->setUUID('8e261312-0001-4dd0-a627-4253a01da001')
             ->setName('Товары по категориям')
             ->setType('message')
-            ->addStep(
-                (new ScenarioStepDto())
+            ->setContract(
+                (new ScenarioContractDto())
                     ->addChain(
                         (new ScenarioChainDto())
 //                            ->setAction('show')
@@ -118,8 +118,8 @@ class LeadScenario
             ->setUUID('8e261322-0002-4dd0-a627-4253a01da002')
             ->setName('Популярные товары')
             ->setType('message')
-            ->addStep(
-                (new ScenarioStepDto())
+            ->setContract(
+                (new ScenarioContractDto())
                     ->addChain(
                         (new ScenarioChainDto())
 //                            ->setAction('show')
@@ -159,8 +159,8 @@ class LeadScenario
             ->setUUID('8e261332-0003-4dd0-a627-4253a01da003')
             ->setName('Акционные товары')
             ->setType('message')
-            ->addStep(
-                (new ScenarioStepDto())
+            ->setContract(
+                (new ScenarioContractDto())
 //                    ->addChain(
 //                        (new ScenarioChainDto())
 ////                            ->setAction('show')
@@ -200,8 +200,8 @@ class LeadScenario
             ->setUUID('78bc84e3-0004-4ebe-bbb4-4253a01da004')
             ->setName('Моя корзина')
             ->setType('message')
-            ->addStep(
-                (new ScenarioStepDto())
+            ->setContract(
+                (new ScenarioContractDto())
                     ->setMessage(
                         'Добро пожаловать в нашем шопе. Хотите приобрести товар? Выберите одну из категорий:'
                     )
@@ -305,8 +305,8 @@ class LeadScenario
             ->setUUID('78bc84e3-0004-4ebe-bbb4-4253a01da005')
             ->setName('Оформить заказ')
             ->setType('message')
-            ->addStep(
-                (new ScenarioStepDto())
+            ->setContract(
+                (new ScenarioContractDto())
                     ->addChain(
                         (new ScenarioChainDto())
 //                            ->setAction('edit')
@@ -336,8 +336,8 @@ class LeadScenario
             ->setUUID('8e261322-0002-4dd0-a627-4253a01da006')
             ->setName('Изменить доставку')
             ->setType('message')
-            ->addStep(
-                (new ScenarioStepDto())
+            ->setContract(
+                (new ScenarioContractDto())
                     ->addChain(
                         (new ScenarioChainDto())
 //                            ->setAction('edit')
@@ -352,8 +352,8 @@ class LeadScenario
             ->setUUID('8e261322-0002-4dd0-a627-4253a01da007')
             ->setName('Изменить контакты')
             ->setType('message')
-            ->addStep(
-                (new ScenarioStepDto())
+            ->setContract(
+                (new ScenarioContractDto())
                     ->addChain(
                         (new ScenarioChainDto())
 //                            ->setAction('edit')
@@ -368,8 +368,8 @@ class LeadScenario
             ->setUUID('8e261332-0003-4dd0-a627-4253a01da008')
             ->setName('Изменить продукты')
             ->setType('message')
-            ->addStep(
-                (new ScenarioStepDto())
+            ->setContract(
+                (new ScenarioContractDto())
                     ->addChain(
                         (new ScenarioChainDto())
 //                            ->setAction('edit')
@@ -384,8 +384,8 @@ class LeadScenario
             ->setUUID('8e261332-0003-4dd0-a627-4253a01da009')
             ->setName('Удалить заказ')
             ->setType('message')
-            ->addStep(
-                (new ScenarioStepDto())
+            ->setContract(
+                (new ScenarioContractDto())
                     ->addChain(
                         (new ScenarioChainDto())
 //                            ->setAction('delete')
@@ -400,8 +400,8 @@ class LeadScenario
             ->setUUID('78bc84e3-0004-4ebe-bbb4-4253a01da010')
             ->setName('Оплатить')
             ->setType('message')
-            ->addStep(
-                (new ScenarioStepDto())
+            ->setContract(
+                (new ScenarioContractDto())
                     ->addChain(
                         (new ScenarioChainDto())
 //                            ->setAction('run')

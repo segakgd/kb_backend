@@ -4,14 +4,14 @@ namespace App\Helper;
 
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Enum\JumpEnum;
-use App\Service\System\Resolver\Dto\Contract;
+use App\Service\System\Core\Dto\Responsible;
 use Exception;
 
 class CommonHelper
 {
-    public static function createDefaultContract(): Contract
+    public static function createDefaultResponsible(): Responsible
     {
-        return (new Contract());
+        return (new Responsible());
     }
 
 

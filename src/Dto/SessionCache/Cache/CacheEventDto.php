@@ -8,13 +8,16 @@ class CacheEventDto extends AbstractDto
 {
     private bool $finished = false;
 
-    /** @var array<CacheStepDto> */
-    private array $steps = [];
+    private ?CacheContractDto $contract = null;
 
     private ?CacheDataDto $data = null;
 
     public function __construct()
     {
+        if (!$this->contract) {
+            $this->contract = new CacheContractDto;
+        }
+
         if (!$this->data) {
             $this->data = new CacheDataDto;
         }
@@ -32,41 +35,14 @@ class CacheEventDto extends AbstractDto
         return $this;
     }
 
-    public function getSteps(): array
+    public function getContract(): CacheContractDto
     {
-        return $this->steps;
+        return $this->contract;
     }
 
-    public function isEmptySteps(): bool
+    public function setContract(CacheContractDto $contract): static
     {
-        return empty($this->steps);
-    }
-
-    public function getCurrentStep(): ?CacheStepDto
-    {
-        if (empty($this->steps)) {
-            return null;
-        }
-
-        foreach ($this->steps as $step) {
-            if (!$step->isFinished()) {
-                return $step;
-            }
-        }
-
-        return null;
-    }
-
-    public function setSteps(array $steps): static
-    {
-        $this->steps = $steps;
-
-        return $this;
-    }
-
-    public function addStep(CacheStepDto $step): static
-    {
-        $this->steps[] = $step;
+        $this->contract = $contract;
 
         return $this;
     }
@@ -88,14 +64,7 @@ class CacheEventDto extends AbstractDto
         $event = new self();
         $event->finished = $data['finished'] ?? false;
 
-        $steps = [];
-
-        foreach ($data['steps'] ?? [] as $stepData) {
-            $steps[] = CacheStepDto::fromArray($stepData);
-        }
-
-        $event->steps = $steps;
-
+        $event->contract = CacheContractDto::fromArray($data['contract']);
         $event->data = CacheDataDto::fromArray($data['data'] ?? []);
 
         return $event;
@@ -103,15 +72,9 @@ class CacheEventDto extends AbstractDto
 
     public function toArray(): array
     {
-        $stepsArray = [];
-
-        foreach ($this->steps as $step) {
-            $stepsArray[] = $step->toArray();
-        }
-
         return [
             'finished' => $this->finished,
-            'steps' => $stepsArray,
+            'contract' => $this->contract->toArray(),
             'data' => $this->data->toArray(),
         ];
     }

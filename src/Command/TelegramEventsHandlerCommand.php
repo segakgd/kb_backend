@@ -7,7 +7,7 @@ use App\Enum\ChainStatusEnum;
 use App\Enum\VisitorEventStatusEnum;
 use App\Helper\CommonHelper;
 use App\Repository\Visitor\VisitorEventRepository;
-use App\Service\System\Resolver\EventResolver;
+use App\Service\System\Core\EventResolver;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -42,11 +42,11 @@ class TelegramEventsHandlerCommand extends Command
 
             if ($visitorEvent) {
                 try {
-                    $contract = CommonHelper::createDefaultContract();
+                    $responsible = CommonHelper::createDefaultResponsible();
 
-                    $this->eventResolver->resolve($visitorEvent, $contract);
+                    $this->eventResolver->resolve($visitorEvent, $responsible);
 
-                    $this->visitorEventRepository->updateChatEventStatus($visitorEvent, $contract->getStatus());
+                    $this->visitorEventRepository->updateChatEventStatus($visitorEvent, $responsible->getStatus());
                 } catch (Throwable $throwable) {
                     $visitorEvent->setError($throwable->getMessage());
 

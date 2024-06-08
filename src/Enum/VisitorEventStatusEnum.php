@@ -10,6 +10,8 @@ enum VisitorEventStatusEnum: string
 
     case New = 'new';
 
+    case Repeat = 'repeat';
+
     case Waiting = 'waiting';
 
     case Failed = 'failed';

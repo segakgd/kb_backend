@@ -22,8 +22,7 @@ class ScenarioDto
     #[Assert\Choice(self::AVAILABLE_TYPE)]
     private string $type;
 
-    /** @var array<ScenarioStepDto> */
-    private array $steps = [];
+    private ?ScenarioContractDto $contract = null;
 
     public function getUUID(): string
     {
@@ -85,21 +84,14 @@ class ScenarioDto
         return $this;
     }
 
-    public function getSteps(): array
+    public function getContract(): ScenarioContractDto
     {
-        return $this->steps;
+        return $this->contract;
     }
 
-    public function setSteps(array $steps): static
+    public function setContract(ScenarioContractDto $contract): static
     {
-        $this->steps = $steps;
-
-        return $this;
-    }
-
-    public function addStep(ScenarioStepDto $step): static
-    {
-        $this->steps[] = $step;
+        $this->contract = $contract;
 
         return $this;
     }

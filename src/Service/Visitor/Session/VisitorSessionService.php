@@ -7,10 +7,10 @@ use App\Helper\CommonHelper;
 use App\Repository\Visitor\VisitorSessionRepository;
 use DateTimeImmutable;
 
-class VisitorSessionService
+readonly class VisitorSessionService
 {
     public function __construct(
-        private readonly VisitorSessionRepository $visitorSessionRepository,
+        private VisitorSessionRepository $visitorSessionRepository,
     ) {
     }
 
@@ -45,10 +45,10 @@ class VisitorSessionService
 
     public function createVisitorSession(
         string $visitorName,
-        int $chatId,
-        int $botId,
+        int    $chatId,
+        int    $botId,
         string $chanel,
-        int $projectId,
+        int    $projectId,
     ): VisitorSession {
         $cacheDto = CommonHelper::createSessionCache();
 
@@ -59,8 +59,7 @@ class VisitorSessionService
             ->setBotId($botId)
             ->setProjectId($projectId)
             ->setCache($cacheDto)
-            ->setCreatedAt(new DateTimeImmutable())
-        ;
+            ->setCreatedAt(new DateTimeImmutable());
 
         $this->visitorSessionRepository->save($visitorSession);
 

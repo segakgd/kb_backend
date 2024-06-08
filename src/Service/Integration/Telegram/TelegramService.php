@@ -2,7 +2,7 @@
 
 namespace App\Service\Integration\Telegram;
 
-use App\Dto\Contract\ContractMessageDto;
+use App\Dto\Responsible\ResponsibleMessageDto;
 use App\Dto\Core\Telegram\Request\Invoice\InvoiceDto;
 use App\Dto\Core\Telegram\Request\Message\MessageDto;
 use App\Dto\Core\Telegram\Request\Message\PhotoDto;
@@ -13,10 +13,10 @@ use App\Service\System\HttpClient\HttpClientInterface;
 use App\Service\System\HttpClient\Request\Request;
 use App\Service\System\HttpClient\Response\ResponseInterface;
 
-class TelegramService implements TelegramServiceInterface
+readonly class TelegramService implements TelegramServiceInterface
 {
     public function __construct(
-        private readonly HttpClientInterface $httpClient,
+        private HttpClientInterface $httpClient,
     ) {
     }
 
@@ -38,11 +38,11 @@ class TelegramService implements TelegramServiceInterface
         return $this->httpClient->request($request);
     }
 
-    public function sendPhoto(ContractMessageDto $contractMessageDto, string $token, int $chatId): void
+    public function sendPhoto(ResponsibleMessageDto $responsibleMessageDto, string $token, int $chatId): void
     {
-        $message = $contractMessageDto->getMessage();
-        $replyMarkup = $contractMessageDto->getKeyBoard();
-        $photo = $contractMessageDto->getPhoto();
+        $message = $responsibleMessageDto->getMessage();
+        $replyMarkup = $responsibleMessageDto->getKeyBoard();
+        $photo = $responsibleMessageDto->getPhoto();
 
         $photoDto = (new PhotoDto())
             ->setChatId($chatId);
@@ -62,12 +62,12 @@ class TelegramService implements TelegramServiceInterface
         $this->httpClient->request($request);
     }
 
-    public function sendMessage(ContractMessageDto $contractMessageDto, string $token, int $chatId): void
+    public function sendMessage(ResponsibleMessageDto $responsibleMessageDto, string $token, int $chatId): void
     {
         // БАГ! при отправке в реживе setParseMode = MarkdownV2, с сообщением в котором есть многоточие - случается 400я - нтелега не может распарсить
 
-        $message = $contractMessageDto->getMessage();
-        $replyMarkup = $contractMessageDto->getKeyBoard();
+        $message = $responsibleMessageDto->getMessage();
+        $replyMarkup = $responsibleMessageDto->getKeyBoard();
 
         $messageDto = (new MessageDto())
             ->setChatId($chatId);

@@ -3,19 +3,17 @@
 namespace App\Command;
 
 use App\Dto\SessionCache\Cache\CacheDto;
-use App\Dto\SessionCache\Cache\CacheStepDto;
+use App\Dto\SessionCache\Cache\CacheContractDto;
 use App\Entity\Scenario\Scenario;
+use App\Entity\Visitor\VisitorSession;
 use App\Enum\VisitorEventStatusEnum;
 use App\Helper\CommonHelper;
 use App\Repository\User\BotRepository;
 use App\Repository\Visitor\VisitorEventRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
-use App\Service\DtoRepository\ContractDtoRepository;
-use App\Service\System\Common\SenderService;
-use App\Service\System\Resolver\Dto\BotDto;
-use App\Service\System\Resolver\EventResolver;
-use App\Service\System\Resolver\Jumps\JumpResolver;
-use App\Service\System\Resolver\Steps\StepResolver;
+use App\Service\System\Core\Dto\BotDto;
+use App\Service\System\Core\EventResolver;
+use App\Service\System\Core\Jumps\JumpResolver;
 use App\Service\Visitor\Scenario\ScenarioService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -39,6 +37,7 @@ class TgGoCommand extends Command
         private readonly VisitorSessionRepository $visitorSessionRepository,
         private readonly BotRepository $botRepository,
         private readonly EntityManagerInterface $entityManager,
+        private readonly JumpResolver $jumpResolver,
         string $name = null
     ) {
         parent::__construct($name);
@@ -62,7 +61,10 @@ class TgGoCommand extends Command
         if ($visitorEventId) {
             $visitorEvent = $this->visitorEventRepository->findOneById($visitorEventId);
         } else {
-            $visitorEvent = $this->visitorEventRepository->findOneByStatus(VisitorEventStatusEnum::New);
+            $visitorEvent = $this->visitorEventRepository->findOneByStatus([
+                VisitorEventStatusEnum::New,
+                VisitorEventStatusEnum::Repeat
+            ]);
         }
 
         if (!$visitorEvent) {
@@ -70,38 +72,42 @@ class TgGoCommand extends Command
         }
 
         try {
-            $contract = CommonHelper::createDefaultContract();
-
             $visitorSession = $this->visitorSessionRepository->findByEventId($visitorEvent->getId());
-            $bot = $this->botRepository->find($visitorSession->getBotId());
 
-            $scenario = $this->scenarioService->findScenarioByUUID($visitorEvent->getScenarioUUID());
             $cacheDto = $visitorSession->getCache();
 
-            $isEmptySteps = $cacheDto->getEvent()->isEmptySteps();
+//            $isEnrich = $cacheDto->getEvent()?->isFinished() ?? false;
 
-            if ($cacheDto->getEvent()->isFinished() || $isEmptySteps) {
-                $cacheDto = $this->enrichStepsCache($scenario, $cacheDto);
+            if ($visitorEvent->getStatus() === VisitorEventStatusEnum::New) {
+                $scenario = $this->scenarioService->findScenarioByUUID($visitorEvent->getScenarioUUID());
+
+                $cacheDto = $this->enrichContractCache($scenario, $cacheDto);
             }
 
-            $botDto = (new BotDto())
-                ->setType($bot->getType())
-                ->setToken($bot->getToken())
-                ->setChatId($visitorSession->getChatId())
-            ;
+            $responsible = CommonHelper::createDefaultResponsible();
 
-            $contract->setCacheDto($cacheDto);
-            $contract->setBotDto($botDto);
+            $responsible->setCacheDto($cacheDto);
+            $responsible->setBotDto(
+                botDto: $this->createBotBto($visitorSession)
+            );
 
-            $contract = $this->eventResolver->resolve($visitorEvent, $contract);
+            $responsible = $this->eventResolver->resolve($visitorEvent, $responsible);
 
-            $visitorSession->setCache($contract->getCacheDto());
+            if ($responsible->isExistJump()) {
+                $this->jumpResolver->resolveJump(
+                    visitorEvent: $visitorEvent,
+                    responsible: $responsible
+                );
+            }
+
+            $visitorSession->setCache($responsible->getCacheDto());
+
+            $visitorEvent->setStatus($responsible->getStatus());
 
             $this->entityManager->persist($visitorEvent);
             $this->entityManager->persist($visitorSession);
             $this->entityManager->flush();
 
-            $this->visitorEventRepository->updateChatEventStatus($visitorEvent, $contract->getStatus());
         } catch (Throwable $throwable) {
             $visitorEvent->setError($throwable->getMessage());
 
@@ -115,18 +121,23 @@ class TgGoCommand extends Command
         return Command::SUCCESS;
     }
 
-    private function enrichStepsCache(Scenario $scenario, CacheDto $cacheDto): CacheDto
+    private function createBotBto(VisitorSession $visitorSession): BotDto
     {
-        $arraySteps = [];
-        $scenarioSteps = $scenario->getSteps();
+        $bot = $this->botRepository->find($visitorSession->getBotId());
 
-        foreach ($scenarioSteps as $scenarioStep) {
-            $cacheStepDto = CacheStepDto::fromArray($scenarioStep->toArray());
+        return (new BotDto())
+            ->setType($bot->getType())
+            ->setToken($bot->getToken())
+            ->setChatId($visitorSession->getChatId());
+    }
 
-            $arraySteps[] = $cacheStepDto;
-        }
+    private function enrichContractCache(Scenario $scenario, CacheDto $cacheDto): CacheDto
+    {
+        $scenarioContract = $scenario->getContract();
+        $cacheContractDto = CacheContractDto::fromArray($scenarioContract->toArray());
 
-        $cacheDto->getEvent()->setSteps($arraySteps);
+        $cacheDto->getEvent()->setContract($cacheContractDto);
+        $cacheDto->getEvent()->setFinished(false);
 
         return $cacheDto;
     }

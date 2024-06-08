@@ -130,41 +130,29 @@
                                         {% endif %}
                                     </section>
 
-                                    {% if event.steps is not null %}
-                                        {% if event.steps is not empty %}
+                                    {% if event.contract is not null %}
+                                        {% if event.contract is not empty %}
                                             <br>
-                                            <section style="padding: 10px; background: #ced6ea;">
-                                                <ul>
-                                                    {% for step in event.steps %}
-                                                        <li>
-                                                            <span style="font-weight: bold; color: #18181b;">Шаг {{ step.number }}</span>
+                                                {% if event.contract.chains is not null %}
+                                                    {% if event.contract.chains is not empty %}
+                                                        <section>
+                                                            <span style="font-weight: 500">Цепочка:</span>
+                                                            <ul>
+                                                                {% for chain in event.contract.chains %}
+                                                                    <li>
+                                                                        {% if chain.status == 1 %}
+                                                                            <span class="">Пройдено</span>
+                                                                        {% else %}
+                                                                            <span class="">Не пройдено</span>
+                                                                        {% endif %}
 
-                                                            {% if step.chains is not null %}
-                                                                {% if step.chains is not empty %}
-                                                                    <br>
-                                                                    <section
-                                                                            style="padding: 10px; background: #ced6ea;">
-                                                                        Цепочка:
-                                                                        <ul>
-                                                                            {% for chain in step.chains %}
-                                                                                <li>
-                                                                                    {% if chain.status == 1 %}
-                                                                                        <span class="">Пройдено</span>
-                                                                                    {% else %}
-                                                                                        <span class="">Не пройдено</span>
-                                                                                    {% endif %}
-
-                                                                                    {{ chain.name }}
-                                                                                </li>
-                                                                            {% endfor %}
-                                                                        </ul>
-                                                                    </section>
-                                                                {% endif %}
-                                                            {% endif %}
-                                                        </li>
-                                                    {% endfor %}
-                                                </ul>
-                                            </section>
+                                                                        {{ chain.name }}
+                                                                    </li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                        </section>
+                                                    {% endif %}
+                                                {% endif %}
                                         {% endif %}
                                     {% endif %}
 

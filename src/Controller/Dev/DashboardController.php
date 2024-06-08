@@ -94,7 +94,6 @@ class DashboardController extends AbstractController
     #[Route('/admin/projects/{project}/sessions/{visitorSession}/', name: 'admin_project_sessions')]
     public function session(Project $project, VisitorSession $visitorSession): Response
     {
-
         return $this->render(
             'admin/session.html.twig',
             [

@@ -10,11 +10,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Throwable;
 
-class ScenarioConverter
+readonly class ScenarioConverter
 {
     public function __construct(
-        private readonly ScenarioService $scenarioService,
-        private readonly EntityManagerInterface $entityManager,
+        private ScenarioService        $scenarioService,
+        private EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -57,9 +57,7 @@ class ScenarioConverter
                 ->setBotId($botId)
                 ->setProjectId($projectId);
 
-            foreach ($scenario->getSteps() as $step) {
-                $scenarioEntity->addStep($step);
-            }
+            $scenarioEntity->setContract($scenario->getContract());
 
             $this->entityManager->persist($scenarioEntity);
             $this->entityManager->flush($scenarioEntity);

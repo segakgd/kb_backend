@@ -48,11 +48,18 @@ class VisitorEventRepository extends ServiceEntityRepository
         return $this->find($id);
     }
 
-    public function findOneByStatus(VisitorEventStatusEnum $status): ?VisitorEvent
+    public function findOneByStatus(array $statuses): ?VisitorEvent
     {
+        $statusesRequest = [];
+
+        /** @var VisitorEventStatusEnum $status */
+        foreach ($statuses as $status) {
+            $statusesRequest[] = $status->value;
+        }
+
         return $this->findOneBy(
             [
-                'status' => $status->value,
+                'status' => $statusesRequest,
             ]
         );
     }
