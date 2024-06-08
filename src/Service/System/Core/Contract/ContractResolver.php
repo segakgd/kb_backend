@@ -24,24 +24,18 @@ readonly class ContractResolver
      */
     public function resolve(Responsible $responsible): void
     {
-        $cacheContractDto = $responsible->getCacheDto()->getEvent()->getContract();
-
         try {
-            if (!$cacheContractDto->isFinished()) {
-                $this->resolveContract($responsible, $cacheContractDto);
+            $cacheContract = $responsible->getCacheDto()->getEvent()->getContract();
 
-                $unfinishedChains = array_filter($cacheContractDto->getChains(), fn (CacheChainDto $chain) => !$chain->isFinished());
+            $this->resolveContract($responsible, $cacheContract);
 
-                if (empty($unfinishedChains)) {
-                    $cacheContractDto->setFinished(true);
-                }
+            $unfinishedChains = array_filter($cacheContract->getChains(), fn (CacheChainDto $chain) => !$chain->isFinished());
+
+            if (empty($unfinishedChains)) {
+                $cacheContract->setFinished(true);
+                $responsible->setContractStatus(true);
             }
 
-//            $unfinishedContracts = array_filter($contracts, fn (CacheContractDto $cacheContractDto) => !$cacheContractDto->isFinished());
-
-//            if (empty($unfinishedContracts)) {
-//                $responsible->setContractsStatus(true);
-//            }
         } catch (Throwable $exception) {
             $this->handleException($exception);
 
@@ -55,24 +49,12 @@ readonly class ContractResolver
     private function resolveContract(Responsible $responsible, CacheContractDto $cacheContractDto): void
     {
         if ($cacheContractDto->hasChain()) {
-            $this->handleChain($responsible, $cacheContractDto);
+            $this->chainsResolver->resolve($responsible, $cacheContractDto->getChains());
         } else {
-            $this->handleScenario($responsible, $cacheContractDto);
+            $this->scenarioResolver->resolve($responsible, $cacheContractDto);
+
             $responsible->setContractStatus(true);
         }
-    }
-
-    /**
-     * @throws Throwable
-     */
-    private function handleChain(Responsible $responsible, CacheContractDto $cacheContractDto): void
-    {
-        $this->chainsResolver->resolve($responsible, $cacheContractDto->getChains());
-    }
-
-    private function handleScenario(Responsible $responsible, CacheContractDto $cacheContractDto): void
-    {
-        $this->scenarioResolver->resolve($responsible, $cacheContractDto);
     }
 
     private function handleException(Throwable $exception): void

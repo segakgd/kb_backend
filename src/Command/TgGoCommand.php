@@ -61,7 +61,10 @@ class TgGoCommand extends Command
         if ($visitorEventId) {
             $visitorEvent = $this->visitorEventRepository->findOneById($visitorEventId);
         } else {
-            $visitorEvent = $this->visitorEventRepository->findOneByStatus(VisitorEventStatusEnum::New);
+            $visitorEvent = $this->visitorEventRepository->findOneByStatus([
+                VisitorEventStatusEnum::New,
+                VisitorEventStatusEnum::Repeat
+            ]);
         }
 
         if (!$visitorEvent) {
@@ -73,9 +76,9 @@ class TgGoCommand extends Command
 
             $cacheDto = $visitorSession->getCache();
 
-            $isEnrich = $cacheDto->getEvent()?->isFinished() ?? false;
+//            $isEnrich = $cacheDto->getEvent()?->isFinished() ?? false;
 
-            if ($isEnrich) {
+            if ($visitorEvent->getStatus() === VisitorEventStatusEnum::New) {
                 $scenario = $this->scenarioService->findScenarioByUUID($visitorEvent->getScenarioUUID());
 
                 $cacheDto = $this->enrichContractCache($scenario, $cacheDto);
@@ -105,7 +108,6 @@ class TgGoCommand extends Command
             $this->entityManager->persist($visitorSession);
             $this->entityManager->flush();
 
-            $this->visitorEventRepository->updateChatEventStatus($visitorEvent, $responsible->getStatus());
         } catch (Throwable $throwable) {
             $visitorEvent->setError($throwable->getMessage());
 

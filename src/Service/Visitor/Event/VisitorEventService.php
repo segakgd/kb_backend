@@ -50,7 +50,7 @@ readonly class VisitorEventService
 
         if ($visitorEvent->getStatus() === VisitorEventStatusEnum::Waiting) {
             $visitorSession->setCache($cache); // todo зачем?
-            $visitorEvent->setStatus(VisitorEventStatusEnum::New);
+            $visitorEvent->setStatus(VisitorEventStatusEnum::Repeat);
 
             $this->entityManager->persist($visitorSession);
             $this->entityManager->persist($visitorEvent);
