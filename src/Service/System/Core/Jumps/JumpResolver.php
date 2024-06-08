@@ -6,8 +6,6 @@ use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Entity\Scenario\Scenario;
 use App\Entity\Visitor\VisitorEvent;
-use App\Entity\Visitor\VisitorSession;
-use App\Enum\ChainStatusEnum;
 use App\Enum\VisitorEventStatusEnum;
 use App\Service\System\Common\CacheService;
 use App\Service\System\Core\Dto\Responsible;
@@ -60,9 +58,7 @@ readonly class JumpResolver
         $contract = $cacheDto->getEvent()->getContract();
         $flag = true;
 
-//        foreach ($contracts as $contract) {
         $this->updateCacheChains($contract->getChains(), $jumpValue, $flag);
-//        }
     }
 
     private function updateCacheChains(array $chains, string $jumpValue, bool &$flag): void
