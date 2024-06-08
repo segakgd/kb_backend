@@ -68,24 +68,25 @@ class TgGoCommand extends Command
         }
 
         try {
-            $responsible = CommonHelper::createDefaultResponsible();
-
             $visitorSession = $this->visitorSessionRepository->findByEventId($visitorEvent->getId());
-            $bot = $this->botRepository->find($visitorSession->getBotId());
 
-            $scenario = $this->scenarioService->findScenarioByUUID($visitorEvent->getScenarioUUID());
             $cacheDto = $visitorSession->getCache();
+            $cacheEvent = $cacheDto->getEvent();
 
-            $isEmptyContract = $cacheDto->getEvent()->isEmptyContract();
+            if (is_null($cacheEvent) || $cacheDto->getEvent()->isFinished()) {
+                $scenario = $this->scenarioService->findScenarioByUUID($visitorEvent->getScenarioUUID());
 
-            if ($cacheDto->getEvent()->isFinished() || $isEmptyContract) {
                 $cacheDto = $this->enrichContractCache($scenario, $cacheDto);
             }
+
+            $bot = $this->botRepository->find($visitorSession->getBotId());
 
             $botDto = (new BotDto())
                 ->setType($bot->getType())
                 ->setToken($bot->getToken())
                 ->setChatId($visitorSession->getChatId());
+
+            $responsible = CommonHelper::createDefaultResponsible();
 
             $responsible->setCacheDto($cacheDto);
             $responsible->setBotDto($botDto);
@@ -125,6 +126,7 @@ class TgGoCommand extends Command
         $cacheContractDto = CacheContractDto::fromArray($scenarioContract->toArray());
 
         $cacheDto->getEvent()->setContract($cacheContractDto);
+        $cacheDto->getEvent()->setFinished(false);
 
         return $cacheDto;
     }
