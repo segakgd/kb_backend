@@ -5,6 +5,7 @@ namespace App\Command;
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Dto\SessionCache\Cache\CacheContractDto;
 use App\Entity\Scenario\Scenario;
+use App\Entity\Visitor\VisitorSession;
 use App\Enum\VisitorEventStatusEnum;
 use App\Helper\CommonHelper;
 use App\Repository\User\BotRepository;
@@ -71,29 +72,25 @@ class TgGoCommand extends Command
             $visitorSession = $this->visitorSessionRepository->findByEventId($visitorEvent->getId());
 
             $cacheDto = $visitorSession->getCache();
-            $cacheEvent = $cacheDto->getEvent();
 
-            if (is_null($cacheEvent) || $cacheDto->getEvent()->isFinished()) {
+            $isEnrich = $cacheDto->getEvent()?->isFinished() ?? false;
+
+            if ($isEnrich) {
                 $scenario = $this->scenarioService->findScenarioByUUID($visitorEvent->getScenarioUUID());
 
                 $cacheDto = $this->enrichContractCache($scenario, $cacheDto);
             }
 
-            $bot = $this->botRepository->find($visitorSession->getBotId());
-
-            $botDto = (new BotDto())
-                ->setType($bot->getType())
-                ->setToken($bot->getToken())
-                ->setChatId($visitorSession->getChatId());
-
             $responsible = CommonHelper::createDefaultResponsible();
 
             $responsible->setCacheDto($cacheDto);
-            $responsible->setBotDto($botDto);
+            $responsible->setBotDto(
+                botDto: $this->createBotBto($visitorSession)
+            );
 
             $responsible = $this->eventResolver->resolve($visitorEvent, $responsible);
 
-            if (!is_null($responsible->getJump())) {
+            if ($responsible->isExistJump()) {
                 $this->jumpResolver->resolveJump(
                     visitorEvent: $visitorEvent,
                     responsible: $responsible
@@ -101,6 +98,8 @@ class TgGoCommand extends Command
             }
 
             $visitorSession->setCache($responsible->getCacheDto());
+
+            $visitorEvent->setStatus($responsible->getStatus());
 
             $this->entityManager->persist($visitorEvent);
             $this->entityManager->persist($visitorSession);
@@ -118,6 +117,16 @@ class TgGoCommand extends Command
         }
 
         return Command::SUCCESS;
+    }
+
+    private function createBotBto(VisitorSession $visitorSession): BotDto
+    {
+        $bot = $this->botRepository->find($visitorSession->getBotId());
+
+        return (new BotDto())
+            ->setType($bot->getType())
+            ->setToken($bot->getToken())
+            ->setChatId($visitorSession->getChatId());
     }
 
     private function enrichContractCache(Scenario $scenario, CacheDto $cacheDto): CacheDto

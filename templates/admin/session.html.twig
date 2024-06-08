@@ -133,36 +133,26 @@
                                     {% if event.contract is not null %}
                                         {% if event.contract is not empty %}
                                             <br>
-                                            <section style="padding: 10px; background: #ced6ea;">
-                                                <ul>
-                                                    <li>
-                                                        <span style="font-weight: bold; color: #18181b;">Шаг {{ event.contract.number }}</span>
+                                                {% if event.contract.chains is not null %}
+                                                    {% if event.contract.chains is not empty %}
+                                                        <section>
+                                                            <span style="font-weight: 500">Цепочка:</span>
+                                                            <ul>
+                                                                {% for chain in event.contract.chains %}
+                                                                    <li>
+                                                                        {% if chain.status == 1 %}
+                                                                            <span class="">Пройдено</span>
+                                                                        {% else %}
+                                                                            <span class="">Не пройдено</span>
+                                                                        {% endif %}
 
-                                                        {% if event.contract.chains is not null %}
-                                                            {% if event.contract.chains is not empty %}
-                                                                <br>
-                                                                <section
-                                                                        style="padding: 10px; background: #ced6ea;">
-                                                                    Цепочка:
-                                                                    <ul>
-                                                                        {% for chain in event.contract.chains %}
-                                                                            <li>
-                                                                                {% if chain.status == 1 %}
-                                                                                    <span class="">Пройдено</span>
-                                                                                {% else %}
-                                                                                    <span class="">Не пройдено</span>
-                                                                                {% endif %}
-
-                                                                                {{ chain.name }}
-                                                                            </li>
-                                                                        {% endfor %}
-                                                                    </ul>
-                                                                </section>
-                                                            {% endif %}
-                                                        {% endif %}
-                                                    </li>
-                                                </ul>
-                                            </section>
+                                                                        {{ chain.name }}
+                                                                    </li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                        </section>
+                                                    {% endif %}
+                                                {% endif %}
                                         {% endif %}
                                     {% endif %}
 

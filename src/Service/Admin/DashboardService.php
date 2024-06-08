@@ -84,8 +84,7 @@ readonly class DashboardService
                 ];
             }
 
-            $contract[] = [
-                'number' => 1,
+            $contract = [
                 'chains' => $chains,
                 'finished' => $cacheContract->isFinished(),
             ];
