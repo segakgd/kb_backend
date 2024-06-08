@@ -16,13 +16,18 @@ class C4Chain extends AbstractChain
 
         $message = "Это шаг 1 элемент цепочки C4. \n\n Вы кликнули на $content";
 
-//        if ($content === 'Да') {
-//            $responsible->setJump(JumpEnum::refChain1);
-//
-//            return $responsible;
-//        }
+        if ($content === 'Сделать jump на 2 (4)') {
+            $responsible->setJump(JumpEnum::refChain2);
 
-        $message = "Вы кликнули на $content";
+            return $responsible;
+        }
+
+        if ($content === 'Сделать jump на 6 (4)') {
+            $responsible->setJump(JumpEnum::refChain6);
+
+            return $responsible;
+        }
+
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,
@@ -39,10 +44,13 @@ class C4Chain extends AbstractChain
         $replyMarkups = [
             [
                 [
-                    'text' => 'Да 4'
+                    'text' => 'Сделать jump на 2 (4)'
                 ],
                 [
-                    'text' => 'Нет 4'
+                    'text' => 'Сделать jump на 6 (4)'
+                ],
+                [
+                    'text' => 'Продолжить 4'
                 ],
             ],
         ];
@@ -59,8 +67,9 @@ class C4Chain extends AbstractChain
         $content = $responsible->getCacheDto()->getContent();
 
         $validData = [
-            'Да 4',
-            'Нет 4',
+            'Сделать jump на 2 (4)',
+            'Сделать jump на 6 (4)',
+            'Продолжить (4)',
         ];
 
         if (in_array($content, $validData)) {

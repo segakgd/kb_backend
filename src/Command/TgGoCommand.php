@@ -76,8 +76,6 @@ class TgGoCommand extends Command
 
             $cacheDto = $visitorSession->getCache();
 
-//            $isEnrich = $cacheDto->getEvent()?->isFinished() ?? false;
-
             if ($visitorEvent->getStatus() === VisitorEventStatusEnum::New) {
                 $scenario = $this->scenarioService->findScenarioByUUID($visitorEvent->getScenarioUUID());
 

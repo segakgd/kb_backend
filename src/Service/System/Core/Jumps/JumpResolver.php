@@ -43,7 +43,7 @@ readonly class JumpResolver
             $this->updateCacheContract($responsible->getCacheDto(), $jump->value);
         }
 
-        $responsible->setStatus(VisitorEventStatusEnum::New);
+        $responsible->setStatus(VisitorEventStatusEnum::Repeat);
     }
 
     private function resolveScenario(string $jumpValue): ?Scenario
