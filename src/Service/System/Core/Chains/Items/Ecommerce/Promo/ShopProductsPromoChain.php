@@ -55,10 +55,7 @@ class ShopProductsPromoChain extends AbstractChain
         $replyMarkups = [
             [
                 [
-                    'text' => 'Да 2'
-                ],
-                [
-                    'text' => 'Нет 2'
+                    'text' => 'ПОсмтавить состояние для ' . static::class
                 ],
             ],
         ];

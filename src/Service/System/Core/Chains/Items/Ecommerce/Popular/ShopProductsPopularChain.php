@@ -1,15 +1,17 @@
 <?php
 
-namespace App\Service\System\Core\Chains\Items\Items\Popular;
+namespace App\Service\System\Core\Chains\Items\Ecommerce\Popular;
 
-use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\Product\Service\ProductService;
 use App\Service\System\Common\PaginateService;
-use App\Service\System\Core\Dto\Responsible;
+use App\Service\System\Core\Chains\Items\AbstractChain;
+use App\Service\System\Core\Dto\Condition;
+use App\Service\System\Core\Dto\ConditionInterface;
+use App\Service\System\Core\Dto\ResponsibleInterface;
 use Exception;
 
-class ShopProductsPopularChain // extends AbstractChain
+class ShopProductsPopularChain extends AbstractChain
 {
     public function __construct(
         private readonly ProductService $productService,
@@ -20,17 +22,21 @@ class ShopProductsPopularChain // extends AbstractChain
     /**
      * @throws Exception
      */
-    public function success(Responsible $responsible, CacheDto $cacheDto): bool
+    public function success(ResponsibleInterface $responsible): ResponsibleInterface
     {
         $products = $this->productService->getPopularProducts(1, 'first');
 
-        $this->paginateService->pug($responsible, $products, $cacheDto->getEvent()->getData());
+        $this->paginateService->pug($responsible, $products, $responsible->getCacheDto()->getEvent()->getData());
 
-        return true;
+        return $responsible;
     }
 
-    public function fall(Responsible $responsible, CacheDto $cacheDto): bool
+    public function validate(ResponsibleInterface $responsible): bool
     {
+        if ($responsible->getCacheDto()->getEvent() === 'Популярные товары') {
+            return true;
+        }
+
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             'Не понимаю о чем вы...',
         );
@@ -40,8 +46,20 @@ class ShopProductsPopularChain // extends AbstractChain
         return false;
     }
 
-    public function validateCondition(string $content): bool
+    public function condition(): ConditionInterface
     {
-        return $content === 'Популярные товары';
+        $replyMarkups = [
+            [
+                [
+                    'text' => 'ПОсмтавить состояние для ' . static::class
+                ],
+            ],
+        ];
+
+        $condition = new Condition();
+
+        $condition->setKeyBoard($replyMarkups);
+
+        return $condition;
     }
 }
