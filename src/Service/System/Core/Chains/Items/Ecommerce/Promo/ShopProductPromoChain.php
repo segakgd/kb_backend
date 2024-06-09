@@ -1,29 +1,33 @@
 <?php
 
-namespace App\Service\System\Core\Chains\Items\Items\Promo;
+namespace App\Service\System\Core\Chains\Items\Ecommerce\Promo;
 
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\KeyboardHelper;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\Product\Service\ProductService;
 use App\Service\System\Common\PaginateService;
+use App\Service\System\Core\Chains\Items\AbstractChain;
+use App\Service\System\Core\Dto\Condition;
+use App\Service\System\Core\Dto\ConditionInterface;
 use App\Service\System\Core\Dto\Responsible;
+use App\Service\System\Core\Dto\ResponsibleInterface;
 use Exception;
 
-readonly class ShopProductPromoChain // extends AbstractChain
+class ShopProductPromoChain extends AbstractChain
 {
     public function __construct(
-        private ProductService  $productService,
-        private PaginateService $paginateService,
+        private readonly ProductService  $productService,
+        private readonly PaginateService $paginateService,
     ) {
     }
 
     /**
      * @throws Exception
      */
-    public function success(Responsible $responsible, CacheDto $cacheDto): bool
+    public function success(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        $content = $cacheDto->getContent();
+        $content = $responsible->getCacheDto()->getContent();
 
 //        if ($cacheDto->getEvent()->getCurrentChain()->isRepeat()) {
 //            $cacheDto->getEvent()->getCurrentChain()->setRepeat(false);
@@ -31,10 +35,12 @@ readonly class ShopProductPromoChain // extends AbstractChain
 //            $content = 'first'; // todo мб возвращать на тот товар с которого ушли?
 //        }
 
-        $event = $cacheDto->getEvent();
+        $event = $responsible->getCacheDto()->getEvent();
 
         if ($content === 'добавить в корзину') {
-            return $this->addToCart($responsible, $cacheDto);
+            $this->addToCart($responsible, $responsible->getCacheDto());
+
+            return $responsible;
         }
 
         $products = match ($content) {
@@ -45,12 +51,43 @@ readonly class ShopProductPromoChain // extends AbstractChain
         };
 
         if ($products) {
-            $this->paginateService->pug($responsible, $products, $cacheDto->getEvent()->getData());
+            $this->paginateService->pug($responsible, $products, $responsible->getCacheDto()->getEvent()->getData());
 
-            return false;
+            return $responsible; // false
+        }
+
+        return $responsible; // false
+    }
+
+    public function validate(ResponsibleInterface $responsible): bool
+    {
+        $availableProductNavItems = KeyboardHelper::getAvailableProductNavItems();
+
+        if (in_array($responsible->getCacheDto()->getContent(), $availableProductNavItems)) {
+            return true;
         }
 
         return false;
+    }
+
+    public function condition(): ConditionInterface
+    {
+        $replyMarkups = [
+            [
+                [
+                    'text' => 'Да 2'
+                ],
+                [
+                    'text' => 'Нет 2'
+                ],
+            ],
+        ];
+
+        $condition = new Condition();
+
+        $condition->setKeyBoard($replyMarkups);
+
+        return $condition;
     }
 
     public function fall(Responsible $responsible, CacheDto $cacheDto): bool

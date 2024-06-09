@@ -2,7 +2,6 @@
 
 namespace App\Service\System\Core\Chains\Items;
 
-use App\Enum\JumpEnum;
 use App\Helper\MessageHelper;
 use App\Service\System\Core\Dto\Condition;
 use App\Service\System\Core\Dto\ConditionInterface;
