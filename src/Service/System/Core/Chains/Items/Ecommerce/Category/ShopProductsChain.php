@@ -38,57 +38,14 @@ class ShopProductsChain extends AbstractChain
 
         $event = $cacheDto->getEvent();
 
-        return match ($content) {
+        match ($content) {
             'first' => $this->paginateService->first($responsible, $event->getData()),
             'предыдущий' => $this->paginateService->prev($responsible, $event->getData()),
             'следующий' => $this->paginateService->next($responsible, $event->getData()),
             'добавить в корзину' => $this->addToCart($responsible, $cacheDto),
-            default => false
         };
-    }
 
-    public function fall(Responsible $responsible, CacheDto $cacheDto): bool
-    {
-        $replyMarkups = KeyboardHelper::getProductNav();
-
-        $responsibleMessage = MessageHelper::createResponsibleMessage(
-            'Не понимаю о чем вы... мб вам выбрать доступные варианты из меню? К примеру, вы можете посмотреть более подробную информациюю о товаре.',
-            null,
-            $replyMarkups,
-        );
-
-        $responsible->getResult()->addMessage($responsibleMessage);
-
-        return false;
-    }
-
-    public function validateCondition(string $content): bool
-    {
-        $availableProductNavItems = KeyboardHelper::getAvailableProductNavItems();
-
-        if (in_array($content, $availableProductNavItems)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    private function addToCart(Responsible $responsible, CacheDto $cacheDto): bool
-    {
-        $productId = $cacheDto->getEvent()->getData()->getProductId();
-        $responsibleMessage = MessageHelper::createResponsibleMessage('');
-
-        $product = $this->productService->find($productId);
-        $variants = $product->getVariants();
-
-        $variantsNav = KeyboardHelper::getVariantsNav($variants);
-
-        $responsibleMessage->setKeyBoard($variantsNav);
-        $responsibleMessage->setMessage('Добавить в корзину вариант:');
-
-        $responsible->getResult()->addMessage($responsibleMessage);
-
-        return true;
+        return $responsible;
     }
 
     public function condition(): ConditionInterface
@@ -110,6 +67,40 @@ class ShopProductsChain extends AbstractChain
 
     public function validate(ResponsibleInterface $responsible): bool
     {
-        // TODO: Implement validate() method.
+        $availableProductNavItems = KeyboardHelper::getAvailableProductNavItems();
+
+        if (in_array($responsible->getCacheDto()->getContent(), $availableProductNavItems)) {
+            return true;
+        }
+
+        $replyMarkups = KeyboardHelper::getProductNav();
+
+        $responsibleMessage = MessageHelper::createResponsibleMessage(
+            'Не понимаю о чем вы... мб вам выбрать доступные варианты из меню? К примеру, вы можете посмотреть более подробную информациюю о товаре.',
+            null,
+            $replyMarkups,
+        );
+
+        $responsible->getResult()->addMessage($responsibleMessage);
+
+        return false;
+    }
+
+    private function addToCart(Responsible $responsible, CacheDto $cacheDto): bool
+    {
+        $productId = $cacheDto->getEvent()->getData()->getProductId();
+        $responsibleMessage = MessageHelper::createResponsibleMessage('');
+
+        $product = $this->productService->find($productId);
+        $variants = $product->getVariants();
+
+        $variantsNav = KeyboardHelper::getVariantsNav($variants);
+
+        $responsibleMessage->setKeyBoard($variantsNav);
+        $responsibleMessage->setMessage('Добавить в корзину вариант:');
+
+        $responsible->getResult()->addMessage($responsibleMessage);
+
+        return true;
     }
 }

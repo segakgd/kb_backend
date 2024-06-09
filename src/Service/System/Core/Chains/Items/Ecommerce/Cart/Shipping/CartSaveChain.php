@@ -54,17 +54,7 @@ class CartSaveChain extends AbstractChain
 
         $responsible->getResult()->addMessage($responsibleMessage);
 
-        return true;
-    }
-
-    public function fall(Responsible $responsible, CacheDto $cacheDto): bool
-    {
-        return false;
-    }
-
-    public function validateCondition(string $content): bool
-    {
-        return true;
+        return $responsible;
     }
 
     public function condition(): ConditionInterface
@@ -86,6 +76,6 @@ class CartSaveChain extends AbstractChain
 
     public function validate(ResponsibleInterface $responsible): bool
     {
-        // TODO: Implement validate() method.
+        return true;
     }
 }

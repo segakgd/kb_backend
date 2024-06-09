@@ -16,17 +16,7 @@ class ShippingFinishChain  extends AbstractChain
         $cacheDto = $responsible->getCacheDto();
         $content = $cacheDto->getContent();
 
-        return true;
-    }
-
-    public function fall(Responsible $responsible, CacheDto $cacheDto): bool
-    {
-        return false;
-    }
-
-    public function validateCondition(string $content): bool
-    {
-        return true;
+        return $responsible;
     }
 
     public function condition(): ConditionInterface
@@ -48,6 +38,6 @@ class ShippingFinishChain  extends AbstractChain
 
     public function validate(ResponsibleInterface $responsible): bool
     {
-        // TODO: Implement validate() method.
+        return true;
     }
 }
