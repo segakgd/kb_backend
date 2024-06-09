@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\System\Core\Chains\Items\Items\Category;
+namespace App\Service\System\Core\Chains\Items\Ecommerce\Category;
 
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\KeyboardHelper;
@@ -8,10 +8,14 @@ use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\Product\Service\ProductService;
 use App\Service\System\Common\PaginateService;
 // use App\Service\System\Handler\Chain\AbstractChain;
+use App\Service\System\Core\Chains\Items\AbstractChain;
+use App\Service\System\Core\Dto\Condition;
+use App\Service\System\Core\Dto\ConditionInterface;
 use App\Service\System\Core\Dto\Responsible;
+use App\Service\System\Core\Dto\ResponsibleInterface;
 use Exception;
 
-readonly class ShopProductsChain // extends AbstractChain
+readonly class ShopProductsChain extends AbstractChain
 {
     public function __construct(
         private ProductService  $productService,
@@ -22,7 +26,7 @@ readonly class ShopProductsChain // extends AbstractChain
     /**
      * @throws Exception
      */
-    public function success(Responsible $responsible, CacheDto $cacheDto): bool
+    public function success(ResponsibleInterface $responsible): ResponsibleInterface
     {
         $content = $cacheDto->getContent();
 
@@ -85,5 +89,27 @@ readonly class ShopProductsChain // extends AbstractChain
         $responsible->getResult()->addMessage($responsibleMessage);
 
         return true;
+    }
+
+    public function condition(): ConditionInterface
+    {
+        $replyMarkups = [
+            [
+                [
+                    'text' => 'Поставить состояние для ' . static::class
+                ],
+            ],
+        ];
+
+        $condition = new Condition();
+
+        $condition->setKeyBoard($replyMarkups);
+
+        return $condition;
+    }
+
+    public function validate(ResponsibleInterface $responsible): bool
+    {
+        // TODO: Implement validate() method.
     }
 }

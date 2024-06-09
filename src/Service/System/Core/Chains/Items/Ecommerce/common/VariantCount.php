@@ -1,21 +1,25 @@
 <?php
 
-namespace App\Service\System\Core\Chains\Items\Items;
+namespace App\Service\System\Core\Chains\Items\Ecommerce\common;
 
-use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\Product\Service\ProductService;
-use App\Service\System\Core\Dto\Responsible;
+use App\Service\System\Core\Chains\Items\AbstractChain;
+use App\Service\System\Core\Dto\Condition;
+use App\Service\System\Core\Dto\ConditionInterface;
+use App\Service\System\Core\Dto\ResponsibleInterface;
 
-class VariantCount// extends AbstractChain
+class VariantCount extends AbstractChain
 {
     public function __construct(
         private readonly ProductService $productService,
     ) {
     }
 
-    public function success(Responsible $responsible, CacheDto $cacheDto): bool
+    public function success(ResponsibleInterface $responsible): ResponsibleInterface
     {
+        $cacheDto = $responsible->getCacheDto();
+
         $count = $cacheDto->getContent();
 
         $cacheDto->getEvent()->getData()->setCount($count);
@@ -72,11 +76,19 @@ class VariantCount// extends AbstractChain
 
         $responsible->getResult()->addMessage($responsibleMessage);
 
-        return true;
+        return $responsible; // true
     }
 
-    public function fall(Responsible $responsible, CacheDto $cacheDto): bool
+    public function validate(ResponsibleInterface $responsible): bool
     {
+        $content = $responsible->getCacheDto()->getContent();
+
+        $available = [1, 2, 3, 4, 5];
+
+        if (in_array($content, $available)) {
+            return true;
+        }
+
         $replyMarkups = [
             [
                 [
@@ -96,14 +108,32 @@ class VariantCount// extends AbstractChain
         return false;
     }
 
-    public function validateCondition(string $content): bool
+    public function condition(): ConditionInterface
     {
-        $available = [1, 2, 3, 4, 5];
+        $replyMarkups = [
+            [
+                [
+                    'text' => 1
+                ],
+                [
+                    'text' => 2
+                ],
+                [
+                    'text' => 3
+                ],
+                [
+                    'text' => 4
+                ],
+                [
+                    'text' => 5
+                ],
+            ],
+        ];
 
-        if (in_array($content, $available)) {
-            return true;
-        }
+        $condition = new Condition();
 
-        return false;
+        $condition->setKeyBoard($replyMarkups);
+
+        return $condition;
     }
 }

@@ -1,22 +1,25 @@
 <?php
 
-namespace App\Service\System\Core\Chains\Items\Items;
+namespace App\Service\System\Core\Chains\Items\Ecommerce\common;
 
-use App\Dto\SessionCache\Cache\CacheDto;
 use App\Entity\Ecommerce\ProductVariant;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\Product\Service\ProductService;
-use App\Service\System\Core\Dto\Responsible;
+use App\Service\System\Core\Chains\Items\AbstractChain;
+use App\Service\System\Core\Dto\Condition;
+use App\Service\System\Core\Dto\ConditionInterface;
+use App\Service\System\Core\Dto\ResponsibleInterface;
 
-readonly class ShopProductVariantChain // extends AbstractChai
+class ShopProductVariantChain extends AbstractChain
 {
     public function __construct(
-        private ProductService $productService,
+        private readonly ProductService $productService,
     ) {
     }
 
-    public function success(Responsible $responsible, CacheDto $cacheDto): bool
+    public function success(ResponsibleInterface $responsible): ResponsibleInterface
     {
+        $cacheDto = $responsible->getCacheDto();
         $content = $cacheDto->getContent();
 
         $productId = $cacheDto->getEvent()->getData()->getProductId();
@@ -69,25 +72,39 @@ readonly class ShopProductVariantChain // extends AbstractChai
 
             $responsible->getResult()->addMessage($responsibleMessage);
 
-            return true;
+            return $responsible; // true;
         }
 
-        return false;
+        return $responsible; // false;
     }
 
-    public function fall(Responsible $responsible, CacheDto $cacheDto): bool
+    public function validate(ResponsibleInterface $responsible): bool
     {
-        $responsibleMessage = MessageHelper::createResponsibleMessage(
-            'Не понимаю о чем вы, выберите один из вариантов:',
-        );
+//        $responsibleMessage = MessageHelper::createResponsibleMessage(
+//            'Не понимаю о чем вы, выберите один из вариантов:',
+//        );
+//
+//        $responsible->getResult()->addMessage($responsibleMessage);
+//
+//        return false;
 
-        $responsible->getResult()->addMessage($responsibleMessage);
-
-        return false;
-    }
-
-    public function validateCondition(string $content): bool
-    {
         return true;
+    }
+
+    public function condition(): ConditionInterface
+    {
+        $replyMarkups = [
+            [
+                [
+                    'text' => 'Поставить состояние для ' . static::class
+                ],
+            ],
+        ];
+
+        $condition = new Condition();
+
+        $condition->setKeyBoard($replyMarkups);
+
+        return $condition;
     }
 }

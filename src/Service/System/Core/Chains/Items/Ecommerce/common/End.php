@@ -1,18 +1,22 @@
 <?php
 
-namespace App\Service\System\Core\Chains\Items\Items;
+namespace App\Service\System\Core\Chains\Items\Ecommerce\common;
 
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\MessageHelper;
+use App\Service\System\Core\Chains\Items\AbstractChain;
+use App\Service\System\Core\Dto\Condition;
+use App\Service\System\Core\Dto\ConditionInterface;
 use App\Service\System\Core\Dto\Responsible;
+use App\Service\System\Core\Dto\ResponsibleInterface;
 use Exception;
 
-class End // extends AbstractChain // todo удалить
+class End extends AbstractChain
 {
     /**
      * @throws Exception
      */
-    public function success(Responsible $responsible, CacheDto $cacheDto): bool
+    public function success(ResponsibleInterface $responsible): ResponsibleInterface
     {
         return true;
     }
@@ -41,5 +45,27 @@ class End // extends AbstractChain // todo удалить
     public function validateCondition(string $content): bool
     {
         return false;
+    }
+
+    public function condition(): ConditionInterface
+    {
+        $replyMarkups = [
+            [
+                [
+                    'text' => 'Поставить состояние для ' . static::class
+                ],
+            ],
+        ];
+
+        $condition = new Condition();
+
+        $condition->setKeyBoard($replyMarkups);
+
+        return $condition;
+    }
+
+    public function validate(ResponsibleInterface $responsible): bool
+    {
+        // TODO: Implement validate() method.
     }
 }
