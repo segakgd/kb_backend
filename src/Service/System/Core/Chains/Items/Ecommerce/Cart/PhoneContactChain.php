@@ -14,6 +14,7 @@ class PhoneContactChain extends AbstractChain
 {
     public function success(ResponsibleInterface $responsible): ResponsibleInterface
     {
+        $cacheDto = $responsible->getCacheDto();
         $content = $cacheDto->getContent();
         $contacts = $cacheDto->getCart()->getContacts();
 

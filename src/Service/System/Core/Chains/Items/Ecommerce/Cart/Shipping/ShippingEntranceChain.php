@@ -10,10 +10,11 @@ use App\Service\System\Core\Dto\ConditionInterface;
 use App\Service\System\Core\Dto\Responsible;
 use App\Service\System\Core\Dto\ResponsibleInterface;
 
-class ShippingEntranceChain  extends AbstractChain
+class ShippingEntranceChain extends AbstractChain
 {
     public function success(ResponsibleInterface $responsible): ResponsibleInterface
     {
+        $cacheDto = $responsible->getCacheDto();
         $content = $cacheDto->getContent();
 
         $shipping = $cacheDto->getCart()->getShipping();

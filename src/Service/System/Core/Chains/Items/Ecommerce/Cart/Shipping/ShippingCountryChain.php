@@ -14,6 +14,7 @@ class ShippingCountryChain extends AbstractChain
 {
     public function success(ResponsibleInterface $responsible): ResponsibleInterface
     {
+        $cacheDto = $responsible->getCacheDto();
         $content = $cacheDto->getContent();
 
         $shipping = $cacheDto->getCart()->getShipping();

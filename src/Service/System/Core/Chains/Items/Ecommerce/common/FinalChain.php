@@ -2,11 +2,9 @@
 
 namespace App\Service\System\Core\Chains\Items\Ecommerce\common;
 
-use App\Dto\SessionCache\Cache\CacheDto;
 use App\Service\System\Core\Chains\Items\AbstractChain;
 use App\Service\System\Core\Dto\Condition;
 use App\Service\System\Core\Dto\ConditionInterface;
-use App\Service\System\Core\Dto\Responsible;
 use App\Service\System\Core\Dto\ResponsibleInterface;
 
 class FinalChain extends AbstractChain
@@ -14,12 +12,7 @@ class FinalChain extends AbstractChain
 
     public function success(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        return true;
-    }
-
-    public function fall(Responsible $responsible, CacheDto $cacheDto): bool
-    {
-        return false;
+        return $responsible;
     }
 
     public function condition(): ConditionInterface
@@ -41,6 +34,6 @@ class FinalChain extends AbstractChain
 
     public function validate(ResponsibleInterface $responsible): bool
     {
-        // TODO: Implement validate() method.
+        return true;
     }
 }

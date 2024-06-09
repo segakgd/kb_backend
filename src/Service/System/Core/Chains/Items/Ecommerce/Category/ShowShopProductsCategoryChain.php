@@ -2,19 +2,17 @@
 
 namespace App\Service\System\Core\Chains\Items\Ecommerce\Category;
 
-use App\Dto\SessionCache\Cache\CacheDto;
 use App\Helper\KeyboardHelper;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\ProductCategory\Service\ProductCategoryService;
 use App\Service\System\Core\Chains\Items\AbstractChain;
 use App\Service\System\Core\Dto\Condition;
 use App\Service\System\Core\Dto\ConditionInterface;
-use App\Service\System\Core\Dto\Responsible;
 use App\Service\System\Core\Dto\ResponsibleInterface;
 
-readonly class ShowShopProductsCategoryChain extends AbstractChain
+class ShowShopProductsCategoryChain extends AbstractChain
 {
-    public function __construct(private ProductCategoryService $categoryService)
+    public function __construct(private readonly ProductCategoryService $categoryService)
     {
     }
 
@@ -30,17 +28,7 @@ readonly class ShowShopProductsCategoryChain extends AbstractChain
 
         $responsible->getResult()->addMessage($responsibleMessage);
 
-        return true;
-    }
-
-    public function fall(Responsible $responsible, CacheDto $cacheDto): bool
-    {
-        return false;
-    }
-
-    public function validateCondition(string $content): bool
-    {
-        return true;
+        return $responsible;
     }
 
     public function condition(): ConditionInterface
@@ -62,6 +50,6 @@ readonly class ShowShopProductsCategoryChain extends AbstractChain
 
     public function validate(ResponsibleInterface $responsible): bool
     {
-        // TODO: Implement validate() method.
+        return true;
     }
 }

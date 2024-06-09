@@ -14,11 +14,11 @@ use App\Service\System\Core\Dto\Responsible;
 use App\Service\System\Core\Dto\ResponsibleInterface;
 use Exception;
 
-readonly class ShopProductsCategoryChain extends AbstractChain
+class ShopProductsCategoryChain extends AbstractChain
 {
     public function __construct(
-        private ProductCategoryService $categoryService,
-        private PaginateService        $paginateService,
+        private readonly ProductCategoryService $categoryService,
+        private readonly PaginateService        $paginateService,
     ) {
     }
 
@@ -28,6 +28,7 @@ readonly class ShopProductsCategoryChain extends AbstractChain
     public function success(ResponsibleInterface $responsible): ResponsibleInterface
     {
         $responsibleMessage = MessageHelper::createResponsibleMessage('');
+        $cacheDto = $responsible->getCacheDto();
         $content = $cacheDto->getContent();
 
         $availableCategory = $this->categoryService->getCategoryByName($content);

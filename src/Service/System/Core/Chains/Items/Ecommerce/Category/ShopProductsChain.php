@@ -7,7 +7,6 @@ use App\Helper\KeyboardHelper;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\Product\Service\ProductService;
 use App\Service\System\Common\PaginateService;
-// use App\Service\System\Handler\Chain\AbstractChain;
 use App\Service\System\Core\Chains\Items\AbstractChain;
 use App\Service\System\Core\Dto\Condition;
 use App\Service\System\Core\Dto\ConditionInterface;
@@ -15,11 +14,11 @@ use App\Service\System\Core\Dto\Responsible;
 use App\Service\System\Core\Dto\ResponsibleInterface;
 use Exception;
 
-readonly class ShopProductsChain extends AbstractChain
+class ShopProductsChain extends AbstractChain
 {
     public function __construct(
-        private ProductService  $productService,
-        private PaginateService $paginateService,
+        private readonly ProductService  $productService,
+        private readonly PaginateService $paginateService,
     ) {
     }
 
@@ -28,6 +27,7 @@ readonly class ShopProductsChain extends AbstractChain
      */
     public function success(ResponsibleInterface $responsible): ResponsibleInterface
     {
+        $cacheDto = $responsible->getCacheDto();
         $content = $cacheDto->getContent();
 
 //        if ($cacheDto->getEvent()->getCurrentChain()->isRepeat()) {

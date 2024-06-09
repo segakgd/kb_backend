@@ -12,16 +12,17 @@ use App\Service\System\Core\Dto\ConditionInterface;
 use App\Service\System\Core\Dto\Responsible;
 use App\Service\System\Core\Dto\ResponsibleInterface;
 
-class CartSaveChain  extends AbstractChain
+class CartSaveChain extends AbstractChain
 {
     public function __construct(
-        private readonly DealManager $dealManager,
+        private readonly DealManager    $dealManager,
         private readonly ProjectService $projectService,
     ) {
     }
 
     public function success(ResponsibleInterface $responsible): ResponsibleInterface
     {
+        $cacheDto = $responsible->getCacheDto();
         $content = $cacheDto->getContent();
         $project = $this->projectService->findOneById(1);
 
