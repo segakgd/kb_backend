@@ -118,19 +118,20 @@ class CacheContractDto extends AbstractDto
         $cacheContractDto = new self();
         $cacheContractDto->finished = $data['finished'] ?? false;
         $cacheContractDto->message = $data['message'] ?? null;
+        $cacheContractDto->keyboard = CacheKeyboardDto::fromArray($data['keyboard'] ?? []) ?? null;
 
         $chains = [];
 
         // todo костыль, когда мы мапим из dto сценария. Нужно подправить в сценарии этот косяк
 
         if (isset($data['chains'])) {
-            foreach ($data['chains'] ?? [] as $chainData) {
+            foreach ($data['chains'] as $chainData) {
                 $chains[] = CacheChainDto::fromArray($chainData);
             }
         }
 
         if (isset($data['chain'])) {
-            foreach ($data['chain'] ?? [] as $chainData) {
+            foreach ($data['chain'] as $chainData) {
                 $chains[] = CacheChainDto::fromArray($chainData);
             }
         }
