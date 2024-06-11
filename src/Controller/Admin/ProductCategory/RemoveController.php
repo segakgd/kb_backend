@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Throwable;
 
-#[OA\Tag(name: 'ProductCategory')]
+#[OA\Tag(name: 'ProductCategoryChain')]
 class RemoveController extends AbstractController
 {
     public function __construct(private readonly ProductCategoryManagerInterface $productCategoryManager)

@@ -4,7 +4,7 @@ namespace App\Helper;
 
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Enum\JumpEnum;
-use App\Service\System\Core\Dto\Responsible;
+use App\Service\System\Constructor\Core\Dto\Responsible;
 use Exception;
 
 class CommonHelper

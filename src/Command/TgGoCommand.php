@@ -2,8 +2,8 @@
 
 namespace App\Command;
 
-use App\Dto\SessionCache\Cache\CacheDto;
 use App\Dto\SessionCache\Cache\CacheContractDto;
+use App\Dto\SessionCache\Cache\CacheDto;
 use App\Entity\Scenario\Scenario;
 use App\Entity\Visitor\VisitorSession;
 use App\Enum\VisitorEventStatusEnum;
@@ -11,9 +11,9 @@ use App\Helper\CommonHelper;
 use App\Repository\User\BotRepository;
 use App\Repository\Visitor\VisitorEventRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
-use App\Service\System\Core\Dto\BotDto;
-use App\Service\System\Core\EventResolver;
-use App\Service\System\Core\Jumps\JumpResolver;
+use App\Service\System\Constructor\Core\Dto\BotDto;
+use App\Service\System\Constructor\Core\EventResolver;
+use App\Service\System\Constructor\Core\Jumps\JumpResolver;
 use App\Service\Visitor\Scenario\ScenarioService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;

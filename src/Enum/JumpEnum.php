@@ -11,6 +11,8 @@ enum JumpEnum: string
 
     case ShopProducts = 'shop.products';
 
+    case ShopProduct = 'shop.product';
+
 
     // Популярные
     case ShopProductsPopular = 'shop.products.popular';
@@ -72,4 +74,8 @@ enum JumpEnum: string
     case refChain9 = 'ref.chain.9';
 
     case refChain10 = 'ref.chain.10';
+
+    // new
+
+    case refChain10s = 'ref.chasin.10';
 }

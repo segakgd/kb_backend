@@ -3,7 +3,7 @@
 namespace App\Service\DtoRepository;
 
 use App\Entity\Visitor\VisitorEvent;
-use App\Service\System\Core\Dto\Responsible;
+use App\Service\System\Constructor\Core\Dto\Responsible;
 use Symfony\Component\Serializer\SerializerInterface;
 
 readonly class ResponsibleDtoRepository

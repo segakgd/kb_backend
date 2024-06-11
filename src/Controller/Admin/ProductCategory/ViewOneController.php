@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Throwable;
 
-#[OA\Tag(name: 'ProductCategory')]
+#[OA\Tag(name: 'ProductCategoryChain')]
 #[OA\Response(
     response: Response::HTTP_NO_CONTENT,
     description: 'Возвращает запрашиваемую категорию по проекту',

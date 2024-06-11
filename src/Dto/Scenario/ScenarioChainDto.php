@@ -29,9 +29,11 @@ class ScenarioChainDto extends AbstractDto
         return $this->requirements;
     }
 
-    public function setRequirements(array $requirements): void
+    public function setRequirements(array $requirements): static
     {
         $this->requirements = $requirements;
+
+        return $this;
     }
 
     public function isFinish(): bool
