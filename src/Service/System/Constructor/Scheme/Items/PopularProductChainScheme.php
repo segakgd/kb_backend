@@ -4,7 +4,6 @@ namespace App\Service\System\Constructor\Scheme\Items;
 
 use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Enum\JumpEnum;
-use App\Service\System\Constructor\Items\StartChain;
 use App\Service\System\Constructor\Scheme\MainScheme;
 
 class PopularProductChainScheme extends MainScheme
@@ -18,6 +17,7 @@ class PopularProductChainScheme extends MainScheme
     {
         return [
             static::chain(JumpEnum::StartChain),
+            static::chain(JumpEnum::ProductCategoryChain),
         ];
     }
 }

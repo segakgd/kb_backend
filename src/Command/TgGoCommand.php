@@ -107,7 +107,12 @@ class TgGoCommand extends Command
             $this->entityManager->flush();
 
         } catch (Throwable $throwable) {
-            $visitorEvent->setError($throwable->getMessage());
+            $message = ' MESSAGE: ' . $throwable->getMessage() . "\n"
+                . ' FILE: ' . $throwable->getFile() . "\n"
+                . ' LINE: ' . $throwable->getLine()
+            ;
+
+            $visitorEvent->setError($message);
 
             $this->visitorEventRepository->updateChatEventStatus($visitorEvent, VisitorEventStatusEnum::Failed);
 

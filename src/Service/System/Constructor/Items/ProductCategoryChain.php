@@ -28,15 +28,16 @@ class ProductCategoryChain extends AbstractChain
 
     public function condition(ResponsibleInterface $responsible): ConditionInterface
     {
-        $responsible->
-
         $replyMarkups = [
             [
                 [
-                    'text' => 'товар 1'
+                    'text' => 'Предыдущий'
                 ],
                 [
-                    'text' => 'товар 2'
+                    'text' => 'Следующий'
+                ],
+                [
+                    'text' => 'Добавить в корзину'
                 ],
             ],
         ];
@@ -53,8 +54,9 @@ class ProductCategoryChain extends AbstractChain
         $content = $responsible->getCacheDto()->getContent();
 
         $validData = [
-            'Да 2',
-            'Нет 2',
+            'Предыдущий',
+            'Следующий',
+            'Добавить в корзину',
         ];
 
         if (in_array($content, $validData)) {
