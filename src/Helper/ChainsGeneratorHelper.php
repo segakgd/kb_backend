@@ -4,7 +4,9 @@ namespace App\Helper;
 
 use App\Enum\JumpEnum;
 use App\Service\System\Constructor\Core\Chains\AbstractChain;
+use App\Service\System\Constructor\Items\GreetingChain;
 use App\Service\System\Constructor\Items\ProductCategoryChain;
+use App\Service\System\Constructor\Items\ProductsByCategoryChain;
 use App\Service\System\Constructor\Items\StartChain;
 use App\Service\System\Constructor\Items\Test\C10Chain;
 use App\Service\System\Constructor\Items\Test\C1Chain;
@@ -34,8 +36,10 @@ class ChainsGeneratorHelper
             JumpEnum::refChain9 => new C9Chain,
             JumpEnum::refChain10 => new C10Chain,
 
+            JumpEnum::GreetingChain => new GreetingChain,
             JumpEnum::StartChain => new StartChain,
             JumpEnum::ProductCategoryChain => new ProductCategoryChain,
+            JumpEnum::ProductsByCategoryChain => new ProductsByCategoryChain,
 
             JumpEnum::Main, JumpEnum::Cart => throw new Exception('Need add chain'),
         };

@@ -69,6 +69,8 @@ enum JumpEnum: string
     case refChain10 = 'ref.chain.10';
 
     // new
+    case GreetingChain = 'greeting.chain';
     case StartChain = 'start.chain';
     case ProductCategoryChain = 'product.category.chain';
+    case ProductsByCategoryChain = 'products.by.category.chain';
 }

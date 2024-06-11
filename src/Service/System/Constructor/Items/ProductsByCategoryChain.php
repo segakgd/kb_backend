@@ -2,24 +2,29 @@
 
 namespace App\Service\System\Constructor\Items;
 
+use App\Enum\JumpEnum;
 use App\Helper\MessageHelper;
 use App\Service\System\Constructor\Core\Chains\AbstractChain;
 use App\Service\System\Constructor\Core\Dto\Condition;
 use App\Service\System\Constructor\Core\Dto\ConditionInterface;
 use App\Service\System\Constructor\Core\Dto\ResponsibleInterface;
 
-class ProductCategoryChain extends AbstractChain
+class ProductsByCategoryChain extends AbstractChain
 {
     public function success(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        $message = "Выберите одну из достуаных категорий товаров: ";
+        $content = $responsible->getCacheDto()->getContent();
+
+        $message = "Тут должен быть товар";
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,
-            keyBoard: $responsible->getNextCondition()->getKeyBoard()
+            // keyBoard: $responsible->getNextCondition()->getKeyBoard()
         );
 
         $responsible->getResult()->addMessage($responsibleMessage);
+
+        $responsible->setJump(JumpEnum::ProductsByCategoryChain);
 
         return $responsible;
     }
@@ -29,10 +34,13 @@ class ProductCategoryChain extends AbstractChain
         $replyMarkups = [
             [
                 [
-                    'text' => 'Наушники'
+                    'text' => 'Предыдущий'
                 ],
                 [
-                    'text' => 'Ноутбуки'
+                    'text' => 'Следующий'
+                ],
+                [
+                    'text' => 'Добавить в корзину'
                 ],
             ],
         ];
@@ -49,8 +57,9 @@ class ProductCategoryChain extends AbstractChain
         $content = $responsible->getCacheDto()->getContent();
 
         $validData = [
-            'Наушники',
-            'Ноутбуки',
+            'Предыдущий',
+            'Следующий',
+            'Добавить в корзину',
         ];
 
         if (in_array($content, $validData)) {
