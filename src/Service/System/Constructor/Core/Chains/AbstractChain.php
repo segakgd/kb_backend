@@ -71,5 +71,5 @@ abstract class AbstractChain
         return $responsible;
     }
 
-    abstract public function condition(): ConditionInterface;
+    abstract public function condition(ResponsibleInterface $responsible): ConditionInterface;
 }

@@ -12,7 +12,7 @@ class ChainResolver
     public function resolve(Responsible $responsible, ?JumpEnum $targetNext): void
     {
         $chainInstance = $this->getChainInstance($responsible);
-        $nextCondition = $this->getNextCondition($targetNext);
+        $nextCondition = $this->getNextCondition($targetNext, $responsible);
 
         $responsible->setNextCondition($nextCondition);
 
@@ -28,12 +28,12 @@ class ChainResolver
         return ChainsGeneratorHelper::generate($responsible->getChain()->getTarget());
     }
 
-    private function getNextCondition(?JumpEnum $targetNext): ?ConditionInterface
+    private function getNextCondition(?JumpEnum $targetNext, Responsible $responsible): ?ConditionInterface
     {
         if (is_null($targetNext)) {
             return null;
         }
 
-        return ChainsGeneratorHelper::generate($targetNext)->condition();
+        return ChainsGeneratorHelper::generate($targetNext)->condition($responsible);
     }
 }

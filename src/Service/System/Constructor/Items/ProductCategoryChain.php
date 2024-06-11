@@ -26,15 +26,17 @@ class ProductCategoryChain extends AbstractChain
         return $responsible;
     }
 
-    public function condition(): ConditionInterface
+    public function condition(ResponsibleInterface $responsible): ConditionInterface
     {
+        $responsible->
+
         $replyMarkups = [
             [
                 [
-                    'text' => 'Да 2'
+                    'text' => 'товар 1'
                 ],
                 [
-                    'text' => 'Нет 2'
+                    'text' => 'товар 2'
                 ],
             ],
         ];

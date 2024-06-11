@@ -26,7 +26,7 @@ class C8Chain extends AbstractChain
         return $responsible;
     }
 
-    public function condition(): ConditionInterface
+    public function condition(ResponsibleInterface $responsible): ConditionInterface
     {
         $replyMarkups = [
             [
