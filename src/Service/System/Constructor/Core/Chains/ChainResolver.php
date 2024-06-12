@@ -6,9 +6,17 @@ use App\Enum\JumpEnum;
 use App\Helper\ChainsGeneratorHelper;
 use App\Service\System\Constructor\Core\Dto\ConditionInterface;
 use App\Service\System\Constructor\Core\Dto\Responsible;
+use Exception;
 
-class ChainResolver
+readonly class ChainResolver
 {
+    public function __construct(private ChainsGeneratorHelper $chainsGenerator)
+    {
+    }
+
+    /**
+     * @throws Exception
+     */
     public function resolve(Responsible $responsible, ?JumpEnum $targetNext): void
     {
         $chainInstance = $this->getChainInstance($responsible);
@@ -23,17 +31,23 @@ class ChainResolver
         }
     }
 
+    /**
+     * @throws Exception
+     */
     private function getChainInstance(Responsible $responsible): AbstractChain
     {
-        return ChainsGeneratorHelper::generate($responsible->getChain()->getTarget());
+        return $this->chainsGenerator->generate($responsible->getChain()->getTarget());
     }
 
+    /**
+     * @throws Exception
+     */
     private function getNextCondition(?JumpEnum $targetNext, Responsible $responsible): ?ConditionInterface
     {
         if (is_null($targetNext)) {
             return null;
         }
 
-        return ChainsGeneratorHelper::generate($targetNext)->condition($responsible);
+        return $this->chainsGenerator->generate($targetNext)->condition($responsible);
     }
 }

@@ -59,7 +59,7 @@ abstract class AbstractChain
     public function fail(ResponsibleInterface $responsible): ResponsibleInterface
     {
         $message = "Не понимаю что вы от меня хотите, повторите выбор:";
-        $keyBoard = $this->condition()->getKeyBoard();
+        $keyBoard = $this->condition($responsible)->getKeyBoard();
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,
