@@ -40,25 +40,7 @@ class ProductsByCategoryChain extends AbstractChain
 
     public function condition(ResponsibleInterface $responsible): ConditionInterface
     {
-        $replyMarkups = [
-            [
-                [
-                    'text' => 'Предыдущий'
-                ],
-                [
-                    'text' => 'Следующий'
-                ],
-                [
-                    'text' => 'Добавить в корзину'
-                ],
-            ],
-        ];
-
-        $condition = new Condition();
-
-        $condition->setKeyBoard($replyMarkups);
-
-        return $condition;
+        return new Condition();
     }
 
     /**
@@ -94,6 +76,8 @@ class ProductsByCategoryChain extends AbstractChain
             'Предыдущий',
             'Следующий',
             'Добавить в корзину',
+            'Вернуться в главное меню',
+            'Вернуться к категориям',
         ];
 
         if (in_array($content, $validData)) {

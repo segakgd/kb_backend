@@ -28,7 +28,7 @@ readonly class PaginateService
         $products = $this->productService->getProductsByCategory(
             $cacheDataDto->getPageNow(),
             $cacheDataDto->getCategoryId(),
-            'product.first'
+            'first'
         );
 
         return $this->pug($responsible, $products, $cacheDataDto);
@@ -42,7 +42,7 @@ readonly class PaginateService
         $products = $this->productService->getProductsByCategory(
             $cacheDataDto->getPageNow(),
             $cacheDataDto->getCategoryId(),
-            'product.prev'
+            'prev'
         );
 
         return $this->pug($responsible, $products, $cacheDataDto);
@@ -56,7 +56,7 @@ readonly class PaginateService
         $products = $this->productService->getProductsByCategory(
             $cacheDataDto->getPageNow(),
             $cacheDataDto->getCategoryId(),
-            'product.next'
+            'next'
         );
 
         return $this->pug($responsible, $products, $cacheDataDto);
