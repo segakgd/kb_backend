@@ -3,14 +3,14 @@
 namespace App\Service\System\Constructor\Core\Chains;
 
 use App\Enum\JumpEnum;
-use App\Helper\ChainsGeneratorHelper;
+use App\Helper\ChainsGenerator;
 use App\Service\System\Constructor\Core\Dto\ConditionInterface;
 use App\Service\System\Constructor\Core\Dto\Responsible;
 use Exception;
 
 readonly class ChainResolver
 {
-    public function __construct(private ChainsGeneratorHelper $chainsGenerator)
+    public function __construct(private ChainsGenerator $chainsGenerator)
     {
     }
 

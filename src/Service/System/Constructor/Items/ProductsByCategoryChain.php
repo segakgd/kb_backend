@@ -36,22 +36,27 @@ class ProductsByCategoryChain extends AbstractChain
 
         $responsible->getResult()->addMessage($responsibleMessage);
 
-        $products = match ($content) {
-            'first' => $this->productService->getPopularProducts(1, 'first'),
-            'предыдущий' => $this->productService->getPopularProducts($responsible->getCacheDto()->getEvent()->getData()->getPageNow(), 'prev'),
-            'следующий' => $this->productService->getPopularProducts($responsible->getCacheDto()->getEvent()->getData()->getPageNow(), 'next'),
-        };
-
-
-        $this->paginateService->pug($responsible, $products, $responsible->getCacheDto()->getEvent()->getData());
-
         if ($content === 'Предыдущий') {
+            $products = match ($content) {
+                'first' => $this->productService->getPopularProducts(1, 'first'),
+                'Предыдущий' => $this->productService->getPopularProducts($responsible->getCacheDto()->getEvent()->getData()->getPageNow(), 'prev'),
+                'Следующий' => $this->productService->getPopularProducts($responsible->getCacheDto()->getEvent()->getData()->getPageNow(), 'next'),
+            };
+
+            $this->paginateService->pug($responsible, $products, $responsible->getCacheDto()->getEvent()->getData());
 
 
             $responsible->setJump(JumpEnum::ProductsByCategoryChain);
         }
 
         if ($content === 'Следующий') {
+            $products = match ($content) {
+                'first' => $this->productService->getPopularProducts(1, 'first'),
+                'Предыдущий' => $this->productService->getPopularProducts($responsible->getCacheDto()->getEvent()->getData()->getPageNow(), 'prev'),
+                'Следующий' => $this->productService->getPopularProducts($responsible->getCacheDto()->getEvent()->getData()->getPageNow(), 'next'),
+            };
+
+            $this->paginateService->pug($responsible, $products, $responsible->getCacheDto()->getEvent()->getData());
 
 
             $responsible->setJump(JumpEnum::ProductsByCategoryChain);

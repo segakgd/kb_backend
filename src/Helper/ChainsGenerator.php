@@ -20,7 +20,7 @@ use App\Service\System\Constructor\Items\Test\C8Chain;
 use App\Service\System\Constructor\Items\Test\C9Chain;
 use Exception;
 
-readonly class ChainsGeneratorHelper
+readonly class ChainsGenerator
 {
     public function __construct(private ProductsByCategoryChain $productsByCategoryChain)
     {
@@ -31,7 +31,7 @@ readonly class ChainsGeneratorHelper
      */
     public function generate(JumpEnum $target): AbstractChain
     {
-        $targetClass = match ($target) {
+        return match ($target) {
             JumpEnum::refChain1 => new C1Chain,
             JumpEnum::refChain2 => new C2Chain,
             JumpEnum::refChain3 => new C3Chain,
@@ -50,7 +50,5 @@ readonly class ChainsGeneratorHelper
 
             JumpEnum::Main, JumpEnum::Cart => throw new Exception('Need add chain'),
         };
-
-        return new $targetClass;
     }
 }
