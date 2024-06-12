@@ -22,8 +22,10 @@ use Exception;
 
 readonly class ChainsGenerator
 {
-    public function __construct(private ProductsByCategoryChain $productsByCategoryChain)
-    {
+    public function __construct(
+        private ProductsByCategoryChain $productsByCategoryChain,
+        private ProductCategoryChain $productCategoryChain,
+    ) {
     }
 
     /**
@@ -45,7 +47,7 @@ readonly class ChainsGenerator
 
             JumpEnum::GreetingChain => new GreetingChain,
             JumpEnum::StartChain => new StartChain,
-            JumpEnum::ProductCategoryChain => new ProductCategoryChain,
+            JumpEnum::ProductCategoryChain => $this->productCategoryChain,
             JumpEnum::ProductsByCategoryChain => $this->productsByCategoryChain,
 
             JumpEnum::Main, JumpEnum::Cart => throw new Exception('Need add chain'),
