@@ -82,10 +82,10 @@ class KeyboardHelper
         $nav = [
             [
                 [
-                    'text' => 'предыдущий'
+                    'text' => 'Предыдущий'
                 ],
                 [
-                    'text' => 'следующий'
+                    'text' => 'Следующий'
                 ],
             ],
             [
@@ -105,7 +105,7 @@ class KeyboardHelper
             $nav = [
                 [
                     [
-                        'text' => 'следующий'
+                        'text' => 'Следующий'
                     ],
                 ],
                 [
@@ -126,7 +126,7 @@ class KeyboardHelper
             $nav = [
                 [
                     [
-                        'text' => 'предыдущий'
+                        'text' => 'Предыдущий'
                     ],
                 ],
                 [

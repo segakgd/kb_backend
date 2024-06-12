@@ -105,7 +105,21 @@
                         {% endif %}
 
                         {% for event in events %}
-                            <div class="" style="padding-bottom: 20px;">
+                            <div class=""
+                                {% if event.status == 'failed' %}
+                                 style="padding: 20px; background: #ffd4d4; margin-bottom: 2px;"
+                                {% elseif event.status == 'done' %}
+                                    style="padding: 20px; background: #d7ffd4; margin-bottom: 2px;"
+                                {% elseif event.status == 'new' %}
+                                 style="padding: 20px; background: #d4e2ff; margin-bottom: 2px;"
+                                {% elseif event.status == 'waiting' %}
+                                 style="padding: 20px; background: #ecd4ff; margin-bottom: 2px;"
+                                {% elseif event.status == 'repeat' %}
+                                 style="padding: 20px; background: #ecd4ff; margin-bottom: 2px;"
+                                {% else %}
+                                 style="padding: 20px; margin-bottom: 2px;">
+                                {% endif %}
+                        >
                                 <div class="">Событие #{{ event.id }}</div>
 
                                 <div class="">
@@ -132,7 +146,6 @@
 
                                     {% if event.contract is not null %}
                                         {% if event.contract is not empty %}
-                                            <br>
                                                 {% if event.contract.chains is not null %}
                                                     {% if event.contract.chains is not empty %}
                                                         <section>
@@ -141,9 +154,9 @@
                                                                 {% for chain in event.contract.chains %}
                                                                     <li>
                                                                         {% if chain.status == 1 %}
-                                                                            <span class="">Пройдено</span>
+                                                                            <span class="" style="color: #0abe2e;">Пройдено</span>
                                                                         {% else %}
-                                                                            <span class="">Не пройдено</span>
+                                                                            <span class="" style="color: #be0a0a;">Не пройдено</span>
                                                                         {% endif %}
 
                                                                         {{ chain.name }}
@@ -161,8 +174,10 @@
                                             <span>Последняя ошибка:</span> {{ event.error }}
                                         </section>
                                     {% endif %}
+
                                 </div>
                             </div>
+{#                            <hr>#}
                         {% endfor %}
                     </div>
                 </div>

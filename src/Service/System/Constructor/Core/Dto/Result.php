@@ -26,4 +26,9 @@ class Result implements ResultInterface
 
         return $this;
     }
+
+    public function isEmptyMessage(): bool
+    {
+        return empty($this->messages);
+    }
 }

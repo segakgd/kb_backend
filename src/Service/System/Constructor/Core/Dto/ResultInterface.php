@@ -11,4 +11,6 @@ interface ResultInterface
     public function setMessages(array $messages): static;
 
     public function addMessage(ResponsibleMessageDto $message): static;
+
+    public function isEmptyMessage(): bool;
 }

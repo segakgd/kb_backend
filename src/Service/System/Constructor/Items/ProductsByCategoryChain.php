@@ -27,40 +27,13 @@ class ProductsByCategoryChain extends AbstractChain
     {
         $content = $responsible->getCacheDto()->getContent();
 
-        $message = "Тут должен быть товар";
+        $message = "Допустим что, что-то ещё случилось. Ну, товар ты выбрал или ешё чего. И да, кликнул ты вот это: $content";
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,
-            // keyBoard: $responsible->getNextCondition()->getKeyBoard()
         );
 
         $responsible->getResult()->addMessage($responsibleMessage);
-
-        if ($content === 'Предыдущий') {
-            $products = match ($content) {
-                'first' => $this->productService->getPopularProducts(1, 'first'),
-                'Предыдущий' => $this->productService->getPopularProducts($responsible->getCacheDto()->getEvent()->getData()->getPageNow(), 'prev'),
-                'Следующий' => $this->productService->getPopularProducts($responsible->getCacheDto()->getEvent()->getData()->getPageNow(), 'next'),
-            };
-
-            $this->paginateService->pug($responsible, $products, $responsible->getCacheDto()->getEvent()->getData());
-
-
-            $responsible->setJump(JumpEnum::ProductsByCategoryChain);
-        }
-
-        if ($content === 'Следующий') {
-            $products = match ($content) {
-                'first' => $this->productService->getPopularProducts(1, 'first'),
-                'Предыдущий' => $this->productService->getPopularProducts($responsible->getCacheDto()->getEvent()->getData()->getPageNow(), 'prev'),
-                'Следующий' => $this->productService->getPopularProducts($responsible->getCacheDto()->getEvent()->getData()->getPageNow(), 'next'),
-            };
-
-            $this->paginateService->pug($responsible, $products, $responsible->getCacheDto()->getEvent()->getData());
-
-
-            $responsible->setJump(JumpEnum::ProductsByCategoryChain);
-        }
 
         return $responsible;
     }
@@ -88,9 +61,34 @@ class ProductsByCategoryChain extends AbstractChain
         return $condition;
     }
 
+    /**
+     * @throws Exception
+     */
     public function validate(ResponsibleInterface $responsible): bool
     {
         $content = $responsible->getCacheDto()->getContent();
+
+        $categoryId = $responsible->getCacheDto()->getEvent()->getData()->getCategoryId();
+
+        if ($content === 'Предыдущий') {
+            $data = $responsible->getCacheDto()->getEvent()->getData();
+
+            $products = $this->productService->getProductsByCategory($data->getPageNow(), $categoryId, 'prev');
+
+            $this->paginateService->pug($responsible, $products, $data);
+
+            return false;
+        }
+
+        if ($content === 'Следующий') {
+            $data = $responsible->getCacheDto()->getEvent()->getData();
+
+            $products = $this->productService->getProductsByCategory($data->getPageNow(), $categoryId, 'next');
+
+            $this->paginateService->pug($responsible, $products, $data);
+
+            return false;
+        }
 
         $validData = [
             'Предыдущий',

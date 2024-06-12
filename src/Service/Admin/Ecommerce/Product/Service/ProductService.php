@@ -82,9 +82,9 @@ readonly class ProductService implements ProductServiceInterface
         $pageNow = $pageNow ?: 1;
 
         return match (true) {
-            'product.first' === $key => $this->productCategoryEntityRepository->findProductsByCategory($categoryId, 1),
-            'product.next' === $key => $this->productCategoryEntityRepository->findProductsByCategory($categoryId, $pageNow + 1),
-            'product.prev' === $key => $this->productCategoryEntityRepository->findProductsByCategory($categoryId, $pageNow - 1),
+            'first' === $key => $this->productCategoryEntityRepository->findProductsByCategory($categoryId, 1),
+            'next' === $key => $this->productCategoryEntityRepository->findProductsByCategory($categoryId, $pageNow + 1),
+            'prev' === $key => $this->productCategoryEntityRepository->findProductsByCategory($categoryId, $pageNow - 1),
         };
     }
 }

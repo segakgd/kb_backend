@@ -2,8 +2,7 @@
 
 namespace App\Service\System\Constructor\Items;
 
-use App\Helper\KeyboardHelper;
-use App\Helper\MessageHelper;
+use App\Service\Admin\Ecommerce\Product\Service\ProductService;
 use App\Service\Admin\Ecommerce\ProductCategory\Service\ProductCategoryService;
 use App\Service\System\Common\PaginateService;
 use App\Service\System\Constructor\Core\Chains\AbstractChain;
@@ -15,6 +14,7 @@ use Exception;
 class ProductCategoryChain extends AbstractChain
 {
     public function __construct(
+        private readonly ProductService         $productService,
         private readonly PaginateService        $paginateService,
         private readonly ProductCategoryService $categoryService,
     ) {
@@ -25,8 +25,6 @@ class ProductCategoryChain extends AbstractChain
      */
     public function success(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        $message = "Выберите одну из достуаных категорий товаров: ";
-
         $event = $responsible->getCacheDto()->getEvent();
         $content = $responsible->getCacheDto()->getContent();
 
@@ -39,16 +37,11 @@ class ProductCategoryChain extends AbstractChain
         $event->getData()->setCategoryId($availableCategory->getId());
         $event->getData()->setCategoryName($availableCategory->getName());
 
-        $this->paginateService->first($responsible, $event->getData());
+        $data = $responsible->getCacheDto()->getEvent()->getData();
 
-        $replyMarkups = KeyboardHelper::getProductNav();
+        $products = $this->productService->getProductsByCategory(1,  $availableCategory->getId(),'first');
 
-        $responsibleMessage = MessageHelper::createResponsibleMessage(
-            message: $message,
-            keyBoard: $replyMarkups
-        );
-
-        $responsible->getResult()->addMessage($responsibleMessage);
+        $this->paginateService->pug($responsible, $products, $data);
 
         return $responsible;
     }
