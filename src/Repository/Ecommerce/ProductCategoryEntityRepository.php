@@ -42,6 +42,16 @@ class ProductCategoryEntityRepository extends ServiceEntityRepository
         /** @var ProductCategory $category */
         $products = $category->getProducts();
 
+        $count = $products->count();
+
+        if ($page < 1) {
+            $page = $count;
+        }
+
+        if ($page > $count) {
+            $page = 1;
+        }
+
         $paginate = CommonHelper::buildPaginate($page, $products->count());
 
         return [

@@ -2,7 +2,6 @@
 
 namespace App\Service\System\Constructor\Items;
 
-use App\Enum\JumpEnum;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\Product\Service\ProductService;
 use App\Service\System\Common\PaginateService;
@@ -57,7 +56,11 @@ class ProductsByCategoryChain extends AbstractChain
 
             $products = $this->productService->getProductsByCategory($data->getPageNow(), $categoryId, 'prev');
 
-            $this->paginateService->pug($responsible, $products, $data);
+            $this->paginateService->pug(
+                responsible: $responsible,
+                products: $products,
+                cacheDataDto: $data
+            );
 
             return false;
         }
@@ -67,7 +70,11 @@ class ProductsByCategoryChain extends AbstractChain
 
             $products = $this->productService->getProductsByCategory($data->getPageNow(), $categoryId, 'next');
 
-            $this->paginateService->pug($responsible, $products, $data);
+            $this->paginateService->pug(
+                responsible: $responsible,
+                products: $products,
+                cacheDataDto: $data
+            );
 
             return false;
         }

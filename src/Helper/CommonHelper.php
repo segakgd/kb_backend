@@ -29,8 +29,8 @@ class CommonHelper
             throw new Exception('max page < page');
         }
 
-        $prevPage = ($page > 1) ? $page - 1 : null;
-        $nextPage = ($page < $maxPage) ? $page + 1 : null;
+        $prevPage = ($page > 1) ? $page - 1 : $maxPage;
+        $nextPage = ($page < $maxPage) ? $page + 1 : 1;
 
         return [
             'prev' => $prevPage,

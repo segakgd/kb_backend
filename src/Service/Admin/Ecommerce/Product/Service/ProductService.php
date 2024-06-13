@@ -77,14 +77,14 @@ readonly class ProductService implements ProductServiceInterface
     /**
      * @throws Exception
      */
-    public function getProductsByCategory(?int $pageNow, int $categoryId, string $key): array
+    public function getProductsByCategory(?int $number, int $categoryId, string $key): array
     {
-        $pageNow = $pageNow ?: 1;
+        $number = $number ?: 1;
 
         return match (true) {
             'first' === $key => $this->productCategoryEntityRepository->findProductsByCategory($categoryId),
-            'next' === $key => $this->productCategoryEntityRepository->findProductsByCategory($categoryId, $pageNow + 1),
-            'prev' === $key => $this->productCategoryEntityRepository->findProductsByCategory($categoryId, $pageNow - 1),
+            'next' === $key => $this->productCategoryEntityRepository->findProductsByCategory($categoryId, $number + 1),
+            'prev' === $key => $this->productCategoryEntityRepository->findProductsByCategory($categoryId, $number - 1),
         };
     }
 }
