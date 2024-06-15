@@ -28,6 +28,12 @@ class ProductsByCategoryChain extends AbstractChain
 
         $message = "Допустим что, что-то ещё случилось. Ну, товар ты выбрал или ешё чего. И да, кликнул ты вот это: $content";
 
+        if ('Добавить в корзину' === $content) {
+            $productId = $responsible->getCacheDto()->getEvent()->getData()->getProductId();
+
+            $message = "ID продукта: $productId";
+        }
+
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,
         );
@@ -51,7 +57,7 @@ class ProductsByCategoryChain extends AbstractChain
 
         $categoryId = $responsible->getCacheDto()->getEvent()->getData()->getCategoryId();
 
-        if ($content === 'Предыдущий') {
+        if ('Предыдущий' === $content) {
             $data = $responsible->getCacheDto()->getEvent()->getData();
 
             $products = $this->productService->getProductsByCategory($data->getPageNow(), $categoryId, 'prev');
@@ -65,7 +71,7 @@ class ProductsByCategoryChain extends AbstractChain
             return false;
         }
 
-        if ($content === 'Следующий') {
+        if ('Следующий' === $content) {
             $data = $responsible->getCacheDto()->getEvent()->getData();
 
             $products = $this->productService->getProductsByCategory($data->getPageNow(), $categoryId, 'next');
