@@ -3,21 +3,21 @@
 namespace App\Helper;
 
 use App\Enum\JumpEnum;
-use App\Service\System\Constructor\Core\Chains\AbstractChain;
-use App\Service\System\Constructor\Items\GreetingChain;
-use App\Service\System\Constructor\Items\ProductCategoryChain;
-use App\Service\System\Constructor\Items\ProductsByCategoryChain;
-use App\Service\System\Constructor\Items\StartChain;
-use App\Service\System\Constructor\Items\Test\C10Chain;
-use App\Service\System\Constructor\Items\Test\C1Chain;
-use App\Service\System\Constructor\Items\Test\C2Chain;
-use App\Service\System\Constructor\Items\Test\C3Chain;
-use App\Service\System\Constructor\Items\Test\C4Chain;
-use App\Service\System\Constructor\Items\Test\C5Chain;
-use App\Service\System\Constructor\Items\Test\C6Chain;
-use App\Service\System\Constructor\Items\Test\C7Chain;
-use App\Service\System\Constructor\Items\Test\C8Chain;
-use App\Service\System\Constructor\Items\Test\C9Chain;
+use App\Service\Constructor\Core\Chains\AbstractChain;
+use App\Service\Constructor\Items\GreetingChain;
+use App\Service\Constructor\Items\ProductCategoryChain;
+use App\Service\Constructor\Items\ProductsByCategoryChain;
+use App\Service\Constructor\Items\StartChain;
+use App\Service\Constructor\Items\Test\C10Chain;
+use App\Service\Constructor\Items\Test\C1Chain;
+use App\Service\Constructor\Items\Test\C2Chain;
+use App\Service\Constructor\Items\Test\C3Chain;
+use App\Service\Constructor\Items\Test\C4Chain;
+use App\Service\Constructor\Items\Test\C5Chain;
+use App\Service\Constructor\Items\Test\C6Chain;
+use App\Service\Constructor\Items\Test\C7Chain;
+use App\Service\Constructor\Items\Test\C8Chain;
+use App\Service\Constructor\Items\Test\C9Chain;
 use Exception;
 
 readonly class ChainsGenerator

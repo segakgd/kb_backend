@@ -5,7 +5,7 @@ namespace App\Controller\Webhook;
 use App\Dto\Webhook\Telegram\TelegramWebhookDto;
 use App\Repository\User\ProjectRepository;
 use App\Service\Admin\Bot\BotServiceInterface;
-use App\Service\System\Common\MessageHistoryService;
+use App\Service\Common\MessageHistoryService;
 use App\Service\Visitor\Event\VisitorEventService;
 use App\Service\Visitor\Session\VisitorSessionService;
 use Exception;

@@ -12,7 +12,7 @@ use App\Entity\Visitor\VisitorSession;
 use App\Event\InitWebhookBotEvent;
 use App\Repository\Scenario\ScenarioTemplateRepository;
 use App\Service\Admin\Bot\BotServiceInterface;
-use App\Service\System\Common\MessageHistoryService;
+use App\Service\Common\MessageHistoryService;
 use App\Service\Visitor\Event\VisitorEventService;
 use App\Service\Visitor\Session\VisitorSessionService;
 use Exception;

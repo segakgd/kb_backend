@@ -2,8 +2,6 @@
 
 namespace App\Enum;
 
-use App\Service\System\Constructor\Items\StartChain;
-
 enum JumpEnum: string
 {
 //    // Категории

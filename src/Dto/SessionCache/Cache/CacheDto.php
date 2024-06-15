@@ -3,7 +3,7 @@
 namespace App\Dto\SessionCache\Cache;
 
 use App\Dto\Common\AbstractDto;
-use App\Service\System\Common\CacheService;
+use App\Helper\CacheHelper;
 
 class CacheDto extends AbstractDto
 {
@@ -76,7 +76,7 @@ class CacheDto extends AbstractDto
 
     public function clearEvent(): static
     {
-        $this->event = CacheService::createCacheEventDto();
+        $this->event = CacheHelper::createCacheEventDto();
 
         return $this;
     }

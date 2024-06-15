@@ -2,16 +2,16 @@
 
 namespace App\Service\Integration\Telegram;
 
-use App\Dto\Responsible\ResponsibleMessageDto;
 use App\Dto\Core\Telegram\Request\Invoice\InvoiceDto;
 use App\Dto\Core\Telegram\Request\Message\MessageDto;
 use App\Dto\Core\Telegram\Request\Message\PhotoDto;
 use App\Dto\Core\Telegram\Request\Webhook\WebhookDto;
 use App\Dto\Core\Telegram\Response\GetWebhookInfoDto;
-use App\Service\System\HttpClient\HttpClient;
-use App\Service\System\HttpClient\HttpClientInterface;
-use App\Service\System\HttpClient\Request\Request;
-use App\Service\System\HttpClient\Response\ResponseInterface;
+use App\Dto\Responsible\ResponsibleMessageDto;
+use App\Service\HttpClient\HttpClient;
+use App\Service\HttpClient\HttpClientInterface;
+use App\Service\HttpClient\Request\Request;
+use App\Service\HttpClient\Response\ResponseInterface;
 
 readonly class TelegramService implements TelegramServiceInterface
 {
