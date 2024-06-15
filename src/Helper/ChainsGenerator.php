@@ -18,6 +18,8 @@ use App\Service\Constructor\Items\Test\C6Chain;
 use App\Service\Constructor\Items\Test\C7Chain;
 use App\Service\Constructor\Items\Test\C8Chain;
 use App\Service\Constructor\Items\Test\C9Chain;
+use App\Service\Constructor\Items\VariantProductChain;
+use App\Service\Constructor\Items\VariantsProductChain;
 use Exception;
 
 readonly class ChainsGenerator
@@ -25,6 +27,8 @@ readonly class ChainsGenerator
     public function __construct(
         private ProductsByCategoryChain $productsByCategoryChain,
         private ProductCategoryChain $productCategoryChain,
+        private VariantsProductChain $variantsProductChain,
+        private VariantProductChain $variantProductChain,
     ) {
     }
 
@@ -49,6 +53,8 @@ readonly class ChainsGenerator
             JumpEnum::StartChain => new StartChain,
             JumpEnum::ProductCategoryChain => $this->productCategoryChain,
             JumpEnum::ProductsByCategoryChain => $this->productsByCategoryChain,
+            JumpEnum::VariantsProductChain => $this->variantsProductChain,
+            JumpEnum::VariantProductChain => $this->variantProductChain,
 
             JumpEnum::Main, JumpEnum::Cart => throw new Exception('Need add chain'),
         };

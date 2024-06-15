@@ -71,4 +71,6 @@ enum JumpEnum: string
     case StartChain = 'start.chain';
     case ProductCategoryChain = 'product.category.chain';
     case ProductsByCategoryChain = 'products.by.category.chain';
+    case VariantsProductChain = 'variants.product.chain';
+    case VariantProductChain = 'variant.product.chain';
 }

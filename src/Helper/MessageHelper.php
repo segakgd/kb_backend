@@ -2,6 +2,7 @@
 
 namespace App\Helper;
 
+use App\Dto\Ecommerce\Product\Variants\VariantPriceDto;
 use App\Dto\Responsible\ResponsibleMessageDto;
 use App\Entity\Ecommerce\Product;
 use App\Entity\Ecommerce\ProductVariant;
@@ -20,7 +21,10 @@ class MessageHelper
         foreach ($variants as $variant) {
             $name = $variant->getName();
             $price = $variant->getPrice();
-            $price = $price['price'];
+
+            /** @var VariantPriceDto $price */
+            $price = $price[0];
+            $price = $price->getPrice();
             $count = $variant->getCount();
 
             $message .= "Вариант: $name \n";

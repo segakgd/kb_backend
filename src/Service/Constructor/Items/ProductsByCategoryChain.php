@@ -31,6 +31,14 @@ class ProductsByCategoryChain extends AbstractChain
         if ('Добавить в корзину' === $content) {
             $productId = $responsible->getCacheDto()->getEvent()->getData()->getProductId();
 
+            $product = $this->productService->find($productId);
+
+            $variantCounts = $product->getVariants()->count();
+
+            if ($variantCounts === 1) {
+                // todo нет смысла выводить варианты - мб сразу прыгнуть на конец цепи
+            }
+
             $message = "ID продукта: $productId";
         }
 
