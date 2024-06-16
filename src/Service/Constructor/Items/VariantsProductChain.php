@@ -25,29 +25,33 @@ class VariantsProductChain extends AbstractChain
         $content = $responsible->getCacheDto()->getContent();
 
         $productId = $responsible->getCacheDto()->getEvent()->getData()->getProductId();
+
         $product = $this->productService->find($productId);
+
+        if (null === $product) {
+            throw new Exception("Product not found");
+        }
 
         $variants = $product->getVariants();
 
-        $variantId = null;
+        $targetVariantId = null;
 
         foreach ($variants as $variant) {
             if ($variant->getName() === $content) {
-                $variantId = $variant->getId();
+                $targetVariantId = $variant->getId();
             }
         }
 
-        if (null === $variantId) {
+        if (null === $targetVariantId) {
             throw new Exception('Выбранного варианта не существует!');
         }
 
-        $responsible->getCacheDto()->getEvent()->getData()->setVariantId($variantId);
+        $responsible->getCacheDto()->getEvent()->getData()->setVariantId($targetVariantId);
 
         $message = static::class . "Вы выбрали вариант: $content. \n\n Укажите количество: ";
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,
-//            keyBoard: $responsible->getNextCondition()->getKeyBoard()
         );
 
         $responsible->getResult()->setMessage($responsibleMessage);

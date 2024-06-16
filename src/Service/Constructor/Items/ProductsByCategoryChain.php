@@ -25,32 +25,17 @@ class ProductsByCategoryChain extends AbstractChain
     {
         $content = $responsible->getCacheDto()->getContent();
 
-        $message = "Допустим что, что-то ещё случилось. Ну, товар ты выбрал или ешё чего. И да, кликнул ты вот это: $content";
-
         if ('Добавить в корзину' === $content) {
-            $productId = $responsible->getCacheDto()->getEvent()->getData()->getProductId();
+            $responsibleMessage = MessageHelper::createResponsibleMessage(
+                message: "Выберите один из доступных вариантов:",
+            );
 
-//            $product = $this->productService->find($productId);
+            $responsible->getResult()->setMessage($responsibleMessage);
 
-//            $variantCounts = $product->getVariants()->count();
-//
-//            if ($variantCounts === 1) {
-//                // todo нет смысла выводить варианты - мб сразу прыгнуть на конец цепи
-//            }
-
-            $message = "Выберите один из доступных вариантов: ";
+            return $responsible;
         }
 
-//        if ('Выбрать вариант' === $content) {
-//            $message = "Допустим что, что-то ещё случилось. Ну, товар ты выбрал или ешё чего. И да, кликнул ты вот это: $content";
-//        }
-
-        $responsibleMessage = MessageHelper::createResponsibleMessage(
-            message: $message,
-//            keyBoard: $responsible->getNextCondition()->getKeyBoard()
-        );
-
-        $responsible->getResult()->setMessage($responsibleMessage);
+        $this->fail($responsible); // todo  ну или кидать исключение и его птом ловить
 
         return $responsible;
     }
@@ -93,6 +78,18 @@ class ProductsByCategoryChain extends AbstractChain
                 products: $products,
                 cacheDataDto: $data
             );
+
+            return false;
+        }
+
+        if ('Вернуться в главное меню' === $content) {
+            // todo тут происходит прыжок
+
+            return false;
+        }
+
+        if ('Вернуться к категориям' === $content) {
+            // todo тут происходит прыжок
 
             return false;
         }

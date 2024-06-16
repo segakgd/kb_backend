@@ -15,7 +15,6 @@ class GreetingChain extends AbstractChain
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,
-//            keyBoard: $responsible->getNextCondition()->getKeyBoard()
         );
 
         $responsible->getResult()->setMessage($responsibleMessage);
