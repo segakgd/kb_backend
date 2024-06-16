@@ -10,9 +10,6 @@ use App\Service\Admin\Ecommerce\Product\Service\ProductService;
 use App\Service\Constructor\Core\Dto\Responsible;
 use Exception;
 
-/**
- * @deprecated need refactoring
- */
 readonly class PaginateService
 {
     public function __construct(

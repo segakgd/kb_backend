@@ -33,6 +33,9 @@ class VariantProductChain extends AbstractChain
         return $responsible;
     }
 
+    /**
+     * @throws Exception
+     */
     public function condition(ResponsibleInterface $responsible): ConditionInterface
     {
         $variantId = $responsible->getCacheDto()->getEvent()->getData()->getVariantId();
@@ -47,9 +50,9 @@ class VariantProductChain extends AbstractChain
 
         $keyBoards = [];
 
-        for ($i = 1; $count > $i; $i++) {
+        for ($i = 1; $count >= $i; $i++) {
             $keyBoards[] = [
-                'text' => $variant->getName()
+                'text' => $i,
             ];
         }
 
