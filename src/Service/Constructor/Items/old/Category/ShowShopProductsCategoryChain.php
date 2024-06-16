@@ -24,7 +24,7 @@ readonly class ShowShopProductsCategoryChain // extends AbstractChain
             KeyboardHelper::getProductCategoryNav($availableCategory)
         );
 
-        $responsible->getResult()->addMessage($responsibleMessage);
+        $responsible->getResult()->setMessage($responsibleMessage);
 
         return true;
     }

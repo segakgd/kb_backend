@@ -22,7 +22,7 @@ class ProductsByCategoryChain extends AbstractChain
     /**
      * @throws Exception
      */
-    public function success(ResponsibleInterface $responsible): ResponsibleInterface
+    public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
         $content = $responsible->getCacheDto()->getContent();
 
@@ -48,10 +48,10 @@ class ProductsByCategoryChain extends AbstractChain
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,
-            keyBoard: $responsible->getNextCondition()->getKeyBoard()
+//            keyBoard: $responsible->getNextCondition()->getKeyBoard()
         );
 
-        $responsible->getResult()->addMessage($responsibleMessage);
+        $responsible->getResult()->setMessage($responsibleMessage);
 
         return $responsible;
     }
@@ -64,7 +64,7 @@ class ProductsByCategoryChain extends AbstractChain
     /**
      * @throws Exception
      */
-    public function validate(ResponsibleInterface $responsible): bool
+    public function perform(ResponsibleInterface $responsible): bool
     {
         $content = $responsible->getCacheDto()->getContent();
 
@@ -98,19 +98,21 @@ class ProductsByCategoryChain extends AbstractChain
             return false;
         }
 
-        $validData = [
-            'Предыдущий',
-            'Следующий',
-            'Выбрать вариант',
-            'Добавить в корзину',
-            'Вернуться в главное меню',
-            'Вернуться к категориям',
-        ];
+        return true;
+    }
 
-        if (in_array($content, $validData)) {
-            return true;
-        }
-
-        return false;
+    public function validate(ResponsibleInterface $responsible): bool
+    {
+        return $this->isValid(
+            $responsible,
+            [
+                'Предыдущий',
+                'Следующий',
+                'Выбрать вариант',
+                'Добавить в корзину',
+                'Вернуться в главное меню',
+                'Вернуться к категориям',
+            ]
+        );
     }
 }

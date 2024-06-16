@@ -47,8 +47,8 @@ class ProductsByCategoryChainTest extends KernelTestCase
 
         /** @var ProductsByCategoryChain $chainService */
         $chainService = $container->get(ProductsByCategoryChain::class);
-        $chainService->validate($responsible);
+        $chainService->perform($responsible);
 
-        $this->assertNotEmpty($responsible->getResult()->getMessages());
+        $this->assertNotEmpty($responsible->getResult()->getMessage());
     }
 }

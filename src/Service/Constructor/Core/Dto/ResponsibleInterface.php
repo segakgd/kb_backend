@@ -13,10 +13,6 @@ interface ResponsibleInterface
 
     public function setChain(?CacheChainDto $chain): static;
 
-    public function getNextCondition(): ?ConditionInterface;
-
-    public function setNextCondition(?ConditionInterface $nextCondition): static;
-
     public function getResult(): ?ResultInterface;
 
     public function setResult(?ResultInterface $result): static;

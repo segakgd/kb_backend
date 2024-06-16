@@ -23,7 +23,7 @@ class ProductCategoryChain extends AbstractChain // todo просто в Categor
     /**
      * @throws Exception
      */
-    public function success(ResponsibleInterface $responsible): ResponsibleInterface
+    public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
         $event = $responsible->getCacheDto()->getEvent();
         $content = $responsible->getCacheDto()->getContent();
@@ -66,19 +66,19 @@ class ProductCategoryChain extends AbstractChain // todo просто в Categor
         return $condition;
     }
 
+    public function perform(ResponsibleInterface $responsible): bool
+    {
+        return true;
+    }
+
     public function validate(ResponsibleInterface $responsible): bool
     {
-        $content = $responsible->getCacheDto()->getContent();
-
-        $validData = [
-            'Наушники',
-            'Ноутбуки',
-        ];
-
-        if (in_array($content, $validData)) {
-            return true;
-        }
-
-        return false;
+        return $this->isValid(
+            $responsible,
+            [
+                'Наушники',
+                'Ноутбуки',
+            ]
+        );
     }
 }

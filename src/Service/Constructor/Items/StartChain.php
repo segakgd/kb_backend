@@ -10,16 +10,16 @@ use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 
 class StartChain extends AbstractChain
 {
-    public function success(ResponsibleInterface $responsible): ResponsibleInterface
+    public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
         $message = "Выберите интересующую вас категорию товаров: ";
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,
-            keyBoard: $responsible->getNextCondition()->getKeyBoard()
+//            keyBoard: $responsible->getNextCondition()->getKeyBoard()
         );
 
-        $responsible->getResult()->addMessage($responsibleMessage);
+        $responsible->getResult()->setMessage($responsibleMessage);
 
         return $responsible;
     }
@@ -41,18 +41,18 @@ class StartChain extends AbstractChain
         return $condition;
     }
 
+    public function perform(ResponsibleInterface $responsible): bool
+    {
+        return true;
+    }
+
     public function validate(ResponsibleInterface $responsible): bool
     {
-        $content = $responsible->getCacheDto()->getContent();
-
-        $validData = [
-            'Погнали!',
-        ];
-
-        if (in_array($content, $validData)) {
-            return true;
-        }
-
-        return false;
+        return $this->isValid(
+            $responsible,
+            [
+                'Погнали!',
+            ]
+        );
     }
 }

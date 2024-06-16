@@ -73,7 +73,7 @@ class ShippingChain // extends AbstractChain
             $replyMarkups,
         );
 
-        $responsible->getResult()->addMessage($responsibleMessage);
+        $responsible->getResult()->setMessage($responsibleMessage);
 
         return true;
     }

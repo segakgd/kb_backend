@@ -44,18 +44,6 @@ class Responsible implements ResponsibleInterface
         return $this;
     }
 
-    public function getNextCondition(): ?ConditionInterface
-    {
-        return $this->nextCondition;
-    }
-
-    public function setNextCondition(?ConditionInterface $nextCondition): static
-    {
-        $this->nextCondition = $nextCondition;
-
-        return $this;
-    }
-
     public function getResult(): ?ResultInterface
     {
         return $this->result;

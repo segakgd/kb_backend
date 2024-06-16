@@ -20,15 +20,8 @@ readonly class ChainResolver
     public function resolve(Responsible $responsible, ?JumpEnum $targetNext): void
     {
         $chainInstance = $this->getChainInstance($responsible);
-        $nextCondition = $this->getNextCondition($targetNext, $responsible);
 
-        $responsible->setNextCondition($nextCondition);
-
-        $isHandled = $chainInstance->chain($responsible);
-
-        if ($isHandled) {
-            $responsible->getChain()->setFinished(true);
-        }
+        $chainInstance->execute($responsible, $this->getNextChain($targetNext));
     }
 
     /**
@@ -49,5 +42,17 @@ readonly class ChainResolver
         }
 
         return $this->chainsGenerator->generate($targetNext)->condition($responsible);
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function getNextChain(?JumpEnum $targetNext): ?AbstractChain
+    {
+        if (is_null($targetNext)) {
+            return null;
+        }
+
+        return $this->chainsGenerator->generate($targetNext);
     }
 }

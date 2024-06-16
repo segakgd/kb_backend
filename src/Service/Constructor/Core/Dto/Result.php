@@ -6,29 +6,22 @@ use App\Dto\Responsible\ResponsibleMessageDto;
 
 class Result implements ResultInterface
 {
-    private array $messages = [];
+    private ?ResponsibleMessageDto $message = null;
 
-    public function getMessages(): array
+    public function getMessage(): ?ResponsibleMessageDto
     {
-        return $this->messages;
+        return $this->message;
     }
 
-    public function setMessages(array $messages): static
+    public function setMessage(ResponsibleMessageDto $message): static
     {
-        $this->messages = $messages;
-
-        return $this;
-    }
-
-    public function addMessage(ResponsibleMessageDto $message): static
-    {
-        $this->messages[] = $message;
+        $this->message = $message;
 
         return $this;
     }
 
     public function isEmptyMessage(): bool
     {
-        return empty($this->messages);
+        return null === $this->message;
     }
 }

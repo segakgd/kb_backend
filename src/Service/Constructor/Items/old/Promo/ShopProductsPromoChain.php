@@ -35,7 +35,7 @@ class ShopProductsPromoChain // extends AbstractChain
             'Не понимаю о чем вы...',
         );
 
-        $responsible->getResult()->addMessage($responsibleMessage);
+        $responsible->getResult()->setMessage($responsibleMessage);
 
         return false;
     }

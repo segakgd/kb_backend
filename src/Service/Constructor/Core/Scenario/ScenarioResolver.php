@@ -17,7 +17,7 @@ class ScenarioResolver
         $this->setMessage($responsibleMessage, $cacheContractDto);
         $this->setKeyboard($responsibleMessage, $cacheContractDto);
 
-        $responsible->getResult()->addMessage($responsibleMessage);
+        $responsible->getResult()->setMessage($responsibleMessage);
 
         return $responsible;
     }

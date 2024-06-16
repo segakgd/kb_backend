@@ -54,7 +54,7 @@ readonly class ShopProductsChain // extends AbstractChain
             $replyMarkups,
         );
 
-        $responsible->getResult()->addMessage($responsibleMessage);
+        $responsible->getResult()->setMessage($responsibleMessage);
 
         return false;
     }
@@ -83,7 +83,7 @@ readonly class ShopProductsChain // extends AbstractChain
         $responsibleMessage->setKeyBoard($variantsNav);
         $responsibleMessage->setMessage('Добавить в корзину вариант:');
 
-        $responsible->getResult()->addMessage($responsibleMessage);
+        $responsible->getResult()->setMessage($responsibleMessage);
 
         return true;
     }

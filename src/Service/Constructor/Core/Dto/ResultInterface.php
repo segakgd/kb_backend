@@ -6,11 +6,9 @@ use App\Dto\Responsible\ResponsibleMessageDto;
 
 interface ResultInterface
 {
-    public function getMessages(): array;
+    public function getMessage(): ?ResponsibleMessageDto;
 
-    public function setMessages(array $messages): static;
-
-    public function addMessage(ResponsibleMessageDto $message): static;
+    public function setMessage(ResponsibleMessageDto $message): static;
 
     public function isEmptyMessage(): bool;
 }

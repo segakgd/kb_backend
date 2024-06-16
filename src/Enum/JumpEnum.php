@@ -54,18 +54,6 @@ enum JumpEnum: string
     case Main = 'main';
     case Cart = 'cart';
 
-    // test
-    case refChain1 = 'ref.chain.1';
-    case refChain2 = 'ref.chain.2';
-    case refChain3 = 'ref.chain.3';
-    case refChain4 = 'ref.chain.4';
-    case refChain5 = 'ref.chain.5';
-    case refChain6 = 'ref.chain.6';
-    case refChain7 = 'ref.chain.7';
-    case refChain8 = 'ref.chain.8';
-    case refChain9 = 'ref.chain.9';
-    case refChain10 = 'ref.chain.10';
-
     // new
     case GreetingChain = 'greeting.chain';
     case StartChain = 'start.chain';

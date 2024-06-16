@@ -21,7 +21,7 @@ class VariantsProductChain extends AbstractChain
     /**
      * @throws Exception
      */
-    public function success(ResponsibleInterface $responsible): ResponsibleInterface
+    public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
         $content = $responsible->getCacheDto()->getContent();
 
@@ -48,10 +48,10 @@ class VariantsProductChain extends AbstractChain
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,
-            keyBoard: $responsible->getNextCondition()->getKeyBoard()
+//            keyBoard: $responsible->getNextCondition()->getKeyBoard()
         );
 
-        $responsible->getResult()->addMessage($responsibleMessage);
+        $responsible->getResult()->setMessage($responsibleMessage);
 
         return $responsible;
     }
@@ -87,6 +87,11 @@ class VariantsProductChain extends AbstractChain
     /**
      * @throws Exception
      */
+    public function perform(ResponsibleInterface $responsible): bool
+    {
+        return true;
+    }
+
     public function validate(ResponsibleInterface $responsible): bool
     {
         return true;

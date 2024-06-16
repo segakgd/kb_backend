@@ -20,7 +20,7 @@ class VariantProductChain extends AbstractChain
     /**
      * @throws Exception
      */
-    public function success(ResponsibleInterface $responsible): ResponsibleInterface
+    public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
         $content = $responsible->getCacheDto()->getContent();
         $message = static::class . "Кликнул ты вот это: $content";
@@ -29,7 +29,7 @@ class VariantProductChain extends AbstractChain
             message: $message,
         );
 
-        $responsible->getResult()->addMessage($responsibleMessage);
+        $responsible->getResult()->setMessage($responsibleMessage);
 
         return $responsible;
     }
@@ -68,6 +68,11 @@ class VariantProductChain extends AbstractChain
     /**
      * @throws Exception
      */
+    public function perform(ResponsibleInterface $responsible): bool
+    {
+        return true;
+    }
+
     public function validate(ResponsibleInterface $responsible): bool
     {
         return true;

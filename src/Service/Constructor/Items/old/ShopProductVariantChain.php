@@ -67,7 +67,7 @@ readonly class ShopProductVariantChain // extends AbstractChai
 
             $responsibleMessage->setKeyBoard($replyMarkups);
 
-            $responsible->getResult()->addMessage($responsibleMessage);
+            $responsible->getResult()->setMessage($responsibleMessage);
 
             return true;
         }
@@ -81,7 +81,7 @@ readonly class ShopProductVariantChain // extends AbstractChai
             'Не понимаю о чем вы, выберите один из вариантов:',
         );
 
-        $responsible->getResult()->addMessage($responsibleMessage);
+        $responsible->getResult()->setMessage($responsibleMessage);
 
         return false;
     }

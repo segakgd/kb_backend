@@ -7,13 +7,35 @@ use App\Helper\MessageHelper;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 
-abstract class AbstractChain
+/**
+ * Должен быть функционал который валидирует (врзмодно, он далее предаёт какие-то валидные данные)
+ * Должен быть функционал который исполняет какую-то работу (рутины, бытовуха)
+ * Должен быть функционал который завершает выполнение цепи.
+ * Должен быть функционал который предоставляет подготовленное состояние соедующей цепи если такое есть
+ * Должен быть функционал который говорит что делать если у нас цепь зафейлена
+ * Должен быть фенкционал который говорит что цепь не завершена, но не зафейлена, скорее не закончена и нужно повторить действие
+ *
+ * при всех равных на состояние следующей цепи влияет результат той на который сейчас находимся
+ */
+abstract class AbstractChain implements ChainInterface
 {
-    public function chain(ResponsibleInterface $responsible): bool
+    abstract public function complete(ResponsibleInterface $responsible): ResponsibleInterface; // complete
+
+    /**
+     * Решает, валидно ли значение, производит доп махинации, может содеражить логику.
+     */
+    abstract public function perform(ResponsibleInterface $responsible): bool; // perform - исполнитель
+
+    abstract public function validate(ResponsibleInterface $responsible): bool; // валидируем
+
+//    abstract public function repeat(ResponsibleInterface $responsible): bool; // повторитель
+
+    abstract public function condition(ResponsibleInterface $responsible): ConditionInterface;
+
+    public function execute(ResponsibleInterface $responsible, ?ChainInterface $nextChain): bool
     {
-        // todo если используем как стек, то не нужно будет проверять на повтор
         if ($responsible->getChain()->isRepeat()) {
-            $this->success($responsible);
+            $this->complete($responsible);
 
             $responsible->getChain()->setFinished(true);
 
@@ -24,20 +46,58 @@ abstract class AbstractChain
             return true;
         }
 
-        if ($this->validate($responsible)) {
-            $this->success($responsible);
+        if (!$this->validate($responsible)) {
+            $this->fail($responsible);
 
-            $responsible->getChain()->setFinished(true);
+            return false;
+        }
 
+        if (!$this->perform($responsible)) {
+            return false;
+        }
+
+        $this->complete($responsible);
+
+        $responsible->getChain()->setFinished(true);
+
+        if (null !== $nextChain) {
+            $keyBoard = $nextChain->condition($responsible)->getKeyBoard();
+
+            $message = $responsible->getResult()->getMessage();
+
+            $message->setKeyBoard($keyBoard);
+        }
+
+        return true;
+    }
+
+    public function fail(ResponsibleInterface $responsible): ResponsibleInterface
+    {
+        if ($responsible->getResult()->isEmptyMessage()) {
+            $message = "Не понимаю что вы от меня хотите, повторите выбор:";
+            $keyBoard = $this->condition($responsible)->getKeyBoard();
+
+            $responsibleMessage = MessageHelper::createResponsibleMessage(
+                message: $message,
+                keyBoard: $keyBoard,
+            );
+
+            $responsible->getResult()->setMessage($responsibleMessage);
+        }
+
+        return $responsible;
+    }
+
+    protected function isValid(ResponsibleInterface $responsible, array $data): bool
+    {
+        $content = $responsible->getCacheDto()->getContent();
+
+        if (in_array($content, $data)) {
             return true;
         }
 
-        $this->fail($responsible);
-
         return false;
     }
-
-    abstract public function success(ResponsibleInterface $responsible): ResponsibleInterface;
 
     private function gotoIsNavigate(ResponsibleInterface $responsible): bool
     {
@@ -53,25 +113,4 @@ abstract class AbstractChain
 
         return false;
     }
-
-    abstract public function validate(ResponsibleInterface $responsible): bool;
-
-    public function fail(ResponsibleInterface $responsible): ResponsibleInterface
-    {
-        if ($responsible->getResult()->isEmptyMessage()) {
-            $message = "Не понимаю что вы от меня хотите, повторите выбор:";
-            $keyBoard = $this->condition($responsible)->getKeyBoard();
-
-            $responsibleMessage = MessageHelper::createResponsibleMessage(
-                message: $message,
-                keyBoard: $keyBoard,
-            );
-
-            $responsible->getResult()->addMessage($responsibleMessage);
-        }
-
-        return $responsible;
-    }
-
-    abstract public function condition(ResponsibleInterface $responsible): ConditionInterface;
 }

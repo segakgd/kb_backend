@@ -20,18 +20,15 @@ readonly class SenderService
      */
     public function sendMessages(Responsible $responsible): void
     {
-        $messages = $responsible->getResult()->getMessages();
+        $message = $responsible->getResult()->getMessage();
         $token = $responsible->getBotDto()->getToken();
         $chatId = $responsible->getBotDto()->getChatId();
 
-        /** @var ResponsibleMessageDto $message */
-        foreach ($messages as $message) {
-            if (isset($_SERVER['APP_ENV']) && $_SERVER['APP_ENV'] === 'prod') {
-                $this->sendProd($message, $token, $chatId);
-            }
-
-            $this->sendDev($message);
+        if (isset($_SERVER['APP_ENV']) && $_SERVER['APP_ENV'] === 'prod') {
+            $this->sendProd($message, $token, $chatId);
         }
+
+        $this->sendDev($message);
     }
 
     /**
