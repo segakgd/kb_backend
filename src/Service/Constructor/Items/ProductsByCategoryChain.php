@@ -31,19 +31,24 @@ class ProductsByCategoryChain extends AbstractChain
         if ('Добавить в корзину' === $content) {
             $productId = $responsible->getCacheDto()->getEvent()->getData()->getProductId();
 
-            $product = $this->productService->find($productId);
+//            $product = $this->productService->find($productId);
 
-            $variantCounts = $product->getVariants()->count();
+//            $variantCounts = $product->getVariants()->count();
+//
+//            if ($variantCounts === 1) {
+//                // todo нет смысла выводить варианты - мб сразу прыгнуть на конец цепи
+//            }
 
-            if ($variantCounts === 1) {
-                // todo нет смысла выводить варианты - мб сразу прыгнуть на конец цепи
-            }
-
-            $message = "ID продукта: $productId";
+            $message = "Выберите один из доступных вариантов: ";
         }
+
+//        if ('Выбрать вариант' === $content) {
+//            $message = "Допустим что, что-то ещё случилось. Ну, товар ты выбрал или ешё чего. И да, кликнул ты вот это: $content";
+//        }
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,
+            keyBoard: $responsible->getNextCondition()->getKeyBoard()
         );
 
         $responsible->getResult()->addMessage($responsibleMessage);
@@ -96,6 +101,7 @@ class ProductsByCategoryChain extends AbstractChain
         $validData = [
             'Предыдущий',
             'Следующий',
+            'Выбрать вариант',
             'Добавить в корзину',
             'Вернуться в главное меню',
             'Вернуться к категориям',

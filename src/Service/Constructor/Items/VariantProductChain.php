@@ -3,6 +3,7 @@
 namespace App\Service\Constructor\Items;
 
 use App\Helper\MessageHelper;
+use App\Service\Admin\Ecommerce\Product\Service\ProductService;
 use App\Service\Constructor\Core\Chains\AbstractChain;
 use App\Service\Constructor\Core\Dto\Condition;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
@@ -11,6 +12,11 @@ use Exception;
 
 class VariantProductChain extends AbstractChain
 {
+    public function __construct(
+        private readonly ProductService $productService,
+    ) {
+    }
+
     /**
      * @throws Exception
      */
@@ -30,12 +36,26 @@ class VariantProductChain extends AbstractChain
 
     public function condition(ResponsibleInterface $responsible): ConditionInterface
     {
+        $variantId = $responsible->getCacheDto()->getEvent()->getData()->getVariantId();
+
+        $variant = $this->productService->findVariant($variantId);
+
+        if (null === $variant) {
+            throw new Exception('Variant not found');
+        }
+
+        $count = $variant->getCount();
+
+        $keyBoards = [];
+
+        for ($i = 1; $count > $i; $i++) {
+            $keyBoards[] = [
+                'text' => $variant->getName()
+            ];
+        }
+
         $replyMarkups = [
-            [
-                [
-                    'text' => 'Погнали!'
-                ],
-            ],
+            $keyBoards
         ];
 
         $condition = new Condition();

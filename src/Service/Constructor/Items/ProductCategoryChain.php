@@ -11,7 +11,7 @@ use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 use Exception;
 
-class ProductCategoryChain extends AbstractChain
+class ProductCategoryChain extends AbstractChain // todo просто в CategoriesChain
 {
     public function __construct(
         private readonly ProductService         $productService,
