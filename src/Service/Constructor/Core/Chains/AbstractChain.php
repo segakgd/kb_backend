@@ -64,9 +64,11 @@ abstract class AbstractChain implements ChainInterface
         if (null !== $nextChain) {
             $keyBoard = $nextChain->condition($responsible)->getKeyBoard();
 
-            $message = $responsible->getResult()->getMessage();
+            if (null !== $keyBoard) {
+                $message = $responsible->getResult()->getMessage();
 
-            $message->setKeyBoard($keyBoard);
+                $message->setKeyBoard($keyBoard);
+            }
         }
 
         return true;
