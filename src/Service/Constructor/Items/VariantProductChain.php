@@ -5,7 +5,6 @@ namespace App\Service\Constructor\Items;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\Product\Service\ProductService;
 use App\Service\Constructor\Core\Chains\AbstractChain;
-use App\Service\Constructor\Core\Dto\Condition;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 use Exception;

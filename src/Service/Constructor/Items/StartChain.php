@@ -4,7 +4,6 @@ namespace App\Service\Constructor\Items;
 
 use App\Helper\MessageHelper;
 use App\Service\Constructor\Core\Chains\AbstractChain;
-use App\Service\Constructor\Core\Dto\Condition;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 
