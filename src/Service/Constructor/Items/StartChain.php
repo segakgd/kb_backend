@@ -26,19 +26,15 @@ class StartChain extends AbstractChain
 
     public function condition(ResponsibleInterface $responsible): ConditionInterface
     {
-        $replyMarkups = [
+        return $this->makeCondition(
             [
                 [
-                    'text' => 'Погнали!'
+                    [
+                        'text' => 'Погнали!'
+                    ],
                 ],
-            ],
-        ];
-
-        $condition = new Condition();
-
-        $condition->setKeyBoard($replyMarkups);
-
-        return $condition;
+            ]
+        );
     }
 
     public function perform(ResponsibleInterface $responsible): bool

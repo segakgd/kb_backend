@@ -48,22 +48,18 @@ class CategoriesChain extends AbstractChain
 
     public function condition(ResponsibleInterface $responsible): ConditionInterface
     {
-        $replyMarkups = [
+        return $this->makeCondition(
             [
                 [
-                    'text' => 'Наушники'
+                    [
+                        'text' => 'Наушники'
+                    ],
+                    [
+                        'text' => 'Ноутбуки'
+                    ],
                 ],
-                [
-                    'text' => 'Ноутбуки'
-                ],
-            ],
-        ];
-
-        $condition = new Condition();
-
-        $condition->setKeyBoard($replyMarkups);
-
-        return $condition;
+            ]
+        );
     }
 
     public function perform(ResponsibleInterface $responsible): bool

@@ -26,7 +26,7 @@ class GreetingChain extends AbstractChain
 
     public function condition(ResponsibleInterface $responsible): ConditionInterface
     {
-        return new Condition();
+        return $this->makeCondition();
     }
 
     public function perform(ResponsibleInterface $responsible): bool

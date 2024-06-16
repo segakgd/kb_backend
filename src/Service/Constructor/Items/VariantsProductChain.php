@@ -6,7 +6,6 @@ use App\Entity\Ecommerce\ProductVariant;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\Product\Service\ProductService;
 use App\Service\Constructor\Core\Chains\AbstractChain;
-use App\Service\Constructor\Core\Dto\Condition;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 use Exception;
@@ -73,15 +72,11 @@ class VariantsProductChain extends AbstractChain
             ];
         }
 
-        $replyMarkups = [
-            $keyBoards
-        ];
-
-        $condition = new Condition();
-
-        $condition->setKeyBoard($replyMarkups);
-
-        return $condition;
+        return $this->makeCondition(
+            [
+                $keyBoards
+            ]
+        );
     }
 
     /**

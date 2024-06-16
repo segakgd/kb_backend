@@ -54,15 +54,11 @@ class VariantProductChain extends AbstractChain
             ];
         }
 
-        $replyMarkups = [
-            $keyBoards
-        ];
-
-        $condition = new Condition();
-
-        $condition->setKeyBoard($replyMarkups);
-
-        return $condition;
+        return $this->makeCondition(
+            [
+                $keyBoards
+            ]
+        );
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Service\Constructor\Core\Chains;
 
 use App\Helper\JumpHelper;
 use App\Helper\MessageHelper;
+use App\Service\Constructor\Core\Dto\Condition;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 
@@ -97,6 +98,17 @@ abstract class AbstractChain implements ChainInterface
         }
 
         return false;
+    }
+
+    protected function makeCondition(array $replyMarkups = []): ConditionInterface
+    {
+        $condition = new Condition();
+
+        if (!empty($replyMarkups)) {
+            $condition->setKeyBoard($replyMarkups);
+        }
+
+        return $condition;
     }
 
     private function gotoIsNavigate(ResponsibleInterface $responsible): bool

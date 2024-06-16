@@ -58,7 +58,7 @@ class ProductsByCategoryChain extends AbstractChain
 
     public function condition(ResponsibleInterface $responsible): ConditionInterface
     {
-        return new Condition();
+        return $this->makeCondition();
     }
 
     /**
