@@ -5,7 +5,7 @@ namespace App\Helper;
 use App\Enum\JumpEnum;
 use App\Service\Constructor\Core\Chains\AbstractChain;
 use App\Service\Constructor\Items\GreetingChain;
-use App\Service\Constructor\Items\ProductCategoryChain;
+use App\Service\Constructor\Items\CategoriesChain;
 use App\Service\Constructor\Items\ProductsByCategoryChain;
 use App\Service\Constructor\Items\StartChain;
 use App\Service\Constructor\Items\VariantProductChain;
@@ -16,9 +16,9 @@ readonly class ChainsGenerator
 {
     public function __construct(
         private ProductsByCategoryChain $productsByCategoryChain,
-        private ProductCategoryChain $productCategoryChain,
-        private VariantsProductChain $variantsProductChain,
-        private VariantProductChain $variantProductChain,
+        private CategoriesChain         $productCategoryChain,
+        private VariantsProductChain    $variantsProductChain,
+        private VariantProductChain     $variantProductChain,
     ) {
     }
 
