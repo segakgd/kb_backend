@@ -90,7 +90,7 @@ class VariantProductChain extends AbstractChain
                         'text' => 'В главное меню'
                     ],
                     [
-                        'text' => 'В корзмну'
+                        'text' => 'В корзину'
                     ],
                 ],
             ]

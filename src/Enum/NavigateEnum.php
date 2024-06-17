@@ -4,8 +4,8 @@ namespace App\Enum;
 
 enum NavigateEnum: string
 {
-    case ToMain = 'Вернуться в главное меню';
-    case ToCart = 'Моя корзина';
-    case ToProducts = 'вернуться к товарам';
-    case ToCategoryProducts = 'вернуться к категориям';
+    case ToMain = 'В главное меню';
+    case ToCart = 'В корзину';
+    case ToProducts = 'К товарам';
+    case ToCategoryProducts = 'К категориям';
 }

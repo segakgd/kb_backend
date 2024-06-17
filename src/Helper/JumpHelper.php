@@ -12,8 +12,8 @@ class JumpHelper
         return match ($content) {
             NavigateEnum::ToMain->value => JumpEnum::Main,
             NavigateEnum::ToCart->value => JumpEnum::Cart,
-            NavigateEnum::ToProducts->value => JumpEnum::ShopProducts,
-            NavigateEnum::ToCategoryProducts->value => JumpEnum::ShowShopProductsCategory,
+            NavigateEnum::ToProducts->value => JumpEnum::ProductsByCategoryChain,
+            NavigateEnum::ToCategoryProducts->value => JumpEnum::ProductCategoryChain,
             default => null,
         };
     }
