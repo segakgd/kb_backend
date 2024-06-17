@@ -54,9 +54,11 @@ class VariantProductChain extends AbstractChain
 
         $message = "Отлично! Товар добавлен в корзину.";
 
+        $number = 1;
+
         foreach ($cartProducts as $cartProduct) {
             $message .= "\n\n"
-                . "Товар: " . $cartProduct['productName']
+                . $this->getIconNumber($number) . " товар: " . $cartProduct['productName']
             ;
             $message .= "\n"
                 . "Вариант: " . $cartProduct['variantName']
@@ -64,6 +66,8 @@ class VariantProductChain extends AbstractChain
             $message .= "\n"
                 . "Цена: " . $cartProduct['cost'] . 'р. /' . $cartProduct['count'] . 'шт. (' . $cartProduct['amount'] . 'р.)'
             ;
+
+            $number++;
         }
 
         $message .= "\n\n"
@@ -72,6 +76,24 @@ class VariantProductChain extends AbstractChain
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,
+            keyBoard: [
+                [
+                    [
+                        'text' => 'К товарам'
+                    ],
+                    [
+                        'text' => 'К категориям'
+                    ],
+                ],
+                [
+                    [
+                        'text' => 'В главное меню'
+                    ],
+                    [
+                        'text' => 'В корзмну'
+                    ],
+                ],
+            ]
         );
 
         $responsible->getResult()->setMessage($responsibleMessage);
@@ -120,5 +142,27 @@ class VariantProductChain extends AbstractChain
     public function validate(ResponsibleInterface $responsible): bool
     {
         return true;
+    }
+
+    private function getIconNumber(int $number): string
+    {
+        $numberEmoji = '';
+
+        foreach (str_split($number) as $numberItem) {
+            $numberEmoji .= match ((int) $numberItem) {
+                0 => '0️⃣',
+                1 => '1️⃣',
+                2 => '2️⃣',
+                3 => '3️⃣',
+                4 => '4️⃣',
+                5 => '5️⃣',
+                6 => '6️⃣',
+                7 => '7️⃣',
+                8 => '8️⃣',
+                9 => '9️⃣',
+            };
+        }
+
+        return $numberEmoji;
     }
 }
