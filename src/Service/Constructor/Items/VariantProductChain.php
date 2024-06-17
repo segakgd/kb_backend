@@ -26,13 +26,13 @@ class VariantProductChain extends AbstractChain
 
         $variant = $this->productService->findVariant($variantId);
 
-        $amount = $variant->getPrice()['price'] * $content;
+        $amount = $variant->getPrice()[0]->getPrice() * $content;
 
         $responsible->getCacheDto()->getCart()->addProduct(
             [
                 'productName' => $variant->getProduct()->getName(),
                 'variantName' => $variant->getName(),
-                'cost' => $variant->getPrice()['price'],
+                'cost' => $variant->getPrice()[0]->getPrice(),
                 'amount' => $amount,
                 'count' => $content,
             ]
@@ -52,21 +52,22 @@ class VariantProductChain extends AbstractChain
 
         $responsible->getCacheDto()->getCart()->setTotalAmount($totalAmount);
 
-        $message = "Отлично! Товар добавлен в корзину."
-            . "\n\n"
-        ;
+        $message = "Отлично! Товар добавлен в корзину.";
 
         foreach ($cartProducts as $cartProduct) {
-            $message .= "\n"
-                . "Товар: " . $totalAmount['productName'] . '/' . $cartProduct['variantName']
+            $message .= "\n\n"
+                . "Товар: " . $cartProduct['productName']
             ;
             $message .= "\n"
-                . "Цена: " . $totalAmount['cost'] . 'р. /' . $cartProduct['count'] . 'шт. (' . $totalAmount['amount'] . 'р.)'
+                . "Вариант: " . $cartProduct['variantName']
+            ;
+            $message .= "\n"
+                . "Цена: " . $cartProduct['cost'] . 'р. /' . $cartProduct['count'] . 'шт. (' . $cartProduct['amount'] . 'р.)'
             ;
         }
 
         $message .= "\n\n"
-            . "Сумма корзины: $totalAmount"
+            . "Сумма корзины: $totalAmount р."
         ;
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(

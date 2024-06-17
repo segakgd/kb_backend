@@ -109,7 +109,7 @@ class CacheCartDto extends AbstractDto
         $cart->products = $data['products'] ?? [];
         $cart->shipping = $data['shipping'] ?? [];
         $cart->promotion = $data['promotion'] ?? [];
-        $cart->totalAmount = $data['totalAmount'] ?? [];
+        $cart->totalAmount = $data['totalAmount'] ?? 0;
         $cart->pay = $data['pay'] ?? false;
 
         return $cart;

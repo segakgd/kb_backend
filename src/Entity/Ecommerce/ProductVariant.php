@@ -111,7 +111,8 @@ class ProductVariant
         return $this;
     }
 
-    public function getPrice(): array
+    /** @return array<VariantPriceDto> */
+    public function getPrice(): array // todo переделать под dto, а не массив dto
     {
         return $this->price;
     }
