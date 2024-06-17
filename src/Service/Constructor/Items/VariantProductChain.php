@@ -22,7 +22,52 @@ class VariantProductChain extends AbstractChain
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
         $content = $responsible->getCacheDto()->getContent();
-        $message = static::class . "Кликнул ты вот это: $content";
+        $variantId = $responsible->getCacheDto()->getEvent()->getData()->getVariantId();
+
+        $variant = $this->productService->findVariant($variantId);
+
+        $amount = $variant->getPrice()['price'] * $content;
+
+        $responsible->getCacheDto()->getCart()->addProduct(
+            [
+                'productName' => $variant->getProduct()->getName(),
+                'variantName' => $variant->getName(),
+                'cost' => $variant->getPrice()['price'],
+                'amount' => $amount,
+                'count' => $content,
+            ]
+        );
+
+        $cartProducts = $responsible->getCacheDto()->getCart()->getProducts();
+
+        $totalAmount = 0;
+
+        foreach ($cartProducts as $cartProduct) {
+            $totalAmount += $cartProduct['amount'];
+        }
+
+        $responsible->getCacheDto()->getCart()->setTotalAmount($totalAmount);
+
+        // todo списываем с магазина товары
+
+        $responsible->getCacheDto()->getCart()->setTotalAmount($totalAmount);
+
+        $message = "Отлично! Товар добавлен в корзину."
+            . "\n\n"
+        ;
+
+        foreach ($cartProducts as $cartProduct) {
+            $message .= "\n"
+                . "Товар: " . $totalAmount['productName'] . '/' . $cartProduct['variantName']
+            ;
+            $message .= "\n"
+                . "Цена: " . $totalAmount['cost'] . 'р. /' . $cartProduct['count'] . 'шт. (' . $totalAmount['amount'] . 'р.)'
+            ;
+        }
+
+        $message .= "\n\n"
+            . "Сумма корзины: $totalAmount"
+        ;
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,

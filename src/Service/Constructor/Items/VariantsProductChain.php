@@ -48,7 +48,7 @@ class VariantsProductChain extends AbstractChain
 
         $responsible->getCacheDto()->getEvent()->getData()->setVariantId($targetVariantId);
 
-        $message = static::class . "Вы выбрали вариант: $content. \n\n Укажите количество: ";
+        $message = "Вы выбрали вариант: $content. \n\n Укажите количество: ";
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,

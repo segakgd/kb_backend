@@ -18,6 +18,8 @@ class CacheCartDto extends AbstractDto
     // todo use CachePromotionDto.php
     private array $promotion = [];
 
+    private int $totalAmount = 0;
+
     private bool $pay = false;
 
     public function getContacts(): array
@@ -75,6 +77,18 @@ class CacheCartDto extends AbstractDto
         return $this;
     }
 
+    public function getTotalAmount(): int
+    {
+        return $this->totalAmount;
+    }
+
+    public function setTotalAmount(int $totalAmount): static
+    {
+        $this->totalAmount = $totalAmount;
+
+        return $this;
+    }
+
     public function isPay(): bool
     {
         return $this->pay;
@@ -95,6 +109,7 @@ class CacheCartDto extends AbstractDto
         $cart->products = $data['products'] ?? [];
         $cart->shipping = $data['shipping'] ?? [];
         $cart->promotion = $data['promotion'] ?? [];
+        $cart->totalAmount = $data['totalAmount'] ?? [];
         $cart->pay = $data['pay'] ?? false;
 
         return $cart;
@@ -107,6 +122,7 @@ class CacheCartDto extends AbstractDto
             'products' => $this->products,
             'shipping' => $this->shipping,
             'promotion' => $this->promotion,
+            'totalAmount' => $this->totalAmount,
             'pay' => $this->pay,
         ];
     }
