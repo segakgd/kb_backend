@@ -26,11 +26,11 @@ readonly class EventResolver
     {
         $this->contractResolver->resolve($responsible);
 
-        $this->senderService->sendMessages($responsible);
-
         if ($responsible->isExistJump()) {
             return $responsible;
         }
+
+        $this->senderService->sendMessages($responsible);
 
         $status = $responsible->isContractStatus() ? VisitorEventStatusEnum::Done : VisitorEventStatusEnum::Waiting;
 

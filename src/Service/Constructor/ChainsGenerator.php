@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Helper;
+namespace App\Service\Constructor;
 
 use App\Enum\JumpEnum;
 use App\Service\Constructor\Core\Chains\AbstractChain;
-use App\Service\Constructor\Items\GreetingChain;
 use App\Service\Constructor\Items\CategoriesChain;
+use App\Service\Constructor\Items\FinishChain;
+use App\Service\Constructor\Items\GreetingChain;
 use App\Service\Constructor\Items\ProductsByCategoryChain;
 use App\Service\Constructor\Items\StartChain;
 use App\Service\Constructor\Items\VariantProductChain;
@@ -34,6 +35,7 @@ readonly class ChainsGenerator
             JumpEnum::ProductsByCategoryChain => $this->productsByCategoryChain,
             JumpEnum::VariantsProductChain => $this->variantsProductChain,
             JumpEnum::VariantProductChain => $this->variantProductChain,
+            JumpEnum::FinishChain => new FinishChain,
 
             JumpEnum::Main, JumpEnum::Cart => throw new Exception('Need add chain'),
         };

@@ -3,7 +3,7 @@
 namespace App\Service\Constructor\Core\Chains;
 
 use App\Enum\JumpEnum;
-use App\Helper\ChainsGenerator;
+use App\Service\Constructor\ChainsGenerator;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\Responsible;
 use Exception;
