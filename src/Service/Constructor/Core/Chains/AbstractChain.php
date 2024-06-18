@@ -35,7 +35,12 @@ abstract class AbstractChain implements ChainInterface
 
     public function execute(ResponsibleInterface $responsible, ?ChainInterface $nextChain): bool
     {
+        // todo было бы здорово для jump-ов выделить какой-то интерфейс или типа того, чтоб делать это более элегантно
         if ($responsible->getChain()->isRepeat()) {
+            if (!$this->perform($responsible)) {
+                return false;
+            }
+
             $this->complete($responsible);
 
             $responsible->getChain()->setFinished(true);
@@ -51,7 +56,7 @@ abstract class AbstractChain implements ChainInterface
             return true;
         }
 
-        if ($this->gotoIsNavigate($responsible)) {
+        if ($this->gotoIsNavigate($responsible)) { // todo это актуально?
             return true;
         }
 

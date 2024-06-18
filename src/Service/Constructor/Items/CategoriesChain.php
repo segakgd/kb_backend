@@ -27,10 +27,15 @@ class CategoriesChain extends AbstractChain
         $event = $responsible->getCacheDto()->getEvent();
         $content = $responsible->getCacheDto()->getContent();
 
-        $availableCategory = $this->categoryService->getCategoryByName($content);
+        if ($responsible->getChain()->isRepeat()) {
+            $categoryId = $responsible->getCacheDto()->getEvent()->getData()->getCategoryId();
+            $availableCategory = $this->categoryService->getCategoryById($categoryId);
+        } else {
+            $availableCategory = $this->categoryService->getCategoryByName($content);
+        }
 
         if (!$availableCategory) {
-            throw new Exception('Неизвестная категория');
+            throw new Exception("Неизвестная категория: $content");
         }
 
         $event->getData()->setCategoryId($availableCategory->getId());

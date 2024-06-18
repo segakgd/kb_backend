@@ -66,6 +66,11 @@ readonly class ProductCategoryService implements ProductCategoryServiceInterface
         );
     }
 
+    public function getCategoryById(int $categoryId): ?ProductCategory
+    {
+        return $this->productCategoryEntityRepository->find($categoryId);
+    }
+
     public function getAvailableCategory(int $projectId): array
     {
         $productCategories = $this->productCategoryEntityRepository->findBy(

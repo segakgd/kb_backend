@@ -23,19 +23,11 @@ class ProductsByCategoryChain extends AbstractChain
      */
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        $content = $responsible->getCacheDto()->getContent();
+        $responsibleMessage = MessageHelper::createResponsibleMessage(
+            message: "Выберите один из доступных вариантов:",
+        );
 
-        if ('Добавить в корзину' === $content) {
-            $responsibleMessage = MessageHelper::createResponsibleMessage(
-                message: "Выберите один из доступных вариантов:",
-            );
-
-            $responsible->getResult()->setMessage($responsibleMessage);
-
-            return $responsible;
-        }
-
-        $this->fail($responsible); // todo  ну или кидать исключение и его птом ловить
+        $responsible->getResult()->setMessage($responsibleMessage);
 
         return $responsible;
     }
@@ -51,6 +43,10 @@ class ProductsByCategoryChain extends AbstractChain
     public function perform(ResponsibleInterface $responsible): bool
     {
         $content = $responsible->getCacheDto()->getContent();
+
+        if ('Добавить в корзину' === $content) {
+            return true;
+        }
 
         $categoryId = $responsible->getCacheDto()->getEvent()->getData()->getCategoryId();
 
@@ -94,7 +90,7 @@ class ProductsByCategoryChain extends AbstractChain
             return false;
         }
 
-        return true;
+        return false;
     }
 
     public function validate(ResponsibleInterface $responsible): bool
