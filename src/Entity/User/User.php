@@ -34,6 +34,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $projects;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['openForReading'])]
     private ?string $accessToken = null;
 
     #[ORM\Column(length: 255, nullable: true)]

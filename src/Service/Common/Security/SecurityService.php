@@ -36,6 +36,7 @@ readonly class SecurityService
 
         $user->setEmail($userDto->getEmail());
         $user->setPassword($password);
+        $user->setAccessToken($this->generateAccessToken($user->getId()));
 
         $this->entityManager->persist($user);
         $this->entityManager->flush($user);
