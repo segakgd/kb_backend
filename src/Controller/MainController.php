@@ -12,7 +12,7 @@ class MainController extends GeneralController
     public function main(): Response
     {
         if ($this->getUser()) {
-            return new RedirectResponse("/admin/user/");
+            return new RedirectResponse("/admin/users/");
         }
 
         return $this->redirectToRoute('app_login');
