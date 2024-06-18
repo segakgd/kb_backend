@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Random\RandomException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 readonly class SecurityService
 {
@@ -50,6 +51,10 @@ readonly class SecurityService
         $userName = $authDto->getUsername();
 
         $user = $this->userRepository->findOneBy(['email' => $userName]);
+
+        if (null === $user) {
+            throw new UserNotFoundException();
+        }
 
         if (!$this->userPasswordHasher->isPasswordValid($user, $authDto->getPassword())) {
             throw new Exception('Wrong password for user: ' . $user->getEmail());
