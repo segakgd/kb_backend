@@ -619,7 +619,8 @@ h1, h2 {
 }
 
 .messenger-nav:hover {
-    background: #546367;
+    background: linear-gradient(135deg, #5b83fb 0%, #C57DFF 100%);
+    color: #fff;
 }
 
 .messenger-nav--input {
