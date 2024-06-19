@@ -4,18 +4,19 @@ namespace App\Service\Constructor\Core;
 
 use App\Entity\Visitor\VisitorEvent;
 use App\Enum\VisitorEventStatusEnum;
-use App\Service\Common\SenderService;
+use App\Message\SendTelegramMessage;
 use App\Service\Constructor\Core\Contract\ContractResolver;
 use App\Service\Constructor\Core\Dto\Responsible;
 use App\Service\DtoRepository\ResponsibleDtoRepository;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Throwable;
 
 readonly class EventResolver
 {
     public function __construct(
         private ContractResolver         $contractResolver,
-        private SenderService            $senderService,
         private ResponsibleDtoRepository $responsibleDtoRepository,
+        private MessageBusInterface      $bus,
     ) {
     }
 
@@ -30,7 +31,8 @@ readonly class EventResolver
             return $responsible;
         }
 
-        $this->senderService->sendMessages($responsible);
+        // todo отправку нудно вынести отсюда вероятно
+        $this->bus->dispatch(new SendTelegramMessage($responsible->getResult(), $responsible->getBotDto()));
 
         $status = $responsible->isContractStatus() ? VisitorEventStatusEnum::Done : VisitorEventStatusEnum::Waiting;
 
