@@ -31,9 +31,6 @@ readonly class EventResolver
             return $responsible;
         }
 
-        // todo отправку нудно вынести отсюда вероятно
-        $this->bus->dispatch(new SendTelegramMessage($responsible->getResult(), $responsible->getBotDto()));
-
         $status = $responsible->isContractStatus() ? VisitorEventStatusEnum::Done : VisitorEventStatusEnum::Waiting;
 
         if (isset($_SERVER['APP_ENV']) && $_SERVER['APP_ENV'] === 'dev') {
@@ -45,6 +42,9 @@ readonly class EventResolver
         }
 
         $responsible->setStatus($status);
+
+        // todo отправку нудно вынести отсюда вероятно
+        $this->bus->dispatch(new SendTelegramMessage($responsible->getResult(), $responsible->getBotDto()));
 
         return $responsible;
     }

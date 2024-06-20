@@ -10,9 +10,9 @@ use App\Entity\User\Project;
 use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
 use App\Event\InitWebhookBotEvent;
+use App\Message\TelegramMessage;
 use App\Repository\Scenario\ScenarioTemplateRepository;
 use App\Service\Admin\Bot\BotServiceInterface;
-use App\Service\Common\MessageHistoryService;
 use App\Service\Visitor\Event\VisitorEventService;
 use App\Service\Visitor\Session\VisitorSessionService;
 use Exception;
@@ -23,8 +23,11 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Messenger\Exception\ExceptionInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Throwable;
 
 class EventsDashboardController extends AbstractController
@@ -36,14 +39,15 @@ class EventsDashboardController extends AbstractController
         private readonly ScenarioConverter $settingConverter,
         private readonly SerializerInterface $serializer,
         private readonly VisitorSessionService $visitorSessionService,
-        private readonly VisitorEventService $visitorEventService,
-        private readonly MessageHistoryService $messageHistoryService,
         private readonly ScenarioTemplateRepository $scenarioTemplateRepository,
+        private readonly VisitorEventService $visitorEventService,
+        private readonly MessageBusInterface $bus,
     ) {
     }
 
     /**
      * @throws Exception
+     * @throws ExceptionInterface
      */
     #[Route('/dev/project/{project}/bot/{botId}/fake_message/', name: 'dev_bot_fake_message', methods: ['POST'])]
     public function sendFakeMessage(Request $request, Project $project, int $botId): RedirectResponse
@@ -86,42 +90,26 @@ class EventsDashboardController extends AbstractController
         $chatId = $webhookData->getWebhookChatId();
         $visitorName = $webhookData->getVisitorName();
 
-        // todo проверить на IS_DEV
-        $this->messageHistoryService->create(
-            message: $webhookData->getWebhookContent(),
-            type: MessageHistoryService::OUTGOING,
-        );
-
         $visitorSession = $this->visitorSessionService->identifyByChannel($chatId, $botId, 'telegram');
 
         if (!$visitorSession) {
             $visitorSession = $this->visitorSessionService->createVisitorSession(
-                $visitorName,
-                $chatId,
-                $botId,
-                'telegram',
-                $project->getId()
+                visitorName: $visitorName,
+                chatId: $chatId,
+                botId: $botId,
+                chanel: 'telegram',
+                projectId: $project->getId(),
             );
         }
 
         // определяем событие
-        $this->visitorEventService->createVisitorEventForSession(
-            $visitorSession,
-            $webhookData->getWebhookType(),
-            $webhookData->getWebhookContent(),
+        $visitorEvent = $this->visitorEventService->createVisitorEventForSession(
+            visitorSession: $visitorSession,
+            type: $webhookData->getWebhookType(),
+            content: $webhookData->getWebhookContent(),
         );
 
-        // запускаем команду для обработки
-        $application = new Application($this->kernel);
-        $application->setAutoExit(false);
-
-        $input = new ArrayInput(
-            [
-                'command' => 'kb:tg:handler_events',
-            ]
-        );
-
-        $application->run($input);
+        $this->bus->dispatch(new TelegramMessage($visitorEvent));
 
         return new RedirectResponse("/admin/projects/{$project->getId()}/sessions/{$visitorSession->getId()}/");
     }
@@ -166,19 +154,7 @@ class EventsDashboardController extends AbstractController
     #[Route('/dev/project/{project}/event/{event}/restart/', name: 'restart_one_fail_event', methods: ['GET'])]
     public function restartOneFailEvent(Project $project, VisitorEvent $event): RedirectResponse
     {
-        $application = new Application($this->kernel);
-        $application->setAutoExit(false);
-
-        $input = new ArrayInput(
-            [
-                'command' => 'kb:tg:handler_events',
-                'visitorEventId' => $event->getId(),
-            ]
-        );
-
-        $application->run($input);
-
-        return new RedirectResponse("/admin/projects/{$project->getId()}/dashboard/");
+        throw new Exception('It\'s deprecated!!!');
     }
 
     /**

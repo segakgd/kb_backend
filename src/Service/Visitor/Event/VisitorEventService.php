@@ -31,7 +31,7 @@ readonly class VisitorEventService
         VisitorSession $visitorSession,
         string $type,
         string $content,
-    ): void {
+    ): VisitorEvent {
         $cache = $visitorSession->getCache();
 
         $visitorEvent = null;
@@ -57,7 +57,7 @@ readonly class VisitorEventService
 
             $this->entityManager->flush();
 
-            return;
+            return $visitorEvent;
         }
 
         $visitorSession->setCache($cache);
@@ -66,6 +66,8 @@ readonly class VisitorEventService
         $this->entityManager->flush();
 
         $this->rewriteChatEventByScenario($visitorEvent, $visitorSession, $type, $content);
+
+        return $visitorEvent;
     }
 
     /**

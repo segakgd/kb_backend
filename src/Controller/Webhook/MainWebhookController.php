@@ -3,6 +3,7 @@
 namespace App\Controller\Webhook;
 
 use App\Dto\Webhook\Telegram\TelegramWebhookDto;
+use App\Message\TelegramMessage;
 use App\Repository\User\ProjectRepository;
 use App\Service\Admin\Bot\BotServiceInterface;
 use App\Service\Common\MessageHistoryService;
@@ -12,6 +13,7 @@ use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Throwable;
@@ -25,6 +27,7 @@ class MainWebhookController extends AbstractController
         private readonly ProjectRepository     $projectEntityRepository,
         private readonly BotServiceInterface   $botService,
         private readonly MessageHistoryService $messageHistoryService,
+        private readonly MessageBusInterface   $bus,
     ) {
     }
 
@@ -102,11 +105,13 @@ class MainWebhookController extends AbstractController
             }
 
             // определяем событие
-            $this->visitorEventService->createVisitorEventForSession(
+            $visitorEvent = $this->visitorEventService->createVisitorEventForSession(
                 visitorSession: $visitorSession,
                 type: $webhookData->getWebhookType(),
                 content: $webhookData->getWebhookContent(),
             );
+
+            $this->bus->dispatch(new TelegramMessage($visitorEvent));
         } catch (Throwable $exception) {
             return new JsonResponse('ok', 200);
         }
