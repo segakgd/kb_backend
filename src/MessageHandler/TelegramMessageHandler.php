@@ -20,34 +20,33 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Throwable;
 
 #[AsMessageHandler]
 final readonly class TelegramMessageHandler
 {
     public function __construct(
-        private VisitorEventRepository   $visitorEventRepository,
-        private EventResolver            $eventResolver,
-        private ScenarioService          $scenarioService,
+        private VisitorEventRepository $visitorEventRepository,
+        private EventResolver $eventResolver,
+        private ScenarioService $scenarioService,
         private VisitorSessionRepository $visitorSessionRepository,
-        private BotRepository            $botRepository,
-        private EntityManagerInterface   $entityManager,
-        private JumpResolver             $jumpResolver,
-        private MessageBusInterface      $bus,
-        private LoggerInterface          $logger,
+        private BotRepository $botRepository,
+        private EntityManagerInterface $entityManager,
+        private JumpResolver $jumpResolver,
+        private MessageBusInterface $bus,
+        private LoggerInterface $logger,
     ) {
     }
 
     /**
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function __invoke(TelegramMessage $message): void
     {
         $visitorEvent = $message->getVisitorEvent();
 
         if (
-            $visitorEvent->getStatus() !== VisitorEventStatusEnum::New
-            && $visitorEvent->getStatus() !== VisitorEventStatusEnum::Repeat
+            VisitorEventStatusEnum::New !== $visitorEvent->getStatus()
+            && VisitorEventStatusEnum::Repeat !== $visitorEvent->getStatus()
         ) {
             return;
         }
@@ -57,7 +56,7 @@ final readonly class TelegramMessageHandler
 
             $cacheDto = $visitorSession->getCache();
 
-            if ($visitorEvent->getStatus() === VisitorEventStatusEnum::New) {
+            if (VisitorEventStatusEnum::New === $visitorEvent->getStatus()) {
                 $scenario = $this->scenarioService->findScenarioByUUID($visitorEvent->getScenarioUUID());
 
                 $cacheDto = $this->enrichContractCache($scenario, $cacheDto);
@@ -87,13 +86,13 @@ final readonly class TelegramMessageHandler
             $this->entityManager->persist($visitorSession);
             $this->entityManager->flush();
 
-            if ($visitorEvent->getStatus() === VisitorEventStatusEnum::Repeat) {
+            if (VisitorEventStatusEnum::Repeat === $visitorEvent->getStatus()) {
                 $this->bus->dispatch(new TelegramMessage($visitorEvent));
             }
-        } catch (Throwable $exception) {
-            $message = ' MESSAGE: ' . $exception->getMessage() . "\n"
-                . ' FILE: ' . $exception->getFile() . "\n"
-                . ' LINE: ' . $exception->getLine();
+        } catch (\Throwable $exception) {
+            $message = ' MESSAGE: '.$exception->getMessage()."\n"
+                .' FILE: '.$exception->getFile()."\n"
+                .' LINE: '.$exception->getLine();
 
             $visitorEvent->setError($message);
 
