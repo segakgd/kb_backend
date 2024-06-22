@@ -19,7 +19,7 @@ class TgAddWebhookCommand extends Command
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly BotRepository $botRepository,
-        string $name = null
+        ?string $name = null
     ) {
         parent::__construct($name);
     }
@@ -31,8 +31,8 @@ class TgAddWebhookCommand extends Command
         $bot = $this->botRepository->findOneBy(
             [
                 'projectId' => $myProjectId,
-                'name' => 'Bot first',
-                'type' => 'telegram',
+                'name'      => 'Bot first',
+                'type'      => 'telegram',
             ]
         );
 

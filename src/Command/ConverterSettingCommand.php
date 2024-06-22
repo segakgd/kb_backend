@@ -18,57 +18,57 @@ class ConverterSettingCommand extends Command
 {
     private const USER_SETTING = [
         [
-            'name' => '/command1',
-            'type' => 'command',
+            'name'    => '/command1',
+            'type'    => 'command',
             'content' => [
-                'message' => 'Что делаешь?',
+                'message'     => 'Что делаешь?',
                 'replyMarkup' => [
                     [
                         [
-                            'text' => 'Ничего'
+                            'text' => 'Ничего',
                         ],
                         [
-                            'text' => 'Что-то'
+                            'text' => 'Что-то',
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
             'actionAfter' => [
                 [
-                    'type' => 'message',
+                    'type'  => 'message',
                     'value' => [
-                        'text' => 'Дополнительное сообщение'
+                        'text' => 'Дополнительное сообщение',
                     ],
                 ],
                 [
-                    'type' => 'message',
+                    'type'  => 'message',
                     'value' => [
-                        'text' => 'Дополнительное сообщение'
+                        'text' => 'Дополнительное сообщение',
                     ],
                 ],
             ],
             'sub' => [
                 [
-                    'name' => 'Хорошо',
-                    'type' => 'message',
+                    'name'    => 'Хорошо',
+                    'type'    => 'message',
                     'content' => [
                         'message' => 'Хорошо что всё хорошо',
                     ],
                 ],
                 [
-                    'name' => 'Плохо',
-                    'type' => 'message',
+                    'name'    => 'Плохо',
+                    'type'    => 'message',
                     'content' => [
                         'message' => 'Плохо что всё плохо',
                     ],
                 ],
-            ]
+            ],
         ],
     ];
 
     public function __construct(
         private readonly ScenarioConverter $settingConverter,
-        string $name = null
+        ?string $name = null
     ) {
         parent::__construct($name);
     }
@@ -79,8 +79,7 @@ class ConverterSettingCommand extends Command
 
         try {
             $this->settingConverter->convert(self::USER_SETTING, 1);
-
-        } catch (Throwable $throwable){
+        } catch (Throwable $throwable) {
             $io->error($throwable->getMessage());
 
             return Command::FAILURE;

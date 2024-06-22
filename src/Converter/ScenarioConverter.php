@@ -13,10 +13,9 @@ use Throwable;
 readonly class ScenarioConverter
 {
     public function __construct(
-        private ScenarioService        $scenarioService,
+        private ScenarioService $scenarioService,
         private EntityManagerInterface $entityManager,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws Exception
