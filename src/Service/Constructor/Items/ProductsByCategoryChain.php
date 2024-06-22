@@ -2,7 +2,7 @@
 
 namespace App\Service\Constructor\Items;
 
-use App\Enum\JumpEnum;
+use App\Enum\TargetEnum;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\Product\Service\ProductService;
 use App\Service\Common\PaginateService;
@@ -79,7 +79,7 @@ class ProductsByCategoryChain extends AbstractChain
         }
 
         if ('Вернуться в главное меню' === $content) {
-            $responsible->setJump(JumpEnum::Main);
+            $responsible->setJump(TargetEnum::Main);
 
             return false;
         }

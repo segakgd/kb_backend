@@ -4,20 +4,18 @@ namespace App\Service\Constructor\Core\Dto;
 
 use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Dto\SessionCache\Cache\CacheDto;
-use App\Enum\JumpEnum;
+use App\Enum\TargetEnum;
 use App\Enum\VisitorEventStatusEnum;
 
 class Responsible implements ResponsibleInterface
 {
     public ?CacheChainDto $chain = null; // todo объеденить с $nextCondition
 
-    private ?ConditionInterface $nextCondition = null; // todo объеденить с $chain
-
     private ?ResultInterface $result = null;
 
     private ?CacheDto $cacheDto;
 
-    private ?JumpEnum $jump = null; // todo закинуть в result
+    private ?TargetEnum $jump = null;
 
     private ?VisitorEventStatusEnum $status = VisitorEventStatusEnum::New;
 
@@ -28,7 +26,7 @@ class Responsible implements ResponsibleInterface
     public function __construct()
     {
         if (is_null($this->result)) {
-            $this->result = new Result;
+            $this->result = new Result();
         }
     }
 
@@ -68,12 +66,12 @@ class Responsible implements ResponsibleInterface
         return $this;
     }
 
-    public function getJump(): ?JumpEnum
+    public function getJump(): ?TargetEnum
     {
         return $this->jump;
     }
 
-    public function setJump(?JumpEnum $jump): static
+    public function setJump(?TargetEnum $jump): static
     {
         $this->jump = $jump;
 
@@ -117,6 +115,7 @@ class Responsible implements ResponsibleInterface
     public function setBotDto(?BotDto $botDto): Responsible
     {
         $this->botDto = $botDto;
+
         return $this;
     }
 }

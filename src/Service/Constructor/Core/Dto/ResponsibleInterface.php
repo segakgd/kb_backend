@@ -4,7 +4,7 @@ namespace App\Service\Constructor\Core\Dto;
 
 use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Dto\SessionCache\Cache\CacheDto;
-use App\Enum\JumpEnum;
+use App\Enum\TargetEnum;
 use App\Enum\VisitorEventStatusEnum;
 
 interface ResponsibleInterface
@@ -21,9 +21,9 @@ interface ResponsibleInterface
 
     public function setCacheDto(?CacheDto $cacheDto): static;
 
-    public function getJump(): ?JumpEnum;
+    public function getJump(): ?TargetEnum;
 
-    public function setJump(?JumpEnum $jump): static;
+    public function setJump(?TargetEnum $jump): static;
 
     public function getStatus(): ?VisitorEventStatusEnum;
 

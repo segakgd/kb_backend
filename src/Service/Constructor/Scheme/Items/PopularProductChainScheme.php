@@ -3,7 +3,7 @@
 namespace App\Service\Constructor\Scheme\Items;
 
 use App\Dto\SessionCache\Cache\CacheChainDto;
-use App\Enum\JumpEnum;
+use App\Enum\TargetEnum;
 use App\Service\Constructor\Scheme\MainScheme;
 
 class PopularProductChainScheme extends MainScheme
@@ -16,8 +16,8 @@ class PopularProductChainScheme extends MainScheme
     public static function get(): array
     {
         return [
-            static::chain(JumpEnum::StartChain),
-            static::chain(JumpEnum::ProductCategoryChain),
+            static::chain(TargetEnum::StartChain),
+            static::chain(TargetEnum::ProductCategoryChain),
         ];
     }
 }

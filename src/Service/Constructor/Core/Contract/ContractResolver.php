@@ -13,11 +13,10 @@ use Throwable;
 readonly class ContractResolver
 {
     public function __construct(
-        private ChainsResolver   $chainsResolver,
+        private ChainsResolver $chainsResolver,
         private ScenarioResolver $scenarioResolver,
-        private LoggerInterface  $logger,
-    ) {
-    }
+        private LoggerInterface $logger,
+    ) {}
 
     /**
      * @throws Throwable
@@ -35,7 +34,6 @@ readonly class ContractResolver
                 $cacheContract->setFinished(true);
                 $responsible->setContractStatus(true);
             }
-
         } catch (Throwable $exception) {
             $this->handleException($exception);
 
@@ -63,7 +61,7 @@ readonly class ContractResolver
             message: $exception->getMessage(),
             context: [
                 'file' => $exception->getFile(),
-                'line' => $exception->getLine()
+                'line' => $exception->getLine(),
             ]
         );
     }

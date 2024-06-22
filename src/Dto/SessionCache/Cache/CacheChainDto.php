@@ -3,22 +3,22 @@
 namespace App\Dto\SessionCache\Cache;
 
 use App\Dto\Common\AbstractDto;
-use App\Enum\JumpEnum;
+use App\Enum\TargetEnum;
 
 class CacheChainDto extends AbstractDto
 {
-    private JumpEnum $target;
+    private TargetEnum $target;
 
     private bool $finished;
 
     private bool $repeat;
 
-    public function getTarget(): JumpEnum
+    public function getTarget(): TargetEnum
     {
         return $this->target;
     }
 
-    public function setTarget(JumpEnum $target): static
+    public function setTarget(TargetEnum $target): static
     {
         $this->target = $target;
 
@@ -57,7 +57,7 @@ class CacheChainDto extends AbstractDto
     {
         $cacheChain = new self();
 
-        $cacheChain->target = JumpEnum::from($data['target']);
+        $cacheChain->target = TargetEnum::from($data['target']);
         $cacheChain->finished = $data['finished'] ?? false;
         $cacheChain->repeat = $data['repeat'] ?? false;
 

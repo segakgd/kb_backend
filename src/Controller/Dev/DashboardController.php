@@ -20,8 +20,7 @@ class DashboardController extends AbstractController
     public function __construct(
         private readonly DashboardService $dashboardService,
         private readonly ProjectRepository $projectRepository,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws NonUniqueResultException
@@ -37,10 +36,10 @@ class DashboardController extends AbstractController
             $role = in_array('ROLE_ADMIN', $user->getRoles()) ? 'admin' : 'user';
 
             $usersResponse[] = [
-                'id' => $user->getId(),
-                'email' => $user->getEmail(),
-                'role' => $role,
-                'created_at' => $user->getCreatedAt(),
+                'id'             => $user->getId(),
+                'email'          => $user->getEmail(),
+                'role'           => $role,
+                'created_at'     => $user->getCreatedAt(),
                 'projects_count' => $this->projectRepository->projectsCountByUser($user),
             ];
         }
@@ -83,8 +82,8 @@ class DashboardController extends AbstractController
         return $this->render(
             'admin/user/bot.html.twig',
             [
-                'sessions' => $this->dashboardService->getSessions($bot),
-                'bot' => $this->dashboardService->prepareBot($bot, $project),
+                'sessions'  => $this->dashboardService->getSessions($bot),
+                'bot'       => $this->dashboardService->prepareBot($bot, $project),
                 'scenarios' => $this->dashboardService->prepareScenario($project),
                 'projectId' => $project->getId(),
             ]
@@ -98,9 +97,9 @@ class DashboardController extends AbstractController
             'admin/session.html.twig',
             [
                 'projectId' => $project->getId(),
-                'botId' => $visitorSession->getBotId(),
-                'messages' => $this->dashboardService->getMessageHistory(),
-                'events' => $this->dashboardService->prepareEvents($visitorSession),
+                'botId'     => $visitorSession->getBotId(),
+                'messages'  => $this->dashboardService->getMessageHistory(),
+                'events'    => $this->dashboardService->prepareEvents($visitorSession),
             ]
         );
     }

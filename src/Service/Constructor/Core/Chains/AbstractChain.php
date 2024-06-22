@@ -2,40 +2,27 @@
 
 namespace App\Service\Constructor\Core\Chains;
 
-use App\Helper\JumpHelper;
 use App\Helper\MessageHelper;
 use App\Service\Constructor\Core\Dto\Condition;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
+use App\Service\Constructor\Core\Helper\JumpHelper;
 
-/**
- * Должен быть функционал который валидирует (врзмодно, он далее предаёт какие-то валидные данные)
- * Должен быть функционал который исполняет какую-то работу (рутины, бытовуха)
- * Должен быть функционал который завершает выполнение цепи.
- * Должен быть функционал который предоставляет подготовленное состояние соедующей цепи если такое есть
- * Должен быть функционал который говорит что делать если у нас цепь зафейлена
- * Должен быть фенкционал который говорит что цепь не завершена, но не зафейлена, скорее не закончена и нужно повторить действие
- *
- * при всех равных на состояние следующей цепи влияет результат той на который сейчас находимся
- */
 abstract class AbstractChain implements ChainInterface
 {
     abstract public function complete(ResponsibleInterface $responsible): ResponsibleInterface; // complete
 
     /**
-     * Решает, валидно ли значение, производит доп махинации, может содеражить логику.
+     * Решает, валидно ли значение, производит доп махинации, может содержать логику.
      */
-    abstract public function perform(ResponsibleInterface $responsible): bool; // perform - исполнитель
+    abstract public function perform(ResponsibleInterface $responsible): bool;
 
-    abstract public function validate(ResponsibleInterface $responsible): bool; // валидируем
-
-//    abstract public function repeat(ResponsibleInterface $responsible): bool; // повторитель
+    abstract public function validate(ResponsibleInterface $responsible): bool;
 
     abstract public function condition(ResponsibleInterface $responsible): ConditionInterface;
 
     public function execute(ResponsibleInterface $responsible, ?ChainInterface $nextChain): bool
     {
-        // todo было бы здорово для jump-ов выделить какой-то интерфейс или типа того, чтоб делать это более элегантно
         if ($responsible->getChain()->isRepeat()) {
             if (!$this->perform($responsible)) {
                 return false;
@@ -56,7 +43,7 @@ abstract class AbstractChain implements ChainInterface
             return true;
         }
 
-        if ($this->gotoIsNavigate($responsible)) { // todo это актуально?
+        if ($this->isJump($responsible)) { // todo это актуально?
             return true;
         }
 
@@ -88,7 +75,7 @@ abstract class AbstractChain implements ChainInterface
     public function fail(ResponsibleInterface $responsible): ResponsibleInterface
     {
         if ($responsible->getResult()->isEmptyMessage()) {
-            $message = "Не понимаю что вы от меня хотите, повторите выбор:";
+            $message = 'Не понимаю что вы от меня хотите, повторите выбор:';
             $keyBoard = $this->condition($responsible)->getKeyBoard();
 
             $responsibleMessage = MessageHelper::createResponsibleMessage(
@@ -124,7 +111,7 @@ abstract class AbstractChain implements ChainInterface
         return $condition;
     }
 
-    private function gotoIsNavigate(ResponsibleInterface $responsible): bool
+    private function isJump(ResponsibleInterface $responsible): bool
     {
         $content = $responsible->getCacheDto()->getContent();
 

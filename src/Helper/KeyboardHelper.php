@@ -23,60 +23,6 @@ class KeyboardHelper
         return $replyMarkups;
     }
 
-    public static function getProductCategoryNav(array $availableCategories): array
-    {
-        $navCategory = [];
-
-        foreach ($availableCategories as $availableCategory) {
-            $navCategory[] = [
-                'text' => $availableCategory,
-            ];
-        }
-
-        return [
-            $navCategory,
-            [
-                [
-                    'text' => 'вернуться в главное меню',
-                ],
-            ],
-        ];
-    }
-
-    public static function getAvailableProductNavItems(): array
-    {
-        return [
-            'предыдущий',
-            'добавить в корзину',
-            'следующий',
-        ];
-    }
-
-    public static function getVariantsNav(Collection $variants): array
-    {
-        $nav = [];
-
-        /** @var ProductVariant $variant */
-        foreach ($variants as $variant) {
-            $nav[] = [
-                [
-                    'text' => $variant->getName(),
-                ],
-            ];
-        }
-
-        $nav[] = [
-            [
-                'text' => 'вернуться в главное меню',
-            ],
-            [
-                'text' => 'вернуться к товарам',
-            ],
-        ];
-
-        return $nav;
-    }
-
     public static function getProductNav(?array $paginate = null): array
     {
         $nav = [

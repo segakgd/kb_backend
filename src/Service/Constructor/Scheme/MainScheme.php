@@ -3,11 +3,11 @@
 namespace App\Service\Constructor\Scheme;
 
 use App\Dto\Scenario\ScenarioChainDto;
-use App\Enum\JumpEnum;
+use App\Enum\TargetEnum;
 
 class MainScheme
 {
-    public static function chain(JumpEnum $enum): ScenarioChainDto
+    public static function chain(TargetEnum $enum): ScenarioChainDto
     {
         return (new ScenarioChainDto())
             ->setTarget($enum->value)

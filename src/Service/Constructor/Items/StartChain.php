@@ -2,7 +2,7 @@
 
 namespace App\Service\Constructor\Items;
 
-use App\Enum\JumpEnum;
+use App\Enum\TargetEnum;
 use App\Helper\MessageHelper;
 use App\Service\Constructor\Core\Chains\AbstractChain;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
@@ -46,7 +46,7 @@ class StartChain extends AbstractChain
         $content = $responsible->getCacheDto()->getContent();
 
         if ('Вернуться в главное меню' === $content) {
-            $responsible->setJump(JumpEnum::Main);
+            $responsible->setJump(TargetEnum::Main);
 
             return false;
         }

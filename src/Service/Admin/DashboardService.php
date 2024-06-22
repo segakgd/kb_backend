@@ -62,7 +62,7 @@ readonly class DashboardService
 
             foreach ($cacheChains as $cacheChain) {
                 $chains[] = [
-                    'name'   => CommonHelper::translate($cacheChain->getTarget()),
+                    'name'   => $cacheChain->getTarget(),
                     'status' => $cacheChain->isFinished(),
                 ];
             }

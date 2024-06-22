@@ -3,15 +3,16 @@
 namespace App\Service\Constructor\Core\Chains;
 
 use App\Dto\SessionCache\Cache\CacheChainDto;
+use App\Enum\TargetEnum;
+use App\Service\Constructor\ChainProvider;
 use App\Service\Constructor\Core\Dto\Responsible;
 use Exception;
 
 readonly class ChainsResolver
 {
     public function __construct(
-        private ChainResolver $chainResolver,
-    ) {
-    }
+        private ChainProvider $chainProvider,
+    ) {}
 
     /**
      * @param array<CacheChainDto> $chains
@@ -36,11 +37,36 @@ readonly class ChainsResolver
 
             $responsible->setChain($chain);
 
-            $this->chainResolver->resolve($responsible, $nextChain?->getTarget());
+            $chainInstance = $this->getChainInstance($responsible);
+
+            $chainInstance->execute(
+                responsible: $responsible,
+                nextChain: $this->getNextChain($nextChain?->getTarget())
+            );
 
             break;
         }
 
         return $chains;
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function getChainInstance(Responsible $responsible): AbstractChain
+    {
+        return $this->chainProvider->getByTarget($responsible->getChain()->getTarget());
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function getNextChain(?TargetEnum $targetNext): ?AbstractChain
+    {
+        if (is_null($targetNext)) {
+            return null;
+        }
+
+        return $this->chainProvider->getByTarget($targetNext);
     }
 }
