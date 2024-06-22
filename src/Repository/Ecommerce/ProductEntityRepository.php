@@ -25,6 +25,7 @@ class ProductEntityRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param  mixed     $page
      * @throws Exception
      */
     public function getPromoProducts($page = 1): array
@@ -33,23 +34,22 @@ class ProductEntityRepository extends ServiceEntityRepository
         $queryBuilder
             ->where($queryBuilder->expr()->in('product.id', [3, 4]))
             ->setFirstResult($page - 1)
-            ->setMaxResults(1)
-        ;
+            ->setMaxResults(1);
 
         $products = $queryBuilder->getQuery()->execute();
 
         $queryBuilder2 = $this->createQueryBuilder('product')
-            ->where($queryBuilder->expr()->in('product.id', [3, 4]))
-        ;
+            ->where($queryBuilder->expr()->in('product.id', [3, 4]));
         $paginate = CommonHelper::buildPaginate($page, count($queryBuilder2->getQuery()->execute()));
 
         return [
-            'items' => $products,
+            'items'    => $products,
             'paginate' => $paginate,
         ];
     }
 
     /**
+     * @param  mixed     $page
      * @throws Exception
      */
     public function getPopularProducts($page = 1): array
@@ -58,18 +58,16 @@ class ProductEntityRepository extends ServiceEntityRepository
         $queryBuilder
             ->where($queryBuilder->expr()->in('product.id', [1, 2]))
             ->setFirstResult($page - 1)
-            ->setMaxResults(1)
-        ;
+            ->setMaxResults(1);
 
         $products = $queryBuilder->getQuery()->execute();
 
         $queryBuilder2 = $this->createQueryBuilder('product')
-            ->where($queryBuilder->expr()->in('product.id', [1, 2]))
-        ;
+            ->where($queryBuilder->expr()->in('product.id', [1, 2]));
         $paginate = CommonHelper::buildPaginate($page, count($queryBuilder2->getQuery()->execute()));
 
         return [
-            'items' => $products,
+            'items'    => $products,
             'paginate' => $paginate,
         ];
     }

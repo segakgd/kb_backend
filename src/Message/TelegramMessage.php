@@ -8,8 +8,7 @@ final readonly class TelegramMessage
 {
     public function __construct(
         private VisitorEvent $visitorEvent,
-    ) {
-    }
+    ) {}
 
     public function getVisitorEvent(): VisitorEvent
     {

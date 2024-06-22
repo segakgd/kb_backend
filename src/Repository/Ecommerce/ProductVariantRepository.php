@@ -32,8 +32,7 @@ class ProductVariantRepository extends ServiceEntityRepository
 
         $queryBuilder
             ->delete()
-            ->andWhere($queryBuilder->expr()->in('variant.id', $ids))
-        ;
+            ->andWhere($queryBuilder->expr()->in('variant.id', $ids));
 
         $queryBuilder->getQuery()->getResult();
     }

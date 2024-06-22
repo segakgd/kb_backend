@@ -11,13 +11,12 @@ class CommonHelper
 {
     public static function createDefaultResponsible(): Responsible
     {
-        return (new Responsible());
+        return new Responsible();
     }
-
 
     public static function createSessionCache(): CacheDto
     {
-        return (new CacheDto);
+        return new CacheDto();
     }
 
     /**
@@ -33,9 +32,9 @@ class CommonHelper
         $nextPage = ($page < $maxPage) ? $page + 1 : 1;
 
         return [
-            'prev' => $prevPage,
-            'now' => $page,
-            'next' => $nextPage,
+            'prev'  => $prevPage,
+            'now'   => $page,
+            'next'  => $nextPage,
             'total' => $maxPage,
         ];
     }
@@ -44,9 +43,9 @@ class CommonHelper
     {
         return match ($jumpEnum->value) {
             'show.shop.products.category' => 'show.shop.products.category',
-            'shop.products.category' => 'shop.products.category',
-            'shop.products' => 'shop.products',
-            default => $jumpEnum->value,
+            'shop.products.category'      => 'shop.products.category',
+            'shop.products'               => 'shop.products',
+            default                       => $jumpEnum->value,
         };
     }
 }

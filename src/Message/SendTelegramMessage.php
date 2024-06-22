@@ -9,9 +9,8 @@ final readonly class SendTelegramMessage
 {
     public function __construct(
         private ResultInterface $result,
-        private BotDto          $botDto,
-    ) {
-    }
+        private BotDto $botDto,
+    ) {}
 
     public function getBotDto(): BotDto
     {

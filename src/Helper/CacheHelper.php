@@ -12,7 +12,7 @@ class CacheHelper
         return (new CacheEventDto())
             ->setFinished(false)
             ->setData(
-                (new CacheDataDto)
+                (new CacheDataDto())
                     ->setProductId(null)
                     ->setPageNow(null)
             );

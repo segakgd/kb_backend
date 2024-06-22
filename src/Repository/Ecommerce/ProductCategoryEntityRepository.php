@@ -55,7 +55,7 @@ class ProductCategoryEntityRepository extends ServiceEntityRepository
         $paginate = CommonHelper::buildPaginate($page, $products->count());
 
         return [
-            'items' => [$products->get($page - 1)],
+            'items'    => [$products->get($page - 1)],
             'paginate' => $paginate,
         ];
     }
