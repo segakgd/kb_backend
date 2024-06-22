@@ -20,6 +20,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Throwable;
 
 #[AsMessageHandler]
 final readonly class TelegramMessageHandler
@@ -34,11 +35,10 @@ final readonly class TelegramMessageHandler
         private JumpResolver $jumpResolver,
         private MessageBusInterface $bus,
         private LoggerInterface $logger,
-    ) {
-    }
+    ) {}
 
     /**
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function __invoke(TelegramMessage $message): void
     {
@@ -89,10 +89,10 @@ final readonly class TelegramMessageHandler
             if (VisitorEventStatusEnum::Repeat === $visitorEvent->getStatus()) {
                 $this->bus->dispatch(new TelegramMessage($visitorEvent));
             }
-        } catch (\Throwable $exception) {
-            $message = ' MESSAGE: '.$exception->getMessage()."\n"
-                .' FILE: '.$exception->getFile()."\n"
-                .' LINE: '.$exception->getLine();
+        } catch (Throwable $exception) {
+            $message = ' MESSAGE: ' . $exception->getMessage() . "\n"
+                . ' FILE: ' . $exception->getFile() . "\n"
+                . ' LINE: ' . $exception->getLine();
 
             $visitorEvent->setError($message);
 

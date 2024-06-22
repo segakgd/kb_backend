@@ -14,8 +14,7 @@ final readonly class SendTelegramMessageHandler
     public function __construct(
         private SenderService $senderService,
         private LoggerInterface $logger,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws Throwable
