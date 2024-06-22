@@ -9,7 +9,6 @@ use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
 use App\Helper\CommonHelper;
 use App\Repository\MessageHistoryRepository;
-use App\Repository\Scenario\ScenarioRepository;
 use App\Repository\Visitor\VisitorEventRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Admin\Bot\BotServiceInterface;
@@ -27,23 +26,7 @@ readonly class DashboardService
         private VisitorEventRepository $visitorEventRepository,
         private ScenarioTemplateService $scenarioTemplateService,
         private MessageHistoryRepository $historyRepository,
-        private ScenarioRepository $scenarioRepository,
-    ) {
-    }
-
-    public function getDashboardSessionData(VisitorSession $visitorSession): array
-    {
-        return [
-            'botId' => $visitorSession->getBotId(),
-            'projectId' => $visitorSession->getProjectId(),
-            'events' => $this->prepareEvents($visitorSession),
-            'event' => $this->getLastEvent($visitorSession->getProjectId()),
-            'messages' => $this->getMessageHistory(),
-            'commands' => $this->getCommands(),
-            'session' => $this->prepareSession($visitorSession),
-//            'deals' => $this->getDeals(),
-        ];
-    }
+    ) {}
 
     public function prepareEvents(VisitorSession $visitorSession): array
     {
@@ -55,14 +38,14 @@ readonly class DashboardService
             $prepareEvents[] = $this->prepareEvent($event);
         }
 
-        return array_reverse($prepareEvents); // todo не очень норм использовать array_reverse
+        return array_reverse($prepareEvents);
     }
 
     public function prepareEvent(VisitorEvent $event): array
     {
         $visitorSession = $this->visitorSessionRepository->findOneBy(
             [
-                'visitorEvent' => $event->getId()
+                'visitorEvent' => $event->getId(),
             ]
         );
 
@@ -79,58 +62,31 @@ readonly class DashboardService
 
             foreach ($cacheChains as $cacheChain) {
                 $chains[] = [
-                    'name' => CommonHelper::translate($cacheChain->getTarget()),
+                    'name'   => CommonHelper::translate($cacheChain->getTarget()),
                     'status' => $cacheChain->isFinished(),
                 ];
             }
 
             $contract = [
-                'chains' => $chains,
+                'chains'   => $chains,
                 'finished' => $cacheContract->isFinished(),
             ];
         }
 
         return [
-            'id' => $event->getId(),
-            'type' => $event->getType(),
-            'status' => $event->getStatus()->value,
-            'createdAt' => $event->getCreatedAt(),
-            'contract' => $contract,
-            'error' => $event->getError(),
+            'id'          => $event->getId(),
+            'type'        => $event->getType(),
+            'status'      => $event->getStatus()->value,
+            'createdAt'   => $event->getCreatedAt(),
+            'contract'    => $contract,
+            'error'       => $event->getError(),
             'responsible' => $event->getResponsible(),
         ];
-    }
-
-    public function getLastEvent(int $projectId): array
-    {
-        $event = $this->visitorEventRepository->getLastByProjectId($projectId);
-
-        if (!$event) {
-            return [];
-        }
-
-        return $this->prepareEvent($event);
     }
 
     public function getMessageHistory(): array
     {
         return $this->historyRepository->findAll();
-    }
-
-    public function getCommands(): array
-    {
-        return [
-            [
-                'commandName' => '⛳️️ Обработать события',
-                'commandCode' => 'kb:tg:handler_events',
-                'commandDescription' => 'Обрабатывает события находящиеся в очереди со статусом new',
-            ],
-            [
-                'commandName' => '🚨 Отчистить кэш',
-                'commandCode' => 'cache:clear',
-                'commandDescription' => 'Чистим кеш в проде',
-            ],
-        ];
     }
 
     public function prepareSession(VisitorSession $session): array
@@ -144,47 +100,23 @@ readonly class DashboardService
         $cache = $session->getCache();
 
         $prepareSession = [
-            'id' => $session->getId(),
-            'sessionName' => $session->getName(),
+            'id'             => $session->getId(),
+            'sessionName'    => $session->getName(),
             'sessionChannel' => $session->getChannel(),
-            'cache' => [
-                'content' => $cache->getContent() ?? null
-            ]
+            'cache'          => [
+                'content' => $cache->getContent() ?? null,
+            ],
         ];
 
         if ($visitorEvent) {
             $prepareSession['sessionVisitorEvent'] = [
-                'type' => $visitorEvent->getType(),
+                'type'   => $visitorEvent->getType(),
                 'status' => $visitorEvent->getStatus()->value,
             ];
         }
 
         return $prepareSession;
     }
-//
-//    public function getDeals(): array
-//    {
-//        $deals = $this->dealEntityRepository->findAll();
-//
-//        return $this->serializer->normalize(array_reverse($deals)); // todo array_reverse = костыль
-//    }
-
-//    public function getDashboardForProject(Project $project): array
-//    {
-//        $projectId = $project->getId();
-//
-//        $events = $this->visitorEventRepository->findAllByProjectId($projectId);
-//
-//        return [
-//            'projectId' => $projectId,
-//            'bots' => $this->prepareBots($project),
-//            'scenario' => $this->prepareScenario($projectId),
-//            'commands' => $this->getCommands(),
-//            'sessions' => $this->getSessions($projectId),
-//            'events' => $this->prepareEvents($events),
-//            'messages' => $this->getMessageHistory(),
-//        ];
-//    }
 
     public function prepareBots(Project $project): array
     {
@@ -200,7 +132,6 @@ readonly class DashboardService
         return $prepareBots;
     }
 
-
     public function prepareBot(Bot $bot, Project $project): array
     {
         $webhookBotInfo = $this->telegramService->getWebhookInfo($bot->getToken());
@@ -208,17 +139,17 @@ readonly class DashboardService
 
         return [
             'projectName' => $projectName,
-            'botId' => $bot->getId(),
-            'botName' => $bot->getName(),
-            'projectId' => $bot->getProjectId(),
-            'botType' => $bot->getType(),
-            'botToken' => $bot->getToken(),
-            'botActive' => $bot->isActive(),
-            'webhookUri' => $bot->getWebhookUri() ?? '',
+            'botId'       => $bot->getId(),
+            'botName'     => $bot->getName(),
+            'projectId'   => $bot->getProjectId(),
+            'botType'     => $bot->getType(),
+            'botToken'    => $bot->getToken(),
+            'botActive'   => $bot->isActive(),
+            'webhookUri'  => $bot->getWebhookUri() ?? '',
             'webhookInfo' => [
                 'pendingUpdateCount' => $webhookBotInfo->getPendingUpdateCount() ?? 0,
-                'lastErrorDate' => $webhookBotInfo->getLastErrorDate() ?? null,
-                'lastErrorMessage' => $webhookBotInfo->getLastErrorMessage() ?? null,
+                'lastErrorDate'      => $webhookBotInfo->getLastErrorDate() ?? null,
+                'lastErrorMessage'   => $webhookBotInfo->getLastErrorMessage() ?? null,
             ],
         ];
     }
@@ -232,7 +163,7 @@ readonly class DashboardService
         /** @var ScenarioTemplate $scenario */
         foreach ($scenarios as $scenario) {
             $prepareScenario = [
-                'id' => $scenario->getId(),
+                'id'   => $scenario->getId(),
                 'name' => $scenario->getName(),
             ];
 

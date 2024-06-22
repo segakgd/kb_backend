@@ -14,15 +14,13 @@ class FinishChain extends AbstractChain
 {
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        $message = "Это финиш, что бы ты сюда не написал, это не имеет смысла";
+        $message = 'Это финиш, что бы ты сюда не написал, это не имеет смысла';
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,
         );
 
         $responsible->getResult()->setMessage($responsibleMessage);
-
-        dd($responsible);
 
         return $responsible;
     }

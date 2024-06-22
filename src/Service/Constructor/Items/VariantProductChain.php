@@ -2,6 +2,7 @@
 
 namespace App\Service\Constructor\Items;
 
+use App\Helper\KeyboardHelper;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\Product\Service\ProductService;
 use App\Service\Constructor\Core\Chains\AbstractChain;
@@ -13,8 +14,7 @@ class VariantProductChain extends AbstractChain
 {
     public function __construct(
         private readonly ProductService $productService,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws Exception
@@ -32,9 +32,9 @@ class VariantProductChain extends AbstractChain
             [
                 'productName' => $variant->getProduct()->getName(),
                 'variantName' => $variant->getName(),
-                'cost' => $variant->getPrice()[0]->getPrice(),
-                'amount' => $amount,
-                'count' => $content,
+                'cost'        => $variant->getPrice()[0]->getPrice(),
+                'amount'      => $amount,
+                'count'       => $content,
             ]
         );
 
@@ -52,45 +52,40 @@ class VariantProductChain extends AbstractChain
 
         $responsible->getCacheDto()->getCart()->setTotalAmount($totalAmount);
 
-        $message = "Отлично! Товар добавлен в корзину.";
-
         $number = 1;
+        $message = 'Отлично! Товар добавлен в корзину.';
 
         foreach ($cartProducts as $cartProduct) {
             $message .= "\n\n"
-                . $this->getIconNumber($number) . " товар: " . $cartProduct['productName']
-            ;
+                . KeyboardHelper::getIconNumber($number) . ' товар: ' . $cartProduct['productName'];
             $message .= "\n"
-                . "Вариант: " . $cartProduct['variantName']
-            ;
+                . 'Вариант: ' . $cartProduct['variantName'];
             $message .= "\n"
-                . "Цена: " . $cartProduct['cost'] . 'р. /' . $cartProduct['count'] . 'шт. (' . $cartProduct['amount'] . 'р.)'
-            ;
+                . 'Цена: ' . $cartProduct['cost'] . 'р. /' . $cartProduct['count'] . 'шт. (' . $cartProduct['amount'] . 'р.)';
 
             $number++;
         }
 
         $message .= "\n\n"
-            . "Сумма корзины: $totalAmount р."
-        ;
+            . "Сумма корзины: $totalAmount р.";
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,
             keyBoard: [
                 [
                     [
-                        'text' => 'К товарам'
+                        'text' => 'К товарам',
                     ],
                     [
-                        'text' => 'К категориям'
+                        'text' => 'К категориям',
                     ],
                 ],
                 [
                     [
-                        'text' => 'В главное меню'
+                        'text' => 'В главное меню',
                     ],
                     [
-                        'text' => 'В корзину'
+                        'text' => 'В корзину',
                     ],
                 ],
             ]
@@ -126,7 +121,7 @@ class VariantProductChain extends AbstractChain
 
         return $this->makeCondition(
             [
-                $keyBoards
+                $keyBoards,
             ]
         );
     }
@@ -142,27 +137,5 @@ class VariantProductChain extends AbstractChain
     public function validate(ResponsibleInterface $responsible): bool
     {
         return true;
-    }
-
-    private function getIconNumber(int $number): string
-    {
-        $numberEmoji = '';
-
-        foreach (str_split($number) as $numberItem) {
-            $numberEmoji .= match ((int) $numberItem) {
-                0 => '0️⃣',
-                1 => '1️⃣',
-                2 => '2️⃣',
-                3 => '3️⃣',
-                4 => '4️⃣',
-                5 => '5️⃣',
-                6 => '6️⃣',
-                7 => '7️⃣',
-                8 => '8️⃣',
-                9 => '9️⃣',
-            };
-        }
-
-        return $numberEmoji;
     }
 }

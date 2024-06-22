@@ -10,9 +10,7 @@ use Exception;
 
 readonly class ChainResolver
 {
-    public function __construct(private ChainsGenerator $chainsGenerator)
-    {
-    }
+    public function __construct(private ChainsGenerator $chainsGenerator) {}
 
     /**
      * @throws Exception

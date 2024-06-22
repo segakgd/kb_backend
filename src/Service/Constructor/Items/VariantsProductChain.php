@@ -14,8 +14,7 @@ class VariantsProductChain extends AbstractChain
 {
     public function __construct(
         private readonly ProductService $productService,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws Exception
@@ -29,7 +28,7 @@ class VariantsProductChain extends AbstractChain
         $product = $this->productService->find($productId);
 
         if (null === $product) {
-            throw new Exception("Product not found");
+            throw new Exception('Product not found');
         }
 
         $variants = $product->getVariants();
@@ -72,13 +71,13 @@ class VariantsProductChain extends AbstractChain
         /** @var ProductVariant $variant */
         foreach ($variants as $variant) {
             $keyBoards[] = [
-                'text' => $variant->getName()
+                'text' => $variant->getName(),
             ];
         }
 
         return $this->makeCondition(
             [
-                $keyBoards
+                $keyBoards,
             ]
         );
     }
