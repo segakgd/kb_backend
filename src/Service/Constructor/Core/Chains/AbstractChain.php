@@ -23,53 +23,19 @@ abstract class AbstractChain implements ChainInterface
 
     public function execute(ResponsibleInterface $responsible, ?ChainInterface $nextChain): bool
     {
-        if ($responsible->getChain()->isRepeat()) {
-            if (!$this->perform($responsible)) {
+        if (!$responsible->getChain()->isRepeat()) {
+            if ($this->isJump($responsible)) {
+                return true;
+            }
+
+            if (!$this->validate($responsible)) {
+                $this->fail($responsible);
+
                 return false;
             }
-
-            $this->complete($responsible);
-
-            $responsible->getChain()->setFinished(true);
-
-            $nextChainKeyBoard = $nextChain?->condition($responsible)->getKeyBoard();
-
-            if (null !== $nextChainKeyBoard) {
-                $message = $responsible->getResult()->getMessage();
-
-                $message->setKeyBoard($nextChainKeyBoard);
-            }
-
-            return true;
         }
 
-        if ($this->isJump($responsible)) { // todo это актуально?
-            return true;
-        }
-
-        if (!$this->validate($responsible)) {
-            $this->fail($responsible);
-
-            return false;
-        }
-
-        if (!$this->perform($responsible)) {
-            return false;
-        }
-
-        $this->complete($responsible);
-
-        $responsible->getChain()->setFinished(true);
-
-        $nextChainKeyBoard = $nextChain?->condition($responsible)->getKeyBoard();
-
-        if (null !== $nextChainKeyBoard) {
-            $message = $responsible->getResult()->getMessage();
-
-            $message->setKeyBoard($nextChainKeyBoard);
-        }
-
-        return true;
+        return $this->performAndComplete($responsible, $nextChain);
     }
 
     public function fail(ResponsibleInterface $responsible): ResponsibleInterface
@@ -87,6 +53,27 @@ abstract class AbstractChain implements ChainInterface
         }
 
         return $responsible;
+    }
+
+    protected function performAndComplete(ResponsibleInterface $responsible, ?ChainInterface $nextChain): bool
+    {
+        if (!$this->perform($responsible)) {
+            return false;
+        }
+
+        $this->complete($responsible);
+
+        $responsible->getChain()->setFinished(true);
+
+        $nextChainKeyBoard = $nextChain?->condition($responsible)->getKeyBoard();
+
+        if (null !== $nextChainKeyBoard) {
+            $message = $responsible->getResult()->getMessage();
+
+            $message->setKeyBoard($nextChainKeyBoard);
+        }
+
+        return true;
     }
 
     protected function isValid(ResponsibleInterface $responsible, array $data): bool

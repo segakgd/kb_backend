@@ -14,11 +14,10 @@ use Throwable;
 readonly class EventResolver
 {
     public function __construct(
-        private ContractResolver         $contractResolver,
+        private ContractResolver $contractResolver,
         private ResponsibleDtoRepository $responsibleDtoRepository,
-        private MessageBusInterface      $bus,
-    ) {
-    }
+        private MessageBusInterface $bus,
+    ) {}
 
     /**
      * @throws Throwable

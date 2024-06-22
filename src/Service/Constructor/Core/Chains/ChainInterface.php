@@ -13,8 +13,6 @@ interface ChainInterface
 
     public function validate(ResponsibleInterface $responsible): bool;
 
-//    public function repeat(ResponsibleInterface $responsible): bool;
-
     public function condition(ResponsibleInterface $responsible): ConditionInterface;
 
     public function fail(ResponsibleInterface $responsible): ResponsibleInterface;
