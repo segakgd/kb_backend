@@ -2,6 +2,7 @@
 
 namespace App\Service\Constructor\Items;
 
+use App\Enum\JumpEnum;
 use App\Helper\MessageHelper;
 use App\Service\Constructor\Core\Chains\AbstractChain;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
@@ -11,7 +12,7 @@ class StartChain extends AbstractChain
 {
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        $message = "Выберите интересующую вас категорию товаров: ";
+        $message = 'Выберите интересующую вас категорию товаров: ';
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,
@@ -28,7 +29,12 @@ class StartChain extends AbstractChain
             [
                 [
                     [
-                        'text' => 'Погнали!'
+                        'text' => 'Погнали!',
+                    ],
+                ],
+                [
+                    [
+                        'text' => 'Вернуться в главное меню',
                     ],
                 ],
             ]
@@ -37,6 +43,14 @@ class StartChain extends AbstractChain
 
     public function perform(ResponsibleInterface $responsible): bool
     {
+        $content = $responsible->getCacheDto()->getContent();
+
+        if ('Вернуться в главное меню' === $content) {
+            $responsible->setJump(JumpEnum::Main);
+
+            return false;
+        }
+
         return true;
     }
 
@@ -46,6 +60,7 @@ class StartChain extends AbstractChain
             $responsible,
             [
                 'Погнали!',
+                'Вернуться в главное меню',
             ]
         );
     }

@@ -14,10 +14,9 @@ use Exception;
 class ProductsByCategoryChain extends AbstractChain
 {
     public function __construct(
-        private readonly ProductService  $productService,
+        private readonly ProductService $productService,
         private readonly PaginateService $paginateService,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws Exception
@@ -25,7 +24,7 @@ class ProductsByCategoryChain extends AbstractChain
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
         $responsibleMessage = MessageHelper::createResponsibleMessage(
-            message: "Выберите один из доступных вариантов:",
+            message: 'Выберите один из доступных вариантов:',
         );
 
         $responsible->getResult()->setMessage($responsibleMessage);

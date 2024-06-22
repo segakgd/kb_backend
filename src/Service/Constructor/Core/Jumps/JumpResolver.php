@@ -9,6 +9,7 @@ use App\Entity\Visitor\VisitorEvent;
 use App\Enum\VisitorEventStatusEnum;
 use App\Helper\CacheHelper;
 use App\Service\Constructor\Core\Dto\Responsible;
+use App\Service\DtoRepository\ResponsibleDtoRepository;
 use App\Service\Visitor\Scenario\ScenarioService;
 use Exception;
 
@@ -16,15 +17,15 @@ readonly class JumpResolver
 {
     public function __construct(
         private ScenarioService $scenarioService,
-    ) {
-    }
+        private ResponsibleDtoRepository $responsibleDtoRepository,
+    ) {}
 
     /**
      * @throws Exception
      */
     public function resolveJump(
         VisitorEvent $visitorEvent,
-        Responsible  $responsible,
+        Responsible $responsible,
     ): void {
         $jump = $responsible->getJump();
 
@@ -36,7 +37,11 @@ readonly class JumpResolver
 
         if ($scenario) {
             $visitorEvent->setScenarioUUID($scenario->getUUID());
+
             $responsible->getCacheDto()->setEvent(CacheHelper::createCacheEventDto());
+            $responsible->getCacheDto()->setEventUUID($scenario->getUUID());
+
+            $this->responsibleDtoRepository->save($visitorEvent, $responsible);
         } else {
             $this->updateCacheContract($responsible->getCacheDto(), $jump->value);
         }
@@ -47,8 +52,8 @@ readonly class JumpResolver
     private function resolveScenario(string $jumpValue): ?Scenario
     {
         return match ($jumpValue) {
-            'main' => $this->scenarioService->getMainScenario(),
-            'cart' => $this->scenarioService->getCartScenario(),
+            'main'  => $this->scenarioService->getMainScenario(),
+            'cart'  => $this->scenarioService->getCartScenario(),
             default => null,
         };
     }

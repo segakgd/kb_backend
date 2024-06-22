@@ -9,16 +9,15 @@ use Exception;
 
 class ScenarioService
 {
-    const SCENARIO_DEFAULT = 'default';
+    public const SCENARIO_DEFAULT = 'default';
 
-    const SCENARIO_MAIN = 'main';
+    public const SCENARIO_MAIN = 'main';
 
-    const SCENARIO_CART = 'cart';
+    public const SCENARIO_CART = 'cart';
 
     public function __construct(
         private readonly ScenarioRepository $scenarioRepository,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws Exception
@@ -27,7 +26,7 @@ class ScenarioService
     {
         $scenario = $this->scenarioRepository->findOneBy(
             [
-                'UUID' => $uuid,
+                'UUID'      => $uuid,
                 'deletedAt' => null,
             ]
         );
@@ -47,7 +46,7 @@ class ScenarioService
     {
         return $this->scenarioRepository->findOneBy(
             [
-                'alias' => static::SCENARIO_DEFAULT,
+                'alias'     => static::SCENARIO_DEFAULT,
                 'deletedAt' => null,
             ]
         );
@@ -57,7 +56,7 @@ class ScenarioService
     {
         return $this->scenarioRepository->findOneBy(
             [
-                'alias' => static::SCENARIO_MAIN,
+                'alias'     => static::SCENARIO_MAIN,
                 'deletedAt' => null,
             ]
         );
@@ -67,7 +66,7 @@ class ScenarioService
     {
         return $this->scenarioRepository->findOneBy(
             [
-                'alias' => static::SCENARIO_CART,
+                'alias'     => static::SCENARIO_CART,
                 'deletedAt' => null,
             ]
         );
@@ -95,8 +94,8 @@ class ScenarioService
     {
         return $this->scenarioRepository->findOneBy(
             [
-                'type' => $type,
-                'name' => $name,
+                'type'      => $type,
+                'name'      => $name,
                 'deletedAt' => null,
             ]
         );
@@ -129,7 +128,7 @@ class ScenarioService
         $scenarios = $this->scenarioRepository->findBy(
             [
                 'projectId' => $projectId,
-                'botId' => $botId,
+                'botId'     => $botId,
             ]
         );
 

@@ -13,11 +13,10 @@ use Exception;
 class CategoriesChain extends AbstractChain
 {
     public function __construct(
-        private readonly ProductService         $productService,
-        private readonly PaginateService        $paginateService,
+        private readonly ProductService $productService,
+        private readonly PaginateService $paginateService,
         private readonly ProductCategoryService $categoryService,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws Exception
@@ -43,7 +42,7 @@ class CategoriesChain extends AbstractChain
 
         $data = $responsible->getCacheDto()->getEvent()->getData();
 
-        $products = $this->productService->getProductsByCategory(1,  $availableCategory->getId(),'first');
+        $products = $this->productService->getProductsByCategory(1, $availableCategory->getId(), 'first');
 
         $this->paginateService->pug($responsible, $products, $data);
 
@@ -56,10 +55,10 @@ class CategoriesChain extends AbstractChain
             [
                 [
                     [
-                        'text' => 'Наушники'
+                        'text' => 'Наушники',
                     ],
                     [
-                        'text' => 'Ноутбуки'
+                        'text' => 'Ноутбуки',
                     ],
                 ],
             ]

@@ -16,13 +16,12 @@ use Exception;
 readonly class VisitorEventService
 {
     public function __construct(
-        private VisitorEventRepository   $visitorEventRepository,
+        private VisitorEventRepository $visitorEventRepository,
         private VisitorSessionRepository $visitorSessionRepository,
-        private VisitorSessionService    $visitorSessionService,
-        private ScenarioService          $scenarioService,
-        private EntityManagerInterface   $entityManager,
-    ) {
-    }
+        private VisitorSessionService $visitorSessionService,
+        private ScenarioService $scenarioService,
+        private EntityManagerInterface $entityManager,
+    ) {}
 
     /**
      * @throws Exception

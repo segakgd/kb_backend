@@ -21,15 +21,14 @@ use Throwable;
 class MainWebhookController extends AbstractController
 {
     public function __construct(
-        private readonly SerializerInterface   $serializer,
+        private readonly SerializerInterface $serializer,
         private readonly VisitorSessionService $visitorSessionService,
-        private readonly VisitorEventService   $visitorEventService,
-        private readonly ProjectRepository     $projectEntityRepository,
-        private readonly BotServiceInterface   $botService,
+        private readonly VisitorEventService $visitorEventService,
+        private readonly ProjectRepository $projectEntityRepository,
+        private readonly BotServiceInterface $botService,
         private readonly MessageHistoryService $messageHistoryService,
-        private readonly MessageBusInterface   $bus,
-    ) {
-    }
+        private readonly MessageBusInterface $bus,
+    ) {}
 
     /**
      * Что происходит сейчас:
@@ -41,19 +40,19 @@ class MainWebhookController extends AbstractController
      * 3. Создаём событие на основе сессии, типа сообщения и его контента(createVisitorEventForSession):
      *  3.1 Получаем из сессии eventId
      *  3.2 Получаем event привязанный к сессии если он есть
-     *      3.2.1 Если нет event-а
+     *      3.2.1 Если нет event-а.
      *          Создаём event на основе сессии, типа сообщения и его контента(createVisitorEventByScenario)
      *              Получаем сценарий, относительно типа сообщения и контента
-     *                  Если нет сценария
+     *                  Если нет сценария:
      *                      Получаем дефолтный сценарий
      *                          Если его нет - ошибка
-     *          Создаём событие относительно сценария и типа
-     *          Записываем в сесиию eventId
+     *          Создаём событие относительно сценария и типа.
+     *          Записываем в сессию eventId.
      *          Обновляем сессию
-     *  3.2.2 Если есть event
+     *  3.2.2 Если есть event:
      *      Перезаписываем существующий event - новым (rewriteChatEventByScenario)
      *          Получаем сценарий, относительно типа сообщения и контента
-     *              Если нет сценария
+     *              Если нет сценария:
      *                  Получаем дефолтный сценарий
      *                      Если его нет - ошибка
      *          Перезаписываем event
