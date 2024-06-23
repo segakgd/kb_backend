@@ -10,8 +10,7 @@ readonly class ResponsibleDtoRepository
 {
     public function __construct(
         private SerializerInterface $serializer,
-    ) {
-    }
+    ) {}
 
     public function save(VisitorEvent $visitorEvent, Responsible $dto): void
     {

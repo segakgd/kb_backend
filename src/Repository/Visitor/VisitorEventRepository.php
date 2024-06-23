@@ -3,6 +3,7 @@
 namespace App\Repository\Visitor;
 
 use App\Entity\Visitor\VisitorEvent;
+use App\Entity\Visitor\VisitorSession;
 use App\Enum\VisitorEventStatusEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -26,40 +27,7 @@ class VisitorEventRepository extends ServiceEntityRepository
     {
         return $this->findBy(
             [
-                'projectId' => $projectId
-            ]
-        );
-    }
-
-    public function getLastByProjectId(int $projectId): ?VisitorEvent
-    {
-        return $this->findOneBy(
-            [
-                'projectId' => $projectId
-            ],
-            [
-                'createdAt' => 'desc'
-            ]
-        );
-    }
-
-    public function findOneById(int $id): ?VisitorEvent
-    {
-        return $this->find($id);
-    }
-
-    public function findOneByStatus(array $statuses): ?VisitorEvent
-    {
-        $statusesRequest = [];
-
-        /** @var VisitorEventStatusEnum $status */
-        foreach ($statuses as $status) {
-            $statusesRequest[] = $status->value;
-        }
-
-        return $this->findOneBy(
-            [
-                'status' => $statusesRequest,
+                'projectId' => $projectId,
             ]
         );
     }
@@ -77,33 +45,15 @@ class VisitorEventRepository extends ServiceEntityRepository
         $this->getEntityManager()->flush();
     }
 
-    public function getVisitorEventIfExistByScenarioUUID(string $visitorEventUUID): ?VisitorEvent
+    public function getVisitorEventIfExist(VisitorSession $visitorSession): ?VisitorEvent
     {
         return $this->findOneBy(
             [
-                'scenarioUUID' => $visitorEventUUID,
-                'status' => [
-                    VisitorEventStatusEnum::New->value,
-                    VisitorEventStatusEnum::Waiting->value
-                ],
-            ]
+                'sessionId' => $visitorSession->getId(),
+            ],
+            [
+                'id' => 'DESC',
+            ],
         );
-    }
-
-    public function removeById(int $visitorEventId): void
-    {
-        $visitorEvent = $this->find($visitorEventId);
-
-        if ($visitorEvent) {
-            $this->getEntityManager()->remove($visitorEvent);
-            $this->getEntityManager()->flush();
-        }
-    }
-
-    // todo нужен?
-    public function remove(VisitorEvent $entity): void
-    {
-        $this->getEntityManager()->remove($entity);
-        $this->getEntityManager()->flush();
     }
 }

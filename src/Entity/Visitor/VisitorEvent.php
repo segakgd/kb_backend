@@ -37,9 +37,12 @@ class VisitorEvent
     #[ORM\Column]
     private array $responsible = [];
 
+    #[ORM\Column]
+    private ?int $sessionId = null;
+
     public function __construct()
     {
-        if ($this->createdAt === null){
+        if ($this->createdAt === null) {
             $this->createdAt = new DateTimeImmutable();
         }
     }
@@ -129,6 +132,18 @@ class VisitorEvent
     public function setResponsible(array $responsible): static
     {
         $this->responsible = $responsible;
+
+        return $this;
+    }
+
+    public function getSessionId(): ?int
+    {
+        return $this->sessionId;
+    }
+
+    public function setSessionId(int $sessionId): static
+    {
+        $this->sessionId = $sessionId;
 
         return $this;
     }

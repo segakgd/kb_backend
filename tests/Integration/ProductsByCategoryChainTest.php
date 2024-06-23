@@ -11,6 +11,10 @@ use App\Service\Constructor\Items\ProductsByCategoryChain;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 class ProductsByCategoryChainTest extends KernelTestCase
 {
     /**
@@ -26,24 +30,22 @@ class ProductsByCategoryChainTest extends KernelTestCase
 
         $responsible
             ->setCacheDto(
-                (new CacheDto)
+                (new CacheDto())
                     ->setCart(
-                        (new CacheCartDto)
+                        new CacheCartDto()
                     )
                     ->setContent(
                         'Предыдущий'
                     )
                     ->setEvent(
-                        (new CacheEventDto)
+                        (new CacheEventDto())
                             ->setData(
-                                (new CacheDataDto)
+                                (new CacheDataDto())
                                     ->setCategoryId(2)
                                     ->setPageNow(1)
                             )
                     )
-                    ->setEventUUID(uuid_create())
-            )
-        ;
+            );
 
         /** @var ProductsByCategoryChain $chainService */
         $chainService = $container->get(ProductsByCategoryChain::class);

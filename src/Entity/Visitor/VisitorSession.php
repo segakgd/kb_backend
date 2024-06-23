@@ -23,9 +23,6 @@ class VisitorSession
     #[ORM\Column(length: 30)]
     private ?string $channel = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $visitorEvent = null;
-
     #[ORM\Column]
     private ?DateTimeImmutable $createdAt = null;
 
@@ -73,18 +70,6 @@ class VisitorSession
     public function setChannel(string $channel): static
     {
         $this->channel = $channel;
-
-        return $this;
-    }
-
-    public function getVisitorEvent(): ?int
-    {
-        return $this->visitorEvent;
-    }
-
-    public function setVisitorEvent(?int $visitorEvent): self
-    {
-        $this->visitorEvent = $visitorEvent;
 
         return $this;
     }

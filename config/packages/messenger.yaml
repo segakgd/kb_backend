@@ -4,12 +4,16 @@ framework:
         # failure_transport: failed
 
         transports:
+            async: 'doctrine://default'  # Используем Doctrine для хранения сообщений
+
             # https://symfony.com/doc/current/messenger.html#transport-configuration
             # async: '%env(MESSENGER_TRANSPORT_DSN)%'
             # failed: 'doctrine://default?queue_name=failed'
             # sync: 'sync://'
 
         routing:
+            'App\Message\TelegramMessage': async  # Маршрутизируем ваше событие на транспорт async
+
             # Route your messages to the transports
             # 'App\Message\YourMessage': async
 

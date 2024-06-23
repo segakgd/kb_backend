@@ -7,7 +7,6 @@ use App\Entity\User\Bot;
 use App\Entity\User\Project;
 use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
-use App\Helper\CommonHelper;
 use App\Repository\MessageHistoryRepository;
 use App\Repository\Visitor\VisitorEventRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
@@ -43,15 +42,11 @@ readonly class DashboardService
 
     public function prepareEvent(VisitorEvent $event): array
     {
-        $visitorSession = $this->visitorSessionRepository->findOneBy(
-            [
-                'visitorEvent' => $event->getId(),
-            ]
-        );
+        $visitorSession = $this->visitorSessionRepository->find($event->getSessionId());
 
         $contract = [];
 
-        if ($visitorSession) {
+        if (null !== $visitorSession) {
             $cache = $visitorSession->getCache();
             $cacheEvent = $cache->getEvent();
 
@@ -91,15 +86,9 @@ readonly class DashboardService
 
     public function prepareSession(VisitorSession $session): array
     {
-        $visitorEvent = null;
-
-        if ($session->getVisitorEvent()) {
-            $visitorEvent = $this->visitorEventRepository->findOneById($session->getVisitorEvent());
-        }
-
         $cache = $session->getCache();
 
-        $prepareSession = [
+        return [
             'id'             => $session->getId(),
             'sessionName'    => $session->getName(),
             'sessionChannel' => $session->getChannel(),
@@ -107,15 +96,6 @@ readonly class DashboardService
                 'content' => $cache->getContent() ?? null,
             ],
         ];
-
-        if ($visitorEvent) {
-            $prepareSession['sessionVisitorEvent'] = [
-                'type'   => $visitorEvent->getType(),
-                'status' => $visitorEvent->getStatus()->value,
-            ];
-        }
-
-        return $prepareSession;
     }
 
     public function prepareBots(Project $project): array

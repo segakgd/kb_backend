@@ -27,7 +27,6 @@ use Symfony\Component\Messenger\Exception\ExceptionInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Throwable;
 
 class EventsDashboardController extends AbstractController
@@ -42,8 +41,7 @@ class EventsDashboardController extends AbstractController
         private readonly ScenarioTemplateRepository $scenarioTemplateRepository,
         private readonly VisitorEventService $visitorEventService,
         private readonly MessageBusInterface $bus,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws Exception
@@ -55,26 +53,26 @@ class EventsDashboardController extends AbstractController
         $messageText = $request->request->get('message') ?? throw new Exception();
 
         $message = [
-            "update_id" => 321408479,
-            "message" => [
-                "message_id" => 508,
-                "from" => [
-                    "id" => 873817360,
-                    "is_bot" => false,
-                    "first_name" => "Sega",
-                    "username" => "sega_kgd",
-                    "language_code" => "ru",
-                    "is_premium" => true
+            'update_id' => 321408479,
+            'message'   => [
+                'message_id' => 508,
+                'from'       => [
+                    'id'            => 873817360,
+                    'is_bot'        => false,
+                    'first_name'    => 'Sega',
+                    'username'      => 'sega_kgd',
+                    'language_code' => 'ru',
+                    'is_premium'    => true,
                 ],
-                "chat" => [
-                    "id" => 873817360,
-                    "first_name" => "Sega",
-                    "username" => "sega_kgd",
-                    "type" => "private"
+                'chat' => [
+                    'id'         => 873817360,
+                    'first_name' => 'Sega',
+                    'username'   => 'sega_kgd',
+                    'type'       => 'private',
                 ],
-                "date" => 1706982783,
-                "text" => $messageText
-            ]
+                'date' => 1706982783,
+                'text' => $messageText,
+            ],
         ];
 
         $webhookData = $this->serializer->deserialize(
@@ -92,7 +90,7 @@ class EventsDashboardController extends AbstractController
 
         $visitorSession = $this->visitorSessionService->identifyByChannel($chatId, $botId, 'telegram');
 
-        if (!$visitorSession) {
+        if (null === $visitorSession) {
             $visitorSession = $this->visitorSessionService->createVisitorSession(
                 visitorName: $visitorName,
                 chatId: $chatId,

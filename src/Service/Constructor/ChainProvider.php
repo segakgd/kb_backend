@@ -36,7 +36,7 @@ readonly class ChainProvider
             TargetEnum::VariantProductChain     => $this->variantProductChain,
             TargetEnum::FinishChain             => new FinishChain(),
 
-            TargetEnum::Main, TargetEnum::Cart => throw new Exception('Need add chain'),
+            TargetEnum::Main, TargetEnum::Cart => null,
         };
     }
 }

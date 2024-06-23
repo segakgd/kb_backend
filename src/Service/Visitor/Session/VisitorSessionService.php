@@ -11,14 +11,13 @@ readonly class VisitorSessionService
 {
     public function __construct(
         private VisitorSessionRepository $visitorSessionRepository,
-    ) {
-    }
+    ) {}
 
     public function findAll(int $projectId): array
     {
         return $this->visitorSessionRepository->findBy(
             [
-                'projectId' => $projectId
+                'projectId' => $projectId,
             ]
         );
     }
@@ -27,7 +26,7 @@ readonly class VisitorSessionService
     {
         return $this->visitorSessionRepository->findBy(
             [
-                'botId' => $botId
+                'botId' => $botId,
             ]
         );
     }
@@ -36,8 +35,8 @@ readonly class VisitorSessionService
     {
         return $this->visitorSessionRepository->findOneBy(
             [
-                'chatId' => $chatId,
-                'botId' => $botId,
+                'chatId'  => $chatId,
+                'botId'   => $botId,
                 'channel' => $channel,
             ]
         );
@@ -45,10 +44,10 @@ readonly class VisitorSessionService
 
     public function createVisitorSession(
         string $visitorName,
-        int    $chatId,
-        int    $botId,
+        int $chatId,
+        int $botId,
         string $chanel,
-        int    $projectId,
+        int $projectId,
     ): VisitorSession {
         $cacheDto = CommonHelper::createSessionCache();
 
@@ -64,12 +63,5 @@ readonly class VisitorSessionService
         $this->visitorSessionRepository->save($visitorSession);
 
         return $visitorSession;
-    }
-
-    public function rewriteVisitorEvent(VisitorSession $visitorSession, int $visitorEventId): void
-    {
-        $visitorSession->setVisitorEvent($visitorEventId);
-
-        $this->visitorSessionRepository->save($visitorSession);
     }
 }

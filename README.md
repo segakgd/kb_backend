@@ -23,6 +23,10 @@ Target - ключ, который описывает какой chain класс
  сообщению
 ~~~
 
+Для запуска messenger-а:
+~~~
+php bin/console messenger:consume async
+~~~
 
 Что можно делать:
 ---

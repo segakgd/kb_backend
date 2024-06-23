@@ -18,19 +18,21 @@ class CacheDto extends AbstractDto
     public function __construct()
     {
         if (!$this->cart) {
-            $this->cart = new CacheCartDto;
+            $this->cart = new CacheCartDto();
         }
 
         if (!$this->event) {
-            $this->event = new CacheEventDto;
+            $this->event = new CacheEventDto();
         }
     }
 
+    /** @deprecated  */
     public function getEventUUID(): ?string
     {
         return $this->eventUUID;
     }
 
+    /** @deprecated  */
     public function setEventUUID(?string $eventUUID): static
     {
         $this->eventUUID = $eventUUID;

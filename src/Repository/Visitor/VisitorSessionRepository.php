@@ -21,15 +21,6 @@ class VisitorSessionRepository extends ServiceEntityRepository
         parent::__construct($registry, VisitorSession::class);
     }
 
-    public function findByEventId(int $eventId): ?VisitorSession
-    {
-        return $this->findOneBy(
-            [
-                'visitorEvent' => $eventId
-            ]
-        );
-    }
-
     public function save(VisitorSession $entity): void
     {
         $this->getEntityManager()->persist($entity);

@@ -52,7 +52,7 @@ final readonly class TelegramMessageHandler
         }
 
         try {
-            $visitorSession = $this->visitorSessionRepository->findByEventId($visitorEvent->getId());
+            $visitorSession = $this->visitorSessionRepository->find($visitorEvent->getSessionId());
 
             $cacheDto = $visitorSession->getCache();
 
@@ -81,6 +81,11 @@ final readonly class TelegramMessageHandler
             $visitorSession->setCache($responsible->getCacheDto());
 
             $visitorEvent->setStatus($responsible->getStatus());
+
+            if (VisitorEventStatusEnum::Repeat === $visitorEvent->getStatus()) {
+                $visitorEvent->setResponsible([]);
+                $visitorEvent->setStatus(VisitorEventStatusEnum::New);
+            }
 
             $this->entityManager->persist($visitorEvent);
             $this->entityManager->persist($visitorSession);

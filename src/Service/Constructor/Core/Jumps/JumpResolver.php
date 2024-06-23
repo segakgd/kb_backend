@@ -40,7 +40,6 @@ readonly class JumpResolver
             $visitorEvent->setScenarioUUID($scenario->getUUID());
 
             $responsible->getCacheDto()->setEvent(CacheHelper::createCacheEventDto());
-            $responsible->getCacheDto()->setEventUUID($scenario->getUUID());
 
             $this->responsibleDtoRepository->save($visitorEvent, $responsible);
         } else {
