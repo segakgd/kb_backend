@@ -39,6 +39,10 @@ readonly class VisitorEventService
             $visitorEvent = null;
         }
 
+        if ($visitorEvent?->getStatus() === VisitorEventStatusEnum::Done) {
+            $visitorEvent = null;
+        }
+
         if (null === $visitorEvent) {
             $scenario = $this->scenarioService->findScenarioByNameAndType($type, $content);
             $visitorEvent = $this->createEvent($visitorSession, $scenario, $type);
