@@ -29,13 +29,7 @@ readonly class PaginateService
         $responsibleMessage->setMessage($message);
         $responsibleMessage->setPhoto($product->getMainImage());
 
-        if ($products['paginate']['next'] === null) {
-            $replyMarkups = KeyboardHelper::getProductNav(['prev' => true]);
-        } elseif ($products['paginate']['prev'] === null) {
-            $replyMarkups = KeyboardHelper::getProductNav(['next' => true]);
-        } else {
-            $replyMarkups = KeyboardHelper::getProductNav();
-        }
+        $replyMarkups = KeyboardHelper::getProductNav();
 
         $responsibleMessage->setKeyBoard($replyMarkups);
 

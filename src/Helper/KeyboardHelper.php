@@ -3,8 +3,6 @@
 namespace App\Helper;
 
 use App\Dto\Common\KeyboardDto;
-use App\Entity\Ecommerce\ProductVariant;
-use Doctrine\Common\Collections\Collection;
 
 class KeyboardHelper
 {
@@ -23,9 +21,9 @@ class KeyboardHelper
         return $replyMarkups;
     }
 
-    public static function getProductNav(?array $paginate = null): array
+    public static function getProductNav(): array
     {
-        $nav = [
+        return [
             [
                 [
                     'text' => 'Предыдущий',
@@ -46,50 +44,6 @@ class KeyboardHelper
                 ],
             ],
         ];
-
-        if (is_array($paginate) && !isset($paginate['prev'])) {
-            $nav = [
-                [
-                    [
-                        'text' => 'Следующий',
-                    ],
-                ],
-                [
-                    [
-                        'text' => 'Вернуться в главное меню',
-                    ],
-                    [
-                        'text' => 'Добавить в корзину',
-                    ],
-                    [
-                        'text' => 'Вернуться к категориям',
-                    ],
-                ],
-            ];
-        }
-
-        if (is_array($paginate) && !isset($paginate['next'])) {
-            $nav = [
-                [
-                    [
-                        'text' => 'Предыдущий',
-                    ],
-                ],
-                [
-                    [
-                        'text' => 'Вернуться в главное меню',
-                    ],
-                    [
-                        'text' => 'Добавить в корзину',
-                    ],
-                    [
-                        'text' => 'Вернуться к категориям',
-                    ],
-                ],
-            ];
-        }
-
-        return $nav;
     }
 
     public static function getIconNumber(int $number): string
