@@ -25,6 +25,7 @@ abstract class AbstractChain implements ChainInterface
     {
         if (!$responsible->getChain()->isRepeat()) {
             if ($this->isJump($responsible)) {
+                // определяем, если сообщение относится к jump-у то завершаем выполнение этого сценария.
                 return true;
             }
 
@@ -35,7 +36,7 @@ abstract class AbstractChain implements ChainInterface
             }
         }
 
-        return $this->performAndComplete($responsible, $nextChain);
+        return $this->performOrComplete($responsible, $nextChain);
     }
 
     public function fail(ResponsibleInterface $responsible): ResponsibleInterface
@@ -55,9 +56,11 @@ abstract class AbstractChain implements ChainInterface
         return $responsible;
     }
 
-    protected function performAndComplete(ResponsibleInterface $responsible, ?ChainInterface $nextChain): bool
+    protected function performOrComplete(ResponsibleInterface $responsible, ?ChainInterface $nextChain): bool
     {
-        if (!$this->perform($responsible)) {
+        $perform = $this->perform($responsible);
+
+        if (!$perform) {
             return false;
         }
 
@@ -98,6 +101,7 @@ abstract class AbstractChain implements ChainInterface
         return $condition;
     }
 
+    // todo этот метод нужно реализовать в интерфейсе, чтоб можно было дополнять в дочках, и вообще лучше из дочерних и управлять этим. Они и должны решить, jump или нет
     private function isJump(ResponsibleInterface $responsible): bool
     {
         $content = $responsible->getCacheDto()->getContent();
