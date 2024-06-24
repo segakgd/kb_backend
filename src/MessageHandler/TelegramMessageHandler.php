@@ -50,66 +50,64 @@ final readonly class TelegramMessageHandler
         }
 
         if (
-            VisitorEventStatusEnum::New !== $visitorEvent->getStatus()
-            && VisitorEventStatusEnum::Repeat !== $visitorEvent->getStatus()
+            VisitorEventStatusEnum::New === $visitorEvent->getStatus()
+            || VisitorEventStatusEnum::Repeat === $visitorEvent->getStatus()
         ) {
-            return;
-        }
+            try {
+                $visitorSession = $this->visitorSessionRepository->find($visitorEvent->getSessionId());
 
-        try {
-            $visitorSession = $this->visitorSessionRepository->find($visitorEvent->getSessionId());
+                $cacheDto = $visitorSession->getCache();
 
-            $cacheDto = $visitorSession->getCache();
+                if (VisitorEventStatusEnum::New === $visitorEvent->getStatus()) {
+                    $scenario = $this->scenarioService->findScenarioByUUID($visitorEvent->getScenarioUUID());
 
-            if (VisitorEventStatusEnum::New === $visitorEvent->getStatus()) {
-                $scenario = $this->scenarioService->findScenarioByUUID($visitorEvent->getScenarioUUID());
+                    $cacheDto = $this->enrichContractCache($scenario, $cacheDto);
+                }
 
-                $cacheDto = $this->enrichContractCache($scenario, $cacheDto);
-            }
+                $responsible = CommonHelper::createDefaultResponsible();
 
-            $responsible = CommonHelper::createDefaultResponsible();
-
-            $responsible->setCacheDto($cacheDto);
-            $responsible->setBotDto(
-                botDto: $this->createBotBto($visitorSession)
-            );
-
-            $responsible = $this->eventResolver->resolve($visitorEvent, $responsible);
-
-            if ($responsible->isExistJump()) {
-                $this->jumpResolver->resolveJump(
-                    visitorEvent: $visitorEvent,
-                    responsible: $responsible
+                $responsible->setCacheDto($cacheDto);
+                $responsible->setBotDto(
+                    botDto: $this->createBotBto($visitorSession)
                 );
+
+                $responsible = $this->eventResolver->resolve($visitorEvent, $responsible);
+
+                if ($responsible->isExistJump()) {
+                    $this->jumpResolver->resolveJump(
+                        visitorEvent: $visitorEvent,
+                        responsible: $responsible
+                    );
+                }
+
+                $visitorSession->setCache($responsible->getCacheDto());
+
+                $visitorEvent->setStatus($responsible->getStatus());
+
+                if (VisitorEventStatusEnum::Repeat === $visitorEvent->getStatus()) {
+                    $visitorEvent->setResponsible([]);
+                }
+
+                $this->entityManager->persist($visitorEvent);
+                $this->entityManager->persist($visitorSession);
+                $this->entityManager->flush();
+
+                if (VisitorEventStatusEnum::Repeat === $visitorEvent->getStatus()) {
+                    $this->bus->dispatch(new TelegramMessage($visitorEvent->getId()));
+                }
+            } catch (Throwable $exception) {
+                $message = ' MESSAGE: ' . $exception->getMessage() . "\n"
+                    . ' FILE: ' . $exception->getFile() . "\n"
+                    . ' LINE: ' . $exception->getLine();
+
+                $visitorEvent->setError($message);
+
+                $this->visitorEventRepository->updateChatEventStatus($visitorEvent, VisitorEventStatusEnum::Failed);
+
+                $this->logger->error($exception->getMessage(), $exception->getTrace());
+
+                throw $exception;
             }
-
-            $visitorSession->setCache($responsible->getCacheDto());
-
-            $visitorEvent->setStatus($responsible->getStatus());
-
-            if (VisitorEventStatusEnum::Repeat === $visitorEvent->getStatus()) {
-                $visitorEvent->setResponsible([]);
-            }
-
-            $this->entityManager->persist($visitorEvent);
-            $this->entityManager->persist($visitorSession);
-            $this->entityManager->flush();
-
-            if (VisitorEventStatusEnum::Repeat === $visitorEvent->getStatus()) {
-                $this->bus->dispatch(new TelegramMessage($visitorEvent->getId()));
-            }
-        } catch (Throwable $exception) {
-            $message = ' MESSAGE: ' . $exception->getMessage() . "\n"
-                . ' FILE: ' . $exception->getFile() . "\n"
-                . ' LINE: ' . $exception->getLine();
-
-            $visitorEvent->setError($message);
-
-            $this->visitorEventRepository->updateChatEventStatus($visitorEvent, VisitorEventStatusEnum::Failed);
-
-            $this->logger->error($exception->getMessage(), $exception->getTrace());
-
-            throw $exception;
         }
     }
 
