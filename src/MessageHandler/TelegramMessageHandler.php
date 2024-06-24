@@ -42,7 +42,12 @@ final readonly class TelegramMessageHandler
      */
     public function __invoke(TelegramMessage $message): void
     {
-        $visitorEvent = $message->getVisitorEvent();
+        $visitorEventId = $message->getVisitorEventId();
+        $visitorEvent = $this->visitorEventRepository->find($visitorEventId);
+
+        if (null === $visitorEvent) {
+            return;
+        }
 
         if (
             VisitorEventStatusEnum::New !== $visitorEvent->getStatus()
@@ -92,7 +97,7 @@ final readonly class TelegramMessageHandler
             $this->entityManager->flush();
 
             if (VisitorEventStatusEnum::Repeat === $visitorEvent->getStatus()) {
-                $this->bus->dispatch(new TelegramMessage($visitorEvent));
+                $this->bus->dispatch(new TelegramMessage($visitorEvent->getId()));
             }
         } catch (Throwable $exception) {
             $message = ' MESSAGE: ' . $exception->getMessage() . "\n"

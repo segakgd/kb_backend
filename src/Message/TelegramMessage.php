@@ -2,16 +2,14 @@
 
 namespace App\Message;
 
-use App\Entity\Visitor\VisitorEvent;
-
 final readonly class TelegramMessage
 {
     public function __construct(
-        private VisitorEvent $visitorEvent,
+        private int $visitorEventId,
     ) {}
 
-    public function getVisitorEvent(): VisitorEvent
+    public function getVisitorEventId(): int
     {
-        return $this->visitorEvent;
+        return $this->visitorEventId;
     }
 }

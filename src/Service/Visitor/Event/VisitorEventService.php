@@ -62,6 +62,8 @@ readonly class VisitorEventService
         $this->entityManager->persist($visitorSession);
         $this->entityManager->flush();
 
+        $this->entityManager->refresh($visitorEvent);
+
         return $visitorEvent;
     }
 

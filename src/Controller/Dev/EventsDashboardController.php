@@ -107,7 +107,7 @@ class EventsDashboardController extends AbstractController
             content: $webhookData->getWebhookContent(),
         );
 
-        $this->bus->dispatch(new TelegramMessage($visitorEvent));
+        $this->bus->dispatch(new TelegramMessage($visitorEvent->getId()));
 
         return new RedirectResponse("/admin/projects/{$project->getId()}/sessions/{$visitorSession->getId()}/");
     }
