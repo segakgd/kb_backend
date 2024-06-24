@@ -85,20 +85,20 @@
 
                         {% for event in events %}
                             <div class=""
-                                {% if event.status == 'failed' %}
+                                    {% if event.status == 'failed' %}
                                  style="padding: 20px; background: #ffd4d4; margin-bottom: 2px;"
-                                {% elseif event.status == 'done' %}
-                                    style="padding: 20px; background: #d7ffd4; margin-bottom: 2px;"
-                                {% elseif event.status == 'new' %}
+                                    {% elseif event.status == 'done' %}
+                                 style="padding: 20px; background: #d7ffd4; margin-bottom: 2px;"
+                                    {% elseif event.status == 'new' %}
                                  style="padding: 20px; background: #d4e2ff; margin-bottom: 2px;"
-                                {% elseif event.status == 'waiting' %}
+                                    {% elseif event.status == 'waiting' %}
                                  style="padding: 20px; background: #ecd4ff; margin-bottom: 2px;"
-                                {% elseif event.status == 'repeat' %}
+                                    {% elseif event.status == 'repeat' %}
                                  style="padding: 20px; background: #ecd4ff; margin-bottom: 2px;"
-                                {% else %}
+                                    {% else %}
                                  style="padding: 20px; margin-bottom: 2px;">
                                 {% endif %}
-                        >
+                                >
                                 <div class="">Событие #{{ event.id }}</div>
 
                                 <div class="">
@@ -122,9 +122,10 @@
                                             {{ event.status }}
                                         {% endif %}
                                     </section>
+                                    {% if event.status == 'waiting' or event.status == 'new' %}
 
-                                    {% if event.contract is not null %}
-                                        {% if event.contract is not empty %}
+                                        {% if event.contract is not null %}
+                                            {% if event.contract is not empty %}
                                                 {% if event.contract.chains is not null %}
                                                     {% if event.contract.chains is not empty %}
                                                         <section>
@@ -145,6 +146,7 @@
                                                         </section>
                                                     {% endif %}
                                                 {% endif %}
+                                            {% endif %}
                                         {% endif %}
                                     {% endif %}
 

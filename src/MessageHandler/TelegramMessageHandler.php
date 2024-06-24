@@ -89,7 +89,6 @@ final readonly class TelegramMessageHandler
 
             if (VisitorEventStatusEnum::Repeat === $visitorEvent->getStatus()) {
                 $visitorEvent->setResponsible([]);
-                $visitorEvent->setStatus(VisitorEventStatusEnum::New);
             }
 
             $this->entityManager->persist($visitorEvent);
