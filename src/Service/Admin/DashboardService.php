@@ -69,13 +69,13 @@ readonly class DashboardService
         }
 
         return [
-            'id'          => $event->getId(),
-            'type'        => $event->getType(),
-            'status'      => $event->getStatus()->value,
-            'createdAt'   => $event->getCreatedAt(),
-            'contract'    => $contract,
-            'error'       => $event->getError(),
-//            'responsible' => $event->getResponsible() ?? [],
+            'id'        => $event->getId(),
+            'type'      => $event->getType(),
+            'status'    => $event->getStatus()->value,
+            'createdAt' => $event->getCreatedAt(),
+            'contract'  => $contract,
+            'error'     => $event->getError(),
+            //            'responsible' => $event->getResponsible() ?? [],
         ];
     }
 
