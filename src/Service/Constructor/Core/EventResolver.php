@@ -15,14 +15,13 @@ readonly class EventResolver
 {
     public function __construct(
         private ContractResolver $contractResolver,
-        private ResponsibleDtoRepository $responsibleDtoRepository,
         private MessageBusInterface $bus,
     ) {}
 
     /**
      * @throws Throwable
      */
-    public function resolve(VisitorEvent $visitorEvent, Responsible $responsible): Responsible
+    public function resolve(Responsible $responsible): Responsible
     {
         try {
             $this->contractResolver->resolve($responsible);
@@ -33,18 +32,14 @@ readonly class EventResolver
 
             $status = $responsible->isContractStatus() ? VisitorEventStatusEnum::Done : VisitorEventStatusEnum::Waiting;
 
-            if (isset($_SERVER['APP_ENV']) && $_SERVER['APP_ENV'] === 'dev') {
-                $this->responsibleDtoRepository->save($visitorEvent, $responsible);
-            }
+            // todo отправку нудно вынести отсюда вероятно
+            $this->bus->dispatch(new SendTelegramMessage($responsible->getResult(), $responsible->getBotDto()));
 
             if ($status === VisitorEventStatusEnum::Done) {
                 $responsible->getCacheDto()->clearEvent();
             }
 
             $responsible->setStatus($status);
-
-            // todo отправку нудно вынести отсюда вероятно
-            $this->bus->dispatch(new SendTelegramMessage($responsible->getResult(), $responsible->getBotDto()));
 
             return $responsible;
         } catch (Throwable $exception) {

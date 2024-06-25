@@ -99,6 +99,7 @@ class CacheContractDto extends AbstractDto
     public function setKeyboard(?CacheKeyboardDto $keyboard): static
     {
         $this->keyboard = $keyboard;
+
         return $this;
     }
 
@@ -110,6 +111,7 @@ class CacheContractDto extends AbstractDto
     public function setAttached(?CacheKeyboardDto $attached): static
     {
         $this->attached = $attached;
+
         return $this;
     }
 
@@ -144,14 +146,15 @@ class CacheContractDto extends AbstractDto
     public function toArray(): array
     {
         $chainsArray = [];
+
         foreach ($this->chains as $chain) {
             $chainsArray[] = $chain->toArray();
         }
 
         return [
-            'message' => $this->message,
+            'message'  => $this->message,
             'finished' => $this->finished,
-            'chains' => $chainsArray,
+            'chains'   => $chainsArray,
         ];
     }
 }

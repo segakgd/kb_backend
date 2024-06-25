@@ -7,6 +7,7 @@ use App\Dto\SessionCache\Cache\CacheDto;
 use App\Entity\Scenario\Scenario;
 use App\Entity\Visitor\VisitorSession;
 use App\Enum\VisitorEventStatusEnum;
+use App\Helper\CacheHelper;
 use App\Helper\CommonHelper;
 use App\Message\TelegramMessage;
 use App\Repository\User\BotRepository;
@@ -15,6 +16,7 @@ use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Constructor\Core\Dto\BotDto;
 use App\Service\Constructor\Core\EventResolver;
 use App\Service\Constructor\Core\Jumps\JumpResolver;
+use App\Service\DtoRepository\ResponsibleDtoRepository;
 use App\Service\Visitor\Scenario\ScenarioService;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -34,6 +36,7 @@ final readonly class TelegramMessageHandler
         private EntityManagerInterface $entityManager,
         private JumpResolver $jumpResolver,
         private MessageBusInterface $bus,
+        private ResponsibleDtoRepository $responsibleDtoRepository,
         private LoggerInterface $logger,
     ) {}
 
@@ -58,6 +61,7 @@ final readonly class TelegramMessageHandler
 
                 $cacheDto = $visitorSession->getCache();
 
+                // todo видимо придётся вводить ещё один статус... jump.
                 if (VisitorEventStatusEnum::New === $visitorEvent->getStatus()) {
                     $scenario = $this->scenarioService->findScenarioByUUID($visitorEvent->getScenarioUUID());
 
@@ -71,7 +75,7 @@ final readonly class TelegramMessageHandler
                     botDto: $this->createBotBto($visitorSession)
                 );
 
-                $responsible = $this->eventResolver->resolve($visitorEvent, $responsible);
+                $responsible = $this->eventResolver->resolve($responsible);
 
                 if ($responsible->isExistJump()) {
                     $this->jumpResolver->resolveJump(
@@ -86,11 +90,24 @@ final readonly class TelegramMessageHandler
 
                 if (VisitorEventStatusEnum::Repeat === $visitorEvent->getStatus()) {
                     $visitorEvent->setResponsible([]);
+
+                    //                    $cache = CommonHelper::createSessionCache();
+                    //
+                    //                    $cache->setEvent(CacheHelper::createCacheEventDto());
+                    //                    $cache->setContent('Контент');
+                    //
+                    //                    $visitorSession->setCache(CommonHelper::createSessionCache());
                 }
 
                 $this->entityManager->persist($visitorEvent);
                 $this->entityManager->persist($visitorSession);
                 $this->entityManager->flush();
+
+                if (isset($_SERVER['APP_ENV']) && $_SERVER['APP_ENV'] === 'dev') {
+                    $this->responsibleDtoRepository->save($visitorEvent, $responsible);
+                }
+
+                unset($responsible);
 
                 if (VisitorEventStatusEnum::Repeat === $visitorEvent->getStatus()) {
                     $this->bus->dispatch(new TelegramMessage($visitorEvent->getId()));
