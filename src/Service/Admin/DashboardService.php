@@ -75,7 +75,6 @@ readonly class DashboardService
             'createdAt' => $event->getCreatedAt(),
             'contract'  => $contract,
             'error'     => $event->getError(),
-            //            'responsible' => $event->getResponsible() ?? [],
         ];
     }
 
