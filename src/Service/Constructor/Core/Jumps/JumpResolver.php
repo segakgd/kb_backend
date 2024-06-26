@@ -42,11 +42,13 @@ readonly class JumpResolver
             $responsible->getCacheDto()->setEvent(CacheHelper::createCacheEventDto());
 
             $this->responsibleDtoRepository->save($visitorEvent, $responsible);
+
+            $responsible->setStatus(VisitorEventStatusEnum::Jumped);
         } else {
             $this->updateCacheContract($responsible->getCacheDto(), $jump->value);
-        }
 
-        $responsible->setStatus(VisitorEventStatusEnum::Repeat);
+            $responsible->setStatus(VisitorEventStatusEnum::JumpedToChain);
+        }
     }
 
     private function resolveScenario(TargetEnum $jumpValue): ?Scenario
