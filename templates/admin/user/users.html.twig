@@ -12,47 +12,51 @@
                 {% endif %}
 
                 {% for user in users %}
-                    <div class="wrapper--block wrapper--block--user" style="display: flex; justify-content: space-between;">
-                        <div style="width: 200px">
-                            ID: {{ user.id }}
-                        </div>
+                    <a style="text-decoration: none; color: #1c1f23" href="/admin/user/{{ user.id }}/projects/">
+                        <div class="wrapper--block wrapper--block--user"
+                             style="display: flex; justify-content: space-between;">
+                            <div style="width: 200px">
+                                ID: {{ user.id }}
+                            </div>
 
-                        <div style="width: 300px">
-                            Почта: {{ user.email }}
-                        </div>
+                            <div style="width: 300px">
+                                Почта: {{ user.email }}
+                            </div>
 
-                        <div style="width: 300px">
-                            Роль:
-                            {% if user.role == 'admin'%}
-                                <span style="
+                            <div style="width: 300px">
+                                Роль:
+                                {% if user.role == 'admin' %}
+                                    <span style="
                                     border-radius: 20px;
                                     border: 2px solid #d32323;
                                     padding: 3px 10px;"
-                                > {{ user.role }} </span>
-                            {% else %}
-                                <span style="
+                                    > {{ user.role }} </span>
+                                {% else %}
+                                    <span style="
                                     border-radius: 20px;
                                     border: 2px solid #29d323;
                                     padding: 3px 10px;"
-                                > {{ user.role }} </span>
-                            {% endif %}
-                        </div>
+                                    > {{ user.role }} </span>
+                                {% endif %}
+                            </div>
 
-                        <div style="width: 200px">
-                            <a href="/admin/user/{{ user.id }}/projects/"
-                                style="
+                            <div style="width: 200px">
+                                <span style="
                                     text-decoration: none;
                                     background: linear-gradient(135deg, #ffec70 0%, #ff7dfd 100%);
                                     border-radius: 10px;
                                     color: #000;
                                     padding: 3px 10px;"
-                            >Проектов: {{ user.projects_count }} </a>
-                        </div>
+                                >
+                                    Проектов: {{ user.projects_count }}
+                                </span>
+                            </div>
 
-                        <div>
-                            Зарегистрирован: {{ user.created_at|date('Y-m-d') }}
+                            <div>
+                                Зарегистрирован: {{ user.created_at|date('Y-m-d') }}
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 {% endfor %}
 
             </div>
