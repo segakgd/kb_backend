@@ -55,14 +55,18 @@ final readonly class TelegramMessageHandler
         if (
             VisitorEventStatusEnum::New === $visitorEvent->getStatus()
             || VisitorEventStatusEnum::Repeat === $visitorEvent->getStatus()
+            || VisitorEventStatusEnum::Jumped === $visitorEvent->getStatus()
+            || VisitorEventStatusEnum::JumpedToChain === $visitorEvent->getStatus()
         ) {
             try {
                 $visitorSession = $this->visitorSessionRepository->find($visitorEvent->getSessionId());
 
                 $cacheDto = $visitorSession->getCache();
 
-                // todo видимо придётся вводить ещё один статус... jump.
-                if (VisitorEventStatusEnum::New === $visitorEvent->getStatus()) {
+                if (
+                    VisitorEventStatusEnum::New === $visitorEvent->getStatus()
+                    || VisitorEventStatusEnum::Jumped === $visitorEvent->getStatus()
+                ) {
                     $scenario = $this->scenarioService->findScenarioByUUID($visitorEvent->getScenarioUUID());
 
                     $cacheDto = $this->enrichContractCache($scenario, $cacheDto);
@@ -88,17 +92,6 @@ final readonly class TelegramMessageHandler
 
                 $visitorEvent->setStatus($responsible->getStatus());
 
-                if (VisitorEventStatusEnum::Repeat === $visitorEvent->getStatus()) {
-                    $visitorEvent->setResponsible([]);
-
-                    //                    $cache = CommonHelper::createSessionCache();
-                    //
-                    //                    $cache->setEvent(CacheHelper::createCacheEventDto());
-                    //                    $cache->setContent('Контент');
-                    //
-                    //                    $visitorSession->setCache(CommonHelper::createSessionCache());
-                }
-
                 $this->entityManager->persist($visitorEvent);
                 $this->entityManager->persist($visitorSession);
                 $this->entityManager->flush();
@@ -109,7 +102,11 @@ final readonly class TelegramMessageHandler
 
                 unset($responsible);
 
-                if (VisitorEventStatusEnum::Repeat === $visitorEvent->getStatus()) {
+                if (
+                    VisitorEventStatusEnum::Repeat === $visitorEvent->getStatus()
+                    || VisitorEventStatusEnum::Jumped === $visitorEvent->getStatus()
+                    || VisitorEventStatusEnum::JumpedToChain === $visitorEvent->getStatus()
+                ) {
                     $this->bus->dispatch(new TelegramMessage($visitorEvent->getId()));
                 }
             } catch (Throwable $exception) {
