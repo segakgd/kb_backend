@@ -3,7 +3,6 @@
 {% block title %}Дашборд{% endblock %}
 
 {% block main %}
-
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -18,18 +17,20 @@
                 {% endif %}
 
                 {% for bot in bots %}
-                    <div class="wrapper--block wrapper--block--bots">
-                        <a href="/admin/projects/{{ bot.projectId }}/bot/{{ bot.botId }}/"
-                           style="text-decoration: none; color: #1c1f23">
-                            Название бота: {{ bot.botName }}
-                        </a>
+                    <a href="/admin/projects/{{ bot.projectId }}/bot/{{ bot.botId }}/"
+                       style="text-decoration: none; color: #1c1f23">
+                        <div class="wrapper--block wrapper--block--bots">
+                            <span>
+                                Название бота: {{ bot.botName }}
+                            </span>
 
-                        {% if bot.botActive is not empty %}
-                            <span style="font-weight: bold; color: rgba(0,191,3,0.54);">Активен</span>
-                        {% else %}
-                            <span style="font-weight: bold; color: rgba(191,29,0,0.54);">Не активен</span>
-                        {% endif %}
-                    </div>
+                            {% if bot.botActive is not empty %}
+                                <span style="font-weight: bold; color: rgba(0,191,3,0.54);">Активен</span>
+                            {% else %}
+                                <span style="font-weight: bold; color: rgba(191,29,0,0.54);">Не активен</span>
+                            {% endif %}
+                        </div>
+                    </a>
                 {% endfor %}
             </div>
         </div>
