@@ -570,7 +570,7 @@ h1, h2 {
 
 .messenger-block {
     flex: 1 0 auto;
-    background: url('../assets/images/bg.webp');
+    background: url('../assets/images/bg.svg');
     background-size: cover;
     overflow: auto;
     height: 500px;
