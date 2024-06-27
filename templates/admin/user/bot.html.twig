@@ -19,6 +19,7 @@
                             </div>
                         {% else %}
                             <div class="">
+                                <div class="">ID: {{ bot.botId }}</div>
                                 <div class="">Название бота: {{ bot.botName }}</div>
                                 <div class="">
                                     <section>
@@ -27,9 +28,9 @@
                                     <section>
                                         <span>Состояние:</span>
                                         {% if bot.botActive is not empty %}
-                                            <span class="">Активен</span>
+                                            <span style="font-weight: bold; color: rgba(0,191,3,0.54);">Активен</span>
                                         {% else %}
-                                            <span class="">Не активен</span>
+                                            <span style="font-weight: bold; color: rgba(191,29,0,0.54);">Не активен</span>
                                         {% endif %}
                                     </section>
                                     <section>
