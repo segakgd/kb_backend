@@ -28,7 +28,7 @@
                         scroll.scrollTop = scroll.scrollHeight;
                     </script>
 
-                    <div style="height: max-content; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; flex: 0 0 auto; background: #e9e9e9; padding: 10px">
+                    <div style="height: max-content; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; flex: 0 0 auto; background: #f7f7f7; padding: 10px">
                         <section
                                 style="width: 100%; display: flex; margin-bottom: 15px; padding-bottom: 15px; border-bottom: solid 1px #aaa">
                             <form style="width: 100%; display:flex;"
@@ -86,13 +86,13 @@
                         {% for event in events %}
                             <div class=""
                                     {% if event.status == 'failed' %}
-                                 style="padding: 20px; background: #ffd4d4; margin-bottom: 2px;"
+                                 style="padding: 20px; background: #ffd4d4; margin-bottom: 3px; border-radius: 9px;"
                                     {% elseif event.status == 'done' %}
-                                 style="padding: 20px; background: #d7ffd4; margin-bottom: 2px;"
+                                 style="padding: 20px; background: #d7ffd4; margin-bottom: 3px; border-radius: 9px;"
                                     {% elseif event.status == 'new' %}
-                                 style="padding: 20px; background: #d4e2ff; margin-bottom: 2px;"
+                                 style="padding: 20px; background: #d4e2ff; margin-bottom: 3px; border-radius: 9px;"
                                     {% elseif event.status == 'waiting' %}
-                                 style="padding: 20px; background: #ecd4ff; margin-bottom: 2px;"
+                                 style="padding: 20px; background: #ecd4ff; margin-bottom: 3px; border-radius: 9px;"
                                     {% elseif event.status == 'repeat' %}
                                  style="padding: 20px; background: #ecd4ff; margin-bottom: 2px;"
                                     {% else %}

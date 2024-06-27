@@ -524,9 +524,6 @@ h1, h2 {
 }
 
 
-
-
-
 /* todo actual: */
 
 .wrapper--block {
@@ -543,29 +540,29 @@ h1, h2 {
     margin-bottom: 20px;
 }
 
-.admin--title--wrapper h2{
+.admin--title--wrapper h2 {
     margin: 0;
     padding: 0 0 10px;
     font-size: 30px;
     font-weight: 300;
 }
 
-.admin--title--wrapper h4{
+.admin--title--wrapper h4 {
     margin: 0;
     padding: 0 0 10px;
     font-size: 22px;
     font-weight: 300;
 }
 
-.admin--btn-left{
+.admin--btn-left {
     margin-right: 20px;
 }
 
 .messenger-wr {
-    display: flex;
-    flex-wrap: wrap;
-    background: #ffffff;
-    flex-direction: column;
+    padding: 0px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgb(0 0 0 / 12%), 0 4px 12px rgb(0 0 0 / 12%);
+    border-radius: 10px;
 }
 
 .messenger-block {
@@ -580,7 +577,7 @@ h1, h2 {
     height: max-content;
     width: 350px;
     margin: 10px 30px;
-    background: #e9e9e9;
+    background: #f7f7f7;
     border-radius: 15px;
     overflow: hidden
 }
@@ -619,7 +616,7 @@ h1, h2 {
 .messenger-nav {
     word-break: break-all;
     padding: 20px 10px;
-    background: #d5d5d5;
+    background: #e7e7e7;
     color: #000000;
     border-radius: 9px;
     border: none;
@@ -638,33 +635,32 @@ h1, h2 {
     padding: 0 0 0 10px;
     background: transparent;
     border: 0;
-    outline:none;
+    outline: none;
     color: #000;
 }
 
 .messenger-nav--input:active {
     border: none !important;
-    outline:none;
+    outline: none;
 }
 
 .messenger-nav--input:hover {
     border: none !important;
-    outline:none;
+    outline: none;
 }
 
 .messenger-nav--input:blank {
     border: none !important;
-    outline:none;
+    outline: none;
 }
 
-.messenger-nav--input-btn{
+.messenger-nav--input-btn {
     width: 100px;
     height: 40px;
     border: 0;
-    background: #d5d5d5;
+    background: #e7e7e7;
     color: #000000;
 }
-
 
 .wrapper--block--bots {
     margin-bottom: 20px;
@@ -672,24 +668,3 @@ h1, h2 {
     justify-content: space-between;
     flex-wrap: wrap;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
