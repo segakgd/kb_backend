@@ -14,9 +14,7 @@ body {
     padding: 0;
     height: 100%;
     display: flex;
-    flex-wrap: wrap;
-    align-content: flex-start;
-    flex-direction: inherit;
+    flex-direction: column;
 }
 
 input:focus {
