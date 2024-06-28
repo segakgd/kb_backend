@@ -69,7 +69,7 @@ class DashboardController extends AbstractController
     public function project(Project $project): Response
     {
         return $this->render(
-            'admin/user/project-dashboard.html.twig',
+            'admin/user/bots.html.twig',
             [
                 'bots' => $this->dashboardService->prepareBots($project),
             ]

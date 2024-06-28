@@ -19,6 +19,7 @@
                             </div>
                         {% else %}
                             <div class="">
+                                <div class="">ID: {{ bot.botId }}</div>
                                 <div class="">Название бота: {{ bot.botName }}</div>
                                 <div class="">
                                     <section>
@@ -27,9 +28,9 @@
                                     <section>
                                         <span>Состояние:</span>
                                         {% if bot.botActive is not empty %}
-                                            <span class="">Активен</span>
+                                            <span style="font-weight: bold; color: rgba(0,191,3,0.54);">Активен</span>
                                         {% else %}
-                                            <span class="">Не активен</span>
+                                            <span style="font-weight: bold; color: rgba(191,29,0,0.54);">Не активен</span>
                                         {% endif %}
                                     </section>
                                     <section>
@@ -39,7 +40,11 @@
                                         <span>Токен:</span> {{ bot.botToken }}
                                     </section>
                                     <section>
-                                        <span>Вебхук:</span> {{ bot.webhookUri }}
+                                        {% if bot.webhookUri is not empty %}
+                                            <span>Вебхук:</span> {{ bot.webhookUri }}
+                                        {% else %}
+                                            <span>Вебхук:</span> <span style="font-weight: bold; color: rgba(191,29,0,0.54);">отсутствует</span>
+                                        {% endif %}
                                     </section>
                                 </div>
 
@@ -168,11 +173,8 @@
                                     <h4>Сценарии</h4>
                                 </div>
 
-
                                 <form method="POST"
-                                      action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/apply-scenario/"
-                                        {#                                        action="/dev/project/{{ projectId }}/scenario/{{ scenarioItem.id }}/apply/" #}
-                                >
+                                      action="/dev/project/{{ projectId }}/bot/{{ bot.botId }}/apply-scenario/">
                                     <div class="mb-3">
                                         <label for="scenario" class="col-form-label">Установить сценарий:</label>
                                         <select class="form-select" name="scenario" id="scenario">
@@ -208,18 +210,24 @@
 
                             <div class="">
                                 <div class="">
-                                    <a href="/admin/projects/{{ projectId }}/sessions/{{ session.id }}/">
-                                        <div class="admin--title--wrapper">
-                                            <h4>{{ session.sessionName }}</h4>
-                                        </div>
-                                    </a>
+                                    <div class="admin--title--wrapper">
+                                        <h4>Имя: {{ session.sessionName }}</h4>
+                                    </div>
 
                                     <section>
                                         <span>Канал:</span> {{ session.sessionChannel }}
                                     </section>
+
                                     <section>
-                                        <span>Контент:</span> {{ session.cache.content }}
+                                        <span>Последний контент:</span> {{ session.cache.content }}
                                     </section>
+
+                                    <br>
+
+                                    <a href="/admin/projects/{{ projectId }}/sessions/{{ session.id }}/"
+                                       class="btn btn-success admin--btn-left">
+                                        Перейти к сессии
+                                    </a>
                                 </div>
                             </div>
                         {% endfor %}
