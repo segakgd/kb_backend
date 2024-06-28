@@ -13,7 +13,7 @@ class InitWebhookBotSubscriber implements EventSubscriberInterface
     public function __construct(
         private readonly TelegramServiceInterface $telegramService,
         private readonly BotRepository $botRepository,
-    ){
+    ) {
     }
 
     public static function getSubscribedEvents(): array
