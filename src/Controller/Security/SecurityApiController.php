@@ -4,6 +4,7 @@ namespace App\Controller\Security;
 
 use App\Controller\GeneralController;
 use App\Controller\Security\DTO\AuthDto;
+use App\Controller\Security\DTO\ReloadAccessDto;
 use App\Dto\Security\UserDto;
 use App\Exception\Security\UserExistException;
 use App\Service\Common\Security\SecurityService;
@@ -40,7 +41,8 @@ class SecurityApiController extends GeneralController
 
             return new JsonResponse(
                 [
-                    'access_token' => $this->securityService->refreshAccessToken($user),
+                    'accessToken'   => $this->securityService->refreshAccessToken($user),
+                    'refreshTokens' => $user->getRefreshTokens(),
                 ]
             );
         } catch (InvalidPasswordException | UserNotFoundException $exception) {
@@ -65,5 +67,28 @@ class SecurityApiController extends GeneralController
         }
 
         return $this->json($user, 200, [], ['groups' => ['openForReading']]);
+    }
+
+    /**
+     * @throws Exception
+     */
+    #[Route('/api/user/reload-access/', name: 'reload_access', methods: 'POST')]
+    public function reloadAccess(Request $request): JsonResponse
+    {
+        $reloadAccessDto = $this->getValidDtoFromRequest($request, ReloadAccessDto::class);
+
+        try {
+            $user = $this->securityService->reloadAccess($reloadAccessDto);
+        } catch (UserExistException $exception) {
+            return $this->json(['message' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
+
+        return $this->json(
+            data: $user,
+            status: Response::HTTP_OK,
+            context: [
+                'groups' => ['openForReading'],
+            ]
+        );
     }
 }

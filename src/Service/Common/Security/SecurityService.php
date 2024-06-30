@@ -3,6 +3,7 @@
 namespace App\Service\Common\Security;
 
 use App\Controller\Security\DTO\AuthDto;
+use App\Controller\Security\DTO\ReloadAccessDto;
 use App\Dto\Security\UserDto;
 use App\Entity\User\User;
 use App\Exception\Security\UserExistException;
@@ -21,6 +22,11 @@ readonly class SecurityService
         private EntityManagerInterface $entityManager,
         private UserRepository $userRepository,
     ) {}
+
+    public function reloadAccess(ReloadAccessDto $reloadAccessDto): void
+    {
+
+    }
 
     /**
      * @throws Exception
