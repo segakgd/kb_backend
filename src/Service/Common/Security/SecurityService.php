@@ -13,8 +13,8 @@ use Exception;
 use Random\RandomException;
 use Symfony\Component\PasswordHasher\Exception\InvalidPasswordException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
-use Symfony\Component\Security\Http\AccessToken\Oidc\Exception\InvalidSignatureException;
 
 readonly class SecurityService
 {
@@ -29,12 +29,12 @@ readonly class SecurityService
     /**
      * @throws RandomException
      */
-    public function reloadAccess(User $user, ReloadAccessDto $reloadAccessDto): string
+    public function reloadAccess(ReloadAccessDto $reloadAccessDto): string
     {
-        $refreshToken = $reloadAccessDto->getRefreshToken();
+        $user = $this->userRepository->getByRefreshToken($reloadAccessDto->getRefreshToken());
 
-        if ($user->getRefreshTokens() === $refreshToken) {
-            throw new InvalidSignatureException('Refresh token not found for this user');
+        if (is_null($user)) {
+            throw new AccessDeniedException('Refresh token not found for this user');
         }
 
         $accessToken = $this->refreshAccessToken($user);

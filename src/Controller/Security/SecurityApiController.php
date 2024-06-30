@@ -6,7 +6,6 @@ use App\Controller\GeneralController;
 use App\Controller\Security\DTO\AuthDto;
 use App\Controller\Security\DTO\ReloadAccessDto;
 use App\Dto\Security\UserDto;
-use App\Entity\User\User;
 use App\Exception\Security\UserExistException;
 use App\Service\Common\Security\SecurityService;
 use Exception;
@@ -87,13 +86,11 @@ class SecurityApiController extends GeneralController
     #[Route('/api/user/reload-access/', name: 'reload_access', methods: 'POST')]
     public function reloadAccess(Request $request): JsonResponse
     {
+        /** @var ReloadAccessDto $reloadAccessDto */
         $reloadAccessDto = $this->getValidDtoFromRequest($request, ReloadAccessDto::class);
 
-        /** @var User $user */
-        $user = $this->getUser();
-
         try {
-            $accessToken = $this->securityService->reloadAccess($user, $reloadAccessDto);
+            $accessToken = $this->securityService->reloadAccess($reloadAccessDto);
         } catch (InvalidSignatureException $exception) {
             $this->logger->error($exception->getMessage(), $exception->getTrace());
 

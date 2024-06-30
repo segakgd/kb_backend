@@ -30,12 +30,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
-    public function removeWithFlush(User $entity): void
-    {
-        $this->getEntityManager()->remove($entity);
-        $this->getEntityManager()->flush();
-    }
-
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */
@@ -47,7 +41,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
         $user->setPassword($newHashedPassword);
 
-        $this->save($user, true);
+        $this->save($user);
     }
 
     public function isUserExists(string $email): bool
@@ -59,5 +53,12 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         }
 
         return false;
+    }
+
+    public function getByRefreshToken(string $refreshToken): ?User
+    {
+        return $this->findOneBy([
+            'refreshToken' => $refreshToken,
+        ]);
     }
 }
