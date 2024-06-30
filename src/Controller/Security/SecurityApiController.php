@@ -40,11 +40,13 @@ class SecurityApiController extends GeneralController
 
             return new JsonResponse(
                 [
-                    'access_token' => $this->securityService->refresh($user),
+                    'access_token' => $this->securityService->refreshAccessToken($user),
                 ]
             );
         } catch (InvalidPasswordException | UserNotFoundException $exception) {
             return new JsonResponse($exception->getMessage(), Response::HTTP_NOT_FOUND);
+        } catch (Exception) {
+            return new JsonResponse('Bad request.', Response::HTTP_BAD_REQUEST);
         }
     }
 

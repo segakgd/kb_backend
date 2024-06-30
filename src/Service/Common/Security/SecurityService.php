@@ -68,9 +68,11 @@ readonly class SecurityService
     /**
      * @throws RandomException
      */
-    public function refresh(User $user): string
+    public function refreshAccessToken(User $user): string
     {
-        $user->setAccessToken($this->generateAccessToken($user->getId()));
+        $token = $this->generateAccessToken($user->getId());
+
+        $user->setAccessToken($token);
 
         $this->entityManager->persist($user);
         $this->entityManager->flush($user);
@@ -79,15 +81,13 @@ readonly class SecurityService
     }
 
     /**
-     * @param  mixed           $userId
-     * @param  mixed           $expiryTime
      * @throws RandomException
      */
-    public function generateAccessToken($userId, $expiryTime = 3600): string
+    private function generateAccessToken(int $userId): string
     {
         $issuedAt = time();
 
-        $expirationTime = $issuedAt + $expiryTime;
+        $expirationTime = $issuedAt + 3600;
 
         $data = [
             'userId' => $userId . bin2hex(random_bytes(32)),
