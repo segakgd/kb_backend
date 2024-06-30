@@ -58,7 +58,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     public function getByRefreshToken(string $refreshToken): ?User
     {
         return $this->findOneBy([
-            'refreshToken' => $refreshToken,
+            'refreshTokens' => $refreshToken,
         ]);
     }
 }
