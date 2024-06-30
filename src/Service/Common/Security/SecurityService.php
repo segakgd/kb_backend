@@ -10,6 +10,7 @@ use App\Repository\User\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Random\RandomException;
+use Symfony\Component\PasswordHasher\Exception\InvalidPasswordException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
@@ -19,8 +20,7 @@ readonly class SecurityService
         private UserPasswordHasherInterface $userPasswordHasher,
         private EntityManagerInterface $entityManager,
         private UserRepository $userRepository,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws Exception
@@ -45,7 +45,8 @@ readonly class SecurityService
     }
 
     /**
-     * @throws Exception
+     * @throws UserNotFoundException
+     * @throws InvalidPasswordException
      */
     public function identifyUser(AuthDto $authDto): User
     {
@@ -58,7 +59,7 @@ readonly class SecurityService
         }
 
         if (!$this->userPasswordHasher->isPasswordValid($user, $authDto->getPassword())) {
-            throw new Exception('Wrong password for user: ' . $user->getEmail());
+            throw new InvalidPasswordException('Wrong password for user: ' . $user->getEmail());
         }
 
         return $user;
@@ -78,18 +79,20 @@ readonly class SecurityService
     }
 
     /**
+     * @param  mixed           $userId
+     * @param  mixed           $expiryTime
      * @throws RandomException
      */
-    function generateAccessToken($userId, $expiryTime = 3600): string
+    public function generateAccessToken($userId, $expiryTime = 3600): string
     {
         $issuedAt = time();
 
         $expirationTime = $issuedAt + $expiryTime;
 
         $data = [
-            "userId" => $userId . bin2hex(random_bytes(32)),
-            "iat" => $issuedAt,
-            "exp" => $expirationTime,
+            'userId' => $userId . bin2hex(random_bytes(32)),
+            'iat'    => $issuedAt,
+            'exp'    => $expirationTime,
         ];
 
         return base64_encode(json_encode($data));

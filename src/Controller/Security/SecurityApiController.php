@@ -11,7 +11,9 @@ use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Exception\InvalidPasswordException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -28,28 +30,28 @@ class SecurityApiController extends GeneralController
         );
     }
 
-    /**
-     * @throws Exception
-     */
     #[Route('/api/user/authenticate/', name: 'api_auth', methods: ['POST'])]
     public function apiAuth(Request $request): JsonResponse
     {
-        $requestDto = $this->getValidDtoFromRequest($request, AuthDto::class);
+        try {
+            $requestDto = $this->getValidDtoFromRequest($request, AuthDto::class);
 
-        $user = $this->securityService->identifyUser($requestDto);
+            $user = $this->securityService->identifyUser($requestDto);
 
-        return new JsonResponse(
-            [
-                'access_token' => $this->securityService->refresh($user),
-                'token' => $this->securityService->refresh($user),
-            ]
-        );
+            return new JsonResponse(
+                [
+                    'access_token' => $this->securityService->refresh($user),
+                ]
+            );
+        } catch (InvalidPasswordException | UserNotFoundException $exception) {
+            return new JsonResponse($exception->getMessage(), Response::HTTP_NOT_FOUND);
+        }
     }
 
     /**
      * @throws Exception
      */
-    #[Route('/api/user/registration/', name: 'visitor_registration', methods: "POST")]
+    #[Route('/api/user/registration/', name: 'visitor_registration', methods: 'POST')]
     public function exist(Request $request): JsonResponse
     {
         $userDto = $this->getValidDtoFromRequest($request, UserDto::class);
