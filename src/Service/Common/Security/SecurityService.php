@@ -64,11 +64,23 @@ readonly class SecurityService
         $user->setEmail($userDto->getEmail());
         $user->setPassword($password);
         $user->setAccessToken($this->generateAccessToken($user->getId()));
+        $user->setRefreshTokens($this->generateRefreshToken());
 
         $this->entityManager->persist($user);
         $this->entityManager->flush($user);
 
         return $user;
+    }
+
+    /**
+     * @throws RandomException
+     */
+    public function resetRefreshToken(User $user): void
+    {
+        $user->setRefreshTokens($this->generateRefreshToken());
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush($user);
     }
 
     /**
@@ -123,5 +135,13 @@ readonly class SecurityService
         ];
 
         return base64_encode(json_encode($data));
+    }
+
+    /**
+     * @throws RandomException
+     */
+    private function generateRefreshToken(): string
+    {
+        return bin2hex(random_bytes(64));
     }
 }

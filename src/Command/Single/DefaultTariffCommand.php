@@ -21,7 +21,7 @@ class DefaultTariffCommand extends Command
     public function __construct(
         private readonly TariffService $tariffService,
         private readonly TariffRepository $tariffRepository,
-        string $name = null
+        ?string $name = null
     ) {
         parent::__construct($name);
     }
