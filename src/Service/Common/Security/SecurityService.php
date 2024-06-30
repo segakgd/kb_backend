@@ -14,18 +14,39 @@ use Random\RandomException;
 use Symfony\Component\PasswordHasher\Exception\InvalidPasswordException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
+use Symfony\Component\Security\Http\AccessToken\Oidc\Exception\InvalidSignatureException;
 
 readonly class SecurityService
 {
+    private const ACCESS_EXPIRATION_TIME_SECONDS = 3600;
+
     public function __construct(
         private UserPasswordHasherInterface $userPasswordHasher,
         private EntityManagerInterface $entityManager,
         private UserRepository $userRepository,
     ) {}
 
-    public function reloadAccess(ReloadAccessDto $reloadAccessDto): void
+    /**
+     * @throws RandomException
+     */
+    public function reloadAccess(User $user, ReloadAccessDto $reloadAccessDto): string
     {
+        $refreshToken = $reloadAccessDto->getRefreshToken();
 
+        if ($user->getRefreshTokens() === $refreshToken) {
+            throw new InvalidSignatureException('Refresh token not found for this user');
+        }
+
+        $accessToken = $this->refreshAccessToken($user);
+
+        $this->entityManager->refresh($user);
+
+        $user->setAccessToken($accessToken);
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush($user);
+
+        return $accessToken;
     }
 
     /**
@@ -93,7 +114,7 @@ readonly class SecurityService
     {
         $issuedAt = time();
 
-        $expirationTime = $issuedAt + 3600;
+        $expirationTime = $issuedAt + static::ACCESS_EXPIRATION_TIME_SECONDS;
 
         $data = [
             'userId' => $userId . bin2hex(random_bytes(32)),
