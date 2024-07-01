@@ -12,11 +12,10 @@ use Throwable;
 readonly class ProjectService implements ProjectServiceInterface
 {
     public function __construct(
-        private ProjectRepository              $projectEntityRepository,
+        private ProjectRepository $projectEntityRepository,
         private ProjectSettingServiceInterface $projectSettingService,
-        private LoggerInterface                $logger,
-    ) {
-    }
+        private LoggerInterface $logger,
+    ) {}
 
     public function findOneById(int $projectId): Project
     {
@@ -30,7 +29,7 @@ readonly class ProjectService implements ProjectServiceInterface
 
     public function add(ProjectCreateReqDto $projectDto, User $user): Project
     {
-        $entity = (new Project);
+        $entity = (new Project());
 
         $entity->addUser($user);
         $entity->setName($projectDto->getName());
@@ -47,11 +46,10 @@ readonly class ProjectService implements ProjectServiceInterface
         $project = $this->projectEntityRepository->find($projectId);
 
         try {
-            if ($project){
+            if ($project) {
                 $this->projectEntityRepository->removeAndFlush($project);
             }
-
-        } catch (Throwable $exception){
+        } catch (Throwable $exception) {
             $this->logger->error($exception->getMessage());
 
             return false;
