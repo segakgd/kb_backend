@@ -14,9 +14,8 @@ readonly class ProjectSettingService implements ProjectSettingServiceInterface
 {
     public function __construct(
         private ProjectSettingRepository $projectSettingRepository,
-        private TariffRepository         $tariffRepository,
-    ) {
-    }
+        private TariffRepository $tariffRepository,
+    ) {}
 
     /**
      * @throws Exception
@@ -29,7 +28,7 @@ readonly class ProjectSettingService implements ProjectSettingServiceInterface
             ]
         );
 
-        if (!$projectSetting){
+        if (!$projectSetting) {
             throw new Exception('Настроек заданного проекта не существует');
         }
 
@@ -59,51 +58,51 @@ readonly class ProjectSettingService implements ProjectSettingServiceInterface
 
         // todo убрать дублирование + подчистить
 
-        if (null !== $currency){
+        if (null !== $currency) {
             $basic['currency'] = $currency;
         }
 
-        if (null !== $country){
+        if (null !== $country) {
             $basic['country'] = $country;
         }
 
-        if (null !== $language){
+        if (null !== $language) {
             $basic['language'] = $language;
         }
 
-        if (null !== $timeZone){
+        if (null !== $timeZone) {
             $basic['timeZone'] = $timeZone;
         }
 
-        if (null !== $newLead->getSystem()){
+        if (null !== $newLead->getSystem()) {
             $notification['aboutNewLead']['system'] = $newLead->getSystem();
         }
 
-        if (null !== $newLead->getSms()){
+        if (null !== $newLead->getSms()) {
             $notification['aboutNewLead']['mail'] = $newLead->getSms();
         }
 
-        if (null !== $newLead->getMail()){
+        if (null !== $newLead->getMail()) {
             $notification['aboutNewLead']['sms'] = $newLead->getMail();
         }
 
-        if (null !== $newLead->getTelegram()){
+        if (null !== $newLead->getTelegram()) {
             $notification['aboutNewLead']['telegram'] = $newLead->getTelegram();
         }
 
-        if (null !== $changesStatusLead->getSystem()){
+        if (null !== $changesStatusLead->getSystem()) {
             $notification['aboutChangesStatusLead']['system'] = $changesStatusLead->getSystem();
         }
 
-        if (null !== $changesStatusLead->getSms()){
+        if (null !== $changesStatusLead->getSms()) {
             $notification['aboutChangesStatusLead']['mail'] = $changesStatusLead->getSms();
         }
 
-        if (null !== $changesStatusLead->getMail()){
+        if (null !== $changesStatusLead->getMail()) {
             $notification['aboutChangesStatusLead']['sms'] = $changesStatusLead->getMail();
         }
 
-        if (null !== $changesStatusLead->getTelegram()){
+        if (null !== $changesStatusLead->getTelegram()) {
             $notification['aboutChangesStatusLead']['telegram'] = $changesStatusLead->getTelegram();
         }
 
@@ -126,7 +125,7 @@ readonly class ProjectSettingService implements ProjectSettingServiceInterface
             ]
         );
 
-        if (!$projectSetting){
+        if (!$projectSetting) {
             throw new Exception('Настроек заданного проекта не существует');
         }
 
@@ -144,11 +143,11 @@ readonly class ProjectSettingService implements ProjectSettingServiceInterface
     {
         $tariff = $this->tariffRepository->findOneBy(
             [
-                'code' => TariffService::DEFAULT_TARIFF_CODE
+                'code' => TariffService::DEFAULT_TARIFF_CODE,
             ]
         );
 
-        if (!$tariff){
+        if (!$tariff) {
             throw new Exception('Базового тарифа не существет');
         }
 
@@ -157,7 +156,7 @@ readonly class ProjectSettingService implements ProjectSettingServiceInterface
             ->setProjectId($projectId)
             ->setBasic(
                 [
-                    'country' => 'russia',
+                    'country'  => 'russia',
                     'language' => 'ru',
                     'timeZone' => 'Europe/Moscow',
                     'currency' => 'RUB',
@@ -166,20 +165,19 @@ readonly class ProjectSettingService implements ProjectSettingServiceInterface
             ->setNotification(
                 [
                     'aboutNewLead' => [
-                        'system' => true,
-                        'mail' => false,
-                        'sms' => false,
+                        'system'   => true,
+                        'mail'     => false,
+                        'sms'      => false,
                         'telegram' => false,
                     ],
                     'aboutChangesStatusLead' => [
-                        'system' => true,
-                        'mail' => false,
-                        'sms' => false,
+                        'system'   => true,
+                        'mail'     => false,
+                        'sms'      => false,
                         'telegram' => false,
-                    ]
+                    ],
                 ]
-            )
-        ;
+            );
 
         $this->projectSettingRepository->saveAndFlush($projectSetting);
     }
