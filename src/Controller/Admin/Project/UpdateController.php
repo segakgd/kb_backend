@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[OA\Tag(name: 'Project')]
 #[OA\RequestBody(
     content: new Model(
-        type: ProjectCreateReqDto::class,
+        type: ProjectUpdateReqDto::class,
     )
 )]
 #[OA\Response(

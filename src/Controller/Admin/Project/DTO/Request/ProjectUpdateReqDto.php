@@ -9,7 +9,7 @@ class ProjectUpdateReqDto
 {
     private string $name;
 
-    #[Assert\Choice([Project::STATUS_ACTIVE, Project::STATUS_FROZEN, Project::STATUS_BLOCKED])]
+    #[Assert\Choice([Project::STATUS_ACTIVE, Project::STATUS_FROZEN])]
     private string $status;
 
     public function getName(): string
