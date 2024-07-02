@@ -3,6 +3,7 @@
 namespace App\Controller\Admin\Project;
 
 use App\Controller\Admin\Project\DTO\Request\ProjectCreateReqDto;
+use App\Controller\Admin\Project\DTO\Request\ProjectUpdateReqDto;
 use App\Controller\Admin\Project\Response\ProjectResponse;
 use App\Controller\GeneralController;
 use App\Entity\User\Project;
@@ -50,9 +51,9 @@ class UpdateController extends GeneralController
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project): JsonResponse
     {
-        $requestDto = $this->getValidDtoFromRequest($request, ProjectCreateReqDto::class);
+        $requestDto = $this->getValidDtoFromRequest($request, ProjectUpdateReqDto::class);
 
-        $project = $this->projectService->update($project, $requestDto);
+        $project = $this->projectService->update($requestDto, $project);
 
         $fakeStatisticsByProject = $this->statisticsService->getStatisticForProject();
 
