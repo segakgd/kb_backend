@@ -45,6 +45,8 @@ class UpdateController extends GeneralController
     }
 
     /**
+     * Обновление параметров проекта
+     *
      * @throws Exception
      */
     #[Route('/api/admin/project/{project}/', name: 'admin_project_update', methods: ['PATCH'])]
