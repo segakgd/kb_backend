@@ -3,6 +3,7 @@
 namespace App\Service\Common\Security;
 
 use App\Controller\Security\DTO\AuthDto;
+use App\Controller\Security\DTO\ReloadAccessDto;
 use App\Dto\Security\UserDto;
 use App\Entity\User\User;
 use App\Exception\Security\UserExistException;
@@ -12,15 +13,41 @@ use Exception;
 use Random\RandomException;
 use Symfony\Component\PasswordHasher\Exception\InvalidPasswordException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 readonly class SecurityService
 {
+    private const ACCESS_EXPIRATION_TIME_SECONDS = 3600;
+
     public function __construct(
         private UserPasswordHasherInterface $userPasswordHasher,
         private EntityManagerInterface $entityManager,
         private UserRepository $userRepository,
     ) {}
+
+    /**
+     * @throws RandomException
+     */
+    public function reloadAccess(ReloadAccessDto $reloadAccessDto): string
+    {
+        $user = $this->userRepository->getByRefreshToken($reloadAccessDto->getRefreshToken());
+
+        if (is_null($user)) {
+            throw new AccessDeniedException('Refresh token not found for this user');
+        }
+
+        $accessToken = $this->refreshAccessToken($user);
+
+        $this->entityManager->refresh($user);
+
+        $user->setAccessToken($accessToken);
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush($user);
+
+        return $accessToken;
+    }
 
     /**
      * @throws Exception
@@ -37,11 +64,23 @@ readonly class SecurityService
         $user->setEmail($userDto->getEmail());
         $user->setPassword($password);
         $user->setAccessToken($this->generateAccessToken($user->getId()));
+        $user->setRefreshTokens($this->generateRefreshToken());
 
         $this->entityManager->persist($user);
         $this->entityManager->flush($user);
 
         return $user;
+    }
+
+    /**
+     * @throws RandomException
+     */
+    public function resetRefreshToken(User $user): void
+    {
+        $user->setRefreshTokens($this->generateRefreshToken());
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush($user);
     }
 
     /**
@@ -87,7 +126,7 @@ readonly class SecurityService
     {
         $issuedAt = time();
 
-        $expirationTime = $issuedAt + 3600;
+        $expirationTime = $issuedAt + static::ACCESS_EXPIRATION_TIME_SECONDS;
 
         $data = [
             'userId' => $userId . bin2hex(random_bytes(32)),
@@ -96,5 +135,13 @@ readonly class SecurityService
         ];
 
         return base64_encode(json_encode($data));
+    }
+
+    /**
+     * @throws RandomException
+     */
+    private function generateRefreshToken(): string
+    {
+        return bin2hex(random_bytes(64));
     }
 }
