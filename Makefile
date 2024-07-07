@@ -1,10 +1,10 @@
 BRANCH = main
 
 # Задачи
-.PHONY: update install-deps migrate cache-clear build
+.PHONY: update install-dev-deps migrate cache-clear build
 
 # Задача для выполнения всех шагов
-build: update install-deps migrate cache-clear
+build-dev: update install-dev-deps migrate cache-clear
 
 # Подгрузка обновлений с основной ветки
 update:
@@ -14,9 +14,9 @@ update:
 	@echo "Update complete."
 
 # Установка зависимостей Composer
-install-deps:
+install-dev-deps:
 	@echo "Installing Composer dependencies..."
-	composer install --no-dev --optimize-autoloader
+	composer install
 	@echo "Dependencies installed."
 
 # Прокатывание миграций базы данных
