@@ -34,7 +34,7 @@ readonly class JumpResolver
             throw new Exception('Непредвиденная ситуация: переход не существует.');
         }
 
-        $scenario = $this->resolveScenario($responsible->getJump());
+        $scenario = $this->scenarioService->findScenarioByTarget($responsible->getJump());
 
         if ($scenario) {
             $visitorEvent->setScenarioUUID($scenario->getUUID());
@@ -49,15 +49,6 @@ readonly class JumpResolver
 
             $responsible->setStatus(VisitorEventStatusEnum::JumpedToChain);
         }
-    }
-
-    public function resolveScenario(TargetEnum $jumpValue): ?Scenario
-    {
-        return match ($jumpValue) {
-            TargetEnum::Main => $this->scenarioService->getMainScenario(),
-            TargetEnum::Cart => $this->scenarioService->getCartScenario(),
-            default          => null,
-        };
     }
 
     private function updateCacheContract(CacheDto $cacheDto, string $jumpValue): void

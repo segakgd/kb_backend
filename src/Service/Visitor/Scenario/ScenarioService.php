@@ -6,6 +6,7 @@ use App\Dto\Scenario\ScenarioContractDto;
 use App\Dto\Scenario\ScenarioKeyboardDto;
 use App\Entity\Scenario\Scenario;
 use App\Enum\NavigateEnum;
+use App\Enum\TargetEnum;
 use App\Repository\Scenario\ScenarioRepository;
 use App\Service\Constructor\Core\Helper\JumpHelper;
 use App\Service\Constructor\Core\Jumps\JumpResolver;
@@ -87,7 +88,7 @@ class ScenarioService
         $targetEnum = JumpHelper::getJumpFromNavigate($content);
 
         if (is_null($scenario) && !is_null($targetEnum)) {
-            $scenario = $this->jumpResolver->resolveScenario($targetEnum);
+            $scenario = $this->findScenarioByTarget($targetEnum);
         }
 
         if (is_null($scenario)) {
@@ -99,6 +100,15 @@ class ScenarioService
         }
 
         return $scenario;
+    }
+
+    public function findScenarioByTarget(TargetEnum $jumpValue): ?Scenario
+    {
+        return match ($jumpValue) {
+            TargetEnum::Main => $this->getMainScenario(),
+            TargetEnum::Cart => $this->getCartScenario(),
+            default          => null,
+        };
     }
 
     public function getScenarioByNameAndType(string $type, string $name): ?Scenario
