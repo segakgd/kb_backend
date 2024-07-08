@@ -9,7 +9,6 @@ use App\Enum\NavigateEnum;
 use App\Enum\TargetEnum;
 use App\Repository\Scenario\ScenarioRepository;
 use App\Service\Constructor\Core\Helper\JumpHelper;
-use App\Service\Constructor\Core\Jumps\JumpResolver;
 use Exception;
 
 class ScenarioService
@@ -22,7 +21,6 @@ class ScenarioService
 
     public function __construct(
         private readonly ScenarioRepository $scenarioRepository,
-        private readonly JumpResolver $jumpResolver,
     ) {}
 
     /**

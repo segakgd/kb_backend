@@ -4,9 +4,7 @@ namespace App\Service\Constructor\Core\Jumps;
 
 use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Dto\SessionCache\Cache\CacheDto;
-use App\Entity\Scenario\Scenario;
 use App\Entity\Visitor\VisitorEvent;
-use App\Enum\TargetEnum;
 use App\Enum\VisitorEventStatusEnum;
 use App\Helper\CacheHelper;
 use App\Service\Constructor\Core\Dto\Responsible;
