@@ -7,6 +7,8 @@ use App\Dto\Scenario\ScenarioKeyboardDto;
 use App\Entity\Scenario\Scenario;
 use App\Enum\NavigateEnum;
 use App\Repository\Scenario\ScenarioRepository;
+use App\Service\Constructor\Core\Helper\JumpHelper;
+use App\Service\Constructor\Core\Jumps\JumpResolver;
 use Exception;
 
 class ScenarioService
@@ -19,6 +21,7 @@ class ScenarioService
 
     public function __construct(
         private readonly ScenarioRepository $scenarioRepository,
+        private readonly JumpResolver $jumpResolver,
     ) {}
 
     /**
@@ -81,11 +84,17 @@ class ScenarioService
     {
         $scenario = $this->getScenarioByNameAndType($type, $content);
 
-        if (null === $scenario) {
+        $targetEnum = JumpHelper::getJumpFromNavigate($content);
+
+        if (is_null($scenario) && !is_null($targetEnum)) {
+            $scenario = $this->jumpResolver->resolveScenario($targetEnum);
+        }
+
+        if (is_null($scenario)) {
             $scenario = $this->getDefaultScenario();
         }
 
-        if (null === $scenario) {
+        if (is_null($scenario)) {
             throw new Exception('Нет сценария по умолчанию');
         }
 

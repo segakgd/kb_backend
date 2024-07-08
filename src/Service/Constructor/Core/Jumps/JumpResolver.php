@@ -51,7 +51,7 @@ readonly class JumpResolver
         }
     }
 
-    private function resolveScenario(TargetEnum $jumpValue): ?Scenario
+    public function resolveScenario(TargetEnum $jumpValue): ?Scenario
     {
         return match ($jumpValue) {
             TargetEnum::Main => $this->scenarioService->getMainScenario(),
