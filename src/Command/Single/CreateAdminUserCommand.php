@@ -14,7 +14,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'dev:create:user-admin',
-    description: 'Convert user setting',
+    description: 'Creates admin user',
 )]
 class CreateAdminUserCommand extends Command
 {
