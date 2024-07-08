@@ -16,7 +16,7 @@ update:
 # Установка зависимостей Composer
 install-dev-deps:
 	@echo "Installing Composer dependencies..."
-	composer install
+	composer install --no-interaction
 	@echo "Dependencies installed."
 
 # Прокатывание миграций базы данных
