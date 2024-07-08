@@ -67,6 +67,8 @@ readonly class SecurityService
         $this->entityManager->persist($user);
         $this->entityManager->flush($user);
 
+        $this->entityManager->refresh($user);
+
         $user->setAccessToken($this->generateAccessToken($user->getId()));
         $user->setRefreshTokens($this->generateRefreshToken());
 
