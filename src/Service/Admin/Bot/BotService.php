@@ -16,8 +16,7 @@ readonly class BotService implements BotServiceInterface
     public function __construct(
         private BotRepository $botRepository,
         private EventDispatcherInterface $eventDispatcher,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws Exception
@@ -26,12 +25,12 @@ readonly class BotService implements BotServiceInterface
     {
         $bot = $this->botRepository->findOneBy(
             [
-                'id' => $botId,
+                'id'        => $botId,
                 'projectId' => $projectId,
             ]
         );
 
-        if (null === $bot){
+        if (null === $bot) {
             throw new Exception('Бот не найден');
         }
 
@@ -39,8 +38,8 @@ readonly class BotService implements BotServiceInterface
 
         $this->botRepository->saveAndFlush($bot);
 
-        if ($requestDto->isActive()){
-            $this->eventDispatcher->dispatch((new InitWebhookBotEvent($bot)));
+        if ($requestDto->isActive()) {
+            $this->eventDispatcher->dispatch(new InitWebhookBotEvent($bot));
         }
     }
 
@@ -51,7 +50,7 @@ readonly class BotService implements BotServiceInterface
     {
         return $this->botRepository->findBy(
             [
-                'projectId' => $projectId
+                'projectId' => $projectId,
             ]
         );
     }
@@ -63,7 +62,7 @@ readonly class BotService implements BotServiceInterface
     {
         return $this->botRepository->findOneBy(
             [
-                'id' => $botId,
+                'id'        => $botId,
                 'projectId' => $projectId,
             ]
         );
@@ -75,8 +74,7 @@ readonly class BotService implements BotServiceInterface
             ->setName($botSettingDto->getName())
             ->setType($botSettingDto->getType())
             ->setToken($botSettingDto->getToken())
-            ->setProjectId($projectId)
-        ;
+            ->setProjectId($projectId);
 
         $this->botRepository->saveAndFlush($newBot);
 
@@ -90,24 +88,24 @@ readonly class BotService implements BotServiceInterface
     {
         $bot = $this->botRepository->findOneBy(
             [
-                'id' => $botId,
+                'id'        => $botId,
                 'projectId' => $projectId,
             ]
         );
 
-        if (is_null($bot)){
+        if (is_null($bot)) {
             throw new Exception('Бот не найден');
         }
 
-        if ($botSettingDto->getName()){
+        if ($botSettingDto->getName()) {
             $bot->setName($botSettingDto->getName());
         }
 
-        if ($botSettingDto->getType()){
+        if ($botSettingDto->getType()) {
             $bot->setType($botSettingDto->getType());
         }
 
-        if ($botSettingDto->getToken()){
+        if ($botSettingDto->getToken()) {
             $bot->setToken($botSettingDto->getToken());
         }
 
@@ -120,7 +118,7 @@ readonly class BotService implements BotServiceInterface
     {
         $bot = $this->botRepository->findOneBy(
             [
-                'id' => $botId,
+                'id'        => $botId,
                 'projectId' => $projectId,
             ]
         );
@@ -139,13 +137,13 @@ readonly class BotService implements BotServiceInterface
     {
         $bot = $this->botRepository->find($botId);
 
-        if (null === $bot){
+        if (null === $bot) {
             throw new Exception('Бот не найден');
         }
 
         $projectIdInBot = $bot->getProjectId();
 
-        if ($projectIdInBot !== $projectId){
+        if ($projectIdInBot !== $projectId) {
             throw new Exception('Бот не от выбранного проекта');
         }
 

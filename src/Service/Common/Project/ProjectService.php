@@ -3,6 +3,7 @@
 namespace App\Service\Common\Project;
 
 use App\Controller\Admin\Project\DTO\Request\ProjectCreateReqDto;
+use App\Controller\Admin\Project\DTO\Request\ProjectUpdateReqDto;
 use App\Entity\User\Project;
 use App\Entity\User\User;
 use App\Repository\User\ProjectRepository;
@@ -12,11 +13,10 @@ use Throwable;
 readonly class ProjectService implements ProjectServiceInterface
 {
     public function __construct(
-        private ProjectRepository              $projectEntityRepository,
+        private ProjectRepository $projectEntityRepository,
         private ProjectSettingServiceInterface $projectSettingService,
-        private LoggerInterface                $logger,
-    ) {
-    }
+        private LoggerInterface $logger,
+    ) {}
 
     public function findOneById(int $projectId): Project
     {
@@ -30,7 +30,7 @@ readonly class ProjectService implements ProjectServiceInterface
 
     public function add(ProjectCreateReqDto $projectDto, User $user): Project
     {
-        $entity = (new Project);
+        $entity = (new Project());
 
         $entity->addUser($user);
         $entity->setName($projectDto->getName());
@@ -42,16 +42,25 @@ readonly class ProjectService implements ProjectServiceInterface
         return $entity;
     }
 
+    public function update(ProjectUpdateReqDto $projectUpdateReqDto, Project $project): Project
+    {
+        $project->setName($projectUpdateReqDto->getName());
+        $project->setStatus($projectUpdateReqDto->getStatus());
+
+        $this->projectEntityRepository->saveAndFlush($project);
+
+        return $project;
+    }
+
     public function remove(int $projectId): bool
     {
         $project = $this->projectEntityRepository->find($projectId);
 
         try {
-            if ($project){
+            if ($project) {
                 $this->projectEntityRepository->removeAndFlush($project);
             }
-
-        } catch (Throwable $exception){
+        } catch (Throwable $exception) {
             $this->logger->error($exception->getMessage());
 
             return false;
