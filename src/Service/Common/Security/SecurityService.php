@@ -52,7 +52,7 @@ readonly class SecurityService
     /**
      * @throws Exception
      */
-    public function createUser(UserDto $userDto): User
+    public function createUser(UserDto $userDto, ?string $userRole): User
     {
         if ($this->userRepository->isUserExists($userDto->getEmail())) {
             throw new UserExistException('User exists with email: ' . $userDto->getEmail());
@@ -65,6 +65,10 @@ readonly class SecurityService
         $user->setPassword($password);
         $user->setAccessToken($this->generateAccessToken($user->getId()));
         $user->setRefreshTokens($this->generateRefreshToken());
+
+        if (!is_null($userRole)) {
+            $user->setRoles([$userRole]);
+        }
 
         $this->entityManager->persist($user);
         $this->entityManager->flush($user);
