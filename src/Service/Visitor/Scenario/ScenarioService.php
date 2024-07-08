@@ -3,7 +3,9 @@
 namespace App\Service\Visitor\Scenario;
 
 use App\Dto\Scenario\ScenarioContractDto;
+use App\Dto\Scenario\ScenarioKeyboardDto;
 use App\Entity\Scenario\Scenario;
+use App\Enum\NavigateEnum;
 use App\Repository\Scenario\ScenarioRepository;
 use Exception;
 
@@ -107,7 +109,20 @@ class ScenarioService
     public function generateDefaultScenario(int $projectId, int $botId): Scenario
     {
         $scenarioContractDto = (new ScenarioContractDto())
-            ->setMessage('Не знаю что вам ответить');
+            ->setMessage('Не знаю что вам ответить')
+            ->setKeyboard(
+                (new ScenarioKeyboardDto())
+                    ->setReplyMarkup(
+                        [
+                            [
+                                [
+                                    'text'   => NavigateEnum::ToMain,
+                                    'target' => null,
+                                ],
+                            ],
+                        ]
+                    )
+            );
 
         $scenarioEntity = (new Scenario())
             ->setUUID(uuid_create())

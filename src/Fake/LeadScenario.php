@@ -3,9 +3,9 @@
 namespace App\Fake;
 
 use App\Dto\Scenario\ScenarioChainDto;
+use App\Dto\Scenario\ScenarioContractDto;
 use App\Dto\Scenario\ScenarioDto;
 use App\Dto\Scenario\ScenarioKeyboardDto;
-use App\Dto\Scenario\ScenarioContractDto;
 
 class LeadScenario
 {
@@ -22,7 +22,7 @@ class LeadScenario
             $this->contactsEdit(),
             $this->productEdit(),
             $this->deleteCart(),
-            $this->payCart()
+            $this->payCart(),
         ];
     }
 
@@ -38,31 +38,31 @@ class LeadScenario
                         'Добро пожаловать в нашем шопе. Хотите приобрести товар? Выберите одну из категорий:'
                     )
                     ->setKeyboard(
-                        (new ScenarioKeyboardDto)
+                        (new ScenarioKeyboardDto())
                             ->setReplyMarkup(
                                 [
                                     [
                                         [
-                                            "text" => "Товары по категориям",
-                                            "target" => "8e261312-0001-4dd0-a627-4253a01da001",
+                                            'text'   => 'Товары по категориям',
+                                            'target' => '8e261312-0001-4dd0-a627-4253a01da001',
                                         ],
                                         [
-                                            "text" => "Популярные товары",
-                                            "target" => "8e261322-0002-4dd0-a627-4253a01da002",
+                                            'text'   => 'Популярные товары',
+                                            'target' => '8e261322-0002-4dd0-a627-4253a01da002',
                                         ],
                                     ],
                                     [
                                         [
-                                            "text" => "Акционные товары",
-                                            "target" => "8e261332-0003-4dd0-a627-4253a01da003",
+                                            'text'   => 'Акционные товары',
+                                            'target' => '8e261332-0003-4dd0-a627-4253a01da003',
                                         ],
                                         [
-                                            "requirement" => [
+                                            'requirement' => [
                                                 'action' => 'not.empty',
                                                 'target' => 'lead.products',
                                             ],
-                                            "text" => "Моя корзина",
-                                            "target" => "78bc84e3-0004-4ebe-bbb4-4253a01da004",
+                                            'text'   => 'Моя корзина',
+                                            'target' => '78bc84e3-0004-4ebe-bbb4-4253a01da004',
                                         ],
                                     ],
                                 ]
@@ -86,7 +86,7 @@ class LeadScenario
                     )
 //                    ->addChain(
 //                        (new ScenarioChainDto())
-////                            ->setAction('save')
+// //                            ->setAction('save')
 //                            ->setTarget('shop.products.category')
 //                    )
                     ->addChain(
@@ -96,7 +96,7 @@ class LeadScenario
                     )
 //                    ->addChain(
 //                        (new ScenarioChainDto())
-////                            ->setAction('save')
+// //                            ->setAction('save')
 //                            ->setTarget('shop.products')
 //                    )
                     ->addChain(
@@ -104,11 +104,11 @@ class LeadScenario
 //                            ->setAction('show')
                             ->setTarget('shop.product')
                     )
-//                    ->addChain(
-//                        (new ScenarioChainDto())
-////                            ->setAction('save')
-//                            ->setTarget('shop.product')
-//                    )
+                //                    ->addChain(
+                //                        (new ScenarioChainDto())
+                // //                            ->setAction('save')
+                //                            ->setTarget('shop.product')
+                //                    )
             );
     }
 
@@ -127,7 +127,7 @@ class LeadScenario
                     )
 //                    ->addChain(
 //                        (new ScenarioChainDto())
-////                            ->setAction('save')
+// //                            ->setAction('save')
 //                            ->setTarget('shop.products.popular')
 //                    )
                     ->addChain(
@@ -137,7 +137,7 @@ class LeadScenario
                     )
 //                    ->addChain(
 //                        (new ScenarioChainDto())
-////                            ->setAction('save')
+// //                            ->setAction('save')
 //                            ->setTarget('shop.products')
 //                    )
                     ->addChain(
@@ -145,11 +145,11 @@ class LeadScenario
 //                            ->setAction('show')
                             ->setTarget('shop.product')
                     )
-//                    ->addChain(
-//                        (new ScenarioChainDto())
-////                            ->setAction('save')
-//                            ->setTarget('shop.product')
-//                    )
+                //                    ->addChain(
+                //                        (new ScenarioChainDto())
+                // //                            ->setAction('save')
+                //                            ->setTarget('shop.product')
+                //                    )
             );
     }
 
@@ -163,7 +163,7 @@ class LeadScenario
                 (new ScenarioContractDto())
 //                    ->addChain(
 //                        (new ScenarioChainDto())
-////                            ->setAction('show')
+// //                            ->setAction('show')
 //                            ->setTarget('shop.products.promotion')
 //                    )
                     ->addChain(
@@ -173,7 +173,7 @@ class LeadScenario
                     )
 //                    ->addChain(
 //                        (new ScenarioChainDto())
-////                            ->setAction('show')
+// //                            ->setAction('show')
 //                            ->setTarget('shop.products')
 //                    )
                     ->addChain(
@@ -183,7 +183,7 @@ class LeadScenario
                     )
 //                    ->addChain(
 //                        (new ScenarioChainDto())
-////                            ->setAction('show')
+// //                            ->setAction('show')
 //                            ->setTarget('shop.product')
 //                    )
                     ->addChain(
@@ -206,12 +206,12 @@ class LeadScenario
                         'Добро пожаловать в нашем шопе. Хотите приобрести товар? Выберите одну из категорий:'
                     )
                     ->setKeyboard(
-                        (new ScenarioKeyboardDto)
+                        (new ScenarioKeyboardDto())
                             ->setReplyMarkup(
                                 [
                                     [
                                         [
-                                            "requirements" => [
+                                            'requirements' => [
                                                 [
                                                     'action' => 'empty',
                                                     'target' => 'cart.contact',
@@ -221,43 +221,43 @@ class LeadScenario
                                                     'target' => 'cart.shipping',
                                                 ],
                                             ],
-                                            "text" => "Оформить заказ",
-                                            "target" => "78bc84e3-0004-4ebe-bbb4-4253a01da005",
+                                            'text'   => 'Оформить заказ',
+                                            'target' => '78bc84e3-0004-4ebe-bbb4-4253a01da005',
                                         ],
                                         [
-                                            "requirements" => [
+                                            'requirements' => [
                                                 [
                                                     'action' => 'not.empty',
                                                     'target' => 'cart.shipping',
                                                 ],
                                             ],
-                                            "text" => "Изменить доставку",
-                                            "target" => "8e261322-0002-4dd0-a627-4253a01da006",
+                                            'text'   => 'Изменить доставку',
+                                            'target' => '8e261322-0002-4dd0-a627-4253a01da006',
                                         ],
                                         [
-                                            "requirements" => [
+                                            'requirements' => [
                                                 [
                                                     'action' => 'not.empty',
                                                     'target' => 'cart.contact',
                                                 ],
                                             ],
-                                            "text" => "Изменить контакты",
-                                            "target" => "8e261322-0002-4dd0-a627-4253a01da007",
+                                            'text'   => 'Изменить контакты',
+                                            'target' => '8e261322-0002-4dd0-a627-4253a01da007',
                                         ],
                                     ],
                                     [
                                         [
-                                            "requirements" => [
+                                            'requirements' => [
                                                 [
                                                     'action' => 'not.empty',
                                                     'target' => 'cart.products',
                                                 ],
                                             ],
-                                            "text" => "Изменить продукты",
-                                            "target" => "8e261332-0003-4dd0-a627-4253a01da008",
+                                            'text'   => 'Изменить продукты',
+                                            'target' => '8e261332-0003-4dd0-a627-4253a01da008',
                                         ],
                                         [
-                                            "requirements" => [
+                                            'requirements' => [
                                                 [
                                                     'action' => 'or.not.empty',
                                                     'target' => 'cart.contact',
@@ -271,11 +271,11 @@ class LeadScenario
                                                     'target' => 'cart.products',
                                                 ],
                                             ],
-                                            "text" => "Удалить заказ",
-                                            "target" => "8e261332-0003-4dd0-a627-4253a01da009",
+                                            'text'   => 'Удалить заказ',
+                                            'target' => '8e261332-0003-4dd0-a627-4253a01da009',
                                         ],
                                         [
-                                            "requirements" => [
+                                            'requirements' => [
                                                 [
                                                     'action' => 'not.empty',
                                                     'target' => 'cart.contact',
@@ -289,8 +289,8 @@ class LeadScenario
                                                     'target' => 'cart.products',
                                                 ],
                                             ],
-                                            "text" => "Оплатить",
-                                            "target" => "78bc84e3-0004-4ebe-bbb4-4253a01da010",
+                                            'text'   => 'Оплатить',
+                                            'target' => '78bc84e3-0004-4ebe-bbb4-4253a01da010',
                                         ],
                                     ],
                                 ]
@@ -322,11 +322,11 @@ class LeadScenario
 //                            ->setAction('edit')
                             ->setTarget('cart.shipping')
                     )
-//                    ->addChain(
-//                        (new ScenarioChainDto())
-//                            ->setAction('save')
-//                            ->setTarget('cart.shipping')
-//                    )
+                //                    ->addChain(
+                //                        (new ScenarioChainDto())
+                //                            ->setAction('save')
+                //                            ->setTarget('cart.shipping')
+                //                    )
             );
     }
 
