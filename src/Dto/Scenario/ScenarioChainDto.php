@@ -10,7 +10,7 @@ class ScenarioChainDto extends AbstractDto
 
     private array $requirements;
 
-    private bool $isFinish = false;
+    private bool $isFinish = false; // todo rename isFinish -> finish
 
     public function getTarget(): string
     {
