@@ -46,7 +46,7 @@ class CreateAdminUserCommand extends Command
         );
 
         if ($user) {
-            $io->info('Admin user already exist');
+            $io->warning('Admin user already exist');
 
             return static::SUCCESS;
         }
