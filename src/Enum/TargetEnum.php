@@ -15,4 +15,21 @@ enum TargetEnum: string
     case VariantsProductChain = 'variants.product.chain';
     case VariantProductChain = 'variant.product.chain';
     case FinishChain = 'finish.chain';
+
+    // Отображаем что в корзине
+    case OrderGreetingChain = 'order.greeting.chain';
+
+    // Запись контактов
+    case OrderContactsFullNameChain = 'order.contacts.full-name.chain';
+
+    // Запись контактов
+    case OrderContactsPhoneChain = 'order.contacts.phone.chain';
+
+    // Нужна ли доставка (если да, то заполняем, если нет то прыгаем)
+    case OrderShippingSwitch = 'order.shipping.switch';
+
+    // Заполняем доставку (страна, регион, район, город, улица, дом, квартира)
+    case OrderShippingChain = 'order.shipping.chain';
+
+    case OrderFinishChain = 'order.finish.chain';
 }
