@@ -38,6 +38,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $accessToken = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['openForReading'])]
     private ?string $refreshTokens = null;
 
     #[ORM\Column(nullable: true)]
@@ -73,7 +74,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string)$this->email;
+        return (string) $this->email;
     }
 
     /**

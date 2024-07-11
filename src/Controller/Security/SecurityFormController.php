@@ -18,13 +18,13 @@ class SecurityFormController extends AbstractController
 
         return $this->render('admin/user/auth.html.twig', [
             'last_username' => $lastUsername,
-            'error' => $error,
+            'error'         => $error,
         ]);
     }
 
     #[Route('/logout', name: 'app_logout')]
     public function logout(): RedirectResponse
     {
-        return new RedirectResponse("/");
+        return new RedirectResponse('/');
     }
 }

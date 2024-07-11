@@ -9,8 +9,8 @@ use App\Controller\Admin\Project\Response\ProjectResponse;
 use App\Entity\User\Project;
 use App\Service\Admin\Statistic\StatisticsService;
 use Nelmio\ApiDocBundle\Annotation\Model;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use OpenApi\Attributes as OA;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,9 +26,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 )]
 class ViewOneController extends AbstractController
 {
-    public function __construct(private readonly StatisticsService $statisticsService)
-    {
-    }
+    public function __construct(private readonly StatisticsService $statisticsService) {}
 
     #[Route('/api/admin/project/{project}/', name: 'admin_project_get_one', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]

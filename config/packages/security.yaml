@@ -23,6 +23,7 @@ security:
     access_control:
         - { path: ^/api/user/registration/, roles: PUBLIC_ACCESS }
         - { path: ^/api/user/authenticate/, roles: PUBLIC_ACCESS }
+        - { path: ^/api/user/reload-access/, roles: PUBLIC_ACCESS }
         - { path: ^/api/user/refresh/, roles: PUBLIC_ACCESS }
         - { path: ^/api/doc, roles: PUBLIC_ACCESS }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }

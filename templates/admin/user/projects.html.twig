@@ -6,45 +6,38 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
+                <div class="admin--title--wrapper">
+                    <h2>Проекты</h2>
+                </div>
 
                 {% if projects is empty %}
                     Данных нет
                 {% endif %}
 
                 {% for project in projects %}
-                    <div class="wrapper--block wrapper--block--project" style="display: flex; justify-content: space-between;">
-                        <div style="width: 100px">
-                            ID: {{ project.id }}
-                        </div>
+                    <a href="/admin/projects/{{ project.id }}/dashboard" style="text-decoration: none; color: #1c1f23">
+                        <div class="wrapper--block wrapper--block--project"
+                             style="display: flex; justify-content: space-between;">
+                            <div style="width: 100px">
+                                ID: {{ project.id }}
+                            </div>
 
-                        <div style="width: 400px">
-                            {{ project.name }}
-                        </div>
+                            <div style="width: 400px">
+                                {{ project.name }}
+                            </div>
 
-                        <div style="width: 400px">
-                            {% if project.status == 'active' %}
-                                <span style="font-weight: bold; color: rgba(0,191,3,0.54);">active</span>
-                            {% elseif project.status == 'blocked' %}
-                                <span style="font-weight: bold; color: rgba(191,29,0,0.54);">blocked</span>
-                            {% elseif project.status == 'frozen' %}
-                                <span style="font-weight: bold; color: rgba(77,0,191,0.54);">frozen</span>
-                            {% endif %}
+                            <div style="width: 400px">
+                                {% if project.status == 'active' %}
+                                    <span style="font-weight: bold; color: rgba(0,191,3,0.54);">active</span>
+                                {% elseif project.status == 'blocked' %}
+                                    <span style="font-weight: bold; color: rgba(191,29,0,0.54);">blocked</span>
+                                {% elseif project.status == 'frozen' %}
+                                    <span style="font-weight: bold; color: rgba(77,0,191,0.54);">frozen</span>
+                                {% endif %}
+                            </div>
                         </div>
-
-                        <div style="width: 100px">
-                            <a href="/admin/projects/{{ project.id }}/dashboard"
-                               style="
-                                    text-decoration: none;
-                                    background: linear-gradient(135deg, #ffec70 0%, #ff7dfd 100%);
-                                    border-radius: 10px;
-                                    color: #000;
-                                    padding: 3px 10px;"
-                            >Дашборд</a>
-                        </div>
-                    </div>
-
+                    </a>
                 {% endfor %}
-
             </div>
         </div>
     </div>

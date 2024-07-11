@@ -12,8 +12,7 @@ readonly class ProductCategoryService implements ProductCategoryServiceInterface
 {
     public function __construct(
         private ProductCategoryEntityRepository $productCategoryEntityRepository,
-    ) {
-    }
+    ) {}
 
     public function getByProjectIdAndReqDto(int $projectId, array $categories): array
     {
@@ -50,7 +49,7 @@ readonly class ProductCategoryService implements ProductCategoryServiceInterface
         $this->productCategoryEntityRepository->removeAndFlush($category);
     }
 
-    public function getCategoryByNameAndProjectId(string $categoryName, int $projectId)
+    public function getCategoryByNameAndProjectId(string $categoryName, int $projectId): ?ProductCategory
     {
         return $this->productCategoryEntityRepository->findOneBy(
             ['name' => $categoryName, 'projectId' => $projectId]

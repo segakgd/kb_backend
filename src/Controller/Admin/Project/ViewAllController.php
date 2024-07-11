@@ -35,8 +35,7 @@ class ViewAllController extends AbstractController
     public function __construct(
         private readonly StatisticsServiceInterface $statisticsService,
         private readonly ProjectServiceInterface $projectService,
-    ) {
-    }
+    ) {}
 
     #[Route('/api/admin/project/', name: 'admin_project_get_all', methods: ['GET'])]
     public function execute(): JsonResponse

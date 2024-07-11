@@ -20,8 +20,7 @@ class RemoveController extends AbstractController
 {
     public function __construct(
         private readonly ProjectServiceInterface $projectService,
-    ) {
-    }
+    ) {}
 
     #[Route('/api/admin/project/{project}/', name: 'admin_project_remove', methods: ['DELETE'])]
     #[IsGranted('existUser', 'project')]
@@ -32,7 +31,7 @@ class RemoveController extends AbstractController
 
         $isRemoved = $this->projectService->remove($project->getId());
 
-        if (!$isRemoved){
+        if (!$isRemoved) {
             return $this->json([], Response::HTTP_CONFLICT);
         }
 

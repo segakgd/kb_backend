@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -17,11 +17,10 @@ class GeneralController extends AbstractController
     public function __construct(
         private readonly SerializerInterface $serializer,
         private readonly ValidatorInterface $validator,
-    ) {
-    }
+    ) {}
 
     /**
-     * @throws Exception
+     * @throws BadRequestException
      */
     public function getValidDtoFromRequest(Request $request, string $className): object
     {
@@ -32,7 +31,7 @@ class GeneralController extends AbstractController
         $errors = $this->validator->validate($requestDto);
 
         if (count($errors) > 0) {
-            throw new Exception(
+            throw new BadRequestException(
                 message: $errors->get(0)->getMessage(),
                 code: Response::HTTP_BAD_REQUEST
             );

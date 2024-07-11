@@ -26,7 +26,9 @@ class VariantProductChain extends AbstractChain
 
         $variant = $this->productService->findVariant($variantId);
 
-        $amount = $variant->getPrice()[0]->getPrice() * $content;
+        $variantPrice = $variant->getPrice()[0]->getPrice();
+
+        $amount = $variantPrice * (int) $content;
 
         $responsible->getCacheDto()->getCart()->addProduct(
             [
@@ -85,7 +87,7 @@ class VariantProductChain extends AbstractChain
                         'text' => 'В главное меню',
                     ],
                     [
-                        'text' => 'В корзину',
+                        'text' => 'Моя корзина',
                     ],
                 ],
             ]
