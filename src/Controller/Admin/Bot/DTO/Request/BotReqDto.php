@@ -3,6 +3,7 @@
 namespace App\Controller\Admin\Bot\DTO\Request;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class BotReqDto
 {
@@ -50,5 +51,18 @@ class BotReqDto
         $this->token = $token;
 
         return $this;
+    }
+
+//    #[Assert\Callback]
+    public function validateToken(ExecutionContextInterface $context): void
+    {
+        if ($this->type === 'telegram') {
+            if (!preg_match('/^\d{9}:[\w-]{35}$/', $this->token)) {
+                $context
+                    ->buildViolation('Invalid Telegram token format.')
+                    ->atPath('token')
+                    ->addViolation();
+            }
+        }
     }
 }

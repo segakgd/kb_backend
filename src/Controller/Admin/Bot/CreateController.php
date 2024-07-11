@@ -51,10 +51,8 @@ class CreateController extends GeneralController
 
             $bot = $this->botService->add($requestDto, $project->getId());
 
-            return new JsonResponse(
-                $this->serializer->normalize(
-                    (new BotCreateResponse())->mapToResponse($bot)
-                )
+            return $this->json(
+                (new BotCreateResponse())->mapToResponse($bot)
             );
         } catch (Throwable $exception) {
             return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
