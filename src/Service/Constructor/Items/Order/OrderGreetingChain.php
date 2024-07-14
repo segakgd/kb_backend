@@ -2,7 +2,6 @@
 
 namespace App\Service\Constructor\Items\Order;
 
-use App\Helper\CartHelper;
 use App\Helper\MessageHelper;
 use App\Service\Constructor\Core\Chains\AbstractChain;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
@@ -12,9 +11,7 @@ class OrderGreetingChain extends AbstractChain
 {
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        $message = "Оформление заказа: \n\n В корзине:";
-        $message .= CartHelper::viewCart($responsible);
-        $message .= 'На сумму: 2000 р';
+        $message = "Давайте начнём оформление заказа! \n Как можно к вам обращаться? (отправьте ФИО)";
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,

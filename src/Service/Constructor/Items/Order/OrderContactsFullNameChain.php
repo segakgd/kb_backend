@@ -11,7 +11,9 @@ class OrderContactsFullNameChain extends AbstractChain
 {
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        $message = 'Заглушка';
+        $content = $responsible->getCacheDto()->getContent();
+
+        $message = "Очень приятно познакомиться $content. Укажите номер телефона для связи: ";
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,
