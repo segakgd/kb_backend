@@ -2,7 +2,7 @@
 
 namespace App\Service\Constructor\Items;
 
-use App\Helper\KeyboardHelper;
+use App\Helper\CartHelper;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\Product\Service\ProductService;
 use App\Service\Constructor\Core\Chains\AbstractChain;
@@ -54,22 +54,10 @@ class VariantProductChain extends AbstractChain
 
         $responsible->getCacheDto()->getCart()->setTotalAmount($totalAmount);
 
-        $number = 1;
         $message = 'Отлично! Товар добавлен в корзину.';
 
-        foreach ($cartProducts as $cartProduct) {
-            $message .= "\n\n"
-                . KeyboardHelper::getIconNumber($number) . ' товар: ' . $cartProduct['productName'];
-            $message .= "\n"
-                . 'Вариант: ' . $cartProduct['variantName'];
-            $message .= "\n"
-                . 'Цена: ' . $cartProduct['cost'] . 'р. /' . $cartProduct['count'] . 'шт. (' . $cartProduct['amount'] . 'р.)';
-
-            $number++;
-        }
-
-        $message .= "\n\n"
-            . "Сумма корзины: $totalAmount р.";
+        $message .= CartHelper::viewCartFromArray($cartProducts);
+        $message .= "\n\nСумма корзины: $totalAmount р.";
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,
@@ -115,7 +103,7 @@ class VariantProductChain extends AbstractChain
 
         $keyBoards = [];
 
-        for ($i = 1; $count >= $i; $i++) {
+        for ($i = 1; $count >= $i; ++$i) {
             $keyBoards[] = [
                 'text' => $i,
             ];
