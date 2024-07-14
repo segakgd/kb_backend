@@ -117,7 +117,7 @@ class CacheContractDto extends AbstractDto
 
     public static function fromArray(array $data): static
     {
-        $cacheContractDto = new self();
+        $cacheContractDto = new static();
         $cacheContractDto->finished = $data['finished'] ?? false;
         $cacheContractDto->message = $data['message'] ?? null;
         $cacheContractDto->keyboard = CacheKeyboardDto::fromArray($data['keyboard'] ?? []) ?? null;

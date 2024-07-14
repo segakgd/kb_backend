@@ -85,7 +85,7 @@ class CacheDto extends AbstractDto
 
     public static function fromArray(array $data): static
     {
-        $cacheDto = new self();
+        $cacheDto = new static();
 
         if (isset($data['eventUUID'])) {
             $cacheDto->eventUUID = $data['eventUUID'];

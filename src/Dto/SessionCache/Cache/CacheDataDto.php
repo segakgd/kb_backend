@@ -89,7 +89,7 @@ class CacheDataDto extends AbstractDto
 
     public static function fromArray(array $data): static
     {
-        $cacheData = new self();
+        $cacheData = new static();
         $cacheData->pageNow = $data['pageNow'] ?? null;
         $cacheData->productId = $data['productId'] ?? null;
         $cacheData->variantId = $data['variantId'] ?? null;

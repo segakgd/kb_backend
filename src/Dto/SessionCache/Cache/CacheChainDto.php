@@ -56,7 +56,7 @@ class CacheChainDto extends AbstractDto
 
     public static function fromArray(array $data): static
     {
-        $cacheChain = new self();
+        $cacheChain = new static();
 
         $cacheChain->target = TargetEnum::from($data['target']);
         $cacheChain->finished = $data['finished'] ?? false;

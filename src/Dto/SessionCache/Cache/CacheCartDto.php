@@ -103,7 +103,7 @@ class CacheCartDto extends AbstractDto
 
     public static function fromArray(array $data): static
     {
-        $cart = new self();
+        $cart = new static();
 
         $cart->contacts = $data['contacts'] ?? [];
         $cart->products = $data['products'] ?? [];
