@@ -11,10 +11,24 @@ class OrderContactsPhoneChain extends AbstractChain
 {
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        $message = 'Заглушка';
+        $content = $responsible->getCacheDto()->getContent();
+
+        $responsible->getCacheDto()->getCart()->setContacts(['phone' => $content]);
+
+        $message = "Ваш номер $content. Вам нужна доставка?";
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,
+            keyBoard: [
+                [
+                    [
+                        'text' => 'Да',
+                    ],
+                    [
+                        'text' => 'Нет',
+                    ],
+                ],
+            ]
         );
 
         $responsible->getResult()->setMessage($responsibleMessage);

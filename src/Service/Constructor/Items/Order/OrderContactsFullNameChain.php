@@ -13,6 +13,8 @@ class OrderContactsFullNameChain extends AbstractChain
     {
         $content = $responsible->getCacheDto()->getContent();
 
+        $responsible->getCacheDto()->getCart()->setContacts(['fullName' => $content]);
+
         $message = "Очень приятно познакомиться $content. Укажите номер телефона для связи: ";
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
