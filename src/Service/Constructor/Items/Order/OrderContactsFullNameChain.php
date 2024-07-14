@@ -2,6 +2,7 @@
 
 namespace App\Service\Constructor\Items\Order;
 
+use App\Helper\MessageHelper;
 use App\Service\Constructor\Core\Chains\AbstractChain;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
@@ -10,21 +11,29 @@ class OrderContactsFullNameChain extends AbstractChain
 {
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        // TODO: Implement complete() method.
-    }
+        $message = 'Заглушка';
 
-    public function perform(ResponsibleInterface $responsible): bool
-    {
-        // TODO: Implement perform() method.
-    }
+        $responsibleMessage = MessageHelper::createResponsibleMessage(
+            message: $message,
+        );
 
-    public function validate(ResponsibleInterface $responsible): bool
-    {
-        // TODO: Implement validate() method.
+        $responsible->getResult()->setMessage($responsibleMessage);
+
+        return $responsible;
     }
 
     public function condition(ResponsibleInterface $responsible): ConditionInterface
     {
-        // TODO: Implement condition() method.
+        return $this->makeCondition();
+    }
+
+    public function perform(ResponsibleInterface $responsible): bool
+    {
+        return true;
+    }
+
+    public function validate(ResponsibleInterface $responsible): bool
+    {
+        return true;
     }
 }
