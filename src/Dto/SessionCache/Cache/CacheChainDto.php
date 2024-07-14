@@ -50,6 +50,7 @@ class CacheChainDto extends AbstractDto
     public function setRepeat(bool $repeat): CacheChainDto
     {
         $this->repeat = $repeat;
+
         return $this;
     }
 
@@ -67,9 +68,9 @@ class CacheChainDto extends AbstractDto
     public function toArray(): array
     {
         return [
-            'target' => $this->target->value,
+            'target'   => $this->target->value,
             'finished' => $this->finished,
-            'repeat' => $this->repeat,
+            'repeat'   => $this->repeat,
         ];
     }
 }
