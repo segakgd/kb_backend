@@ -11,7 +11,7 @@ class OrderFinishChain extends AbstractChain
 {
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        $message = 'Заглушка';
+        $message = 'Это финиш, что бы ты сюда не написал, это не имеет смысла';
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,

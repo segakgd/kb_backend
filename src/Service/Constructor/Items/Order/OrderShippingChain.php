@@ -11,10 +11,30 @@ class OrderShippingChain extends AbstractChain
 {
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        $message = 'Заглушка';
+        $content = $responsible->getCacheDto()->getContent();
+
+        $message = "Отлично, адрес доставки $content";
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,
+            keyBoard: [
+                [
+                    [
+                        'text' => 'К товарам',
+                    ],
+                    [
+                        'text' => 'К категориям',
+                    ],
+                ],
+                [
+                    [
+                        'text' => 'В главное меню',
+                    ],
+                    [
+                        'text' => 'Моя корзина',
+                    ],
+                ],
+            ]
         );
 
         $responsible->getResult()->setMessage($responsibleMessage);

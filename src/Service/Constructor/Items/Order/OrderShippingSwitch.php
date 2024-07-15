@@ -2,6 +2,7 @@
 
 namespace App\Service\Constructor\Items\Order;
 
+use App\Enum\TargetEnum;
 use App\Helper\MessageHelper;
 use App\Service\Constructor\Core\Chains\AbstractChain;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
@@ -11,7 +12,7 @@ class OrderShippingSwitch extends AbstractChain
 {
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        $message = 'Заглушка';
+        $message = 'Введите адрес доставки:';
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,
@@ -29,6 +30,14 @@ class OrderShippingSwitch extends AbstractChain
 
     public function perform(ResponsibleInterface $responsible): bool
     {
+        $content = $responsible->getCacheDto()->getContent();
+
+        if ($content === 'Нет') {
+            $responsible->setJump(TargetEnum::OrderFinishChain);
+
+            return false;
+        }
+
         return true;
     }
 
