@@ -93,10 +93,12 @@
                                  style="padding: 20px; background: #d4e2ff; margin-bottom: 3px; border-radius: 9px;"
                                     {% elseif event.status == 'waiting' %}
                                  style="padding: 20px; background: #ecd4ff; margin-bottom: 3px; border-radius: 9px;"
+                                    {% elseif event.status == 'jumped_to_chain' %}
+                                 style="padding: 20px; background: #feffd4; margin-bottom: 3px; border-radius: 9px;"
                                     {% elseif event.status == 'repeat' %}
                                  style="padding: 20px; background: #ecd4ff; margin-bottom: 2px;"
                                     {% else %}
-                                 style="padding: 20px; margin-bottom: 2px;">
+                                 style="padding: 20px; margin-bottom: 2px;"
                                 {% endif %}
                                 >
                                 <div class="">Событие #{{ event.id }}</div>
@@ -118,6 +120,8 @@
                                             <span class=""> Новое </span>
                                         {% elseif event.status == 'waiting' %}
                                             <span class=""> Ожидает действий пользователя </span>
+                                        {% elseif event.status == 'jumped_to_chain' %}
+                                            <span class=""> Переход на другое звено цепи </span>
                                         {% else %}
                                             {{ event.status }}
                                         {% endif %}
