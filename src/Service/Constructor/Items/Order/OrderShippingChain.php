@@ -13,6 +13,12 @@ class OrderShippingChain extends AbstractChain
     {
         $content = $responsible->getCacheDto()->getContent();
 
+        $responsible->getCacheDto()->getCart()->setShipping(
+            [
+                'fullAddress' => $content,
+            ]
+        );
+
         $message = "Отлично, адрес доставки $content";
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
