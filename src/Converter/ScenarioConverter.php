@@ -50,7 +50,7 @@ readonly class ScenarioConverter
         foreach ($scenarios as $scenario) {
             $scenarioEntity = (new Scenario())
                 ->setUUID($scenario->getUUID())
-                ->setAlias($scenario->getName())
+                ->setAlias($scenario->getAlias() ?? $scenario->getName())
                 ->setName($scenario->getName())
                 ->setType($scenario->getType())
                 ->setBotId($botId)

@@ -10,8 +10,7 @@ readonly class ScenarioTemplateService
 {
     public function __construct(
         private ScenarioTemplateRepository $scenarioTemplateRepository,
-    ) {
-    }
+    ) {}
 
     public function getAllByProjectId(int $projectId): array
     {
@@ -26,9 +25,7 @@ readonly class ScenarioTemplateService
     {
         $scenarioTemplate = (new ScenarioTemplate())
             ->setName($dto->getName())
-//            ->setScenario($dto->getScenario())
-            ->setProjectId($projectId)
-        ;
+            ->setProjectId($projectId);
 
         $this->scenarioTemplateRepository->saveAndFlush($scenarioTemplate);
 
