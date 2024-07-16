@@ -30,3 +30,7 @@ cache-clear:
 	@echo "Clear cache"
 	php bin/console cache:clear
 	@echo "Clear cache complete."
+
+# Заходим в контейнер php
+php:
+	docker exec -it php-fpm-local bash
