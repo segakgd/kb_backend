@@ -19,7 +19,7 @@ class OrderShippingChain extends AbstractChain
             ]
         );
 
-        $message = "Отлично, адрес доставки $content";
+        $message = "Отлично, адрес доставки \"$content\"";
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,
