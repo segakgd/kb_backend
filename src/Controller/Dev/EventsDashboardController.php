@@ -3,7 +3,7 @@
 namespace App\Controller\Dev;
 
 use App\Converter\ScenarioConverter;
-use App\Dto\Scenario\WrapperScenarioDto;
+use App\Dto\Scenario\ScenarioCollection;
 use App\Dto\Webhook\Telegram\TelegramWebhookDto;
 use App\Entity\User\Bot;
 use App\Entity\User\Project;
@@ -169,17 +169,14 @@ class EventsDashboardController extends AbstractController
 
         $scenarioTemplate = $this->scenarioTemplateRepository->find($scenarioId);
 
-        $scenarios = $scenarioTemplate->getScenario()[0];
-        $scenarios = [
-            'scenarios' => $scenarios,
-        ];
-
-        $scenario = $this->serializer->denormalize(
-            $scenarios,
-            WrapperScenarioDto::class
+        $scenarios = $this->serializer->denormalize(
+            [
+                'scenarios' => $scenarioTemplate->getScenario(),
+            ],
+            ScenarioCollection::class
         );
 
-        $this->settingConverter->convert($scenario, $project->getId(), $bot->getId());
+        $this->settingConverter->convert($scenarios, $project->getId(), $bot->getId());
 
         return new RedirectResponse("/admin/projects/{$project->getId()}/dashboard/");
     }

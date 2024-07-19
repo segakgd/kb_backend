@@ -2,7 +2,7 @@
 
 namespace App\Dto\Scenario;
 
-class WrapperScenarioDto
+class ScenarioCollection
 {
     private array $scenarios;
 

@@ -3,7 +3,7 @@
 namespace App\Converter;
 
 use App\Dto\Scenario\ScenarioDto;
-use App\Dto\Scenario\WrapperScenarioDto;
+use App\Dto\Scenario\ScenarioCollection;
 use App\Entity\Scenario\Scenario;
 use App\Service\Visitor\Scenario\ScenarioService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,7 +21,7 @@ readonly class ScenarioConverter
      * @throws Exception
      * @throws Throwable
      */
-    public function convert(WrapperScenarioDto $scenario, int $projectId, int $botId): array
+    public function convert(ScenarioCollection $scenario, int $projectId, int $botId): array
     {
         try {
             $this->entityManager->beginTransaction();
