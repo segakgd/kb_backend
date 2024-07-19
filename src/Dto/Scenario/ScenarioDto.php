@@ -11,7 +11,7 @@ class ScenarioDto
         'command',
     ];
 
-    private string $UUID;
+    private ?string $UUID = null;
 
     private ?string $ownerUUID = null;
 
@@ -24,12 +24,12 @@ class ScenarioDto
 
     private ?ScenarioContractDto $contract = null;
 
-    public function getUUID(): string
+    public function getUUID(): ?string
     {
         return $this->UUID;
     }
 
-    public function setUUID(string $UUID): static
+    public function setUUID(?string $UUID): static
     {
         $this->UUID = $UUID;
 

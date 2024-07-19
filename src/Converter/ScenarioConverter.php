@@ -49,7 +49,7 @@ readonly class ScenarioConverter
         /** @var ScenarioDto $scenario */
         foreach ($scenarios as $scenario) {
             $scenarioEntity = (new Scenario())
-                ->setUUID($scenario->getUUID())
+                ->setUUID($scenario->getUUID() ?? uuid_create())
                 ->setAlias($scenario->getAlias() ?? $scenario->getName())
                 ->setName($scenario->getName())
                 ->setType($scenario->getType())
