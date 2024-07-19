@@ -52,28 +52,58 @@ class EventsDashboardController extends AbstractController
     {
         $messageText = $request->request->get('message') ?? throw new Exception();
 
-        $message = [
-            'update_id' => 321408479,
-            'message'   => [
-                'message_id' => 508,
-                'from'       => [
-                    'id'            => 873817360,
-                    'is_bot'        => false,
-                    'first_name'    => 'Sega',
-                    'username'      => 'sega_kgd',
-                    'language_code' => 'ru',
-                    'is_premium'    => true,
+        if (str_contains($messageText, '/')) {
+            $message = [
+                'update_id' => 321408479,
+                'message'   => [
+                    'message_id' => 508,
+                    'from'       => [
+                        'id'            => 873817360,
+                        'is_bot'        => false,
+                        'first_name'    => 'Sega',
+                        'username'      => 'sega_kgd',
+                        'language_code' => 'ru',
+                        'is_premium'    => true,
+                    ],
+                    'chat' => [
+                        'id'         => 873817360,
+                        'first_name' => 'Sega',
+                        'username'   => 'sega_kgd',
+                        'type'       => 'private',
+                    ],
+                    'date'     => 1706982783,
+                    'entities' => [
+                        [
+                            'type' => 'bot_command',
+                        ],
+                    ],
+                    'text' => $messageText,
                 ],
-                'chat' => [
-                    'id'         => 873817360,
-                    'first_name' => 'Sega',
-                    'username'   => 'sega_kgd',
-                    'type'       => 'private',
+            ];
+        } else {
+            $message = [
+                'update_id' => 321408479,
+                'message'   => [
+                    'message_id' => 508,
+                    'from'       => [
+                        'id'            => 873817360,
+                        'is_bot'        => false,
+                        'first_name'    => 'Sega',
+                        'username'      => 'sega_kgd',
+                        'language_code' => 'ru',
+                        'is_premium'    => true,
+                    ],
+                    'chat' => [
+                        'id'         => 873817360,
+                        'first_name' => 'Sega',
+                        'username'   => 'sega_kgd',
+                        'type'       => 'private',
+                    ],
+                    'date' => 1706982783,
+                    'text' => $messageText,
                 ],
-                'date' => 1706982783,
-                'text' => $messageText,
-            ],
-        ];
+            ];
+        }
 
         $webhookData = $this->serializer->deserialize(
             json_encode($message),

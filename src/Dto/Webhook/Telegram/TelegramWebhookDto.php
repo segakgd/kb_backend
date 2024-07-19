@@ -27,9 +27,11 @@ class TelegramWebhookDto
      */
     public function getWebhookType(): string
     {
-        if ($this->message->isCommand()){
+        if ($this->message->isCommand()) {
             return 'command';
-        } elseif ($this->message->isMessage()){
+        }
+
+        if ($this->message->isMessage()) {
             return 'message';
         }
 
