@@ -13,8 +13,6 @@ class ScenarioDto
 
     private ?string $UUID = null;
 
-    private ?string $ownerUUID = null;
-
     private string $name;
 
     private ?string $alias;
@@ -32,18 +30,6 @@ class ScenarioDto
     public function setUUID(?string $UUID): static
     {
         $this->UUID = $UUID;
-
-        return $this;
-    }
-
-    public function getOwnerUUID(): ?string
-    {
-        return $this->ownerUUID;
-    }
-
-    public function setOwnerUUID(?string $ownerUUID): static
-    {
-        $this->ownerUUID = $ownerUUID;
 
         return $this;
     }

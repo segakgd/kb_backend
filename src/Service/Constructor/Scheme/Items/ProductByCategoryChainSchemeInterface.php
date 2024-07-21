@@ -16,7 +16,6 @@ class ProductByCategoryChainSchemeInterface implements SchemeInterface
 
         return (new ScenarioDto())
             ->setUUID($uuid)
-            ->setOwnerUUID(null)
             ->setName('Товары по категориям')
             ->setType('message')
             ->setContract(
