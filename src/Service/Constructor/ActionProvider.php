@@ -52,7 +52,8 @@ readonly class ActionProvider
             TargetEnum::CartFinishChain => new CartFinishChain(),
             TargetEnum::CartStartChain  => new CartStartChain(),
 
-            TargetEnum::Main, TargetEnum::Cart => null,
+            TargetEnum::Cart => null,
+            TargetEnum::Main => null,
         };
     }
 }
