@@ -6,7 +6,7 @@ namespace App\Controller\Admin\ProductCategory;
 
 use App\Controller\Admin\ProductCategory\DTO\Request\ProductCategoryReqDto;
 use App\Controller\Admin\ProductCategory\Exception\NotFoundProductCategoryForProjectException;
-use App\Controller\GeneralController;
+use App\Controller\GeneralAbstractController;
 use App\Entity\Ecommerce\ProductCategory;
 use App\Entity\User\Project;
 use App\Service\Admin\Ecommerce\ProductCategory\Manager\ProductCategoryManagerInterface;
@@ -31,7 +31,7 @@ use Throwable;
     response: Response::HTTP_NO_CONTENT,
     description: 'Обновляет категорию продукта',
 )]
-class UpdateController extends GeneralController
+class UpdateAbstractController extends GeneralAbstractController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,

@@ -3,7 +3,7 @@
 namespace App\Controller\Admin\Scenario;
 
 use App\Controller\Admin\Scenario\DTO\Request\ScenarioUpdateReqDto;
-use App\Controller\GeneralController;
+use App\Controller\GeneralAbstractController;
 use App\Entity\Scenario\Scenario;
 use App\Entity\User\Project;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -24,7 +24,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
     response: Response::HTTP_NO_CONTENT,
     description: 'Обновить сценарий',
 )]
-class UpdateController extends GeneralController
+class UpdateAbstractController extends GeneralAbstractController
 {
     #[Route('/api/admin/project/{project}/scenario/{scenario}/', name: 'admin_scenario_update', methods: ['PATCH'])]
     #[IsGranted('existUser', 'project')]

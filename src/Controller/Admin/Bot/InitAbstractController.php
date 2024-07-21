@@ -2,15 +2,15 @@
 
 namespace App\Controller\Admin\Bot;
 
-use App\Controller\Admin\Bot\DTO\Request\BotReqDto;
-use App\Controller\Admin\Bot\Response\BotCreateResponse;
-use App\Controller\GeneralController;
+use App\Controller\Admin\Bot\DTO\Request\InitBotReqDto;
+use App\Controller\GeneralAbstractController;
 use App\Entity\User\Project;
 use App\Service\Admin\Bot\BotServiceInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Exception;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -21,14 +21,14 @@ use Throwable;
 #[OA\Tag(name: 'Bot')]
 #[OA\RequestBody(
     content: new Model(
-        type: BotReqDto::class,
+        type: InitBotReqDto::class,
     )
 )]
 #[OA\Response(
     response: Response::HTTP_NO_CONTENT,
     description: 'Возвращает 204 при создании',
 )]
-class CreateController extends GeneralController
+class InitAbstractController extends GeneralAbstractController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,
@@ -41,20 +41,22 @@ class CreateController extends GeneralController
         );
     }
 
-    /** Создание бота */
-    #[Route('/api/admin/project/{project}/bot/', name: 'admin_bot_add', methods: ['POST'])]
+    /**
+     * @throws Exception
+     */
+    /** Инициализация бота */
+    #[Route('/api/admin/project/{project}/bot/{botId}/init/', name: 'admin_bot_init', methods: ['POST'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Request $request, Project $project): JsonResponse
+    public function execute(Request $request, Project $project, int $botId): JsonResponse
     {
         try {
-            $requestDto = $this->getValidDtoFromRequest($request, BotReqDto::class);
+            $requestDto = $this->getValidDtoFromRequest($request, InitBotReqDto::class);
 
-            $bot = $this->botService->add($requestDto, $project->getId());
+            $this->botService->init($requestDto, $botId, $project->getId());
 
             return new JsonResponse(
-                $this->serializer->normalize(
-                    (new BotCreateResponse())->mapToResponse($bot)
-                )
+                [],
+                Response::HTTP_NO_CONTENT
             );
         } catch (Throwable $exception) {
             return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);

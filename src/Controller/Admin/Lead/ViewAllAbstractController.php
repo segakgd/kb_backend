@@ -6,7 +6,7 @@ namespace App\Controller\Admin\Lead;
 
 use App\Controller\Admin\Lead\DTO\Request\FilterLeadsReqDto;
 use App\Controller\Admin\Lead\DTO\Response\AllLeadRespDto;
-use App\Controller\GeneralController;
+use App\Controller\GeneralAbstractController;
 use App\Entity\User\Project;
 use App\Service\Admin\Lead\LeadManager;
 use App\Service\Admin\Lead\LeadMapper;
@@ -39,7 +39,7 @@ use Throwable;
         )
     ),
 )]
-class ViewAllController extends GeneralController
+class ViewAllAbstractController extends GeneralAbstractController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,

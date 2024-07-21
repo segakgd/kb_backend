@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Shipping;
 
 use App\Controller\Admin\Shipping\DTO\Request\ShippingReqDto;
-use App\Controller\GeneralController;
+use App\Controller\Admin\Shipping\Exception\NotFoundShippingForProjectException;
+use App\Controller\GeneralAbstractController;
+use App\Entity\Ecommerce\Shipping;
 use App\Entity\User\Project;
 use App\Service\Admin\Ecommerce\Shipping\Manager\ShippingManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -28,13 +30,13 @@ use Throwable;
 )]
 #[OA\Response(
     response: Response::HTTP_NO_CONTENT,
-    description: 'Создание доставки для проекта',
+    description: 'Обновление доставки проекта',
 )]
-class CreateController extends GeneralController
+class UpdateAbstractController extends GeneralAbstractController
 {
     public function __construct(
-        private readonly ValidatorInterface $validator,
         private readonly SerializerInterface $serializer,
+        private readonly ValidatorInterface $validator,
         private readonly ShippingManagerInterface $shippingManager,
         private readonly LoggerInterface $logger,
     ) {
@@ -44,18 +46,19 @@ class CreateController extends GeneralController
         );
     }
 
-    /** Создание доставки */
-    #[Route('/api/admin/project/{project}/shipping/', name: 'admin_shipping_create', methods: ['POST'])]
+    /** Обновление доставки */
+    #[Route('/api/admin/project/{project}/shipping/{shipping}/', name: 'admin_shipping_update', methods: ['PATCH'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Request $request, Project $project): JsonResponse
+    public function execute(Request $request, ?Project $project, Shipping $shipping): JsonResponse
     {
         try {
+            if ($project->getId() !== $shipping->getProjectId()) {
+                throw new NotFoundShippingForProjectException();
+            }
+
             $shippingDto = $this->getValidDtoFromRequest($request, ShippingReqDto::class);
 
-            $this->shippingManager->create(
-                shippingReqDto: $shippingDto,
-                project: $project,
-            );
+            $this->shippingManager->update($shippingDto, $shipping, $project);
         } catch (Throwable $exception) {
             $this->logger->error($exception->getMessage());
 

@@ -3,7 +3,7 @@
 namespace App\Controller\Admin\Project\Tariff;
 
 use App\Controller\Admin\Project\DTO\Request\TariffSettingReqDto;
-use App\Controller\GeneralController;
+use App\Controller\GeneralAbstractController;
 use App\Entity\User\Project;
 use App\Service\Common\Project\TariffServiceInterface;
 use Exception;
@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     response: Response::HTTP_NO_CONTENT,
     description: 'Возвращает 204 если новый тариф применён',
 )]
-class ApplyController extends GeneralController
+class ApplyAbstractController extends GeneralAbstractController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,

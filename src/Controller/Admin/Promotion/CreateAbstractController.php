@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Promotion;
 
 use App\Controller\Admin\Promotion\DTO\Request\PromotionReqDto;
-use App\Controller\GeneralController;
+use App\Controller\GeneralAbstractController;
 use App\Entity\User\Project;
 use App\Service\Admin\Ecommerce\Promotion\Manager\PromotionManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -30,7 +30,7 @@ use Throwable;
     response: Response::HTTP_NO_CONTENT,
     description: 'Создания скидки',
 )]
-class CreateController extends GeneralController
+class CreateAbstractController extends GeneralAbstractController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,

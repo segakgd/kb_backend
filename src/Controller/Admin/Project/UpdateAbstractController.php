@@ -2,10 +2,10 @@
 
 namespace App\Controller\Admin\Project;
 
-use App\Controller\Admin\Project\DTO\Request\ProjectCreateReqDto;
+use App\Controller\Admin\Project\DTO\Request\ProjectUpdateReqDto;
 use App\Controller\Admin\Project\Response\ProjectResponse;
-use App\Controller\GeneralController;
-use App\Repository\User\UserRepository;
+use App\Controller\GeneralAbstractController;
+use App\Entity\User\Project;
 use App\Service\Admin\Statistic\StatisticsServiceInterface;
 use App\Service\Common\Project\ProjectServiceInterface;
 use Exception;
@@ -15,26 +15,26 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[OA\Tag(name: 'Project')]
 #[OA\RequestBody(
     content: new Model(
-        type: ProjectCreateReqDto::class,
+        type: ProjectUpdateReqDto::class,
     )
 )]
 #[OA\Response(
     response: Response::HTTP_NO_CONTENT,
-    description: 'Создание проекта',
+    description: 'Обновление проекта',
 )]
-class CreateController extends GeneralController
+class UpdateAbstractController extends GeneralAbstractController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,
         private readonly SerializerInterface $serializer,
         private readonly ProjectServiceInterface $projectService,
-        private readonly UserRepository $userRepository,
         private readonly StatisticsServiceInterface $statisticsService,
     ) {
         parent::__construct(
@@ -44,24 +44,17 @@ class CreateController extends GeneralController
     }
 
     /**
+     * Обновление параметров проекта
+     *
      * @throws Exception
      */
-    #[Route('/api/admin/project/', name: 'admin_project_create', methods: ['POST'])]
-    public function execute(Request $request): JsonResponse
+    #[Route('/api/admin/project/{project}/', name: 'admin_project_update', methods: ['PATCH'])]
+    #[IsGranted('existUser', 'project')]
+    public function execute(Request $request, Project $project): JsonResponse
     {
-        if (null === $this->getUser()) {
-            return new JsonResponse([], Response::HTTP_FORBIDDEN);
-        }
+        $requestDto = $this->getValidDtoFromRequest($request, ProjectUpdateReqDto::class);
 
-        $requestDto = $this->getValidDtoFromRequest($request, ProjectCreateReqDto::class);
-
-        $user = $this->userRepository->find($this->getUser());
-
-        if (null === $user) {
-            return $this->json([], Response::HTTP_FORBIDDEN);
-        }
-
-        $project = $this->projectService->add($requestDto, $user);
+        $project = $this->projectService->update($requestDto, $project);
 
         $fakeStatisticsByProject = $this->statisticsService->getStatisticForProject();
 

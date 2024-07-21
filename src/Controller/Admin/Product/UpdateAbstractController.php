@@ -6,7 +6,7 @@ namespace App\Controller\Admin\Product;
 
 use App\Controller\Admin\Product\DTO\Request\ProductReqDto;
 use App\Controller\Admin\Product\Exception\NotFoundProductForProjectException;
-use App\Controller\GeneralController;
+use App\Controller\GeneralAbstractController;
 use App\Entity\Ecommerce\Product;
 use App\Entity\User\Project;
 use App\Service\Admin\Ecommerce\Product\Manager\ProductManagerInterface;
@@ -31,7 +31,7 @@ use Throwable;
     response: Response::HTTP_NO_CONTENT,
     description: 'Возвращает 204 при создании',
 )]
-class UpdateController extends GeneralController
+class UpdateAbstractController extends GeneralAbstractController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,

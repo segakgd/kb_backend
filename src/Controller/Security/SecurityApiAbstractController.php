@@ -2,7 +2,7 @@
 
 namespace App\Controller\Security;
 
-use App\Controller\GeneralController;
+use App\Controller\GeneralAbstractController;
 use App\Controller\Security\DTO\AuthDto;
 use App\Controller\Security\DTO\ReloadAccessDto;
 use App\Dto\Security\UserDto;
@@ -20,7 +20,7 @@ use Symfony\Component\Security\Http\AccessToken\Oidc\Exception\InvalidSignatureE
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class SecurityApiController extends GeneralController
+class SecurityApiAbstractController extends GeneralAbstractController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,

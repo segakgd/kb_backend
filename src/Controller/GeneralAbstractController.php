@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * Только для наследования!
  */
-class GeneralController extends AbstractController
+class GeneralAbstractController extends AbstractController
 {
     public function __construct(
         private readonly SerializerInterface $serializer,

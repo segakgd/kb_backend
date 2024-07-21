@@ -4,7 +4,7 @@ namespace App\Controller\Admin\Bot;
 
 use App\Controller\Admin\Bot\DTO\Request\UpdateBotReqDto;
 use App\Controller\Admin\Bot\Response\BotUpdateResponse;
-use App\Controller\GeneralController;
+use App\Controller\GeneralAbstractController;
 use App\Entity\User\Bot;
 use App\Entity\User\Project;
 use App\Service\Admin\Bot\BotServiceInterface;
@@ -29,7 +29,7 @@ use Throwable;
     response: Response::HTTP_NO_CONTENT,
     description: 'Возвращает 204 при создании',
 )]
-class UpdateController extends GeneralController
+class UpdateAbstractController extends GeneralAbstractController
 {
 
     public function __construct(

@@ -6,7 +6,7 @@ namespace App\Controller\Admin\Lead;
 
 use App\Controller\Admin\Lead\DTO\Request\LeadReqDto;
 use App\Controller\Admin\Lead\Exception\NotFoundLeadForProjectException;
-use App\Controller\GeneralController;
+use App\Controller\GeneralAbstractController;
 use App\Entity\Lead\Deal;
 use App\Entity\User\Project;
 use App\Service\Admin\Lead\LeadManager;
@@ -31,7 +31,7 @@ use Throwable;
     response: Response::HTTP_NO_CONTENT,
     description: 'Возвращает 204 при создании',
 )]
-class UpdateController extends GeneralController
+class UpdateAbstractController extends GeneralAbstractController
 {
     public function __construct(
         private readonly LeadManager $leadManager,

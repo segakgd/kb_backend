@@ -4,7 +4,7 @@ namespace App\Controller\Admin\Project\Setting;
 
 use App\Controller\Admin\Project\DTO\Request\ProjectSettingReqDto;
 use App\Controller\Admin\Project\Response\Setting\UpdateSettingResponse;
-use App\Controller\GeneralController;
+use App\Controller\GeneralAbstractController;
 use App\Entity\User\Project;
 use App\Service\Common\Project\ProjectSettingServiceInterface;
 use Exception;
@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         type: ProjectSettingReqDto::class,
     )
 )]
-class UpdateController extends GeneralController
+class UpdateAbstractController extends GeneralAbstractController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,

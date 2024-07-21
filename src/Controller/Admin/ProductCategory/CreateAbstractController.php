@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin\ProductCategory;
 
 use App\Controller\Admin\ProductCategory\DTO\Request\ProductCategoryReqDto;
-use App\Controller\GeneralController;
+use App\Controller\GeneralAbstractController;
 use App\Entity\User\Project;
 use App\Service\Admin\Ecommerce\ProductCategory\Manager\ProductCategoryManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -29,7 +29,7 @@ use Throwable;
     response: Response::HTTP_NO_CONTENT,
     description: 'Возвращает созданную категорию',
 )]
-class CreateController extends GeneralController
+class CreateAbstractController extends GeneralAbstractController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,
