@@ -8,7 +8,6 @@ enum TargetEnum: string
     case Cart = 'cart';
 
     // new
-    case GreetingChain = 'greeting.chain';
     case StartChain = 'start.chain';
     case ProductCategoryChain = 'product.category.chain';
     case ProductsByCategoryChain = 'products.by.category.chain';
@@ -32,4 +31,7 @@ enum TargetEnum: string
     case OrderShippingChain = 'order.shipping.chain';
 
     case OrderFinishChain = 'order.finish.chain';
+
+    case CartStartChain = 'cart.start.chain';
+    case CartFinishChain = 'cart.finish.chain';
 }

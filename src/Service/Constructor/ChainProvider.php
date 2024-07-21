@@ -4,6 +4,8 @@ namespace App\Service\Constructor;
 
 use App\Enum\TargetEnum;
 use App\Service\Constructor\Core\Chains\AbstractChain;
+use App\Service\Constructor\Items\Cart\CartFinishChain;
+use App\Service\Constructor\Items\Cart\CartStartChain;
 use App\Service\Constructor\Items\CategoriesChain;
 use App\Service\Constructor\Items\FinishChain;
 use App\Service\Constructor\Items\GreetingChain;
@@ -34,7 +36,6 @@ readonly class ChainProvider
     public function getByTarget(TargetEnum $target): AbstractChain
     {
         return match ($target) {
-            TargetEnum::GreetingChain           => new GreetingChain(),
             TargetEnum::StartChain              => new StartChain(),
             TargetEnum::ProductCategoryChain    => $this->productCategoryChain,
             TargetEnum::ProductsByCategoryChain => $this->productsByCategoryChain,
@@ -48,6 +49,8 @@ readonly class ChainProvider
             TargetEnum::OrderShippingSwitch        => new OrderShippingSwitch(),
             TargetEnum::OrderShippingChain         => new OrderShippingChain(),
             TargetEnum::OrderFinishChain           => new OrderFinishChain(),
+            TargetEnum::CartFinishChain            => new CartFinishChain(),
+            TargetEnum::CartStartChain             => new CartStartChain(),
 
             TargetEnum::Main, TargetEnum::Cart => null,
         };

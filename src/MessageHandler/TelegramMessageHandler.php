@@ -7,7 +7,6 @@ use App\Dto\SessionCache\Cache\CacheDto;
 use App\Entity\Scenario\Scenario;
 use App\Entity\Visitor\VisitorSession;
 use App\Enum\VisitorEventStatusEnum;
-use App\Helper\CacheHelper;
 use App\Helper\CommonHelper;
 use App\Message\TelegramMessage;
 use App\Repository\User\BotRepository;
