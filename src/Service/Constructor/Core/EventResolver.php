@@ -2,12 +2,10 @@
 
 namespace App\Service\Constructor\Core;
 
-use App\Entity\Visitor\VisitorEvent;
 use App\Enum\VisitorEventStatusEnum;
 use App\Message\SendTelegramMessage;
 use App\Service\Constructor\Core\Contract\ContractResolver;
 use App\Service\Constructor\Core\Dto\Responsible;
-use App\Service\DtoRepository\ResponsibleDtoRepository;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Throwable;
 
