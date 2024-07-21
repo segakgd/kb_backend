@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Constructor\Actions;
+namespace App\Service\Constructor\Actions\Ecommerce;
 
 use App\Enum\TargetEnum;
 use App\Helper\MessageHelper;

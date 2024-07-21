@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Constructor\Actions;
+namespace App\Service\Constructor\Actions\Ecommerce;
 
 use App\Entity\Ecommerce\ProductVariant;
 use App\Helper\MessageHelper;
