@@ -1,19 +1,25 @@
 <?php
 
-namespace App\Service\Constructor\Items\Cart;
+namespace App\Service\Constructor\Actions\Order;
 
 use App\Helper\MessageHelper;
 use App\Service\Constructor\Core\Chains\AbstractChain;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 
-class CartStartChain extends AbstractChain
+class OrderShippingChain extends AbstractChain
 {
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        $totalAmount = $responsible->getCacheDto()->getCart()->getTotalAmount();
+        $content = $responsible->getCacheDto()->getContent();
 
-        $message = "Сумма товаров в корзине: $totalAmount";
+        $responsible->getCacheDto()->getCart()->setShipping(
+            [
+                'fullAddress' => $content,
+            ]
+        );
+
+        $message = "Отлично, адрес доставки \"$content\"";
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,

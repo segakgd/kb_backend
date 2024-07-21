@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Constructor\Items;
+namespace App\Service\Constructor\Actions;
 
 use App\Helper\CartHelper;
 use App\Helper\MessageHelper;

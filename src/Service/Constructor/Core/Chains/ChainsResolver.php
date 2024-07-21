@@ -4,14 +4,14 @@ namespace App\Service\Constructor\Core\Chains;
 
 use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Enum\TargetEnum;
-use App\Service\Constructor\ChainProvider;
+use App\Service\Constructor\ActionProvider;
 use App\Service\Constructor\Core\Dto\Responsible;
 use Exception;
 
 readonly class ChainsResolver
 {
     public function __construct(
-        private ChainProvider $chainProvider,
+        private ActionProvider $chainProvider,
     ) {}
 
     /**

@@ -3,25 +3,24 @@
 namespace App\Service\Constructor;
 
 use App\Enum\TargetEnum;
+use App\Service\Constructor\Actions\Cart\CartFinishChain;
+use App\Service\Constructor\Actions\Cart\CartStartChain;
+use App\Service\Constructor\Actions\CategoriesChain;
+use App\Service\Constructor\Actions\FinishChain;
+use App\Service\Constructor\Actions\Order\OrderContactsFullNameChain;
+use App\Service\Constructor\Actions\Order\OrderContactsPhoneChain;
+use App\Service\Constructor\Actions\Order\OrderFinishChain;
+use App\Service\Constructor\Actions\Order\OrderGreetingChain;
+use App\Service\Constructor\Actions\Order\OrderShippingChain;
+use App\Service\Constructor\Actions\Order\OrderShippingSwitch;
+use App\Service\Constructor\Actions\ProductsByCategoryChain;
+use App\Service\Constructor\Actions\StartChain;
+use App\Service\Constructor\Actions\VariantProductChain;
+use App\Service\Constructor\Actions\VariantsProductChain;
 use App\Service\Constructor\Core\Chains\AbstractChain;
-use App\Service\Constructor\Items\Cart\CartFinishChain;
-use App\Service\Constructor\Items\Cart\CartStartChain;
-use App\Service\Constructor\Items\CategoriesChain;
-use App\Service\Constructor\Items\FinishChain;
-use App\Service\Constructor\Items\GreetingChain;
-use App\Service\Constructor\Items\Order\OrderContactsFullNameChain;
-use App\Service\Constructor\Items\Order\OrderContactsPhoneChain;
-use App\Service\Constructor\Items\Order\OrderFinishChain;
-use App\Service\Constructor\Items\Order\OrderGreetingChain;
-use App\Service\Constructor\Items\Order\OrderShippingChain;
-use App\Service\Constructor\Items\Order\OrderShippingSwitch;
-use App\Service\Constructor\Items\ProductsByCategoryChain;
-use App\Service\Constructor\Items\StartChain;
-use App\Service\Constructor\Items\VariantProductChain;
-use App\Service\Constructor\Items\VariantsProductChain;
 use Exception;
 
-readonly class ChainProvider
+readonly class ActionProvider
 {
     public function __construct(
         private ProductsByCategoryChain $productsByCategoryChain,
@@ -49,8 +48,9 @@ readonly class ChainProvider
             TargetEnum::OrderShippingSwitch        => new OrderShippingSwitch(),
             TargetEnum::OrderShippingChain         => new OrderShippingChain(),
             TargetEnum::OrderFinishChain           => new OrderFinishChain(),
-            TargetEnum::CartFinishChain            => new CartFinishChain(),
-            TargetEnum::CartStartChain             => new CartStartChain(),
+
+            TargetEnum::CartFinishChain => new CartFinishChain(),
+            TargetEnum::CartStartChain  => new CartStartChain(),
 
             TargetEnum::Main, TargetEnum::Cart => null,
         };

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Constructor\Items\Order;
+namespace App\Service\Constructor\Actions\Order;
 
 use App\Helper\MessageHelper;
 use App\Service\Constructor\Core\Chains\AbstractChain;

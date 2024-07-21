@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Service\Constructor\Items\Order;
+namespace App\Service\Constructor\Actions;
 
 use App\Helper\MessageHelper;
 use App\Service\Constructor\Core\Chains\AbstractChain;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 
-class OrderGreetingChain extends AbstractChain
+class StartChain extends AbstractChain
 {
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        $message = "Давайте начнём оформление заказа! \n Как можно к вам обращаться? (отправьте ФИО)";
+        $message = 'Выберите интересующую вас категорию товаров: ';
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,

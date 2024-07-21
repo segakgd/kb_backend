@@ -1,16 +1,13 @@
 <?php
 
-namespace App\Service\Constructor\Items;
+namespace App\Service\Constructor\Actions\Order;
 
 use App\Helper\MessageHelper;
 use App\Service\Constructor\Core\Chains\AbstractChain;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 
-/**
- * Финальная заглушка
- */
-class FinishChain extends AbstractChain
+class OrderFinishChain extends AbstractChain
 {
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {

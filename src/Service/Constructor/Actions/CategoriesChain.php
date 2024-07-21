@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Constructor\Items;
+namespace App\Service\Constructor\Actions;
 
 use App\Service\Admin\Ecommerce\Product\Service\ProductService;
 use App\Service\Admin\Ecommerce\ProductCategory\Service\ProductCategoryService;

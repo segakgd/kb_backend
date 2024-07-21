@@ -1,21 +1,18 @@
 <?php
 
-namespace App\Service\Constructor\Items\Order;
+namespace App\Service\Constructor\Actions\Order;
 
+use App\Enum\TargetEnum;
 use App\Helper\MessageHelper;
 use App\Service\Constructor\Core\Chains\AbstractChain;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 
-class OrderContactsFullNameChain extends AbstractChain
+class OrderShippingSwitch extends AbstractChain
 {
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        $content = $responsible->getCacheDto()->getContent();
-
-        $responsible->getCacheDto()->getCart()->setContacts(['fullName' => $content]);
-
-        $message = "Очень приятно познакомиться $content. Укажите номер телефона для связи: ";
+        $message = 'Введите адрес доставки:';
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,
@@ -33,6 +30,14 @@ class OrderContactsFullNameChain extends AbstractChain
 
     public function perform(ResponsibleInterface $responsible): bool
     {
+        $content = $responsible->getCacheDto()->getContent();
+
+        if ($content === 'Нет') {
+            $responsible->setJump(TargetEnum::OrderFinishChain);
+
+            return false;
+        }
+
         return true;
     }
 

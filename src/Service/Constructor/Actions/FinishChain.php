@@ -1,17 +1,20 @@
 <?php
 
-namespace App\Service\Constructor\Items;
+namespace App\Service\Constructor\Actions;
 
 use App\Helper\MessageHelper;
 use App\Service\Constructor\Core\Chains\AbstractChain;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 
-class StartChain extends AbstractChain
+/**
+ * Финальная заглушка
+ */
+class FinishChain extends AbstractChain
 {
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        $message = 'Выберите интересующую вас категорию товаров: ';
+        $message = 'Это финиш, что бы ты сюда не написал, это не имеет смысла';
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,

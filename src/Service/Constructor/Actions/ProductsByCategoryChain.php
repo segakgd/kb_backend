@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Constructor\Items;
+namespace App\Service\Constructor\Actions;
 
 use App\Enum\TargetEnum;
 use App\Helper\MessageHelper;

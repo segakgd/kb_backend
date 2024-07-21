@@ -7,7 +7,7 @@ use App\Dto\SessionCache\Cache\CacheDataDto;
 use App\Dto\SessionCache\Cache\CacheDto;
 use App\Dto\SessionCache\Cache\CacheEventDto;
 use App\Service\Constructor\Core\Dto\Responsible;
-use App\Service\Constructor\Items\ProductsByCategoryChain;
+use App\Service\Constructor\Actions\ProductsByCategoryChain;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
