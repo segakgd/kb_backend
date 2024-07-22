@@ -4,8 +4,10 @@ namespace App\Enum;
 
 enum TargetEnum: string
 {
-    case Main = 'main';
-    case Cart = 'cart';
+    case Main = TargetAliasEnum::Main->value;
+    case Cart = TargetAliasEnum::Cart->value;
+
+    case PlaceAnOrder = TargetAliasEnum::PlaceAnOrder->value;
 
     // new
     case StartChain = 'start.chain';
