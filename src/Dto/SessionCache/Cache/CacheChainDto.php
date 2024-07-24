@@ -50,12 +50,13 @@ class CacheChainDto extends AbstractDto
     public function setRepeat(bool $repeat): CacheChainDto
     {
         $this->repeat = $repeat;
+
         return $this;
     }
 
     public static function fromArray(array $data): static
     {
-        $cacheChain = new self();
+        $cacheChain = new static();
 
         $cacheChain->target = TargetEnum::from($data['target']);
         $cacheChain->finished = $data['finished'] ?? false;
@@ -67,9 +68,9 @@ class CacheChainDto extends AbstractDto
     public function toArray(): array
     {
         return [
-            'target' => $this->target->value,
+            'target'   => $this->target->value,
             'finished' => $this->finished,
-            'repeat' => $this->repeat,
+            'repeat'   => $this->repeat,
         ];
     }
 }

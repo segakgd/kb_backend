@@ -11,17 +11,16 @@ use Exception;
 readonly class SenderService
 {
     public function __construct(
-        private TelegramService       $telegramService,
+        private TelegramService $telegramService,
         private MessageHistoryService $messageHistoryService,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws Exception
      */
     public function sendMessages(
         ResultInterface $result,
-        BotDto          $botDto,
+        BotDto $botDto,
     ): void {
         $message = $result->getMessage();
         $token = $botDto->getToken();
@@ -68,8 +67,8 @@ readonly class SenderService
             keyboard: $message->getKeyBoard() ?? [],
             images: [
                 [
-                    'uri' => $message->getPhoto()
-                ]
+                    'uri' => $message->getPhoto(),
+                ],
             ]
         );
     }

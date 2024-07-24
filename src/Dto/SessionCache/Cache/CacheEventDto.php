@@ -61,7 +61,7 @@ class CacheEventDto extends AbstractDto
 
     public static function fromArray(array $data): static
     {
-        $event = new self();
+        $event = new static();
         $event->finished = $data['finished'] ?? false;
 
         $event->contract = CacheContractDto::fromArray($data['contract']);

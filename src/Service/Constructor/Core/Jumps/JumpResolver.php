@@ -4,9 +4,7 @@ namespace App\Service\Constructor\Core\Jumps;
 
 use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Dto\SessionCache\Cache\CacheDto;
-use App\Entity\Scenario\Scenario;
 use App\Entity\Visitor\VisitorEvent;
-use App\Enum\TargetEnum;
 use App\Enum\VisitorEventStatusEnum;
 use App\Helper\CacheHelper;
 use App\Service\Constructor\Core\Dto\Responsible;
@@ -34,7 +32,7 @@ readonly class JumpResolver
             throw new Exception('Непредвиденная ситуация: переход не существует.');
         }
 
-        $scenario = $this->resolveScenario($responsible->getJump());
+        $scenario = $this->scenarioService->findScenarioByTarget($responsible->getJump());
 
         if ($scenario) {
             $visitorEvent->setScenarioUUID($scenario->getUUID());
@@ -49,15 +47,6 @@ readonly class JumpResolver
 
             $responsible->setStatus(VisitorEventStatusEnum::JumpedToChain);
         }
-    }
-
-    private function resolveScenario(TargetEnum $jumpValue): ?Scenario
-    {
-        return match ($jumpValue) {
-            TargetEnum::Main => $this->scenarioService->getMainScenario(),
-            TargetEnum::Cart => $this->scenarioService->getCartScenario(),
-            default          => null,
-        };
     }
 
     private function updateCacheContract(CacheDto $cacheDto, string $jumpValue): void

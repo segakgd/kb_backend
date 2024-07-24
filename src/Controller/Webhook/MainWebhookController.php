@@ -110,7 +110,7 @@ class MainWebhookController extends AbstractController
                 content: $webhookData->getWebhookContent(),
             );
 
-            $this->bus->dispatch(new TelegramMessage($visitorEvent));
+            $this->bus->dispatch(new TelegramMessage($visitorEvent->getId()));
         } catch (Throwable $exception) {
             return new JsonResponse('ok', 200);
         }

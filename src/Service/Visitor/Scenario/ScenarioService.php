@@ -3,20 +3,19 @@
 namespace App\Service\Visitor\Scenario;
 
 use App\Dto\Scenario\ScenarioContractDto;
+use App\Dto\Scenario\ScenarioKeyboardDto;
 use App\Entity\Scenario\Scenario;
+use App\Enum\NavigateEnum;
+use App\Enum\TargetAliasEnum;
+use App\Enum\TargetEnum;
 use App\Repository\Scenario\ScenarioRepository;
+use App\Service\Constructor\Core\Helper\JumpHelper;
 use Exception;
 
-class ScenarioService
+readonly class ScenarioService
 {
-    public const SCENARIO_DEFAULT = 'default';
-
-    public const SCENARIO_MAIN = 'main';
-
-    public const SCENARIO_CART = 'cart';
-
     public function __construct(
-        private readonly ScenarioRepository $scenarioRepository,
+        private ScenarioRepository $scenarioRepository,
     ) {}
 
     /**
@@ -32,7 +31,7 @@ class ScenarioService
         );
 
         if (null === $scenario) {
-            $scenario = $this->getDefaultScenario();
+            $scenario = $this->getByAlias(TargetAliasEnum::Default);
         }
 
         if (null === $scenario) {
@@ -42,31 +41,11 @@ class ScenarioService
         return $scenario;
     }
 
-    public function getDefaultScenario(): ?Scenario
+    public function getByAlias(TargetAliasEnum $alias): ?Scenario
     {
         return $this->scenarioRepository->findOneBy(
             [
-                'alias'     => static::SCENARIO_DEFAULT,
-                'deletedAt' => null,
-            ]
-        );
-    }
-
-    public function getMainScenario(): ?Scenario
-    {
-        return $this->scenarioRepository->findOneBy(
-            [
-                'alias'     => static::SCENARIO_MAIN,
-                'deletedAt' => null,
-            ]
-        );
-    }
-
-    public function getCartScenario(): ?Scenario
-    {
-        return $this->scenarioRepository->findOneBy(
-            [
-                'alias'     => static::SCENARIO_CART,
+                'alias'     => $alias->value,
                 'deletedAt' => null,
             ]
         );
@@ -79,15 +58,31 @@ class ScenarioService
     {
         $scenario = $this->getScenarioByNameAndType($type, $content);
 
-        if (null === $scenario) {
-            $scenario = $this->getDefaultScenario();
+        $targetEnum = JumpHelper::getJumpFromNavigate($content);
+
+        if (is_null($scenario) && !is_null($targetEnum)) {
+            $scenario = $this->findScenarioByTarget($targetEnum);
         }
 
-        if (null === $scenario) {
+        if (is_null($scenario)) {
+            $scenario = $this->getByAlias(TargetAliasEnum::Default);
+        }
+
+        if (is_null($scenario)) {
             throw new Exception('Нет сценария по умолчанию');
         }
 
         return $scenario;
+    }
+
+    public function findScenarioByTarget(TargetEnum $jumpValue): ?Scenario
+    {
+        return match ($jumpValue) {
+            TargetEnum::Main         => $this->getByAlias(TargetAliasEnum::Main),
+            TargetEnum::Cart         => $this->getByAlias(TargetAliasEnum::Cart),
+            TargetEnum::PlaceAnOrder => $this->getByAlias(TargetAliasEnum::PlaceAnOrder),
+            default                  => null,
+        };
     }
 
     public function getScenarioByNameAndType(string $type, string $name): ?Scenario
@@ -107,7 +102,20 @@ class ScenarioService
     public function generateDefaultScenario(int $projectId, int $botId): Scenario
     {
         $scenarioContractDto = (new ScenarioContractDto())
-            ->setMessage('Не знаю что вам ответить');
+            ->setMessage('Не знаю что вам ответить')
+            ->setKeyboard(
+                (new ScenarioKeyboardDto())
+                    ->setReplyMarkup(
+                        [
+                            [
+                                [
+                                    'text'   => NavigateEnum::ToMain,
+                                    'target' => null,
+                                ],
+                            ],
+                        ]
+                    )
+            );
 
         $scenarioEntity = (new Scenario())
             ->setUUID(uuid_create())

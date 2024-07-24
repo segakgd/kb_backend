@@ -16,7 +16,6 @@ class ProductByCategoryChainSchemeInterface implements SchemeInterface
 
         return (new ScenarioDto())
             ->setUUID($uuid)
-            ->setOwnerUUID(null)
             ->setName('Товары по категориям')
             ->setType('message')
             ->setContract(
@@ -24,9 +23,6 @@ class ProductByCategoryChainSchemeInterface implements SchemeInterface
                     ->setMessage(null)
                     ->setKeyboard(null)
                     ->setAttached(null)
-                    ->addChain(
-                        (new ScenarioChainDto())->setTarget(TargetEnum::GreetingChain->value)
-                    )
                     ->addChain(
                         (new ScenarioChainDto())->setTarget(TargetEnum::StartChain->value)
                     )

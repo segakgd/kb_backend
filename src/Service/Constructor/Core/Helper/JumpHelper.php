@@ -12,7 +12,7 @@ class JumpHelper
         return match ($content) {
             NavigateEnum::ToMain->value             => TargetEnum::Main,
             NavigateEnum::ToMainLong->value         => TargetEnum::Main,
-            NavigateEnum::ToCart->value             => TargetEnum::Cart,
+            NavigateEnum::PlaceAnOrder->value       => TargetEnum::PlaceAnOrder,
             NavigateEnum::ToProducts->value         => TargetEnum::ProductCategoryChain,
             NavigateEnum::ToCategoryProducts->value => TargetEnum::StartChain,
             default                                 => null,
