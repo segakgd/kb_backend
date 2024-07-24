@@ -54,9 +54,9 @@ readonly class ProjectService implements ProjectServiceInterface
 
     public function remove(int $projectId): bool
     {
-        $project = $this->projectEntityRepository->find($projectId);
-
         try {
+            $project = $this->projectEntityRepository->find($projectId);
+
             if ($project) {
                 $this->projectEntityRepository->removeAndFlush($project);
             }

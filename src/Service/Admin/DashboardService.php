@@ -12,8 +12,8 @@ use App\Repository\Visitor\VisitorEventRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Admin\Bot\BotServiceInterface;
 use App\Service\Admin\Scenario\ScenarioTemplateService;
+use App\Service\Constructor\Visitor\Session\VisitorSessionService;
 use App\Service\Integration\Telegram\TelegramService;
-use App\Service\Visitor\Session\VisitorSessionService;
 
 readonly class DashboardService
 {

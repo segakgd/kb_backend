@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Visitor\Session;
+namespace App\Service\Constructor\Visitor\Session;
 
 use App\Entity\Visitor\VisitorSession;
 use App\Helper\CommonHelper;

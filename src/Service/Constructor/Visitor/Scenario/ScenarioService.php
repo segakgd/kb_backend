@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Visitor\Scenario;
+namespace App\Service\Constructor\Visitor\Scenario;
 
 use App\Dto\Scenario\ScenarioContractDto;
 use App\Dto\Scenario\ScenarioKeyboardDto;

@@ -2,10 +2,10 @@
 
 namespace App\Converter;
 
-use App\Dto\Scenario\ScenarioDto;
 use App\Dto\Scenario\ScenarioCollection;
+use App\Dto\Scenario\ScenarioDto;
 use App\Entity\Scenario\Scenario;
-use App\Service\Visitor\Scenario\ScenarioService;
+use App\Service\Constructor\Visitor\Scenario\ScenarioService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Throwable;
