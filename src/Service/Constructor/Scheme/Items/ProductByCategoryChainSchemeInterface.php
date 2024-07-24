@@ -24,9 +24,6 @@ class ProductByCategoryChainSchemeInterface implements SchemeInterface
                     ->setKeyboard(null)
                     ->setAttached(null)
                     ->addChain(
-                        (new ScenarioChainDto())->setTarget(TargetEnum::GreetingChain->value)
-                    )
-                    ->addChain(
                         (new ScenarioChainDto())->setTarget(TargetEnum::StartChain->value)
                     )
                     ->addChain(
