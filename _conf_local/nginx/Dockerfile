@@ -2,7 +2,8 @@ FROM nginx:alpine
 
 WORKDIR /var/www/KBackend
 
-CMD ["nginx"]
+CMD ["nginx", "-g", "daemon off;"]
 
-EXPOSE 80 443
+EXPOSE 80
+EXPOSE 443
 
