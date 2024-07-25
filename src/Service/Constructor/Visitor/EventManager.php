@@ -1,23 +1,23 @@
 <?php
 
-namespace App\Service\Constructor\Visitor\Event;
+namespace App\Service\Constructor\Visitor;
 
-use App\Entity\Scenario\Scenario;
 use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
 use App\Enum\VisitorEventStatusEnum;
 use App\Helper\CacheHelper;
 use App\Repository\Visitor\VisitorEventRepository;
-use App\Service\Constructor\Visitor\Scenario\ScenarioService;
+use App\Service\Constructor\Visitor\Event\EventService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 
-readonly class VisitorEventService
+readonly class EventManager
 {
     public function __construct(
         private VisitorEventRepository $visitorEventRepository,
-        private ScenarioService $scenarioService,
+        private ScenarioManager $scenarioService,
         private EntityManagerInterface $entityManager,
+        private EventService $eventService,
     ) {}
 
     /**
@@ -44,8 +44,8 @@ readonly class VisitorEventService
         }
 
         if (null === $visitorEvent) {
-            $scenario = $this->scenarioService->findScenarioByNameAndType($type, $content);
-            $visitorEvent = $this->createEvent($visitorSession, $scenario, $type);
+            $scenario = $this->scenarioService->getScenarioByNameAndType($type, $content);
+            $visitorEvent = $this->eventService->createEvent($visitorSession, $scenario, $type);
             $cache->setEvent(CacheHelper::createCacheEventDto());
         }
 
@@ -63,19 +63,6 @@ readonly class VisitorEventService
         $this->entityManager->flush();
 
         $this->entityManager->refresh($visitorEvent);
-
-        return $visitorEvent;
-    }
-
-    private function createEvent(VisitorSession $visitorSession, Scenario $scenario, string $type): VisitorEvent
-    {
-        $visitorEvent = (new VisitorEvent())
-            ->setType($type)
-            ->setScenarioUUID($scenario->getUUID())
-            ->setSessionId($visitorSession->getId())
-            ->setProjectId($scenario->getProjectId());
-
-        $this->visitorEventRepository->saveAndFlush($visitorEvent);
 
         return $visitorEvent;
     }

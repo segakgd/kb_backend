@@ -30,7 +30,7 @@ class VisitorSession
     private ?int $projectId = null;
 
     #[ORM\Column(type: VisitorSessionCacheDtoArrayType::TYPE_NAME)]
-    private ?CacheDto $cache = null;
+    private ?CacheDto $cache = null; // todo вынести в отдельную таблицу
 
     #[ORM\Column]
     private ?int $botId = null;

@@ -2,36 +2,19 @@
 
 namespace App\Service\Constructor\Visitor\Session;
 
+use App\Entity\User\Bot;
 use App\Entity\Visitor\VisitorSession;
 use App\Helper\CommonHelper;
 use App\Repository\Visitor\VisitorSessionRepository;
 use DateTimeImmutable;
 
-readonly class VisitorSessionService
+readonly class SessionService
 {
     public function __construct(
         private VisitorSessionRepository $visitorSessionRepository,
     ) {}
 
-    public function findAll(int $projectId): array
-    {
-        return $this->visitorSessionRepository->findBy(
-            [
-                'projectId' => $projectId,
-            ]
-        );
-    }
-
-    public function findAllByBotId(int $botId): array
-    {
-        return $this->visitorSessionRepository->findBy(
-            [
-                'botId' => $botId,
-            ]
-        );
-    }
-
-    public function identifyByChannel(int $chatId, int $botId, string $channel): ?VisitorSession
+    public function findByChannel(int $chatId, int $botId, string $channel): ?VisitorSession
     {
         return $this->visitorSessionRepository->findOneBy(
             [
@@ -42,7 +25,16 @@ readonly class VisitorSessionService
         );
     }
 
-    public function createVisitorSession(
+    public function findByBot(Bot $bot): array
+    {
+        return $this->visitorSessionRepository->findBy(
+            [
+                'botId' => $bot->getId(),
+            ]
+        );
+    }
+
+    public function createSession(
         string $visitorName,
         int $chatId,
         int $botId,

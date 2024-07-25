@@ -4,12 +4,11 @@ namespace App\Event;
 
 use App\Entity\User\Bot;
 
-class InitWebhookBotEvent
+readonly class InitWebhookBotEvent
 {
     public function __construct(
-        private readonly Bot $bot
-    ) {
-    }
+        private Bot $bot
+    ) {}
 
     public function getBot(): Bot
     {

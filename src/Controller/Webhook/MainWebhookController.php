@@ -7,8 +7,8 @@ use App\Message\TelegramMessage;
 use App\Repository\User\ProjectRepository;
 use App\Service\Admin\Bot\BotServiceInterface;
 use App\Service\Common\MessageHistoryService;
-use App\Service\Constructor\Visitor\Event\VisitorEventService;
-use App\Service\Constructor\Visitor\Session\VisitorSessionService;
+use App\Service\Constructor\Visitor\EventManager;
+use App\Service\Constructor\Visitor\Session\SessionService;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,8 +22,8 @@ class MainWebhookController extends AbstractController
 {
     public function __construct(
         private readonly SerializerInterface $serializer,
-        private readonly VisitorSessionService $visitorSessionService,
-        private readonly VisitorEventService $visitorEventService,
+        private readonly SessionService $sessionService,
+        private readonly EventManager $visitorEventService,
         private readonly ProjectRepository $projectEntityRepository,
         private readonly BotServiceInterface $botService,
         private readonly MessageHistoryService $messageHistoryService,
@@ -91,10 +91,10 @@ class MainWebhookController extends AbstractController
                 type: MessageHistoryService::OUTGOING,
             );
 
-            $visitorSession = $this->visitorSessionService->identifyByChannel($chatId, $botId, 'telegram');
+            $visitorSession = $this->sessionService->findByChannel($chatId, $botId, 'telegram');
 
             if (!$visitorSession) {
-                $visitorSession = $this->visitorSessionService->createVisitorSession(
+                $visitorSession = $this->sessionService->createSession(
                     visitorName: $visitorName,
                     chatId: $chatId,
                     botId: $botId,

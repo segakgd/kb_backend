@@ -15,7 +15,7 @@ use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Constructor\Core\Dto\BotDto;
 use App\Service\Constructor\Core\EventResolver;
 use App\Service\Constructor\Core\Jumps\JumpResolver;
-use App\Service\Constructor\Visitor\Scenario\ScenarioService;
+use App\Service\Constructor\Visitor\ScenarioManager;
 use App\Service\DtoRepository\ResponsibleDtoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -27,16 +27,16 @@ use Throwable;
 final readonly class TelegramMessageHandler
 {
     public function __construct(
-        private VisitorEventRepository $visitorEventRepository,
-        private EventResolver $eventResolver,
-        private ScenarioService $scenarioService,
+        private VisitorEventRepository   $visitorEventRepository,
+        private EventResolver            $eventResolver,
+        private ScenarioManager          $scenarioService,
         private VisitorSessionRepository $visitorSessionRepository,
-        private BotRepository $botRepository,
-        private EntityManagerInterface $entityManager,
-        private JumpResolver $jumpResolver,
-        private MessageBusInterface $bus,
+        private BotRepository            $botRepository,
+        private EntityManagerInterface   $entityManager,
+        private JumpResolver             $jumpResolver,
+        private MessageBusInterface      $bus,
         private ResponsibleDtoRepository $responsibleDtoRepository,
-        private LoggerInterface $logger,
+        private LoggerInterface          $logger,
     ) {}
 
     /**
@@ -66,7 +66,7 @@ final readonly class TelegramMessageHandler
                     VisitorEventStatusEnum::New === $visitorEvent->getStatus()
                     || VisitorEventStatusEnum::Jumped === $visitorEvent->getStatus()
                 ) {
-                    $scenario = $this->scenarioService->findScenarioByUUID($visitorEvent->getScenarioUUID());
+                    $scenario = $this->scenarioService->getByUuidOrDefault($visitorEvent->getScenarioUUID());
 
                     $cacheDto = $this->enrichContractCache($scenario, $cacheDto);
                 }

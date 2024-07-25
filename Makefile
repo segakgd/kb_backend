@@ -34,3 +34,15 @@ cache-clear:
 # Заходим в контейнер php
 php:
 	docker exec -it php-fpm-local bash
+
+local-up:
+	docker compose -f docker-compose-local.yml up -d
+
+local-build:
+	docker compose -f docker-compose-local.yml build
+
+dev-up:
+	docker compose -f docker-compose.yml up -d
+
+dev-build:
+	docker compose -f docker-compose.yml build
