@@ -8,7 +8,9 @@ use App\Repository\Visitor\VisitorSessionRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
-/** Сессия пользователя */
+/**
+ * Сессия пользователя бота
+ */
 #[ORM\Entity(repositoryClass: VisitorSessionRepository::class)]
 class VisitorSession
 {
