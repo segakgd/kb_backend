@@ -17,8 +17,7 @@ readonly class TelegramService implements TelegramServiceInterface
 {
     public function __construct(
         private HttpClientInterface $httpClient,
-    ) {
-    }
+    ) {}
 
     // todo если ожидать тут бота, то многие проблемы решит это, т.к у бота есть и id проекта и токены
 

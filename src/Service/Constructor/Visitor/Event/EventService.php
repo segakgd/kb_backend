@@ -13,7 +13,7 @@ readonly class EventService
         private VisitorEventRepository $visitorEventRepository,
     ) {}
 
-    public function createEvent(VisitorSession $visitorSession, Scenario $scenario, string $type): VisitorEvent
+    public function create(VisitorSession $visitorSession, Scenario $scenario, string $type): VisitorEvent
     {
         $visitorEvent = (new VisitorEvent())
             ->setType($type)

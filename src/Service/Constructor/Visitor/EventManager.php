@@ -30,22 +30,22 @@ readonly class EventManager
     ): VisitorEvent {
         $cache = $visitorSession->getCache();
 
-        $visitorEvent = $this->visitorEventRepository->getVisitorEventIfExist($visitorSession);
+        $event = $this->visitorEventRepository->getVisitorEventIfExist($visitorSession);
 
-        if ($visitorEvent?->getStatus() === VisitorEventStatusEnum::New) {
-            $visitorEvent->setStatus(VisitorEventStatusEnum::Done);
-            $this->visitorEventRepository->saveAndFlush($visitorEvent);
+        if ($event?->getStatus() === VisitorEventStatusEnum::New) {
+            $event->setStatus(VisitorEventStatusEnum::Done);
+            $this->visitorEventRepository->saveAndFlush($event);
 
-            $visitorEvent = null;
+            $event = null;
         }
 
-        if ($visitorEvent?->getStatus() === VisitorEventStatusEnum::Done) {
-            $visitorEvent = null;
+        if ($event?->getStatus() === VisitorEventStatusEnum::Done) {
+            $event = null;
         }
 
-        if (null === $visitorEvent) {
+        if (null === $event) {
             $scenario = $this->scenarioService->getScenarioByNameAndType($type, $content);
-            $visitorEvent = $this->eventService->createEvent($visitorSession, $scenario, $type);
+            $event = $this->eventService->create($visitorSession, $scenario, $type);
             $cache->setEvent(CacheHelper::createCacheEventDto());
         }
 
@@ -53,17 +53,17 @@ readonly class EventManager
 
         $visitorSession->setCache($cache);
 
-        if ($visitorEvent->getStatus() === VisitorEventStatusEnum::Waiting) {
-            $visitorEvent->setStatus(VisitorEventStatusEnum::Repeat);
+        if ($event->getStatus() === VisitorEventStatusEnum::Waiting) {
+            $event->setStatus(VisitorEventStatusEnum::Repeat);
 
-            $this->entityManager->persist($visitorEvent);
+            $this->entityManager->persist($event);
         }
 
         $this->entityManager->persist($visitorSession);
         $this->entityManager->flush();
 
-        $this->entityManager->refresh($visitorEvent);
+        $this->entityManager->refresh($event);
 
-        return $visitorEvent;
+        return $event;
     }
 }
