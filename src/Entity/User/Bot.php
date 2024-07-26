@@ -2,7 +2,10 @@
 
 namespace App\Entity\User;
 
+use App\Entity\Visitor\VisitorSession;
 use App\Repository\User\BotRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BotRepository::class)]
@@ -30,6 +33,17 @@ class Bot
 
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $webhookUri = null;
+
+    /**
+     * @var Collection<int, VisitorSession>
+     */
+    #[ORM\OneToMany(mappedBy: 'bot', targetEntity: VisitorSession::class)]
+    private Collection $visitorSessions;
+
+    public function __construct()
+    {
+        $this->visitorSessions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -104,6 +118,36 @@ class Bot
     public function setWebhookUri(string $webhookUri): static
     {
         $this->webhookUri = $webhookUri;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, VisitorSession>
+     */
+    public function getVisitorSessions(): Collection
+    {
+        return $this->visitorSessions;
+    }
+
+    public function addVisitorSession(VisitorSession $visitorSession): static
+    {
+        if (!$this->visitorSessions->contains($visitorSession)) {
+            $this->visitorSessions->add($visitorSession);
+            $visitorSession->setBot($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVisitorSession(VisitorSession $visitorSession): static
+    {
+        if ($this->visitorSessions->removeElement($visitorSession)) {
+            // set the owning side to null (unless already changed)
+            if ($visitorSession->getBot() === $this) {
+                $visitorSession->setBot(null);
+            }
+        }
 
         return $this;
     }

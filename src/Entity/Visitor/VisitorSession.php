@@ -4,6 +4,7 @@ namespace App\Entity\Visitor;
 
 use App\Doctrine\Types\VisitorSessionCacheDtoArrayType;
 use App\Dto\SessionCache\Cache\CacheDto;
+use App\Entity\User\Bot;
 use App\Repository\Visitor\VisitorSessionRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
@@ -39,6 +40,9 @@ class VisitorSession
 
     #[ORM\Column]
     private ?int $chatId = null;
+
+    #[ORM\ManyToOne(inversedBy: 'visitorSessions')]
+    private ?Bot $bot = null;
 
     public function __construct()
     {
@@ -143,6 +147,18 @@ class VisitorSession
     public function setChatId(int $chatId): static
     {
         $this->chatId = $chatId;
+
+        return $this;
+    }
+
+    public function getBot(): ?Bot
+    {
+        return $this->bot;
+    }
+
+    public function setBot(?Bot $bot): static
+    {
+        $this->bot = $bot;
 
         return $this;
     }
