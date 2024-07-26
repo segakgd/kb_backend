@@ -28,7 +28,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     response: Response::HTTP_NO_CONTENT,
     description: 'Создание проекта',
 )]
-class CreateAbstractController extends GeneralAbstractController
+class CreateController extends GeneralAbstractController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,

@@ -24,7 +24,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
     response: Response::HTTP_NO_CONTENT,
     description: 'Обновить сценарий',
 )]
-class UpdateAbstractController extends GeneralAbstractController
+class UpdateController extends GeneralAbstractController
 {
     #[Route('/api/admin/project/{project}/scenario/{scenario}/', name: 'admin_scenario_update', methods: ['PATCH'])]
     #[IsGranted('existUser', 'project')]

@@ -31,7 +31,7 @@ use Throwable;
     response: Response::HTTP_NO_CONTENT,
     description: 'Обновляет категорию продукта',
 )]
-class UpdateAbstractController extends GeneralAbstractController
+class UpdateController extends GeneralAbstractController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,

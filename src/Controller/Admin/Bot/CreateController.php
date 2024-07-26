@@ -1,13 +1,12 @@
 <?php
 
-declare(strict_types=1);
+namespace App\Controller\Admin\Bot;
 
-namespace App\Controller\Admin\ProductCategory;
-
-use App\Controller\Admin\ProductCategory\DTO\Request\ProductCategoryReqDto;
+use App\Controller\Admin\Bot\DTO\Request\BotReqDto;
+use App\Controller\Admin\Bot\Response\BotCreateResponse;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\Project;
-use App\Service\Admin\Ecommerce\ProductCategory\Manager\ProductCategoryManagerInterface;
+use App\Service\Admin\Bot\BotServiceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,22 +18,22 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Throwable;
 
-#[OA\Tag(name: 'ProductCategoryChain')]
+#[OA\Tag(name: 'Bot')]
 #[OA\RequestBody(
     content: new Model(
-        type: ProductCategoryReqDto::class,
+        type: BotReqDto::class,
     )
 )]
 #[OA\Response(
     response: Response::HTTP_NO_CONTENT,
-    description: 'Возвращает созданную категорию',
+    description: 'Возвращает 204 при создании',
 )]
-class CreateAbstractController extends GeneralAbstractController
+class CreateController extends GeneralAbstractController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,
         private readonly SerializerInterface $serializer,
-        private readonly ProductCategoryManagerInterface $productCategoryManager,
+        private readonly BotServiceInterface $botService,
     ) {
         parent::__construct(
             $this->serializer,
@@ -42,17 +41,19 @@ class CreateAbstractController extends GeneralAbstractController
         );
     }
 
-    /** Создание категории продуктов */
-    #[Route('/api/admin/project/{project}/productCategory/', name: 'admin_product_category_create', methods: ['POST'])]
+    /** Создание бота */
+    #[Route('/api/admin/project/{project}/bot/', name: 'admin_bot_add', methods: ['POST'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project): JsonResponse
     {
         try {
-            $requestDto = $this->getValidDtoFromRequest($request, ProductCategoryReqDto::class);
+            $requestDto = $this->getValidDtoFromRequest($request, BotReqDto::class);
 
-            $this->productCategoryManager->create($requestDto, $project);
+            $bot = $this->botService->add($requestDto, $project->getId());
 
-            return $this->json([], Response::HTTP_NO_CONTENT);
+            return $this->json(
+                (new BotCreateResponse())->mapToResponse($bot)
+            );
         } catch (Throwable $exception) {
             return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }

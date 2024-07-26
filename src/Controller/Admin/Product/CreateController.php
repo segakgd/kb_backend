@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Controller\Admin\Bot;
+declare(strict_types=1);
 
-use App\Controller\Admin\Bot\DTO\Request\InitBotReqDto;
+namespace App\Controller\Admin\Product;
+
+use App\Controller\Admin\Product\DTO\Request\ProductReqDto;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\Project;
-use App\Service\Admin\Bot\BotServiceInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Exception;
+use App\Service\Admin\Ecommerce\Product\Manager\ProductManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -18,22 +19,22 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Throwable;
 
-#[OA\Tag(name: 'Bot')]
+#[OA\Tag(name: 'Product')]
 #[OA\RequestBody(
     content: new Model(
-        type: InitBotReqDto::class,
+        type: ProductReqDto::class,
     )
 )]
 #[OA\Response(
     response: Response::HTTP_NO_CONTENT,
     description: 'Возвращает 204 при создании',
 )]
-class InitAbstractController extends GeneralAbstractController
+class CreateController extends GeneralAbstractController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,
         private readonly SerializerInterface $serializer,
-        private readonly BotServiceInterface $botService,
+        private readonly ProductManagerInterface $productManager,
     ) {
         parent::__construct(
             $this->serializer,
@@ -41,23 +42,17 @@ class InitAbstractController extends GeneralAbstractController
         );
     }
 
-    /**
-     * @throws Exception
-     */
-    /** Инициализация бота */
-    #[Route('/api/admin/project/{project}/bot/{botId}/init/', name: 'admin_bot_init', methods: ['POST'])]
+    /** Создание продукта */
+    #[Route('/api/admin/project/{project}/product/', name: 'admin_product_create', methods: ['POST'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Request $request, Project $project, int $botId): JsonResponse
+    public function execute(Request $request, Project $project): JsonResponse
     {
         try {
-            $requestDto = $this->getValidDtoFromRequest($request, InitBotReqDto::class);
+            $requestDto = $this->getValidDtoFromRequest($request, ProductReqDto::class);
 
-            $this->botService->init($requestDto, $botId, $project->getId());
+            $this->productManager->create($requestDto, $project);
 
-            return new JsonResponse(
-                [],
-                Response::HTTP_NO_CONTENT
-            );
+            return $this->json([], Response::HTTP_NO_CONTENT);
         } catch (Throwable $exception) {
             return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }

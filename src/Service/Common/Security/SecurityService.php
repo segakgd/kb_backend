@@ -52,7 +52,7 @@ readonly class SecurityService
     /**
      * @throws Exception
      */
-    public function createUser(UserDto $userDto, ?string $userRole): User
+    public function createUser(UserDto $userDto, ?string $userRole = null): User
     {
         if ($this->userRepository->isUserExists($userDto->getEmail())) {
             throw new UserExistException('User exists with email: ' . $userDto->getEmail());

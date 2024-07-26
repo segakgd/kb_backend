@@ -1,13 +1,12 @@
 <?php
 
-declare(strict_types=1);
+namespace App\Controller\Admin\Scenario;
 
-namespace App\Controller\Admin\Lead;
-
-use App\Controller\Admin\Lead\DTO\Request\LeadReqDto;
+use App\Controller\Admin\Scenario\DTO\Request\ScenarioReqDto;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\Project;
-use App\Service\Admin\Lead\LeadManager;
+use App\Service\Admin\Scenario\ScenarioTemplateService;
+use Exception;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,24 +16,23 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Throwable;
 
-#[OA\Tag(name: 'Lead')]
+#[OA\Tag(name: 'Scenario')]
 #[OA\RequestBody(
-    description: 'Создание лида', content: new Model(
-        type: LeadReqDto::class,
+    content: new Model(
+        type: ScenarioReqDto::class,
     )
 )]
 #[OA\Response(
     response: Response::HTTP_NO_CONTENT,
-    description: 'Возвращает 204 при создании',
+    description: 'Создание сценария',
 )]
-class CreateAbstractController extends GeneralAbstractController
+class CreateController extends GeneralAbstractController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,
         private readonly SerializerInterface $serializer,
-        private readonly LeadManager $leadManager,
+        private readonly ScenarioTemplateService $scenarioTemplateService,
     ) {
         parent::__construct(
             $this->serializer,
@@ -43,20 +41,16 @@ class CreateAbstractController extends GeneralAbstractController
     }
 
     /**
-     * Создание лида
+     * @throws Exception
      */
-    #[Route('/api/admin/project/{project}/lead/', name: 'admin_lead_create', methods: ['POST'])]
+    #[Route('/api/admin/project/{project}/scenario/', name: 'admin_scenario_create', methods: ['POST'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project): JsonResponse
     {
-        try {
-            $requestDto = $this->getValidDtoFromRequest($request, LeadReqDto::class);
+        $requestDto = $this->getValidDtoFromRequest($request, ScenarioReqDto::class);
 
-            $this->leadManager->create($requestDto, $project);
+        $this->scenarioTemplateService->create($requestDto, $project->getId());
 
-            return $this->json([], Response::HTTP_NO_CONTENT);
-        } catch (Throwable $exception) {
-            return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
-        }
+        return new JsonResponse('', Response::HTTP_NO_CONTENT);
     }
 }

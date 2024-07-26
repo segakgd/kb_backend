@@ -1,15 +1,12 @@
 <?php
 
-declare(strict_types=1);
+namespace App\Controller\Admin\Bot;
 
-namespace App\Controller\Admin\Product;
-
-use App\Controller\Admin\Product\DTO\Request\ProductReqDto;
-use App\Controller\Admin\Product\Exception\NotFoundProductForProjectException;
+use App\Controller\Admin\Bot\DTO\Request\InitBotReqDto;
 use App\Controller\GeneralAbstractController;
-use App\Entity\Ecommerce\Product;
 use App\Entity\User\Project;
-use App\Service\Admin\Ecommerce\Product\Manager\ProductManagerInterface;
+use App\Service\Admin\Bot\BotServiceInterface;
+use Exception;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,22 +18,22 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Throwable;
 
-#[OA\Tag(name: 'Product')]
+#[OA\Tag(name: 'Bot')]
 #[OA\RequestBody(
     content: new Model(
-        type: ProductReqDto::class,
+        type: InitBotReqDto::class,
     )
 )]
 #[OA\Response(
     response: Response::HTTP_NO_CONTENT,
     description: 'Возвращает 204 при создании',
 )]
-class UpdateAbstractController extends GeneralAbstractController
+class InitController extends GeneralAbstractController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,
         private readonly SerializerInterface $serializer,
-        private readonly ProductManagerInterface $productManager,
+        private readonly BotServiceInterface $botService,
     ) {
         parent::__construct(
             $this->serializer,
@@ -44,21 +41,23 @@ class UpdateAbstractController extends GeneralAbstractController
         );
     }
 
-    /** Обновление одного продукта */
-    #[Route('/api/admin/project/{project}/product/{product}/', name: 'admin_product_update', methods: ['PATCH'])]
+    /**
+     * @throws Exception
+     */
+    /** Инициализация бота */
+    #[Route('/api/admin/project/{project}/bot/{botId}/init/', name: 'admin_bot_init', methods: ['POST'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Request $request, Project $project, Product $product): JsonResponse
+    public function execute(Request $request, Project $project, int $botId): JsonResponse
     {
         try {
-            if ($product->getProjectId() !== $project->getId()) {
-                throw new NotFoundProductForProjectException();
-            }
+            $requestDto = $this->getValidDtoFromRequest($request, InitBotReqDto::class);
 
-            $requestDto = $this->getValidDtoFromRequest($request, ProductReqDto::class);
+            $this->botService->init($requestDto, $botId, $project->getId());
 
-            $this->productManager->update($requestDto, $product, $project);
-
-            return $this->json([], Response::HTTP_NO_CONTENT);
+            return new JsonResponse(
+                [],
+                Response::HTTP_NO_CONTENT
+            );
         } catch (Throwable $exception) {
             return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }

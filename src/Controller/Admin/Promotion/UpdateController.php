@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin\Shipping;
+namespace App\Controller\Admin\Promotion;
 
-use App\Controller\Admin\Shipping\DTO\Request\ShippingReqDto;
-use App\Controller\Admin\Shipping\Exception\NotFoundShippingForProjectException;
+use App\Controller\Admin\Promotion\DTO\Request\PromotionReqDto;
+use App\Controller\Admin\Promotion\Exception\NotFoundPromotionForProjectException;
 use App\Controller\GeneralAbstractController;
-use App\Entity\Ecommerce\Shipping;
+use App\Entity\Ecommerce\Promotion;
 use App\Entity\User\Project;
-use App\Service\Admin\Ecommerce\Shipping\Manager\ShippingManagerInterface;
+use App\Service\Admin\Ecommerce\Promotion\Manager\PromotionManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Psr\Log\LoggerInterface;
@@ -22,22 +22,22 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Throwable;
 
-#[OA\Tag(name: 'Shipping')]
+#[OA\Tag(name: 'Promotion')]
 #[OA\RequestBody(
     content: new Model(
-        type: ShippingReqDto::class,
+        type: PromotionReqDto::class,
     )
 )]
 #[OA\Response(
     response: Response::HTTP_NO_CONTENT,
-    description: 'Обновление доставки проекта',
+    description: 'Обновление скидок',
 )]
-class UpdateAbstractController extends GeneralAbstractController
+class UpdateController extends GeneralAbstractController
 {
     public function __construct(
         private readonly SerializerInterface $serializer,
         private readonly ValidatorInterface $validator,
-        private readonly ShippingManagerInterface $shippingManager,
+        private readonly PromotionManagerInterface $promotionManager,
         private readonly LoggerInterface $logger,
     ) {
         parent::__construct(
@@ -46,23 +46,22 @@ class UpdateAbstractController extends GeneralAbstractController
         );
     }
 
-    /** Обновление доставки */
-    #[Route('/api/admin/project/{project}/shipping/{shipping}/', name: 'admin_shipping_update', methods: ['PATCH'])]
+    #[Route('/api/admin/project/{project}/promotion/{promotion}/', name: 'admin_promotion_update', methods: ['PATCH'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Request $request, ?Project $project, Shipping $shipping): JsonResponse
+    public function execute(Request $request, Project $project, Promotion $promotion): JsonResponse
     {
         try {
-            if ($project->getId() !== $shipping->getProjectId()) {
-                throw new NotFoundShippingForProjectException();
+            if ($promotion->getProjectId() !== $project->getId()) {
+                throw new NotFoundPromotionForProjectException();
             }
 
-            $shippingDto = $this->getValidDtoFromRequest($request, ShippingReqDto::class);
+            $requestDto = $this->getValidDtoFromRequest($request, PromotionReqDto::class);
 
-            $this->shippingManager->update($shippingDto, $shipping, $project);
+            $this->promotionManager->update($requestDto, $promotion, $project);
         } catch (Throwable $exception) {
             $this->logger->error($exception->getMessage());
 
-            return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
+            return $this->json(['message' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
         return $this->json([], Response::HTTP_NO_CONTENT);

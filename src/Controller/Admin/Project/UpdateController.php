@@ -29,7 +29,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     response: Response::HTTP_NO_CONTENT,
     description: 'Обновление проекта',
 )]
-class UpdateAbstractController extends GeneralAbstractController
+class UpdateController extends GeneralAbstractController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,

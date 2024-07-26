@@ -9,18 +9,18 @@ use App\Controller\Admin\Bot\Response\BotViewAllResponse;
 use App\Entity\User\Project;
 use App\Service\Admin\Bot\BotServiceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
-use OpenApi\Attributes as OA;
 use Throwable;
 
 #[OA\Response(
     response: Response::HTTP_OK,
-    description: 'Получение колекции ботов',
+    description: 'Получение коллекции ботов',
     content: new OA\JsonContent(
         type: 'array',
         items: new OA\Items(
@@ -36,8 +36,7 @@ class ViewAllController extends AbstractController
     public function __construct(
         private readonly SerializerInterface $serializer,
         private readonly BotServiceInterface $botService,
-    ) {
-    }
+    ) {}
 
     #[Route('/api/admin/project/{project}/bot/', name: 'admin_bot_get_all', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]

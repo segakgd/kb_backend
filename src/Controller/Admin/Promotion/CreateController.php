@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Promotion;
 
 use App\Controller\Admin\Promotion\DTO\Request\PromotionReqDto;
-use App\Controller\Admin\Promotion\Exception\NotFoundPromotionForProjectException;
 use App\Controller\GeneralAbstractController;
-use App\Entity\Ecommerce\Promotion;
 use App\Entity\User\Project;
 use App\Service\Admin\Ecommerce\Promotion\Manager\PromotionManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -30,13 +28,13 @@ use Throwable;
 )]
 #[OA\Response(
     response: Response::HTTP_NO_CONTENT,
-    description: 'Обновление скидок',
+    description: 'Создания скидки',
 )]
-class UpdateAbstractController extends GeneralAbstractController
+class CreateController extends GeneralAbstractController
 {
     public function __construct(
-        private readonly SerializerInterface $serializer,
         private readonly ValidatorInterface $validator,
+        private readonly SerializerInterface $serializer,
         private readonly PromotionManagerInterface $promotionManager,
         private readonly LoggerInterface $logger,
     ) {
@@ -46,18 +44,14 @@ class UpdateAbstractController extends GeneralAbstractController
         );
     }
 
-    #[Route('/api/admin/project/{project}/promotion/{promotion}/', name: 'admin_promotion_update', methods: ['PATCH'])]
+    #[Route('/api/admin/project/{project}/promotion/', name: 'admin_promotion_create', methods: ['POST'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Request $request, Project $project, Promotion $promotion): JsonResponse
+    public function execute(Request $request, Project $project): JsonResponse
     {
         try {
-            if ($promotion->getProjectId() !== $project->getId()) {
-                throw new NotFoundPromotionForProjectException();
-            }
-
             $requestDto = $this->getValidDtoFromRequest($request, PromotionReqDto::class);
 
-            $this->promotionManager->update($requestDto, $promotion, $project);
+            $this->promotionManager->create($requestDto, $project);
         } catch (Throwable $exception) {
             $this->logger->error($exception->getMessage());
 

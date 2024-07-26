@@ -31,7 +31,6 @@ use Throwable;
 )]
 class UpdateAbstractController extends GeneralAbstractController
 {
-
     public function __construct(
         private readonly ValidatorInterface $validator,
         private readonly SerializerInterface $serializer,
@@ -62,5 +61,4 @@ class UpdateAbstractController extends GeneralAbstractController
             return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
     }
-
 }

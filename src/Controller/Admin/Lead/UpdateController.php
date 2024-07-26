@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin\Product;
+namespace App\Controller\Admin\Lead;
 
-use App\Controller\Admin\Product\DTO\Request\ProductReqDto;
+use App\Controller\Admin\Lead\DTO\Request\LeadReqDto;
+use App\Controller\Admin\Lead\Exception\NotFoundLeadForProjectException;
 use App\Controller\GeneralAbstractController;
+use App\Entity\Lead\Deal;
 use App\Entity\User\Project;
-use App\Service\Admin\Ecommerce\Product\Manager\ProductManagerInterface;
+use App\Service\Admin\Lead\LeadManager;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,22 +21,22 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Throwable;
 
-#[OA\Tag(name: 'Product')]
+#[OA\Tag(name: 'Lead')]
 #[OA\RequestBody(
     content: new Model(
-        type: ProductReqDto::class,
+        type: LeadReqDto::class,
     )
 )]
 #[OA\Response(
     response: Response::HTTP_NO_CONTENT,
     description: 'Возвращает 204 при создании',
 )]
-class CreateAbstractController extends GeneralAbstractController
+class UpdateController extends GeneralAbstractController
 {
     public function __construct(
-        private readonly ValidatorInterface $validator,
+        private readonly LeadManager $leadManager,
         private readonly SerializerInterface $serializer,
-        private readonly ProductManagerInterface $productManager,
+        private readonly ValidatorInterface $validator
     ) {
         parent::__construct(
             $this->serializer,
@@ -42,15 +44,20 @@ class CreateAbstractController extends GeneralAbstractController
         );
     }
 
-    /** Создание продукта */
-    #[Route('/api/admin/project/{project}/product/', name: 'admin_product_create', methods: ['POST'])]
+    /** Обновление лида */
+    #[OA\Tag(name: 'Lead')]
+    #[Route('/api/admin/project/{project}/lead/{lead}/', name: 'admin_lead_update', methods: ['PATCH'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Request $request, Project $project): JsonResponse
+    public function execute(Request $request, Project $project, Deal $lead): JsonResponse
     {
         try {
-            $requestDto = $this->getValidDtoFromRequest($request, ProductReqDto::class);
+            if ($project->getId() !== $lead->getProjectId()) {
+                throw new NotFoundLeadForProjectException();
+            }
 
-            $this->productManager->create($requestDto, $project);
+            $requestDto = $this->getValidDtoFromRequest($request, LeadReqDto::class);
+
+            $this->leadManager->update($requestDto, $lead, $project);
 
             return $this->json([], Response::HTTP_NO_CONTENT);
         } catch (Throwable $exception) {

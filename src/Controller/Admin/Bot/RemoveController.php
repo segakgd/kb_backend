@@ -21,8 +21,7 @@ class RemoveController extends AbstractController
 {
     public function __construct(
         private readonly BotServiceInterface $botService,
-    ) {
-    }
+    ) {}
 
     /** Удаление бота */
     #[Route('/api/admin/project/{project}/bot/{botId}/', name: 'admin_bot_remove', methods: ['DELETE'])]

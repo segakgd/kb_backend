@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin\Lead;
+namespace App\Controller\Admin\Product;
 
-use App\Controller\Admin\Lead\DTO\Request\LeadReqDto;
-use App\Controller\Admin\Lead\Exception\NotFoundLeadForProjectException;
+use App\Controller\Admin\Product\DTO\Request\ProductReqDto;
+use App\Controller\Admin\Product\Exception\NotFoundProductForProjectException;
 use App\Controller\GeneralAbstractController;
-use App\Entity\Lead\Deal;
+use App\Entity\Ecommerce\Product;
 use App\Entity\User\Project;
-use App\Service\Admin\Lead\LeadManager;
+use App\Service\Admin\Ecommerce\Product\Manager\ProductManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,22 +21,22 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Throwable;
 
-#[OA\Tag(name: 'Lead')]
+#[OA\Tag(name: 'Product')]
 #[OA\RequestBody(
     content: new Model(
-        type: LeadReqDto::class,
+        type: ProductReqDto::class,
     )
 )]
 #[OA\Response(
     response: Response::HTTP_NO_CONTENT,
     description: 'Возвращает 204 при создании',
 )]
-class UpdateAbstractController extends GeneralAbstractController
+class UpdateController extends GeneralAbstractController
 {
     public function __construct(
-        private readonly LeadManager $leadManager,
+        private readonly ValidatorInterface $validator,
         private readonly SerializerInterface $serializer,
-        private readonly ValidatorInterface $validator
+        private readonly ProductManagerInterface $productManager,
     ) {
         parent::__construct(
             $this->serializer,
@@ -44,20 +44,19 @@ class UpdateAbstractController extends GeneralAbstractController
         );
     }
 
-    /** Обновление лида */
-    #[OA\Tag(name: 'Lead')]
-    #[Route('/api/admin/project/{project}/lead/{lead}/', name: 'admin_lead_update', methods: ['PATCH'])]
+    /** Обновление одного продукта */
+    #[Route('/api/admin/project/{project}/product/{product}/', name: 'admin_product_update', methods: ['PATCH'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Request $request, Project $project, Deal $lead): JsonResponse
+    public function execute(Request $request, Project $project, Product $product): JsonResponse
     {
         try {
-            if ($project->getId() !== $lead->getProjectId()) {
-                throw new NotFoundLeadForProjectException();
+            if ($product->getProjectId() !== $project->getId()) {
+                throw new NotFoundProductForProjectException();
             }
 
-            $requestDto = $this->getValidDtoFromRequest($request, LeadReqDto::class);
+            $requestDto = $this->getValidDtoFromRequest($request, ProductReqDto::class);
 
-            $this->leadManager->update($requestDto, $lead, $project);
+            $this->productManager->update($requestDto, $product, $project);
 
             return $this->json([], Response::HTTP_NO_CONTENT);
         } catch (Throwable $exception) {
