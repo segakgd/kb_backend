@@ -110,16 +110,18 @@ class EventsDashboardController extends AbstractController
             throw new Exception('Не активный бот');
         }
 
+        $bot = $this->botService->findOne($botId, $project->getId());
+
         $chatId = $webhookData->getWebhookChatId();
         $visitorName = $webhookData->getVisitorName();
 
-        $visitorSession = $this->sessionService->findByChannel($chatId, $botId, 'telegram');
+        $visitorSession = $this->sessionService->findByChannel($chatId, $bot->getId(), 'telegram');
 
         if (null === $visitorSession) {
             $visitorSession = $this->sessionService->createSession(
                 visitorName: $visitorName,
                 chatId: $chatId,
-                botId: $botId,
+                bot: $bot,
                 chanel: 'telegram',
                 projectId: $project->getId(),
             );

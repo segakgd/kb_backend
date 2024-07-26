@@ -37,7 +37,7 @@ readonly class SessionService
     public function createSession(
         string $visitorName,
         int $chatId,
-        int $botId,
+        Bot $bot,
         string $chanel,
         int $projectId,
     ): VisitorSession {
@@ -47,7 +47,7 @@ readonly class SessionService
             ->setName($visitorName)
             ->setChannel($chanel)
             ->setChatId($chatId)
-            ->setBotId($botId)
+            ->setBot($bot)
             ->setProjectId($projectId)
             ->setCache($cacheDto)
             ->setCreatedAt(new DateTimeImmutable());

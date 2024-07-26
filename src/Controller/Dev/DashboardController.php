@@ -97,7 +97,7 @@ class DashboardController extends AbstractController
             'admin/session.html.twig',
             [
                 'projectId' => $project->getId(),
-                'botId'     => $visitorSession->getBotId(),
+                'botId'     => $visitorSession->getBot()->getId(),
                 'messages'  => $this->dashboardService->getMessageHistory(),
                 'events'    => $this->dashboardService->prepareEvents($visitorSession),
             ]

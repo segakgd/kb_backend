@@ -9,7 +9,6 @@ use App\Entity\Visitor\VisitorSession;
 use App\Enum\VisitorEventStatusEnum;
 use App\Helper\CommonHelper;
 use App\Message\TelegramMessage;
-use App\Repository\User\BotRepository;
 use App\Repository\Visitor\VisitorEventRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Constructor\Core\Dto\BotDto;
@@ -27,16 +26,15 @@ use Throwable;
 final readonly class TelegramMessageHandler
 {
     public function __construct(
-        private VisitorEventRepository   $visitorEventRepository,
-        private EventResolver            $eventResolver,
-        private ScenarioManager          $scenarioService,
+        private VisitorEventRepository $visitorEventRepository,
+        private EventResolver $eventResolver,
+        private ScenarioManager $scenarioService,
         private VisitorSessionRepository $visitorSessionRepository,
-        private BotRepository            $botRepository,
-        private EntityManagerInterface   $entityManager,
-        private JumpResolver             $jumpResolver,
-        private MessageBusInterface      $bus,
+        private EntityManagerInterface $entityManager,
+        private JumpResolver $jumpResolver,
+        private MessageBusInterface $bus,
         private ResponsibleDtoRepository $responsibleDtoRepository,
-        private LoggerInterface          $logger,
+        private LoggerInterface $logger,
     ) {}
 
     /**
@@ -126,7 +124,7 @@ final readonly class TelegramMessageHandler
 
     private function createBotBto(VisitorSession $visitorSession): BotDto
     {
-        $bot = $this->botRepository->find($visitorSession->getBotId());
+        $bot = $visitorSession->getBot();
 
         return (new BotDto())
             ->setType($bot->getType())

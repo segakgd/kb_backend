@@ -36,9 +36,6 @@ class VisitorSession
     private ?CacheDto $cache = null; // todo вынести в отдельную таблицу
 
     #[ORM\Column]
-    private ?int $botId = null;
-
-    #[ORM\Column]
     private ?int $chatId = null;
 
     #[ORM\ManyToOne(inversedBy: 'visitorSessions')]
@@ -125,18 +122,6 @@ class VisitorSession
     public function getCacheStatusEvent(): ?string
     {
         return $this->cache['event']['status'] ?? null;
-    }
-
-    public function getBotId(): ?int
-    {
-        return $this->botId;
-    }
-
-    public function setBotId(int $botId): static
-    {
-        $this->botId = $botId;
-
-        return $this;
     }
 
     public function getChatId(): ?int
