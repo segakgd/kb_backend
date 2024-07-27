@@ -28,7 +28,7 @@ readonly class EventManager
         string $type,
         string $content,
     ): VisitorEvent {
-        $cache = $visitorSession->getCache();
+        $cache = $visitorSession->getCacheDto();
 
         $event = $this->visitorEventRepository->getVisitorEventIfExist($visitorSession);
 
@@ -51,7 +51,7 @@ readonly class EventManager
 
         $cache->setContent($content);
 
-        $visitorSession->setCache($cache);
+        $visitorSession->setCacheDto($cache);
 
         if ($event->getStatus() === VisitorEventStatusEnum::Waiting) {
             $event->setStatus(VisitorEventStatusEnum::Repeat);

@@ -49,7 +49,7 @@ readonly class SessionService
             ->setChatId($chatId)
             ->setBot($bot)
             ->setProjectId($projectId)
-            ->setCache($cacheDto)
+            ->setCacheDto($cacheDto)
             ->setCreatedAt(new DateTimeImmutable());
 
         $this->visitorSessionRepository->save($visitorSession);

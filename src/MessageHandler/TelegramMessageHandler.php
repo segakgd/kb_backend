@@ -58,7 +58,7 @@ final readonly class TelegramMessageHandler
             try {
                 $visitorSession = $this->visitorSessionRepository->find($visitorEvent->getSessionId());
 
-                $cacheDto = $visitorSession->getCache();
+                $cacheDto = $visitorSession->getCacheDto();
 
                 if (
                     VisitorEventStatusEnum::New === $visitorEvent->getStatus()
@@ -85,7 +85,7 @@ final readonly class TelegramMessageHandler
                     );
                 }
 
-                $visitorSession->setCache($responsible->getCacheDto());
+                $visitorSession->setCacheDto($responsible->getCacheDto());
 
                 $visitorEvent->setStatus($responsible->getStatus());
 

@@ -4,6 +4,7 @@ namespace App\Entity\Visitor;
 
 use App\Doctrine\Types\VisitorSessionCacheDtoArrayType;
 use App\Dto\SessionCache\Cache\CacheDto;
+use App\Entity\SessionCache;
 use App\Entity\User\Bot;
 use App\Repository\Visitor\VisitorSessionRepository;
 use DateTimeImmutable;
@@ -33,13 +34,16 @@ class VisitorSession
     private ?int $projectId = null;
 
     #[ORM\Column(type: VisitorSessionCacheDtoArrayType::TYPE_NAME)]
-    private ?CacheDto $cache = null; // todo вынести в отдельную таблицу
+    private ?CacheDto $cacheDto = null; // todo вынести в отдельную таблицу
 
     #[ORM\Column]
     private ?int $chatId = null;
 
     #[ORM\ManyToOne(inversedBy: 'visitorSessions')]
     private ?Bot $bot = null;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?SessionCache $cache = null;
 
     public function __construct()
     {
@@ -101,27 +105,16 @@ class VisitorSession
         return $this;
     }
 
-    public function getCache(): CacheDto
+    public function getCacheDto(): CacheDto
     {
-        return $this->cache;
+        return $this->cacheDto;
     }
 
-    public function setCache(CacheDto $cache): static
+    public function setCacheDto(CacheDto $cacheDto): static
     {
-        // clone потому что используем дто тип в ентити
-        $this->cache = clone $cache;
+        $this->cacheDto = clone $cacheDto;
 
         return $this;
-    }
-
-    public function getCacheContent(): ?string
-    {
-        return $this->cache['content'] ?? null;
-    }
-
-    public function getCacheStatusEvent(): ?string
-    {
-        return $this->cache['event']['status'] ?? null;
     }
 
     public function getChatId(): ?int
@@ -144,6 +137,18 @@ class VisitorSession
     public function setBot(?Bot $bot): static
     {
         $this->bot = $bot;
+
+        return $this;
+    }
+
+    public function getCache(): ?SessionCache
+    {
+        return $this->cache;
+    }
+
+    public function setCache(?SessionCache $cache): static
+    {
+        $this->cache = $cache;
 
         return $this;
     }
