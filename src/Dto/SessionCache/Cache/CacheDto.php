@@ -7,8 +7,6 @@ use App\Helper\CacheHelper;
 
 class CacheDto extends AbstractDto
 {
-    private ?string $eventUUID = null;
-
     private ?string $content = null;
 
     private ?CacheCartDto $cart = null;
@@ -24,20 +22,6 @@ class CacheDto extends AbstractDto
         if (!$this->event) {
             $this->event = new CacheEventDto();
         }
-    }
-
-    /** @deprecated  */
-    public function getEventUUID(): ?string
-    {
-        return $this->eventUUID;
-    }
-
-    /** @deprecated  */
-    public function setEventUUID(?string $eventUUID): static
-    {
-        $this->eventUUID = $eventUUID;
-
-        return $this;
     }
 
     public function getContent(): ?string
@@ -87,10 +71,6 @@ class CacheDto extends AbstractDto
     {
         $cacheDto = new static();
 
-        if (isset($data['eventUUID'])) {
-            $cacheDto->eventUUID = $data['eventUUID'];
-        }
-
         if (isset($data['cart'])) {
             $cacheDto->cart = CacheCartDto::fromArray($data['cart']);
         }
@@ -110,7 +90,6 @@ class CacheDto extends AbstractDto
     {
         $data = [];
 
-        $data['eventUUID'] = $this->eventUUID;
         $data['cart'] = $this->cart->toArray();
         $data['event'] = $this->event->toArray();
         $data['content'] = $this->content;

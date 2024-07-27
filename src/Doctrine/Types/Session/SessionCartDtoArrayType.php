@@ -1,19 +1,16 @@
 <?php
 
-namespace App\Doctrine\Types;
+namespace App\Doctrine\Types\Session;
 
-use App\Dto\SessionCache\Cache\CacheDto;
+use App\Dto\SessionCache\Cache\CacheCartDto;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\JsonType;
 
-/**
- * @deprecated
- */
-class VisitorSessionCacheDtoArrayType extends JsonType
+class SessionCartDtoArrayType extends JsonType
 {
-    public const TYPE_NAME = 'visitor_session_cache_dto_array';
+    public const TYPE_NAME = 'session_cart_dto_array';
 
-    public function convertToPHPValue($value, AbstractPlatform $platform): ?CacheDto
+    public function convertToPHPValue($value, AbstractPlatform $platform): ?CacheCartDto
     {
         if ($value === null) {
             return null;
@@ -21,12 +18,12 @@ class VisitorSessionCacheDtoArrayType extends JsonType
 
         $decodedValue = parent::convertToPHPValue($value, $platform);
 
-        return CacheDto::fromArray($decodedValue);
+        return CacheCartDto::fromArray($decodedValue);
     }
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
-        /** @var CacheDto $value */
+        /** @var CacheCartDto $value */
         return parent::convertToDatabaseValue($value->toArray(), $platform);
     }
 
