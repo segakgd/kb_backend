@@ -10,6 +10,7 @@ use App\Service\Common\MessageHistoryService;
 use App\Service\Constructor\Visitor\EventManager;
 use App\Service\Constructor\Visitor\Session\SessionService;
 use Exception;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,6 +29,7 @@ class MainWebhookController extends AbstractController
         private readonly BotServiceInterface $botService,
         private readonly MessageHistoryService $messageHistoryService,
         private readonly MessageBusInterface $bus,
+        private readonly LoggerInterface $logger,
     ) {}
 
     /**
@@ -114,6 +116,8 @@ class MainWebhookController extends AbstractController
 
             $this->bus->dispatch(new TelegramMessage($visitorEvent->getId()));
         } catch (Throwable $exception) {
+            $this->logger->error($exception->getMessage());
+
             return new JsonResponse('ok', 200);
         }
 

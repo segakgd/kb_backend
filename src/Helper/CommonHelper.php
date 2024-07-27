@@ -3,15 +3,26 @@
 namespace App\Helper;
 
 use App\Dto\SessionCache\Cache\CacheDto;
-use App\Enum\TargetEnum;
+use App\Entity\SessionCache;
+use App\Entity\Visitor\VisitorSession;
+use App\Service\Constructor\Core\Dto\BotDto;
 use App\Service\Constructor\Core\Dto\Responsible;
 use Exception;
 
 class CommonHelper
 {
-    public static function createDefaultResponsible(): Responsible
+    public static function createDefaultResponsible(VisitorSession $session, SessionCache $sessionCache): Responsible
     {
-        return new Responsible();
+        return (new Responsible())
+        ->setCacheDto(
+            (new CacheDto())
+                ->setEvent($sessionCache->getEvent())
+                ->setCart($sessionCache->getCart())
+                ->setContent($sessionCache->getContent())
+        )
+        ->setBotDto(
+            botDto: static::createBotBto($session)
+        );
     }
 
     /**
@@ -32,5 +43,15 @@ class CommonHelper
             'next'  => $nextPage,
             'total' => $maxPage,
         ];
+    }
+
+    private static function createBotBto(VisitorSession $visitorSession): BotDto
+    {
+        $bot = $visitorSession->getBot();
+
+        return (new BotDto())
+            ->setType($bot->getType())
+            ->setToken($bot->getToken())
+            ->setChatId($visitorSession->getChatId());
     }
 }

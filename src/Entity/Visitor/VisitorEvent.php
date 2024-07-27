@@ -76,6 +76,21 @@ class VisitorEvent
         return $this;
     }
 
+    public function isStatusAvailableForHandle(): bool
+    {
+        return VisitorEventStatusEnum::New === $this->getStatus()
+        || VisitorEventStatusEnum::Repeat === $this->getStatus()
+        || VisitorEventStatusEnum::Jumped === $this->getStatus()
+        || VisitorEventStatusEnum::JumpedToChain === $this->getStatus();
+    }
+
+    public function isRepeatStates(): bool
+    {
+        return VisitorEventStatusEnum::Repeat === $this->getStatus()
+        || VisitorEventStatusEnum::Jumped === $this->getStatus()
+        || VisitorEventStatusEnum::JumpedToChain === $this->getStatus();
+    }
+
     public function getProjectId(): ?int
     {
         return $this->projectId;
