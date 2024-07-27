@@ -2,9 +2,9 @@
 
 namespace App\Service\Constructor\Visitor\Session;
 
+use App\Entity\SessionCache;
 use App\Entity\User\Bot;
 use App\Entity\Visitor\VisitorSession;
-use App\Helper\CommonHelper;
 use App\Repository\Visitor\VisitorSessionRepository;
 use DateTimeImmutable;
 
@@ -41,15 +41,13 @@ readonly class SessionService
         string $chanel,
         int $projectId,
     ): VisitorSession {
-        $cacheDto = CommonHelper::createSessionCache();
-
         $visitorSession = (new VisitorSession())
             ->setName($visitorName)
             ->setChannel($chanel)
             ->setChatId($chatId)
             ->setBot($bot)
             ->setProjectId($projectId)
-            ->setCacheDto($cacheDto)
+            ->setCache(new SessionCache())
             ->setCreatedAt(new DateTimeImmutable());
 
         $this->visitorSessionRepository->save($visitorSession);

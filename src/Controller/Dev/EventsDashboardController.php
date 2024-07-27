@@ -115,10 +115,10 @@ class EventsDashboardController extends AbstractController
         $chatId = $webhookData->getWebhookChatId();
         $visitorName = $webhookData->getVisitorName();
 
-        $visitorSession = $this->sessionService->findByChannel($chatId, $bot->getId(), 'telegram');
+        $session = $this->sessionService->findByChannel($chatId, $bot->getId(), 'telegram');
 
-        if (null === $visitorSession) {
-            $visitorSession = $this->sessionService->createSession(
+        if (null === $session) {
+            $session = $this->sessionService->createSession(
                 visitorName: $visitorName,
                 chatId: $chatId,
                 bot: $bot,
@@ -129,14 +129,14 @@ class EventsDashboardController extends AbstractController
 
         // определяем событие
         $visitorEvent = $this->visitorEventService->createVisitorEventForSession(
-            visitorSession: $visitorSession,
+            session: $session,
             type: $webhookData->getWebhookType(),
             content: $webhookData->getWebhookContent(),
         );
 
         $this->bus->dispatch(new TelegramMessage($visitorEvent->getId()));
 
-        return new RedirectResponse("/admin/projects/{$project->getId()}/sessions/{$visitorSession->getId()}/");
+        return new RedirectResponse("/admin/projects/{$project->getId()}/sessions/{$session->getId()}/");
     }
 
     #[Route('/dev/project/{project}/bot/{botId}/activate/', name: 'dev_bot_activate', methods: ['GET'])]

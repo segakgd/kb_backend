@@ -5,6 +5,9 @@ namespace App\Dto\SessionCache\Cache;
 use App\Dto\Common\AbstractDto;
 use App\Helper\CacheHelper;
 
+/**
+ * @deprecated
+ */
 class CacheDto extends AbstractDto
 {
     private ?string $content = null;

@@ -33,6 +33,17 @@ class SessionCache
     #[ORM\Column]
     private ?DateTimeImmutable $updatedAt = null;
 
+    public function __construct()
+    {
+        if ($this->createdAt === null) {
+            $this->createdAt = new DateTimeImmutable();
+        }
+
+        if ($this->updatedAt === null) {
+            $this->updatedAt = new DateTimeImmutable();
+        }
+    }
+
     public function getId(): ?int
     {
         return $this->id;

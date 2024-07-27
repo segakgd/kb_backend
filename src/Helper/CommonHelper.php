@@ -14,11 +14,6 @@ class CommonHelper
         return new Responsible();
     }
 
-    public static function createSessionCache(): CacheDto
-    {
-        return new CacheDto();
-    }
-
     /**
      * @throws Exception
      */

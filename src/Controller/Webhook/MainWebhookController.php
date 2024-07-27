@@ -93,10 +93,10 @@ class MainWebhookController extends AbstractController
                 type: MessageHistoryService::OUTGOING,
             );
 
-            $visitorSession = $this->sessionService->findByChannel($chatId, $bot->getId(), 'telegram');
+            $session = $this->sessionService->findByChannel($chatId, $bot->getId(), 'telegram');
 
-            if (!$visitorSession) {
-                $visitorSession = $this->sessionService->createSession(
+            if (!$session) {
+                $session = $this->sessionService->createSession(
                     visitorName: $visitorName,
                     chatId: $chatId,
                     bot: $bot,
@@ -107,7 +107,7 @@ class MainWebhookController extends AbstractController
 
             // определяем событие
             $visitorEvent = $this->visitorEventService->createVisitorEventForSession(
-                visitorSession: $visitorSession,
+                session: $session,
                 type: $webhookData->getWebhookType(),
                 content: $webhookData->getWebhookContent(),
             );

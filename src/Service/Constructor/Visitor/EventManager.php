@@ -24,13 +24,13 @@ readonly class EventManager
      * @throws Exception
      */
     public function createVisitorEventForSession(
-        VisitorSession $visitorSession,
+        VisitorSession $session,
         string $type,
         string $content,
     ): VisitorEvent {
-        $cache = $visitorSession->getCacheDto();
+        $sessionCache = $session->getCache();
 
-        $event = $this->visitorEventRepository->getVisitorEventIfExist($visitorSession);
+        $event = $this->visitorEventRepository->getVisitorEventIfExist($session);
 
         if ($event?->getStatus() === VisitorEventStatusEnum::New) {
             $event->setStatus(VisitorEventStatusEnum::Done);
@@ -45,13 +45,13 @@ readonly class EventManager
 
         if (null === $event) {
             $scenario = $this->scenarioService->getScenarioByNameAndType($type, $content);
-            $event = $this->eventService->create($visitorSession, $scenario, $type);
-            $cache->setEvent(CacheHelper::createCacheEventDto());
+            $event = $this->eventService->create($session, $scenario, $type);
+            $sessionCache->setEvent(CacheHelper::createCacheEventDto());
         }
 
-        $cache->setContent($content);
+        $sessionCache->setContent($content);
 
-        $visitorSession->setCacheDto($cache);
+        $session->setCache($sessionCache);
 
         if ($event->getStatus() === VisitorEventStatusEnum::Waiting) {
             $event->setStatus(VisitorEventStatusEnum::Repeat);
@@ -59,7 +59,7 @@ readonly class EventManager
             $this->entityManager->persist($event);
         }
 
-        $this->entityManager->persist($visitorSession);
+        $this->entityManager->persist($session);
         $this->entityManager->flush();
 
         $this->entityManager->refresh($event);

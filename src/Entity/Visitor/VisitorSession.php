@@ -2,8 +2,6 @@
 
 namespace App\Entity\Visitor;
 
-use App\Doctrine\Types\VisitorSessionCacheDtoArrayType;
-use App\Dto\SessionCache\Cache\CacheDto;
 use App\Entity\SessionCache;
 use App\Entity\User\Bot;
 use App\Repository\Visitor\VisitorSessionRepository;
@@ -32,9 +30,6 @@ class VisitorSession
 
     #[ORM\Column(nullable: true)]
     private ?int $projectId = null;
-
-    #[ORM\Column(type: VisitorSessionCacheDtoArrayType::TYPE_NAME)]
-    private ?CacheDto $cacheDto = null; // todo вынести в отдельную таблицу
 
     #[ORM\Column]
     private ?int $chatId = null;
@@ -101,18 +96,6 @@ class VisitorSession
     public function setProjectId(?int $projectId): static
     {
         $this->projectId = $projectId;
-
-        return $this;
-    }
-
-    public function getCacheDto(): CacheDto
-    {
-        return $this->cacheDto;
-    }
-
-    public function setCacheDto(CacheDto $cacheDto): static
-    {
-        $this->cacheDto = clone $cacheDto;
 
         return $this;
     }

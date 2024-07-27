@@ -47,7 +47,7 @@ readonly class DashboardService
         $contract = [];
 
         if (null !== $visitorSession) {
-            $cache = $visitorSession->getCacheDto();
+            $cache = $visitorSession->getCache();
             $cacheEvent = $cache->getEvent();
 
             $cacheContract = $cacheEvent->getContract();
@@ -154,7 +154,7 @@ readonly class DashboardService
 
     private function prepareSession(VisitorSession $session): array
     {
-        $cache = $session->getCacheDto();
+        $cache = $session->getCache();
 
         return [
             'id'             => $session->getId(),

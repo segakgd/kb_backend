@@ -3,8 +3,8 @@
 namespace App\MessageHandler;
 
 use App\Dto\SessionCache\Cache\CacheContractDto;
-use App\Dto\SessionCache\Cache\CacheDto;
 use App\Entity\Scenario\Scenario;
+use App\Entity\SessionCache;
 use App\Entity\Visitor\VisitorSession;
 use App\Enum\VisitorEventStatusEnum;
 use App\Helper\CommonHelper;
@@ -43,77 +43,76 @@ final readonly class TelegramMessageHandler
     public function __invoke(TelegramMessage $message): void
     {
         $visitorEventId = $message->getVisitorEventId();
-        $visitorEvent = $this->visitorEventRepository->find($visitorEventId);
+        $event = $this->visitorEventRepository->find($visitorEventId);
 
-        if (null === $visitorEvent) {
+        if (null === $event) {
             return;
         }
 
         if (
-            VisitorEventStatusEnum::New === $visitorEvent->getStatus()
-            || VisitorEventStatusEnum::Repeat === $visitorEvent->getStatus()
-            || VisitorEventStatusEnum::Jumped === $visitorEvent->getStatus()
-            || VisitorEventStatusEnum::JumpedToChain === $visitorEvent->getStatus()
+            VisitorEventStatusEnum::New === $event->getStatus()
+            || VisitorEventStatusEnum::Repeat === $event->getStatus()
+            || VisitorEventStatusEnum::Jumped === $event->getStatus()
+            || VisitorEventStatusEnum::JumpedToChain === $event->getStatus()
         ) {
             try {
-                $visitorSession = $this->visitorSessionRepository->find($visitorEvent->getSessionId());
+                $session = $this->visitorSessionRepository->find($event->getSessionId());
 
-                $cacheDto = $visitorSession->getCacheDto();
+                $sessionCache = $session->getCache();
 
                 if (
-                    VisitorEventStatusEnum::New === $visitorEvent->getStatus()
-                    || VisitorEventStatusEnum::Jumped === $visitorEvent->getStatus()
+                    VisitorEventStatusEnum::New === $event->getStatus()
+                    || VisitorEventStatusEnum::Jumped === $event->getStatus()
                 ) {
-                    $scenario = $this->scenarioService->getByUuidOrDefault($visitorEvent->getScenarioUUID());
+                    $scenario = $this->scenarioService->getByUuidOrDefault($event->getScenarioUUID());
 
-                    $cacheDto = $this->enrichContractCache($scenario, $cacheDto);
+                    $sessionCache = $this->enrichContractCache($scenario, $sessionCache);
                 }
 
                 $responsible = CommonHelper::createDefaultResponsible();
 
-                $responsible->setCacheDto($cacheDto);
+                $responsible->setCacheDto($sessionCache);
                 $responsible->setBotDto(
-                    botDto: $this->createBotBto($visitorSession)
+                    botDto: $this->createBotBto($session)
                 );
 
                 $responsible = $this->eventResolver->resolve($responsible);
 
                 if ($responsible->isExistJump()) {
                     $this->jumpResolver->resolveJump(
-                        visitorEvent: $visitorEvent,
+                        visitorEvent: $event,
                         responsible: $responsible
                     );
                 }
 
-                $visitorSession->setCacheDto($responsible->getCacheDto());
+                $event->setStatus($responsible->getStatus());
 
-                $visitorEvent->setStatus($responsible->getStatus());
-
-                $this->entityManager->persist($visitorEvent);
-                $this->entityManager->persist($visitorSession);
+                $this->entityManager->persist($event);
+                $this->entityManager->persist($session);
+                $this->entityManager->persist($sessionCache);
                 $this->entityManager->flush();
 
                 if (isset($_SERVER['APP_ENV']) && $_SERVER['APP_ENV'] === 'dev') {
-                    $this->responsibleDtoRepository->save($visitorEvent, $responsible);
+                    $this->responsibleDtoRepository->save($event, $responsible);
                 }
 
                 unset($responsible);
 
                 if (
-                    VisitorEventStatusEnum::Repeat === $visitorEvent->getStatus()
-                    || VisitorEventStatusEnum::Jumped === $visitorEvent->getStatus()
-                    || VisitorEventStatusEnum::JumpedToChain === $visitorEvent->getStatus()
+                    VisitorEventStatusEnum::Repeat === $event->getStatus()
+                    || VisitorEventStatusEnum::Jumped === $event->getStatus()
+                    || VisitorEventStatusEnum::JumpedToChain === $event->getStatus()
                 ) {
-                    $this->bus->dispatch(new TelegramMessage($visitorEvent->getId()));
+                    $this->bus->dispatch(new TelegramMessage($event->getId()));
                 }
             } catch (Throwable $exception) {
                 $message = ' MESSAGE: ' . $exception->getMessage() . "\n"
                     . ' FILE: ' . $exception->getFile() . "\n"
                     . ' LINE: ' . $exception->getLine();
 
-                $visitorEvent->setError($message);
+                $event->setError($message);
 
-                $this->visitorEventRepository->updateChatEventStatus($visitorEvent, VisitorEventStatusEnum::Failed);
+                $this->visitorEventRepository->updateChatEventStatus($event, VisitorEventStatusEnum::Failed);
 
                 $this->logger->error($exception->getMessage(), $exception->getTrace());
 
@@ -132,14 +131,14 @@ final readonly class TelegramMessageHandler
             ->setChatId($visitorSession->getChatId());
     }
 
-    private function enrichContractCache(Scenario $scenario, CacheDto $cacheDto): CacheDto
+    private function enrichContractCache(Scenario $scenario, SessionCache $sessionCache): SessionCache
     {
         $scenarioContract = $scenario->getContract();
         $cacheContractDto = CacheContractDto::fromArray($scenarioContract->toArray());
 
-        $cacheDto->getEvent()->setContract($cacheContractDto);
-        $cacheDto->getEvent()->setFinished(false);
+        $sessionCache->getEvent()->setContract($cacheContractDto);
+        $sessionCache->getEvent()->setFinished(false);
 
-        return $cacheDto;
+        return $sessionCache;
     }
 }
