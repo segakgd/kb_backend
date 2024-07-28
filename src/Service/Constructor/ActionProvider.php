@@ -27,7 +27,12 @@ readonly class ActionProvider
         private CategoriesChain $productCategoryChain,
         private VariantsProductChain $variantsProductChain,
         private VariantProductChain $variantProductChain,
-    ) {}
+    ) {
+        // todo
+        //  1. Разобраться с CacheChainDto в Responsible
+        //  2. Добить всё в Visitor
+        //  3. Начать разбираться с TelegramMessageHandler
+    }
 
     /**
      * @throws Exception

@@ -44,10 +44,10 @@ final readonly class TelegramMessageHandler
      */
     public function __invoke(TelegramMessage $message): void
     {
-        try {
-            $eventId = $message->getVisitorEventId();
-            $event = $this->visitorEventRepository->find($eventId);
+        $eventId = $message->getVisitorEventId();
+        $event = $this->visitorEventRepository->find($eventId);
 
+        try {
             if (null === $event) {
                 return;
             }
