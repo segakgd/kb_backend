@@ -22,9 +22,9 @@ class TestMessengerController extends AbstractController
 {
     public function __construct(
         private readonly BotServiceInterface $botService,
-        private readonly SerializerInterface $serializer,
         private readonly SessionService $sessionService,
         private readonly EventManager $visitorEventService,
+        private readonly SerializerInterface $serializer,
         private readonly MessageBusInterface $bus,
     ) {}
 
