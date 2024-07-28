@@ -7,6 +7,7 @@ use App\Dto\Scenario\ScenarioCollection;
 use App\Dto\Webhook\Telegram\TelegramWebhookDto;
 use App\Entity\User\Bot;
 use App\Entity\User\Project;
+use App\Enum\Constructor\ChannelEnum;
 use App\Event\InitWebhookBotEvent;
 use App\Message\TelegramMessage;
 use App\Repository\Scenario\ScenarioTemplateRepository;
@@ -18,7 +19,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Messenger\Exception\ExceptionInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -106,6 +106,8 @@ class EventsDashboardController extends AbstractController
             'json'
         );
 
+        $channel = ChannelEnum::from('telegram');
+
         if (!$this->botService->isActive($botId)) {
             throw new Exception('Не активный бот');
         }
@@ -115,15 +117,14 @@ class EventsDashboardController extends AbstractController
         $chatId = $webhookData->getWebhookChatId();
         $visitorName = $webhookData->getVisitorName();
 
-        $session = $this->sessionService->findByChannel($chatId, $bot->getId(), 'telegram');
+        $session = $this->sessionService->findByMainParams($bot, $chatId, $channel);
 
         if (null === $session) {
             $session = $this->sessionService->createSession(
+                bot: $bot,
                 visitorName: $visitorName,
                 chatId: $chatId,
-                bot: $bot,
-                chanel: 'telegram',
-                projectId: $project->getId(),
+                chanel: $channel,
             );
         }
 

@@ -3,6 +3,7 @@
 namespace App\Controller\Webhook;
 
 use App\Dto\Webhook\Telegram\TelegramWebhookDto;
+use App\Enum\Constructor\ChannelEnum;
 use App\Message\TelegramMessage;
 use App\Repository\User\ProjectRepository;
 use App\Service\Admin\Bot\BotServiceInterface;
@@ -73,6 +74,14 @@ class MainWebhookController extends AbstractController
             return new JsonResponse();
         }
 
+        if (ChannelEnum::isIn($channel)) {
+            $this->logger->error("Channel $channel не валиден");
+
+            return new JsonResponse('ok', 200);
+        }
+
+        $channel = ChannelEnum::from($channel);
+
         try {
             $webhookData = $this->serializer->deserialize(
                 $request->getContent(),
@@ -95,15 +104,14 @@ class MainWebhookController extends AbstractController
                 type: MessageHistoryService::OUTGOING,
             );
 
-            $session = $this->sessionService->findByChannel($chatId, $bot->getId(), 'telegram');
+            $session = $this->sessionService->findByMainParams($bot, $chatId, $channel);
 
             if (!$session) {
                 $session = $this->sessionService->createSession(
+                    bot: $bot,
                     visitorName: $visitorName,
                     chatId: $chatId,
-                    bot: $bot,
-                    chanel: 'telegram',
-                    projectId: $project->getId(),
+                    chanel: $channel,
                 );
             }
 

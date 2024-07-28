@@ -29,6 +29,7 @@ readonly class ActionProvider
         private VariantProductChain $variantProductChain,
     ) {
         // todo
+        //  0. Актуализировать EventsDashboardController с MainWebhookController
         //  1. Разобраться с CacheChainDto в Responsible
         //  2. Добить всё в Visitor
         //  3. Начать разбираться с TelegramMessageHandler

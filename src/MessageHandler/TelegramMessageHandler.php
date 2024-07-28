@@ -56,7 +56,6 @@ final readonly class TelegramMessageHandler
                 $session = $this->visitorSessionRepository->find($event->getSessionId());
 
                 $sessionCache = $session->getCache();
-
                 $sessionCache = $this->enrichContractCacheIfNeed($event, $sessionCache);
 
                 $responsible = CommonHelper::createDefaultResponsible($session, $sessionCache);
