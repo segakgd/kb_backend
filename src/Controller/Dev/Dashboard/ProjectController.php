@@ -17,10 +17,8 @@ class ProjectController extends AbstractController
     ) {}
 
     #[Route('/admin/user/{user}/projects/', name: 'admin_projects')]
-    public function projects(User $user, ProjectRepository $projectRepository): Response
+    public function projects(User $user): Response
     {
-        $projectRepository->findAll();
-
         return $this->render(
             'admin/user/projects.html.twig',
             [
