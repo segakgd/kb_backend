@@ -15,6 +15,9 @@ use App\Service\Admin\Scenario\ScenarioTemplateService;
 use App\Service\Constructor\Visitor\Session\SessionService;
 use App\Service\Integration\Telegram\TelegramService;
 
+/**
+ * @legacy Пока что пусть это живёт как живёт, но потом это стоит переделать. Не стал разносить по сервисам, т.к, эта реализация сама по себе не очень.
+ */
 readonly class DashboardService
 {
     public function __construct(
