@@ -15,4 +15,10 @@ class SessionCacheRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, SessionCache::class);
     }
+
+    public function saveAndFlush(SessionCache $entity): void
+    {
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
+    }
 }

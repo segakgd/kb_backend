@@ -50,7 +50,7 @@ readonly class SessionService
             ->setCache(new SessionCache())
             ->setCreatedAt(new DateTimeImmutable());
 
-        $this->visitorSessionRepository->save($visitorSession);
+        $this->visitorSessionRepository->saveAndFlush($visitorSession);
 
         return $visitorSession;
     }

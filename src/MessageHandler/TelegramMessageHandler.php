@@ -6,16 +6,18 @@ use App\Dto\SessionCache\Cache\CacheContractDto;
 use App\Entity\Scenario\Scenario;
 use App\Entity\SessionCache;
 use App\Entity\Visitor\VisitorEvent;
+use App\Entity\Visitor\VisitorSession;
 use App\Enum\VisitorEventStatusEnum;
 use App\Helper\CommonHelper;
 use App\Message\TelegramMessage;
+use App\Repository\SessionCacheRepository;
 use App\Repository\Visitor\VisitorEventRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
+use App\Service\Constructor\Core\Dto\Responsible;
 use App\Service\Constructor\Core\EventResolver;
 use App\Service\Constructor\Core\Jumps\JumpResolver;
 use App\Service\Constructor\Visitor\ScenarioManager;
 use App\Service\DtoRepository\ResponsibleDtoRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -26,14 +28,14 @@ use Throwable;
 final readonly class TelegramMessageHandler
 {
     public function __construct(
-        private VisitorEventRepository $visitorEventRepository,
         private EventResolver $eventResolver,
         private ScenarioManager $scenarioService,
-        private VisitorSessionRepository $visitorSessionRepository,
-        private EntityManagerInterface $entityManager,
         private JumpResolver $jumpResolver,
-        private MessageBusInterface $bus,
         private ResponsibleDtoRepository $responsibleDtoRepository,
+        private SessionCacheRepository $sessionCacheRepository,
+        private VisitorEventRepository $visitorEventRepository,
+        private VisitorSessionRepository $visitorSessionRepository,
+        private MessageBusInterface $bus,
         private LoggerInterface $logger,
     ) {}
 
@@ -42,15 +44,15 @@ final readonly class TelegramMessageHandler
      */
     public function __invoke(TelegramMessage $message): void
     {
-        $eventId = $message->getVisitorEventId();
-        $event = $this->visitorEventRepository->find($eventId);
+        try {
+            $eventId = $message->getVisitorEventId();
+            $event = $this->visitorEventRepository->find($eventId);
 
-        if (null === $event) {
-            return;
-        }
+            if (null === $event) {
+                return;
+            }
 
-        if ($event->isStatusAvailableForHandle()) {
-            try {
+            if ($event->isStatusAvailableForHandle()) {
                 $session = $this->visitorSessionRepository->find($event->getSessionId());
 
                 $sessionCache = $session->getCache();
@@ -70,30 +72,38 @@ final readonly class TelegramMessageHandler
 
                 $event->setStatus($responsible->getStatus());
 
-                $this->entityManager->persist($event);
-                $this->entityManager->persist($session);
-                $this->entityManager->persist($sessionCache);
-                $this->entityManager->flush();
-
-                $this->responsibleDtoRepository->save($event, $responsible);
+                $this->updateEntities($event, $session, $sessionCache, $responsible);
 
                 if ($event->isRepeatStates()) {
                     $this->bus->dispatch(new TelegramMessage($event->getId()));
                 }
-            } catch (Throwable $exception) {
-                $message = ' MESSAGE: ' . $exception->getMessage() . "\n"
-                    . ' FILE: ' . $exception->getFile() . "\n"
-                    . ' LINE: ' . $exception->getLine();
-
-                $event->setError($message);
-
-                $this->visitorEventRepository->updateChatEventStatus($event, VisitorEventStatusEnum::Failed);
-
-                $this->logger->error($exception->getMessage(), $exception->getTrace());
-
-                throw $exception;
             }
+        } catch (Throwable $exception) {
+            $message = ' MESSAGE: ' . $exception->getMessage() . "\n"
+                . ' FILE: ' . $exception->getFile() . "\n"
+                . ' LINE: ' . $exception->getLine();
+
+            $event->setError($message);
+
+            $this->visitorEventRepository->updateChatEventStatus($event, VisitorEventStatusEnum::Failed);
+
+            $this->logger->error($exception->getMessage(), $exception->getTrace());
+
+            throw $exception;
         }
+    }
+
+    private function updateEntities(
+        VisitorEvent $event,
+        VisitorSession $session,
+        SessionCache $sessionCache,
+        Responsible $responsible,
+    ): void {
+        $this->visitorEventRepository->saveAndFlush($event);
+        $this->visitorSessionRepository->saveAndFlush($session);
+        $this->sessionCacheRepository->saveAndFlush($sessionCache);
+
+        $this->responsibleDtoRepository->save($event, $responsible);
     }
 
     /**
