@@ -30,8 +30,7 @@ class ProjectRepository extends ServiceEntityRepository
 
         $qb = $this->createQueryBuilder('p')
             ->leftJoin('p.users', 'bc')
-            ->where('bc.id IN (:userId)')->setParameter('userId', $userId)
-        ;
+            ->where('bc.id IN (:userId)')->setParameter('userId', $userId);
 
         $query = $qb->getQuery();
 

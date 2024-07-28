@@ -31,8 +31,7 @@ class ViewOneController extends AbstractController
 {
     public function __construct(
         private readonly LoggerInterface $logger,
-    ) {
-    }
+    ) {}
 
     /** Получение конкретной доставки */
     #[Route('/api/admin/project/{project}/shipping/{shipping}/', name: 'admin_shipping_get_one', methods: ['GET'])]
@@ -43,6 +42,7 @@ class ViewOneController extends AbstractController
             if ($project->getId() !== $shipping->getProjectId()) {
                 throw new NotFoundShippingForProjectException();
             }
+
             return $this->json(
                 (new ShippingViewOneResponse())->makeResponse($shipping)
             );

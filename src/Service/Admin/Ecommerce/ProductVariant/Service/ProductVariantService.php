@@ -14,9 +14,8 @@ readonly class ProductVariantService
 {
     public function __construct(
         private ProductVariantRepository $productVariantRepository,
-        private EntityManagerInterface   $entityManager,
-    ) {
-    }
+        private EntityManagerInterface $entityManager,
+    ) {}
 
     public function handleBatchUpdate(Product $product, array $variantsRequestDto): Product
     {
@@ -69,6 +68,7 @@ readonly class ProductVariantService
 
     public function batchSave(array $productVariants): void
     {
+        // todo дублирование
         if (empty($productVariants)) {
             return;
         }
@@ -84,7 +84,7 @@ readonly class ProductVariantService
             }
         }
 
-        $this->entityManager->flush();;
+        $this->entityManager->flush();
     }
 
     public function save(ProductVariant $productVariant): ProductVariant

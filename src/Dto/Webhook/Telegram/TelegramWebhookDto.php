@@ -8,11 +8,16 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 class TelegramWebhookDto
 {
     #[SerializedName('update_id')]
-    private $updateId;
+    private int $updateId;
 
     private TelegramWebhookMessageDto $message;
 
-    public function setUpdateId($updateId): void
+    public function getUpdateId(): int
+    {
+        return $this->updateId;
+    }
+
+    public function setUpdateId(int $updateId): void
     {
         $this->updateId = $updateId;
     }

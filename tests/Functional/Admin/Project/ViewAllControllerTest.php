@@ -8,6 +8,10 @@ use App\Tests\Functional\Trait\User\UserTrait;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 class ViewAllControllerTest extends ApiTestCase
 {
     use UserTrait;
@@ -48,40 +52,40 @@ class ViewAllControllerTest extends ApiTestCase
         yield [
             [
                 [
-                    "name" => "Проект тестовый",
-                    "status" => "active",
-                    "activeTo" => "2023-12-29T17:35:02+00:00",
-                    "activeFrom" => "2023-12-29T17:35:02+00:00",
-                    "statistic" => [
-                        "lead" => [
-                            "count" => 13
+                    'name'       => 'Проект тестовый',
+                    'status'     => 'active',
+                    'activeTo'   => '2023-12-29T17:35:02+00:00',
+                    'activeFrom' => '2023-12-29T17:35:02+00:00',
+                    'statistic'  => [
+                        'lead' => [
+                            'count' => 13,
                         ],
-                        "booking" => [
-                            "count" => 13
+                        'booking' => [
+                            'count' => 13,
                         ],
-                        "chats" => [
-                            "count" => 13
-                        ]
-                    ]
+                        'chats' => [
+                            'count' => 13,
+                        ],
+                    ],
                 ],
                 [
-                    "name" => "Проект тестовый",
-                    "status" => "active",
-                    "activeTo" => "2023-12-29T17:35:02+00:00",
-                    "activeFrom" => "2023-12-29T17:35:02+00:00",
-                    "statistic" => [
-                        "lead" => [
-                            "count" => 13
+                    'name'       => 'Проект тестовый',
+                    'status'     => 'active',
+                    'activeTo'   => '2023-12-29T17:35:02+00:00',
+                    'activeFrom' => '2023-12-29T17:35:02+00:00',
+                    'statistic'  => [
+                        'lead' => [
+                            'count' => 13,
                         ],
-                        "booking" => [
-                            "count" => 13
+                        'booking' => [
+                            'count' => 13,
                         ],
-                        "chats" => [
-                            "count" => 13
-                        ]
-                    ]
-                ]
-            ]
+                        'chats' => [
+                            'count' => 13,
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
 }

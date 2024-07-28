@@ -36,8 +36,7 @@ class ViewAllController extends AbstractController
     public function __construct(
         private readonly ShippingManagerInterface $shippingManager,
         private readonly LoggerInterface $logger,
-    ) {
-    }
+    ) {}
 
     /** Получение колекции доставок */
     #[Route('/api/admin/project/{project}/shipping/', name: 'admin_shipping_get_all', methods: ['GET'])]
@@ -50,7 +49,6 @@ class ViewAllController extends AbstractController
             return $this->json(
                 (new ShippingViewAllResponse())->makeResponse($shippingCollection)
             );
-
         } catch (Throwable $exception) {
             $this->logger->error($exception->getMessage());
 

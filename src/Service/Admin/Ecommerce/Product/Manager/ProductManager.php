@@ -19,8 +19,7 @@ readonly class ProductManager implements ProductManagerInterface
         private ProductCategoryService $productCategoryService,
         private ProductService $productService,
         private ProductVariantService $productVariantService,
-    ) {
-    }
+    ) {}
 
     public function create(
         ProductReqDto $productReqDto,
@@ -49,8 +48,7 @@ readonly class ProductManager implements ProductManagerInterface
                 ->setPrice($productVariant->getPrice())
                 ->setImage($productVariant->getImages())
                 ->setIsLimitless($productVariant->isLimitless())
-                ->markAsUpdated()
-            ;
+                ->markAsUpdated();
 
             $product->addVariant($productVariantEntity);
         }

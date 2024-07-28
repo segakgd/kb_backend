@@ -4,6 +4,4 @@ namespace App\Exception;
 
 use Exception;
 
-class EcommerceException extends Exception
-{
-}
+class EcommerceException extends Exception {}

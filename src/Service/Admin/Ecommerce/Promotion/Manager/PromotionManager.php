@@ -14,8 +14,7 @@ readonly class PromotionManager implements PromotionManagerInterface
 {
     public function __construct(
         private PromotionService $promotionService
-    ) {
-    }
+    ) {}
 
     public function create(PromotionReqDto $promotionReqDto, Project $project): Promotion
     {
@@ -27,8 +26,7 @@ readonly class PromotionManager implements PromotionManagerInterface
     public function update(PromotionReqDto $promotionReqDto, Promotion $promotion, Project $project): Promotion
     {
         $promotion = PromotionHelper::mapRequestToExistingEntity($promotionReqDto, $promotion)
-            ->setProjectId($promotion->getProjectId())
-        ;
+            ->setProjectId($promotion->getProjectId());
 
         return $this->promotionService->update($promotion);
     }

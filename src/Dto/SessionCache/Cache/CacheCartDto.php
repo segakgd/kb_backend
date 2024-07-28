@@ -118,12 +118,12 @@ class CacheCartDto extends AbstractDto
     public function toArray(): array
     {
         return [
-            'contacts' => $this->contacts,
-            'products' => $this->products,
-            'shipping' => $this->shipping,
-            'promotion' => $this->promotion,
+            'contacts'    => $this->contacts,
+            'products'    => $this->products,
+            'shipping'    => $this->shipping,
+            'promotion'   => $this->promotion,
             'totalAmount' => $this->totalAmount,
-            'pay' => $this->pay,
+            'pay'         => $this->pay,
         ];
     }
 }

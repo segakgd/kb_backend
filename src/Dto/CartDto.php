@@ -48,7 +48,7 @@ class CartDto
 
         return $this;
     }
-    public function addProduct(ProductDto $product): self
+    public function addProduct($product): self // todo типизация - было ProductDto
     {
         $this->products[] = $product;
 

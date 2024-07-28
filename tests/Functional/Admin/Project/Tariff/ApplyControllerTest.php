@@ -9,6 +9,10 @@ use App\Tests\Functional\Trait\User\UserTrait;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 class ApplyControllerTest extends ApiTestCase
 {
     use UserTrait;
@@ -33,13 +37,13 @@ class ApplyControllerTest extends ApiTestCase
 
         $client->request(
             'POST',
-            '/api/admin/project/'. $project->getId() .'/setting/tariff/',
+            '/api/admin/project/' . $project->getId() . '/setting/tariff/',
             [],
             [],
             [],
             json_encode(
                 [
-                    'code' => $tariffForTest->getCode()
+                    'code' => $tariffForTest->getCode(),
                 ]
             )
         );
@@ -49,7 +53,7 @@ class ApplyControllerTest extends ApiTestCase
         $projectSettingRepository = $entityManager->getRepository(ProjectSetting::class);
         $projectSetting = $projectSettingRepository->findOneBy(
             [
-                'projectId' => $project->getId()
+                'projectId' => $project->getId(),
             ]
         );
 

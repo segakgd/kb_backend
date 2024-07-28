@@ -30,8 +30,7 @@ class ViewOneController extends AbstractController
 {
     public function __construct(
         private readonly LeadMapper $leadMapper,
-    ) {
-    }
+    ) {}
 
     /** Получение одного лида */
     #[Route('/api/admin/project/{project}/lead/{lead}/', name: 'admin_lead_get_one', methods: ['GET'])]

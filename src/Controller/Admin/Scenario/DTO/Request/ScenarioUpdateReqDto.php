@@ -2,14 +2,13 @@
 
 namespace App\Controller\Admin\Scenario\DTO\Request;
 
-class ScenarioUpdateReqDto
+readonly class ScenarioUpdateReqDto
 {
-    private readonly int $id;
+    private int $id;
 
-    private readonly string $name;
+    private string $name;
 
-    // todo реализовать
-//    private readonly array $scenario;
+    // todo реализовать private readonly array $scenario;
 
     public function getId(): int
     {
@@ -30,14 +29,4 @@ class ScenarioUpdateReqDto
     {
         $this->name = $name;
     }
-
-//    public function getScenario(): array
-//    {
-//        return $this->scenario;
-//    }
-//
-//    public function setScenario(array $scenario): void
-//    {
-//        $this->scenario = $scenario;
-//    }
 }

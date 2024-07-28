@@ -9,9 +9,7 @@ use App\Repository\Ecommerce\ShippingEntityRepository;
 
 readonly class ShippingService implements ShippingServiceInterface
 {
-    public function __construct(private ShippingEntityRepository $shippingEntityRepository)
-    {
-    }
+    public function __construct(private ShippingEntityRepository $shippingEntityRepository) {}
 
     public function create(Shipping $shipping): Shipping
     {

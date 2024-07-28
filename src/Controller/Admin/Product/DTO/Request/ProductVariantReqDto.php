@@ -36,8 +36,7 @@ class ProductVariantReqDto
         if (false === $this->isLimitless && null === $this->count) {
             $context
                 ->buildViolation('Count of variant not defined')
-                ->addViolation()
-            ;
+                ->addViolation();
         }
     }
 

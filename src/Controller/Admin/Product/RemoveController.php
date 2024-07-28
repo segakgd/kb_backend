@@ -21,9 +21,7 @@ use Throwable;
 )]
 class RemoveController extends AbstractController
 {
-    public function __construct(private readonly ProductManagerInterface $productManager)
-    {
-    }
+    public function __construct(private readonly ProductManagerInterface $productManager) {}
 
     /** Удаление одного продукта */
     #[Route('/api/admin/project/{project}/product/{product}/', name: 'admin_product_remove', methods: ['DELETE'])]

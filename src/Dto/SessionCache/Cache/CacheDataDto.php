@@ -62,6 +62,7 @@ class CacheDataDto extends AbstractDto
     public function setCount(?int $count): CacheDataDto
     {
         $this->count = $count;
+
         return $this;
     }
 
@@ -73,6 +74,7 @@ class CacheDataDto extends AbstractDto
     public function setCategoryName(?string $categoryName): CacheDataDto
     {
         $this->categoryName = $categoryName;
+
         return $this;
     }
 
@@ -84,6 +86,7 @@ class CacheDataDto extends AbstractDto
     public function setCategoryId(?int $categoryId): CacheDataDto
     {
         $this->categoryId = $categoryId;
+
         return $this;
     }
 
@@ -96,18 +99,19 @@ class CacheDataDto extends AbstractDto
         $cacheData->count = $data['count'] ?? null;
         $cacheData->categoryName = $data['categoryName'] ?? null;
         $cacheData->categoryId = $data['categoryId'] ?? null;
+
         return $cacheData;
     }
 
     public function toArray(): array
     {
         return [
-            'pageNow' => $this->pageNow,
-            'productId' => $this->productId,
-            'variantId' => $this->variantId,
-            'count' => $this->count,
+            'pageNow'      => $this->pageNow,
+            'productId'    => $this->productId,
+            'variantId'    => $this->variantId,
+            'count'        => $this->count,
             'categoryName' => $this->categoryName,
-            'categoryId' => $this->categoryId,
+            'categoryId'   => $this->categoryId,
         ];
     }
 }

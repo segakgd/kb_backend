@@ -12,9 +12,7 @@ use App\Service\Admin\Ecommerce\Shipping\Service\ShippingService;
 
 readonly class ShippingManager implements ShippingManagerInterface
 {
-    public function __construct(private ShippingService $shippingService)
-    {
-    }
+    public function __construct(private ShippingService $shippingService) {}
 
     public function create(ShippingReqDto $shippingReqDto, Project $project): Shipping
     {
@@ -41,6 +39,11 @@ readonly class ShippingManager implements ShippingManagerInterface
         $this->shippingService->save($shipping);
     }
 
+    public function getAllByByProject(Project $project): array
+    {
+        return $this->shippingService->findAllByProjectId($project->getId());
+    }
+
     private function adjustShippingValues(ShippingReqDto $shippingReqDto): void
     {
         if (false !== $shippingReqDto->isNotFixed()) {
@@ -50,10 +53,5 @@ readonly class ShippingManager implements ShippingManagerInterface
                 ->setPrice(null)
                 ->setFreeFrom(null);
         }
-    }
-
-    public function getAllByByProject(Project $project): array
-    {
-        return $this->shippingService->findAllByProjectId($project->getId());
     }
 }

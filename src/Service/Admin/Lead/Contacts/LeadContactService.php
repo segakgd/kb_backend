@@ -10,9 +10,7 @@ use App\Repository\Lead\ContactsEntityRepository;
 
 readonly class LeadContactService
 {
-    public function __construct(private ContactsEntityRepository $contactsEntityRepository)
-    {
-    }
+    public function __construct(private ContactsEntityRepository $contactsEntityRepository) {}
 
     public function add(LeadContactsReqDto $contactsDto): DealContacts
     {
@@ -20,7 +18,6 @@ readonly class LeadContactService
         $phone = $contactsDto->getPhone()?->getValue();
         $firstName = $contactsDto->getFirstName()?->getValue();
         $lastName = $contactsDto->getLastName()?->getValue();
-
 
         $contactsEntity = (new DealContacts())
             ->setEmail($email)

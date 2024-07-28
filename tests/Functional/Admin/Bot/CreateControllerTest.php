@@ -11,6 +11,10 @@ use Exception;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 class CreateControllerTest extends ApiTestCase
 {
     use UserTrait;
@@ -28,6 +32,7 @@ class CreateControllerTest extends ApiTestCase
 
         $this->serializer = $this->getContainer()->get('serializer');
     }
+
     public function tearDown(): void
     {
         parent::tearDown();
@@ -56,7 +61,7 @@ class CreateControllerTest extends ApiTestCase
 
         $client->request(
             'POST',
-            '/api/admin/project/'. $project->getId() .'/bot/',
+            '/api/admin/project/' . $project->getId() . '/bot/',
             [],
             [],
             [],
@@ -85,9 +90,9 @@ class CreateControllerTest extends ApiTestCase
     {
         yield [
             [
-                'name' => "Тестовый бот",
-                'type' => "telegram",
-                'token' => "0000000000:0000000000-0000000000",
+                'name'  => 'Тестовый бот',
+                'type'  => 'telegram',
+                'token' => '0000000000:0000000000-0000000000',
             ],
         ];
     }

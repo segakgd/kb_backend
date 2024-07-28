@@ -2,12 +2,11 @@
 
 namespace App\Controller\Admin\Scenario\DTO\Request;
 
-class ScenarioReqDto
+readonly class ScenarioReqDto
 {
-    private readonly string $name;
+    private string $name;
 
-    // todo реализовать
-//    private readonly array $scenario;
+    // todo реализовать private readonly array $scenario
 
     public function getName(): string
     {
@@ -18,14 +17,4 @@ class ScenarioReqDto
     {
         $this->name = $name;
     }
-
-//    public function getScenario(): array
-//    {
-//        return $this->scenario;
-//    }
-//
-//    public function setScenario(array $scenario): void
-//    {
-//        $this->scenario = $scenario;
-//    }
 }

@@ -12,7 +12,7 @@ class WebhookDto
 
     private ?int $max_connections;
 
-    private array|string|null $allowed_updates;
+    private null|array|string $allowed_updates;
 
     private ?bool $drop_pending_updates;
 
@@ -66,12 +66,12 @@ class WebhookDto
         return $this;
     }
 
-    public function getAllowedUpdates(): array|string|null
+    public function getAllowedUpdates(): null|array|string
     {
         return $this->allowed_updates;
     }
 
-    public function setAllowedUpdates(array|string|null $allowed_updates): self
+    public function setAllowedUpdates(null|array|string $allowed_updates): self
     {
         $this->allowed_updates = $allowed_updates;
 
@@ -105,7 +105,7 @@ class WebhookDto
     public function getArray(): array
     {
         return [
-            'url' => $this->getUrl()
+            'url' => $this->getUrl(),
         ];
     }
 }

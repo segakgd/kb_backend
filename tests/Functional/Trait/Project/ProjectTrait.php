@@ -37,8 +37,7 @@ trait ProjectTrait
             ->setName('Проект тестовый')
             ->setActiveFrom(new DateTimeImmutable())
             ->setActiveTo(new DateTimeImmutable())
-            ->addUser($user)
-        ;
+            ->addUser($user);
 
         $manager->persist($project);
 
@@ -53,11 +52,11 @@ trait ProjectTrait
 
         $tariff = $tariffRepository->findOneBy(
             [
-                'code' => TariffService::DEFAULT_TARIFF_CODE
+                'code' => TariffService::DEFAULT_TARIFF_CODE,
             ]
         );
 
-        if (!$tariff){
+        if (!$tariff) {
             $tariff = $tariff->createTestTariff($manager);
         }
 
@@ -72,8 +71,7 @@ trait ProjectTrait
             ->setPriceWF('100,00')
             ->setCode('TEST' . uniqid())
             ->setDescription('For test')
-            ->setActive(true)
-        ;
+            ->setActive(true);
 
         $manager->persist($tariff);
 
@@ -86,7 +84,7 @@ trait ProjectTrait
             ->setProjectId($project->getId())
             ->setBasic(
                 [
-                    'country' => 'russia',
+                    'country'  => 'russia',
                     'language' => 'ru',
                     'timeZone' => 'Europe/Moscow',
                     'currency' => 'RUB',
@@ -95,21 +93,20 @@ trait ProjectTrait
             ->setNotification(
                 [
                     'aboutNewLead' => [
-                        'system' => true,
-                        'mail' => false,
-                        'sms' => false,
+                        'system'   => true,
+                        'mail'     => false,
+                        'sms'      => false,
                         'telegram' => false,
                     ],
                     'aboutChangesStatusLead' => [
-                        'system' => true,
-                        'mail' => false,
-                        'sms' => false,
+                        'system'   => true,
+                        'mail'     => false,
+                        'sms'      => false,
                         'telegram' => false,
-                    ]
+                    ],
                 ]
             )
-            ->setTariffId($tariff->getId())
-        ;
+            ->setTariffId($tariff->getId());
 
         $manager->persist($projectSetting);
 

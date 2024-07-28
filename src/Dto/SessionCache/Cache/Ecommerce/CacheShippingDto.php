@@ -8,7 +8,7 @@ class CacheShippingDto extends AbstractDto
 {
     public static function fromArray(array $data): AbstractDto
     {
-        return (new CacheShippingDto);
+        return new CacheShippingDto();
     }
 
     public function toArray(): array

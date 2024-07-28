@@ -11,20 +11,20 @@ use App\Entity\User\Project;
 use App\Repository\Ecommerce\ProductVariantRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
-class DealManager
+readonly class DealManager
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly ProductVariantRepository $productVariantRepository,
-    ) {
-    }
+        private EntityManagerInterface $entityManager,
+        private ProductVariantRepository $productVariantRepository,
+    ) {}
 
+    // todo не используется
     public function createDeal(Project $project, CacheCartDto $cart): Deal
     {
         $contactsEntity = $this->enrichContacts($cart);
         $order = $this->enrichOrder($cart);
 
-        $deal = (new Deal)
+        $deal = (new Deal())
             ->setContacts($contactsEntity)
             ->setOrder($order)
             ->setProjectId($project->getId());
@@ -39,14 +39,14 @@ class DealManager
     {
         $contacts = $cart->getContacts();
 
-        return (new DealContacts)
+        return (new DealContacts())
             ->setFirstName($contacts['full'])
             ->setLastName($contacts['phone']);
     }
 
     private function enrichOrder(CacheCartDto $cart): DealOrder
     {
-        $order = (new DealOrder);
+        $order = (new DealOrder());
 
         $totalAmount = 0;
         $productsCart = $cart->getProducts();
@@ -56,12 +56,13 @@ class DealManager
 
             $price = $variant->getPrice();
 
-            $productDto = (new ProductDto)
+            $productDto = (new ProductDto())
                 ->setVariantParentId($variant->getId())
                 ->setName($variant->getName())
                 ->setCount($productCart['count'])
-                ->setPrice($price['price']);
+                ->setPrice($price['price']->getPrice());
 
+            // todo тут какой-то косяк с типами
             $order->addProductVariant($productDto);
 
             $totalByProduct = $price['price'] * $productCart['count'];

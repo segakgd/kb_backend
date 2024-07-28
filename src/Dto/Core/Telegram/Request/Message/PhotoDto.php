@@ -4,62 +4,60 @@ namespace App\Dto\Core\Telegram\Request\Message;
 
 class PhotoDto
 {
-    /*
+    /**
      * Unique identifier for the target chat.
      */
     private int|string $chat_id;
 
-    /*
+    /**
      * Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
      */
     private ?int $message_thread_id;
 
     private string $photo;
 
-    /*
+    /**
      * Text of the message to be sent, 1-4096 characters after entities parsing
      */
     private string $caption;
 
-    /*
+    /**
      * Mode for parsing entities in the message text.
      */
     private ?string $parse_mode;
 
-    /*
+    /**
      * A JSON-serialized list of special entities that appear in message text, which can be specified instead of parse_mode
-     *
-     * @var MessageEntity[]|null
      */
     private ?array $caption_entities;
 
-    /*
+    /**
      * Disables link previews for links in this message
      */
     private ?bool $has_spoiler;
 
-    /*
+    /**
      * Sends the message silently. Users will receive a notification with no sound.
      */
     private ?bool $disable_notification;
 
-    /*
+    /**
      * Protects the contents of the sent message from forwarding and saving
      */
     private ?bool $protect_content;
 
-    /*
+    /**
      * If the message is a reply, ID of the original message
      */
     private ?array $reply_parameters;
 
-    /*
+    /**
      * Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard,
      * instructions to remove reply keyboard or to force a reply from the user.
      *
      * InlineKeyboardMarkup or ReplyKeyboardMarkup or ReplyKeyboardRemove or ForceReply or null
      */
-    private $reply_markup;
+    private mixed $reply_markup;
 
     public function getChatId(): int|string
     {
@@ -181,18 +179,12 @@ class PhotoDto
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getReplyMarkup()
+    public function getReplyMarkup(): mixed
     {
         return $this->reply_markup;
     }
 
-    /**
-     * @param mixed $reply_markup
-     */
-    public function setReplyMarkup($reply_markup): static
+    public function setReplyMarkup(mixed $reply_markup): static
     {
         $this->reply_markup = $reply_markup;
 
@@ -202,13 +194,13 @@ class PhotoDto
     public function getArray(): array
     {
         $normalize = [
-            'chat_id' => $this->getChatId(),
-            'photo' => $this->getPhoto(),
-            'caption' => $this->getCaption(),
+            'chat_id'    => $this->getChatId(),
+            'photo'      => $this->getPhoto(),
+            'caption'    => $this->getCaption(),
             'parse_mode' => $this->getParseMode(),
         ];
 
-        if (!empty($this->getReplyMarkup())){
+        if (!empty($this->getReplyMarkup())) {
             $normalize['reply_markup'] = json_encode(
                 [
                     'keyboard' => $this->getReplyMarkup(),
@@ -217,23 +209,5 @@ class PhotoDto
         }
 
         return $normalize;
-    }
-
-    private function keyboardNormalize($keyboards): array
-    {
-        $result = [];
-
-        foreach ($keyboards as $keyboard){
-            $result[] = [
-                [
-                    'text' => $keyboard['text']
-                ],
-                [
-                    'text' => $keyboard['text']
-                ],
-            ];
-        }
-
-        return $result;
     }
 }

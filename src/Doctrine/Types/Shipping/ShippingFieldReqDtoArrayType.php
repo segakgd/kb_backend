@@ -31,11 +31,12 @@ class ShippingFieldReqDtoArrayType extends JsonType
             $dto->setName($item['name']);
             $dto->setValue($item['value']);
             $dto->setType($item['type']);
+
             return $dto;
         }, $data);
     }
 
-    public function convertToDatabaseValue($value, AbstractPlatform $platform): false|string|null
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): null|false|string
     {
         if (!is_array($value)) {
             throw new InvalidArgumentException('Value must be an array of ShippingFieldReqDto objects');
@@ -43,9 +44,9 @@ class ShippingFieldReqDtoArrayType extends JsonType
 
         return json_encode(array_map(function (ShippingFieldReqDto $dto) {
             return [
-                'name' => $dto->getName(),
+                'name'  => $dto->getName(),
                 'value' => $dto->getValue(),
-                'type' => $dto->getType(),
+                'type'  => $dto->getType(),
             ];
         }, $value));
     }

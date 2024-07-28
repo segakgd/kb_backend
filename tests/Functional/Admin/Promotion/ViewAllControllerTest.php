@@ -8,6 +8,10 @@ use App\Tests\Functional\Trait\User\UserTrait;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 class ViewAllControllerTest extends ApiTestCase
 {
     use UserTrait;
@@ -32,7 +36,7 @@ class ViewAllControllerTest extends ApiTestCase
 
         $client->request(
             'GET',
-            '/api/admin/project/'. $project->getId() .'/promotion/',
+            '/api/admin/project/' . $project->getId() . '/promotion/',
             [],
             [],
             [],
@@ -45,66 +49,65 @@ class ViewAllControllerTest extends ApiTestCase
         $this->assertResponse($responseArr, $response);
     }
 
-
     private function positive(): iterable
     {
         yield [
             [
-                'name' => 'promo',
-                'type' => 'percent',
-                'code' => '1232',
-                'triggersQuantity' => 100,
-                'isActive' => true,
-                'amount' => 15,
+                'name'               => 'promo',
+                'type'               => 'percent',
+                'code'               => '1232',
+                'triggersQuantity'   => 100,
+                'isActive'           => true,
+                'amount'             => 15,
                 'amountWithFraction' => '10,00',
-                'activeFrom' => '2023-12-16T23:22:00+00:00',
-                'activeTo' => '2023-12-25T23:22:00+00:00'
+                'activeFrom'         => '2023-12-16T23:22:00+00:00',
+                'activeTo'           => '2023-12-25T23:22:00+00:00',
             ],
             [
                 [
-                    "discounts" => [
+                    'discounts' => [
                         [
-                            "name" => "discount",
-                            "type" => "percent",
-                            "triggersQuantity" => 10000,
-                            "active" => true,
-                            "amount" => 1000,
-                            "amountWithFraction" => "10,00"
-                        ]
+                            'name'               => 'discount',
+                            'type'               => 'percent',
+                            'triggersQuantity'   => 10000,
+                            'active'             => true,
+                            'amount'             => 1000,
+                            'amountWithFraction' => '10,00',
+                        ],
                     ],
-                    "promoCodes" => [
+                    'promoCodes' => [
                         [
-                            "name" => "promo",
-                            "type" => "current",
-                            "triggersQuantity" => 10000,
-                            "active" => true,
-                            "amount" => 1000,
-                            "amountWithFraction" => "10,00"
-                        ]
-                    ]
+                            'name'               => 'promo',
+                            'type'               => 'current',
+                            'triggersQuantity'   => 10000,
+                            'active'             => true,
+                            'amount'             => 1000,
+                            'amountWithFraction' => '10,00',
+                        ],
+                    ],
                 ],
                 [
-                    "discounts" => [
+                    'discounts' => [
                         [
-                            "name" => "discount",
-                            "type" => "percent",
-                            "triggersQuantity" => 10000,
-                            "active" => true,
-                            "amount" => 1000,
-                            "amountWithFraction" => "10,00"
-                        ]
+                            'name'               => 'discount',
+                            'type'               => 'percent',
+                            'triggersQuantity'   => 10000,
+                            'active'             => true,
+                            'amount'             => 1000,
+                            'amountWithFraction' => '10,00',
+                        ],
                     ],
-                    "promoCodes" => [
+                    'promoCodes' => [
                         [
-                            "name" => "promo",
-                            "type" => "current",
-                            "triggersQuantity" => 10000,
-                            "active" => true,
-                            "amount" => 1000,
-                            "amountWithFraction" => "10,00"
-                        ]
-                    ]
-                ]
+                            'name'               => 'promo',
+                            'type'               => 'current',
+                            'triggersQuantity'   => 10000,
+                            'active'             => true,
+                            'amount'             => 1000,
+                            'amountWithFraction' => '10,00',
+                        ],
+                    ],
+                ],
             ],
         ];
     }

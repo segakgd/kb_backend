@@ -19,9 +19,19 @@ class TelegramWebhookMessageDto
 
     private $entities;
 
+    public function getMessageId()
+    {
+        return $this->messageId;
+    }
+
     public function setMessageId($messageId): void
     {
         $this->messageId = $messageId;
+    }
+
+    public function getFrom()
+    {
+        return $this->from;
     }
 
     public function setFrom($from): void
@@ -29,14 +39,19 @@ class TelegramWebhookMessageDto
         $this->from = $from;
     }
 
-    public function getChat()
+    public function getChat(): TelegramWebhookChatDto
     {
         return $this->chat;
     }
 
-    public function setChat($chat): void
+    public function setChat(TelegramWebhookChatDto $chat): void
     {
         $this->chat = $chat;
+    }
+
+    public function getDate()
+    {
+        return $this->date;
     }
 
     public function setDate($date): void
@@ -52,6 +67,11 @@ class TelegramWebhookMessageDto
     public function setText($text): void
     {
         $this->text = $text;
+    }
+
+    public function getEntities()
+    {
+        return $this->entities;
     }
 
     public function setEntities($entities): void

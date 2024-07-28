@@ -19,6 +19,5 @@ class PromotionViewOneResponse
             ->setActiveFrom($promotion->getActiveFrom())
             ->setActiveTo($promotion->getActiveTo())
             ->setUsageWithAnyDiscount($promotion->isUsageWithAnyDiscount());
-            // ->setCount($promotion->getCount()); todo нужно7
     }
 }

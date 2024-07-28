@@ -29,11 +29,9 @@ use Symfony\Component\Serializer\SerializerInterface;
 )]
 class ViewAllController extends AbstractController
 {
-
     public function __construct(
         private readonly SerializerInterface $serializer,
-    ) {
-    }
+    ) {}
 
     #[Route('/api/admin/project/{project}/scenario/', name: 'admin_scenario_get_all', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]

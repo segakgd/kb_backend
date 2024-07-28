@@ -56,7 +56,7 @@ class ShippingReqDto
                 ->addViolation();
         }
 
-        if ($this->applyToAmount !== null && $this->applyToAmount < 0 || $this->applyFromAmount !== null && $this->applyFromAmount < 0)  {
+        if ($this->applyToAmount !== null && $this->applyToAmount < 0 || $this->applyFromAmount !== null && $this->applyFromAmount < 0) {
             $context
                 ->buildViolation('applyFromAmount and applyToAmount must be greater than 0')
                 ->addViolation();

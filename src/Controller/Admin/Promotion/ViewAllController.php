@@ -32,8 +32,7 @@ class ViewAllController extends AbstractController
 {
     public function __construct(
         private readonly PromotionManagerInterface $promotionManager,
-    ) {
-    }
+    ) {}
 
     #[Route('/api/admin/project/{project}/promotion/', name: 'admin_promotion_get_all', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]

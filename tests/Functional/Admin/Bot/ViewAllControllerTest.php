@@ -9,6 +9,10 @@ use App\Tests\Functional\Trait\User\UserTrait;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 class ViewAllControllerTest extends ApiTestCase
 {
     use UserTrait;
@@ -39,7 +43,7 @@ class ViewAllControllerTest extends ApiTestCase
 
         $client->request(
             'GET',
-            '/api/admin/project/'. $project->getId() .'/bot/',
+            '/api/admin/project/' . $project->getId() . '/bot/',
         );
 
         $responseArr = json_decode($client->getResponse()->getContent(), true);
@@ -53,14 +57,14 @@ class ViewAllControllerTest extends ApiTestCase
         yield [
             [
                 [
-                    "name" => "Мой новый бот",
-                    "type" => "telegram"
+                    'name' => 'Мой новый бот',
+                    'type' => 'telegram',
                 ],
                 [
-                    "name" => "Мой новый бот",
-                    "type" => "telegram"
+                    'name' => 'Мой новый бот',
+                    'type' => 'telegram',
                 ],
-            ]
+            ],
         ];
     }
 }

@@ -21,6 +21,7 @@ class OrderVariantType extends Type
     public function convertToPHPValue($value, AbstractPlatform $platform): array
     {
         $dataArray = json_decode($value ?? '{}', true);
+
         if (!is_array($dataArray)) {
             return [];
         }
@@ -38,12 +39,12 @@ class OrderVariantType extends Type
         return $collectDto;
     }
 
-    public function convertToDatabaseValue($value, AbstractPlatform $platform): string|bool
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): bool|string
     {
         if (is_array($value)) {
             $dataArray = array_map(function (OrderVariantReqDto $dto) {
                 return [
-                    'id' => $dto->getId(),
+                    'id'    => $dto->getId(),
                     'count' => $dto->getCount(),
                     'price' => $dto->getPrice(),
                 ];

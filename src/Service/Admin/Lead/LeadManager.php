@@ -16,13 +16,12 @@ use Exception;
 readonly class LeadManager
 {
     public function __construct(
-        private LeadService        $leadService,
+        private LeadService $leadService,
         private LeadContactService $contactService,
-        private LeadFieldsService  $fieldsService,
-        private OrderService       $orderService,
-        private OrderChecker       $orderChecker,
-    ) {
-    }
+        private LeadFieldsService $fieldsService,
+        private OrderService $orderService,
+        private OrderChecker $orderChecker,
+    ) {}
 
     public function getAllByProject(Project $project): array
     {

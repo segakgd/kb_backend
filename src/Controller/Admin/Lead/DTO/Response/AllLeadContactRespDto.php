@@ -8,7 +8,7 @@ class AllLeadContactRespDto
 
     private string $name;
 
-    private string|int $value;
+    private int|string $value;
 
     public function getType(): string
     {

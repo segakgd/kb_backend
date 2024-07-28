@@ -9,6 +9,10 @@ use App\Tests\Functional\Trait\User\UserTrait;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 class ViewOneControllerTest extends ApiTestCase
 {
     use UserTrait;
@@ -38,7 +42,7 @@ class ViewOneControllerTest extends ApiTestCase
 
         $client->request(
             'GET',
-            '/api/admin/project/'. $project->getId() .'/bot/' . $bot->getId() . '/', // todo ВНИМАНИЕ! я пока что поставил 1, но нужно брать существующий продукт
+            '/api/admin/project/' . $project->getId() . '/bot/' . $bot->getId() . '/' // todo ВНИМАНИЕ! я пока что поставил 1, но нужно брать существующий продукт
         );
 
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
@@ -51,9 +55,9 @@ class ViewOneControllerTest extends ApiTestCase
     {
         yield [
             [
-                "name" => 'Мой новый бот',
-                "type" => 'telegram',
-            ]
+                'name' => 'Мой новый бот',
+                'type' => 'telegram',
+            ],
         ];
     }
 }

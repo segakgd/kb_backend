@@ -14,8 +14,7 @@ readonly class LeadService implements LeadServiceInterface
 {
     public function __construct(
         public DealEntityRepository $dealEntityRepository,
-    ) {
-    }
+    ) {}
 
     public function remove(Deal $deal): void
     {

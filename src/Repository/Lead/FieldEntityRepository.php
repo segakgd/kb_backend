@@ -33,8 +33,7 @@ class FieldEntityRepository extends ServiceEntityRepository
 
         $queryBuilder
             ->delete()
-            ->andWhere($queryBuilder->expr()->in('field.id', $ids))
-        ;
+            ->andWhere($queryBuilder->expr()->in('field.id', $ids));
 
         $queryBuilder->getQuery()->getResult();
     }
