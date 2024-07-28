@@ -13,6 +13,7 @@ use App\Dto\Ecommerce\Product\Variants\VariantPriceDto;
 use App\Entity\Ecommerce\ProductVariant;
 use App\Entity\Ecommerce\Shipping;
 use App\Entity\User\Project;
+use App\Exception\NotFoundResourceException;
 use App\Service\Admin\Ecommerce\ProductVariant\Service\ProductVariantService;
 use App\Service\Admin\Ecommerce\Promotion\Service\PromotionService;
 use App\Service\Admin\Ecommerce\Shipping\Service\ShippingService;
@@ -21,11 +22,10 @@ use Exception;
 readonly class OrderChecker
 {
     public function __construct(
-        private ShippingService       $shippingService,
-        private PromotionService      $promotionService,
+        private ShippingService $shippingService,
+        private PromotionService $promotionService,
         private ProductVariantService $productVariantService,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws Exception
@@ -61,7 +61,6 @@ readonly class OrderChecker
             $productsTotalPrice += $variantDto->getPrice();
         }
 
-
         $totalAmount = max(max($productsTotalPrice - $totalAmountPromotion, 0) + $totalAmountShipping, 0);
 
         if ($totalAmount !== $reqDto->getTotalAmount()) {
@@ -70,13 +69,13 @@ readonly class OrderChecker
     }
 
     /**
-     * @param OrderShippingReqDto[] $shippingArray
+     * @param  OrderShippingReqDto[] $shippingArray
      * @throws Exception
      */
     private function checkShipping(Project $project, array $shippingArray): void
     {
         foreach ($shippingArray as $shippingDto) {
-            /** @var null|Shipping $foundShipping */
+            /** @var Shipping|null $foundShipping */
             $foundShipping = $this->shippingService->findByIdAndProjectId($shippingDto->getId(), $project->getId());
 
             if (null === $foundShipping) {
@@ -93,7 +92,7 @@ readonly class OrderChecker
     }
 
     /**
-     * @param PromotionReqDto[] $promotions
+     * @param  PromotionReqDto[] $promotions
      * @throws Exception
      */
     private function checkPromotions(Project $project, array $promotions): void
@@ -108,7 +107,7 @@ readonly class OrderChecker
                 throw new NotFoundResourceException(sprintf('Promotion with id %d not found', $promotionDto->getId()));
             }
 
-            $price = $foundPromotion->getPrice();
+            $price = $foundPromotion->getAmount();
             $price = $price['price'] ?? null;
 
             if ($price !== $promotionDto->getTotalAmount()) {
@@ -118,7 +117,7 @@ readonly class OrderChecker
             if (!isset($trackingPromotions[$promotionDto->getId()]['count'])) {
                 $trackingPromotions[$promotionDto->getId()]['count'] = 1;
             } else {
-                $trackingPromotions[$promotionDto->getId()]['count'] += 1;
+                ++$trackingPromotions[$promotionDto->getId()]['count'];
             }
 
             if ($trackingPromotions[$promotionDto->getId()]['count'] > $foundPromotion->getCount()) {
@@ -142,7 +141,7 @@ readonly class OrderChecker
                 throw new NotFoundResourceException(sprintf('Variant with id %d not found', $variant->getId()));
             }
 
-            /** @var null|VariantPriceDto $variantPrice */
+            /** @var VariantPriceDto|null $variantPrice */
             $variantPrice = current($variantEntity->getPrice()); // todo -> need to fix
             $variantPrice = $variantPrice?->getPrice();
 

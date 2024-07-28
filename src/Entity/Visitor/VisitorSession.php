@@ -2,13 +2,15 @@
 
 namespace App\Entity\Visitor;
 
-use App\Doctrine\Types\VisitorSessionCacheDtoArrayType;
-use App\Dto\SessionCache\Cache\CacheDto;
+use App\Entity\SessionCache;
+use App\Entity\User\Bot;
 use App\Repository\Visitor\VisitorSessionRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
-/** Сессия пользователя */
+/**
+ * Сессия пользователя бота
+ */
 #[ORM\Entity(repositoryClass: VisitorSessionRepository::class)]
 class VisitorSession
 {
@@ -29,14 +31,14 @@ class VisitorSession
     #[ORM\Column(nullable: true)]
     private ?int $projectId = null;
 
-    #[ORM\Column(type: VisitorSessionCacheDtoArrayType::TYPE_NAME)]
-    private ?CacheDto $cache = null;
-
-    #[ORM\Column]
-    private ?int $botId = null;
-
     #[ORM\Column]
     private ?int $chatId = null;
+
+    #[ORM\ManyToOne(inversedBy: 'visitorSessions')]
+    private ?Bot $bot = null;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?SessionCache $cache = null;
 
     public function __construct()
     {
@@ -98,41 +100,6 @@ class VisitorSession
         return $this;
     }
 
-    public function getCache(): CacheDto
-    {
-        return $this->cache;
-    }
-
-    public function setCache(CacheDto $cache): static
-    {
-        // clone потому что используем дто тип в ентити
-        $this->cache = clone $cache;
-
-        return $this;
-    }
-
-    public function getCacheContent(): ?string
-    {
-        return $this->cache['content'] ?? null;
-    }
-
-    public function getCacheStatusEvent(): ?string
-    {
-        return $this->cache['event']['status'] ?? null;
-    }
-
-    public function getBotId(): ?int
-    {
-        return $this->botId;
-    }
-
-    public function setBotId(int $botId): static
-    {
-        $this->botId = $botId;
-
-        return $this;
-    }
-
     public function getChatId(): ?int
     {
         return $this->chatId;
@@ -141,6 +108,30 @@ class VisitorSession
     public function setChatId(int $chatId): static
     {
         $this->chatId = $chatId;
+
+        return $this;
+    }
+
+    public function getBot(): ?Bot
+    {
+        return $this->bot;
+    }
+
+    public function setBot(?Bot $bot): static
+    {
+        $this->bot = $bot;
+
+        return $this;
+    }
+
+    public function getCache(): ?SessionCache
+    {
+        return $this->cache;
+    }
+
+    public function setCache(?SessionCache $cache): static
+    {
+        $this->cache = $cache;
 
         return $this;
     }

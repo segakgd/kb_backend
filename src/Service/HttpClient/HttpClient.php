@@ -12,9 +12,7 @@ class HttpClient implements HttpClientInterface
     public const METHOD_POST = 'POST';
     public const METHOD_GET = 'GET';
 
-    public function __construct(private readonly SerializerInterface $serializer)
-    {
-    }
+    public function __construct(private readonly SerializerInterface $serializer) {}
 
     public function request(RequestInterface $request): ResponseInterface
     {

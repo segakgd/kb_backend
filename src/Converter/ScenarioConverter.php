@@ -2,12 +2,12 @@
 
 namespace App\Converter;
 
-use App\Dto\Scenario\ScenarioDto;
 use App\Dto\Scenario\ScenarioCollection;
+use App\Dto\Scenario\ScenarioDto;
 use App\Entity\Scenario\Scenario;
-use App\Service\Visitor\Scenario\ScenarioService;
+use App\Entity\User\Bot;
+use App\Service\Constructor\Visitor\Scenario\ScenarioService;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Throwable;
 
 readonly class ScenarioConverter
@@ -18,18 +18,17 @@ readonly class ScenarioConverter
     ) {}
 
     /**
-     * @throws Exception
      * @throws Throwable
      */
-    public function convert(ScenarioCollection $scenario, int $projectId, int $botId): array
+    public function convert(ScenarioCollection $scenario, Bot $bot): array
     {
         try {
             $this->entityManager->beginTransaction();
 
-            $this->scenarioService->markAllAsRemoveScenario($projectId, $botId);
-            $this->scenarioService->generateDefaultScenario($projectId, $botId);
+            $this->scenarioService->removeAllScenarioForBot($bot);
+            $this->scenarioService->generateDefaultScenario($bot);
 
-            $scenarios = $this->convertToEntity($scenario->getScenarios(), $projectId, $botId);
+            $scenarios = $this->convertToEntity($scenario->getScenarios(), $bot);
 
             $this->entityManager->flush();
             $this->entityManager->commit();
@@ -42,7 +41,7 @@ readonly class ScenarioConverter
         return $scenarios;
     }
 
-    public function convertToEntity(array $scenarios, int $projectId, int $botId): array
+    private function convertToEntity(array $scenarios, Bot $bot): array
     {
         $scenarioEntities = [];
 
@@ -53,8 +52,8 @@ readonly class ScenarioConverter
                 ->setAlias($scenario->getAlias() ?? $scenario->getName())
                 ->setName($scenario->getName())
                 ->setType($scenario->getType())
-                ->setBotId($botId)
-                ->setProjectId($projectId);
+                ->setBotId($bot->getId())
+                ->setProjectId($bot->getProjectId());
 
             $scenarioEntity->setContract($scenario->getContract());
 

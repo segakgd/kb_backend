@@ -21,7 +21,7 @@ class VisitorSessionRepository extends ServiceEntityRepository
         parent::__construct($registry, VisitorSession::class);
     }
 
-    public function save(VisitorSession $entity): void
+    public function saveAndFlush(VisitorSession $entity): void
     {
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();

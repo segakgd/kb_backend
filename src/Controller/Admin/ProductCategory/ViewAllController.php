@@ -34,8 +34,7 @@ class ViewAllController extends AbstractController
 {
     public function __construct(
         private readonly ProductCategoryManagerInterface $productCategoryManager,
-    ) {
-    }
+    ) {}
 
     /** Получение колекции категорий */
     #[Route('/api/admin/project/{project}/productCategory/', name: 'admin_product_category_get_all', methods: ['GET'])]

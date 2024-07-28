@@ -8,6 +8,10 @@ use App\Tests\Functional\Trait\User\UserTrait;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 class ViewOneControllerTest extends ApiTestCase
 {
     use UserTrait;
@@ -32,7 +36,7 @@ class ViewOneControllerTest extends ApiTestCase
 
         $client->request(
             'GET',
-            '/api/admin/project/'. $project->getId() .'/shipping/' . 1 . '/', // todo ВНИМАНИЕ! я пока что поставил 1, но нужно брать существующую доставку
+            '/api/admin/project/' . $project->getId() . '/shipping/' . 1 . '/', // todo ВНИМАНИЕ! я пока что поставил 1, но нужно брать существующую доставку
         );
 
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
@@ -41,28 +45,27 @@ class ViewOneControllerTest extends ApiTestCase
         $this->assertResponse($responseArr, $response);
     }
 
-
     private function positive(): iterable
     {
         yield [
             [
-                "name" => "Доставка до самого дома",
-                "type" => "pickup",
-                "calculationType" => "percent",
-                "amount" => 1000,
-                "applyFromAmount" => 10000,
-                "applyFromAmountWF" => "100,00",
-                "applyToAmount" => 10000,
-                "applyToAmountWF" => "10,00",
-                "description" => "Urgent delivery is required",
-                "fields" => [
-                [
-                  "name" => "Добавочный телефон",
-                  "value" => "2396",
-                  "type" => "phone",
+                'name'              => 'Доставка до самого дома',
+                'type'              => 'pickup',
+                'calculationType'   => 'percent',
+                'amount'            => 1000,
+                'applyFromAmount'   => 10000,
+                'applyFromAmountWF' => '100,00',
+                'applyToAmount'     => 10000,
+                'applyToAmountWF'   => '10,00',
+                'description'       => 'Urgent delivery is required',
+                'fields'            => [
+                    [
+                        'name'  => 'Добавочный телефон',
+                        'value' => '2396',
+                        'type'  => 'phone',
+                    ],
                 ],
-            ],
-                "active" => true
+                'active' => true,
             ],
         ];
     }

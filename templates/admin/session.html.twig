@@ -112,8 +112,6 @@
                                         <span>Статус события:</span>
                                         {% if event.status == 'failed' %}
                                             <span class=""> Провалено </span>
-                                            <a class=""
-                                               href="/dev/project/{{ projectId }}/event/{{ event.id }}/restart/">Перезапустить</a>
                                         {% elseif event.status == 'done' %}
                                             <span class=""> Успешно </span>
                                         {% elseif event.status == 'new' %}

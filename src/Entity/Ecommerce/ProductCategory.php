@@ -40,7 +40,7 @@ class ProductCategory
     {
         $this->products = new ArrayCollection();
 
-        if ($this->createdAt === null){
+        if ($this->createdAt === null) {
             $this->createdAt = new DateTimeImmutable();
         }
     }

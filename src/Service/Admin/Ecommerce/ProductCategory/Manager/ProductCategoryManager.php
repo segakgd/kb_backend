@@ -13,9 +13,7 @@ use Exception;
 
 readonly class ProductCategoryManager implements ProductCategoryManagerInterface
 {
-    public function __construct(private ProductCategoryService $productCategoryService)
-    {
-    }
+    public function __construct(private ProductCategoryService $productCategoryService) {}
 
     /**
      * @throws ProductCategoryExistException

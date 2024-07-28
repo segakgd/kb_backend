@@ -18,8 +18,7 @@ readonly class LeadMapper
 {
     public function __construct(
         private ProductVariantRepository $productVariantRepository,
-    ) {
-    }
+    ) {}
 
     public function mapArrayToResponse(array $deals): array
     {

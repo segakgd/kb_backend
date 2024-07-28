@@ -26,8 +26,7 @@ class ViewOneController extends AbstractController
 {
     public function __construct(
         private readonly SerializerInterface $serializer,
-    ) {
-    }
+    ) {}
 
     #[Route('/api/admin/project/{project}/scenario/{scenario}/', name: 'admin_scenario_get_one', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]

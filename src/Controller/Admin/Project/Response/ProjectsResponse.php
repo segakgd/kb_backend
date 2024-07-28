@@ -14,7 +14,6 @@ class ProjectsResponse
 
         /** @var Project $project */
         foreach ($projects as $project) {
-
             $result[] = (new ProjectRespDto())
                 ->setId($project->getId())
                 ->setName($project->getName())

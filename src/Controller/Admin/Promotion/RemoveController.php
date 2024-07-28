@@ -27,8 +27,7 @@ class RemoveController extends AbstractController
     public function __construct(
         private readonly LoggerInterface $logger,
         private readonly PromotionManagerInterface $promotionManager,
-    ) {
-    }
+    ) {}
 
     #[Route('/api/admin/project/{project}/promotion/{promotion}/', name: 'admin_promotion_remove', methods: ['DELETE'])]
     #[IsGranted('existUser', 'project')]

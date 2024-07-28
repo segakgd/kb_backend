@@ -8,7 +8,7 @@ class CacheContactDto extends AbstractDto
 {
     public static function fromArray(array $data): AbstractDto
     {
-        return new CacheContactDto;
+        return new CacheContactDto();
     }
 
     public function toArray(): array

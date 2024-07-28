@@ -160,11 +160,11 @@ class ScenarioContractDto
         }
 
         return [
-            'message' => $this->getMessage(),
+            'message'  => $this->getMessage(),
             'keyboard' => $this->getKeyboard()?->toArray(),
-            'chain' => $chainArray,
+            'chain'    => $chainArray,
             'attached' => $this->getAttached()?->toArray(),
-            'finish' => $this->getFinish(),
+            'finish'   => $this->getFinish(),
         ];
     }
 }

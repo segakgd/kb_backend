@@ -13,11 +13,10 @@ use Exception;
 readonly class ProductService implements ProductServiceInterface
 {
     public function __construct(
-        private ProductEntityRepository         $productEntityRepository,
+        private ProductEntityRepository $productEntityRepository,
         private ProductCategoryEntityRepository $productCategoryEntityRepository,
-        private ProductVariantRepository        $productVariantRepository,
-    ) {
-    }
+        private ProductVariantRepository $productVariantRepository,
+    ) {}
 
     public function getAllByProject(Project $project): array
     {
@@ -55,8 +54,8 @@ readonly class ProductService implements ProductServiceInterface
 
         return match (true) {
             'first' === $key => $this->productEntityRepository->getPopularProducts(),
-            'next' === $key => $this->productEntityRepository->getPopularProducts($pageNow + 1),
-            'prev' === $key => $this->productEntityRepository->getPopularProducts($pageNow - 1),
+            'next' === $key  => $this->productEntityRepository->getPopularProducts($pageNow + 1),
+            'prev' === $key  => $this->productEntityRepository->getPopularProducts($pageNow - 1),
         };
     }
 
@@ -69,8 +68,8 @@ readonly class ProductService implements ProductServiceInterface
 
         return match (true) {
             'first' === $key => $this->productEntityRepository->getPromoProducts(),
-            'next' === $key => $this->productEntityRepository->getPromoProducts($pageNow + 1),
-            'prev' === $key => $this->productEntityRepository->getPromoProducts($pageNow - 1),
+            'next' === $key  => $this->productEntityRepository->getPromoProducts($pageNow + 1),
+            'prev' === $key  => $this->productEntityRepository->getPromoProducts($pageNow - 1),
         };
     }
 
@@ -83,8 +82,8 @@ readonly class ProductService implements ProductServiceInterface
 
         return match (true) {
             'first' === $key => $this->productCategoryEntityRepository->findProductsByCategory($categoryId),
-            'next' === $key => $this->productCategoryEntityRepository->findProductsByCategory($categoryId, $number + 1),
-            'prev' === $key => $this->productCategoryEntityRepository->findProductsByCategory($categoryId, $number - 1),
+            'next' === $key  => $this->productCategoryEntityRepository->findProductsByCategory($categoryId, $number + 1),
+            'prev' === $key  => $this->productCategoryEntityRepository->findProductsByCategory($categoryId, $number - 1),
         };
     }
 }

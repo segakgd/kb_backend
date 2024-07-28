@@ -34,8 +34,7 @@ class ViewAllController extends AbstractController
     public function __construct(
         private readonly SerializerInterface $serializer,
         private readonly TariffServiceInterface $tariffService,
-    ) {
-    }
+    ) {}
 
     #[Route('/api/admin/tariffs/', name: 'admin_list_tariffs', methods: ['GET'])]
     public function execute(): JsonResponse

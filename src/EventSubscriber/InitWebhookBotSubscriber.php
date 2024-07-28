@@ -8,13 +8,12 @@ use App\Repository\User\BotRepository;
 use App\Service\Integration\Telegram\TelegramServiceInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class InitWebhookBotSubscriber implements EventSubscriberInterface
+readonly class InitWebhookBotSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly TelegramServiceInterface $telegramService,
-        private readonly BotRepository $botRepository,
-    ) {
-    }
+        private TelegramServiceInterface $telegramService,
+        private BotRepository $botRepository,
+    ) {}
 
     public static function getSubscribedEvents(): array
     {
@@ -27,14 +26,13 @@ class InitWebhookBotSubscriber implements EventSubscriberInterface
     {
         $dot = $event->getBot();
 
-        $uri = 'https://mydevbot.ru' . '/webhook/' . $dot->getProjectId() . '/' . $dot->getType() . '/';
+        $uri = 'https://mydevbot.ru/webhook/' . $dot->getProjectId() . '/' . $dot->getType() . '/';
         $dot->setWebhookUri($uri);
 
         $this->botRepository->saveAndFlush($dot);
 
         $webhookDto = (new WebhookDto())
-            ->setUrl($dot->getWebhookUri())
-        ;
+            ->setUrl($dot->getWebhookUri());
 
         $this->telegramService->setWebhook($webhookDto, $dot->getToken());
     }

@@ -7,13 +7,11 @@ use App\Repository\MessageHistoryRepository;
 
 class MessageHistoryService
 {
-    const INCOMING = 'incoming';
+    public const INCOMING = 'incoming';
 
-    const OUTGOING = 'outgoing';
+    public const OUTGOING = 'outgoing';
 
-    public function __construct(private readonly MessageHistoryRepository $historyRepository)
-    {
-    }
+    public function __construct(private readonly MessageHistoryRepository $historyRepository) {}
 
     public function create(
         string $message,
@@ -21,12 +19,11 @@ class MessageHistoryService
         array $keyboard = [],
         array $images = [],
     ): MessageHistory {
-        $messageHistory = (new MessageHistory)
+        $messageHistory = (new MessageHistory())
             ->setMessage($message)
             ->setType($type)
             ->setKeyBoard($keyboard)
-            ->setImages($images)
-        ;
+            ->setImages($images);
 
         $this->historyRepository->saveAndFlush($messageHistory);
 

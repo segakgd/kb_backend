@@ -8,6 +8,10 @@ use App\Tests\Functional\Trait\User\UserTrait;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 class CreateControllerTest extends ApiTestCase
 {
     use UserTrait;
@@ -52,25 +56,25 @@ class CreateControllerTest extends ApiTestCase
             [
                 'name' => 'Новый проект',
                 'mode' => 'shop',
-                'bot' => 'vk',
+                'bot'  => 'vk',
             ],
             [
-                "name" => "Новый проект",
-                "status" => "active",
-                "activeTo" => null,
-                "activeFrom" => null,
-                "statistic" => [
-                    "lead" => [
-                        "count" => 13
+                'name'       => 'Новый проект',
+                'status'     => 'active',
+                'activeTo'   => null,
+                'activeFrom' => null,
+                'statistic'  => [
+                    'lead' => [
+                        'count' => 13,
                     ],
-                    "booking" => [
-                        "count" => 13
+                    'booking' => [
+                        'count' => 13,
                     ],
-                    "chats" => [
-                        "count" => 13
-                    ]
-                ]
-            ]
+                    'chats' => [
+                        'count' => 13,
+                    ],
+                ],
+            ],
         ];
     }
 }

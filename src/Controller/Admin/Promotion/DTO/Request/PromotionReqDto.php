@@ -22,7 +22,7 @@ class PromotionReqDto
     #[Assert\Choice([
         PromotionDiscountTypeEnum::PERCENT->value,
         PromotionDiscountTypeEnum::CURRENCY->value,
-        PromotionDiscountTypeEnum::SHIPPING->value
+        PromotionDiscountTypeEnum::SHIPPING->value,
     ])]
     private string $discountType;
 
@@ -96,7 +96,6 @@ class PromotionReqDto
 
         return $this;
     }
-
 
     public function getActiveFrom(): ?DateTimeInterface
     {

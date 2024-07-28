@@ -14,8 +14,7 @@ trait BotTrait
             ->setName('Мой новый бот')
             ->setType('telegram')
             ->setProjectId($project->getId())
-            ->setToken('token_token_token_token_token_token_token_token')
-        ;
+            ->setToken('token_token_token_token_token_token_token_token');
 
         $manager->persist($project);
 

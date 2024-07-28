@@ -15,23 +15,20 @@ readonly class LeadFieldsService
     public function __construct(
         private FieldEntityRepository $fieldEntityRepository,
         private EntityManagerInterface $entityManager,
-    ) {
-    }
+    ) {}
 
     public function add(Deal $deal, LeadFieldReqDto $leadFieldReqDto): DealField
     {
         $dealField = (new DealField())
             ->setDeal($deal)
             ->setName($leadFieldReqDto->getName())
-            ->setValue((string)$leadFieldReqDto->getValue());
+            ->setValue((string) $leadFieldReqDto->getValue());
 
         return $this->save($dealField);
     }
 
     /**
-     * @param Deal $deal
      * @param LeadFieldReqDto[] $leadDtoFields
-     * @return void
      */
     public function handleBatchUpdate(Deal $deal, array $leadDtoFields): void
     {
@@ -72,6 +69,7 @@ readonly class LeadFieldsService
 
     private function batchSave(array $fieldsArray): void
     {
+        // todo дублирование
         if (empty($fieldsArray)) {
             return;
         }

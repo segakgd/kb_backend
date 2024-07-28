@@ -61,9 +61,9 @@ class ScenarioChainDto extends AbstractDto
     public function toArray(): array
     {
         return [
-            'target' => $this->getTarget(),
+            'target'       => $this->getTarget(),
             'requirements' => $this->getRequirements(),
-            'isFinish' => $this->isFinish(),
+            'isFinish'     => $this->isFinish(),
         ];
     }
 }

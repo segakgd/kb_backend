@@ -5,7 +5,8 @@ doctrine:
         types:
             variant_price_type: App\Doctrine\Types\VariantPriceType
             scenario_contract_dto_array: App\Doctrine\Types\ScenarioContractDtoArrayType
-            visitor_session_cache_dto_array: App\Doctrine\Types\VisitorSessionCacheDtoArrayType
+            session_cart_dto_array: App\Doctrine\Types\Session\SessionCartDtoArrayType
+            session_event_dto_array: App\Doctrine\Types\Session\SessionEventDtoArrayType
             order_variant: App\Doctrine\Types\OrderVariantType
             shipping_price_type: App\Doctrine\Types\Shipping\ShippingPriceType
             shipping_field_req_dto_array: App\Doctrine\Types\Shipping\ShippingFieldReqDtoArrayType

@@ -51,7 +51,7 @@ class ApplyAbstractController extends GeneralAbstractController
 
         $isApply = $this->tariffService->applyTariff($project, $requestDto->getCode());
 
-        if (!$isApply){
+        if (!$isApply) {
             return new JsonResponse('Тариф не применился', Response::HTTP_CONFLICT);
         }
 

@@ -30,8 +30,7 @@ class ViewAllController extends AbstractController
         private readonly SerializerInterface $serializer,
         private readonly ProjectSettingServiceInterface $projectSettingService,
         private readonly TariffServiceInterface $tariffService,
-    ) {
-    }
+    ) {}
 
     #[Route('/api/admin/project/{project}/setting/', name: 'admin_list_project_setting', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]

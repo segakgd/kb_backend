@@ -8,6 +8,10 @@ use App\Tests\Functional\Trait\User\UserTrait;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 class ViewAllControllerTest extends ApiTestCase
 {
     use UserTrait;
@@ -49,12 +53,12 @@ class ViewAllControllerTest extends ApiTestCase
     {
         yield [
             [
-                "name" => "Тестовый тариф",
-                "price" => 10000,
-                "priceWF" => "100,00",
-                "description" => "For test",
-                "active" => true
-            ]
+                'name'        => 'Тестовый тариф',
+                'price'       => 10000,
+                'priceWF'     => '100,00',
+                'description' => 'For test',
+                'active'      => true,
+            ],
         ];
     }
 }

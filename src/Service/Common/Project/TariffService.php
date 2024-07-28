@@ -2,7 +2,6 @@
 
 namespace App\Service\Common\Project;
 
-
 use App\Entity\User\Project;
 use App\Entity\User\Tariff;
 use App\Repository\User\TariffRepository;
@@ -16,8 +15,7 @@ class TariffService implements TariffServiceInterface
     public function __construct(
         private readonly TariffRepository $tariffRepository,
         private readonly ProjectSettingServiceInterface $projectSettingServiceInterface,
-    ) {
-    }
+    ) {}
 
     public function getTariffById(int $tariffId): ?Tariff
     {
@@ -49,12 +47,12 @@ class TariffService implements TariffServiceInterface
     {
         $tariff = $this->tariffRepository->findOneBy(
             [
-                'code' => $code,
+                'code'   => $code,
                 'active' => true,
             ]
         );
 
-        if (!$tariff){
+        if (!$tariff) {
             throw new Exception('Тарифа не существует или он не активный');
         }
 

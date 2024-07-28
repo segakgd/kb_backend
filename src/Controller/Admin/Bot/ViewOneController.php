@@ -8,13 +8,13 @@ use App\Controller\Admin\Bot\Response\BotViewOneResponse;
 use App\Entity\User\Bot;
 use App\Entity\User\Project;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
-use OpenApi\Attributes as OA;
 use Throwable;
 
 #[OA\Tag(name: 'Bot')]
@@ -29,8 +29,7 @@ class ViewOneController extends AbstractController
 {
     public function __construct(
         private readonly SerializerInterface $serializer,
-    ) {
-    }
+    ) {}
 
     /** Получение бота */
     #[Route('/api/admin/project/{project}/bot/{bot}/', name: 'admin_bot_get_one', methods: ['GET'])]
@@ -44,7 +43,7 @@ class ViewOneController extends AbstractController
 
             return new JsonResponse(
                 $this->serializer->normalize(
-                    (new BotViewOneResponse)->mapToResponse($bot)
+                    (new BotViewOneResponse())->mapToResponse($bot)
                 )
             );
         } catch (Throwable $exception) {

@@ -4,34 +4,34 @@ namespace App\Dto\Core\Telegram\Request\Invoice;
 
 class InvoiceDto
 {
-private int|string $chat_id;
-private int $message_thread_id;
-private string $title;
-private string $description;
-private string $payload;
-private string $provider_token;
-private string $currency;
-private array|string $prices;
-private ?int $max_tip_amount;
-private ?array $suggested_tip_amounts;
-private ?string $start_parameter;
-private ?string $provider_data;
-private ?string $photo_url;
-private ?int $photo_size;
-private ?int $photo_width;
-private ?int $photo_height;
-private ?bool $need_name;
-private ?bool $need_phone_number;
-private ?bool $need_email;
-private ?bool $need_shipping_address;
-private ?bool $send_phone_number_to_provider;
-private ?bool $send_email_to_provider;
-private ?bool $is_flexible;
-private ?bool $disable_notification;
-private ?bool $protect_content;
-private ?int $reply_to_message_id;
-private ?bool $allow_sending_without_reply;
-private $reply_markup;
+    private int|string $chat_id;
+    private int $message_thread_id;
+    private string $title;
+    private string $description;
+    private string $payload;
+    private string $provider_token;
+    private string $currency;
+    private array|string $prices;
+    private ?int $max_tip_amount;
+    private ?array $suggested_tip_amounts;
+    private ?string $start_parameter;
+    private ?string $provider_data;
+    private ?string $photo_url;
+    private ?int $photo_size;
+    private ?int $photo_width;
+    private ?int $photo_height;
+    private ?bool $need_name;
+    private ?bool $need_phone_number;
+    private ?bool $need_email;
+    private ?bool $need_shipping_address;
+    private ?bool $send_phone_number_to_provider;
+    private ?bool $send_email_to_provider;
+    private ?bool $is_flexible;
+    private ?bool $disable_notification;
+    private ?bool $protect_content;
+    private ?int $reply_to_message_id;
+    private ?bool $allow_sending_without_reply;
+    private mixed $reply_markup;
 
     public function getChatId(): int|string
     {
@@ -372,18 +372,18 @@ private $reply_markup;
     public function getArray(): array
     {
         $normalize = [
-            'chat_id' => $this->getChatId(),
-            'title' => $this->getTitle(),
-            'description' => $this->getDescription(),
-            'payload' => $this->getPayload(),
-            'photo_url' => $this->getPhotoUrl(),
+            'chat_id'        => $this->getChatId(),
+            'title'          => $this->getTitle(),
+            'description'    => $this->getDescription(),
+            'payload'        => $this->getPayload(),
+            'photo_url'      => $this->getPhotoUrl(),
             'provider_token' => $this->getProviderToken(), // 381764678:TEST:60367
-            'currency' => $this->getCurrency(), // RUB
-            'prices' => $this->getPrices(), // [{"label":"first","amount":"200"}]
-            'photo_uri' => $this->getPhotoUrl() ?? '', // [{"label":"first","amount":"200"}]
+            'currency'       => $this->getCurrency(), // RUB
+            'prices'         => $this->getPrices(), // [{"label":"first","amount":"200"}]
+            'photo_uri'      => $this->getPhotoUrl() ?? '', // [{"label":"first","amount":"200"}]
         ];
 
-        if (!empty($this->getReplyMarkup())){
+        if (!empty($this->getReplyMarkup())) {
             $normalize['reply_markup'] = json_encode([
                 'inline_keyboard' => $this->getReplyMarkup(),
             ]);

@@ -8,7 +8,7 @@ class CacheProductDto extends AbstractDto
 {
     public static function fromArray(array $data): AbstractDto
     {
-        return new CacheProductDto;
+        return new CacheProductDto();
     }
 
     public function toArray(): array

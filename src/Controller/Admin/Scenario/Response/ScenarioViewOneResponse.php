@@ -2,7 +2,4 @@
 
 namespace App\Controller\Admin\Scenario\Response;
 
-class ScenarioViewOneResponse
-{
-
-}
+class ScenarioViewOneResponse {}

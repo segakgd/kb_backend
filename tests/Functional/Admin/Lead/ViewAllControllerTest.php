@@ -8,6 +8,10 @@ use App\Tests\Functional\Trait\User\UserTrait;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 class ViewAllControllerTest extends ApiTestCase
 {
     use UserTrait;
@@ -32,7 +36,7 @@ class ViewAllControllerTest extends ApiTestCase
 
         $client->request(
             'GET',
-            '/api/admin/project/'. $project->getId() .'/lead/',
+            '/api/admin/project/' . $project->getId() . '/lead/',
             [],
             [],
             [],
@@ -44,48 +48,47 @@ class ViewAllControllerTest extends ApiTestCase
         $this->assertResponse($responseArr, $response);
     }
 
-
     private function positive(): iterable
     {
         yield [
             [
-                'script' => 'all',
+                'script'    => 'all',
                 'messenger' => 'vk',
             ],
             [
                 [
-                    "number" => 111,
-                    "status" => "new",
-                    "fullName" => "Fake Faker Fake",
-                    "totalAmount" => 30000,
-                    "totalAmountWF" => "300,00",
-                    "contacts" => [
-                        "mail" => [
-                            "type" => "mail",
-                            "name" => "Почта",
-                            "value" => "mail@mail.fake"
-                        ]
+                    'number'        => 111,
+                    'status'        => 'new',
+                    'fullName'      => 'Fake Faker Fake',
+                    'totalAmount'   => 30000,
+                    'totalAmountWF' => '300,00',
+                    'contacts'      => [
+                        'mail' => [
+                            'type'  => 'mail',
+                            'name'  => 'Почта',
+                            'value' => 'mail@mail.fake',
+                        ],
                     ],
-                    "type" => "service",
-                    "paymentStatus" => true
+                    'type'          => 'service',
+                    'paymentStatus' => true,
                 ],
                 [
-                    "number" => 111,
-                    "status" => "new",
-                    "fullName" => "Fake Faker Fake",
-                    "totalAmount" => 30000,
-                    "totalAmountWF" => "300,00",
-                    "contacts" => [
-                        "mail" => [
-                            "type" => "mail",
-                            "name" => "Почта",
-                            "value" => "mail@mail.fake"
-                        ]
+                    'number'        => 111,
+                    'status'        => 'new',
+                    'fullName'      => 'Fake Faker Fake',
+                    'totalAmount'   => 30000,
+                    'totalAmountWF' => '300,00',
+                    'contacts'      => [
+                        'mail' => [
+                            'type'  => 'mail',
+                            'name'  => 'Почта',
+                            'value' => 'mail@mail.fake',
+                        ],
                     ],
-                    "type" => "service",
-                    "paymentStatus" => true
-                ]
-            ]
+                    'type'          => 'service',
+                    'paymentStatus' => true,
+                ],
+            ],
         ];
     }
 }

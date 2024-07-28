@@ -27,8 +27,7 @@ class RemoveController extends AbstractController
     public function __construct(
         private readonly ShippingManagerInterface $shippingManager,
         private readonly LoggerInterface $logger,
-    ) {
-    }
+    ) {}
 
     /** Удаление доставки */
     #[Route('/api/admin/project/{project}/shipping/{shipping}/', name: 'admin_shipping_remove', methods: ['DELETE'])]

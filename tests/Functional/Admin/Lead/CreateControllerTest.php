@@ -8,6 +8,10 @@ use App\Tests\Functional\Trait\User\UserTrait;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 class CreateControllerTest extends ApiTestCase
 {
     use UserTrait;
@@ -32,7 +36,7 @@ class CreateControllerTest extends ApiTestCase
 
         $client->request(
             'POST',
-            '/api/admin/project/'. $project->getId() .'/lead/',
+            '/api/admin/project/' . $project->getId() . '/lead/',
             [],
             [],
             [],
@@ -50,20 +54,20 @@ class CreateControllerTest extends ApiTestCase
             [
                 'contacts' => [
                     [
-                        'type' => 'mail',
-                        'name' => 'Почта',
+                        'type'  => 'mail',
+                        'name'  => 'Почта',
                         'value' => 'mail@mail.fake',
-                    ]
+                    ],
                 ],
                 'fields' => [
                     [
-                        'type' => 'phone',
-                        'name' => 'Добавочный телефон',
+                        'type'  => 'phone',
+                        'name'  => 'Добавочный телефон',
                         'value' => '2396',
                     ],
                     [
-                        'type' => 'text',
-                        'name' => 'Комментарий',
+                        'type'  => 'text',
+                        'name'  => 'Комментарий',
                         'value' => 'Мой комментарий',
                     ],
                 ],
@@ -72,24 +76,24 @@ class CreateControllerTest extends ApiTestCase
                         [
                             'variants' => [
                                 [
-                                    'id' => 12,
+                                    'id'    => 12,
                                     'count' => 1,
                                     'price' => 10000,
-                                ]
+                                ],
                             ],
-                            'totalCount' => 2,
+                            'totalCount'  => 2,
                             'totalAmount' => 20000,
-                        ]
+                        ],
                     ],
                     'shipping' => [
-                        'id' => 1,
+                        'id'          => 1,
                         'totalAmount' => 1000,
                     ],
                     'promotions' => [
                         [
-                            'id' => 1,
+                            'id'          => 1,
                             'totalAmount' => 1000,
-                        ]
+                        ],
                     ],
                 ],
             ],

@@ -8,6 +8,10 @@ use App\Tests\Functional\Trait\User\UserTrait;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 class CreateControllerTest extends ApiTestCase
 {
     use UserTrait;
@@ -32,7 +36,7 @@ class CreateControllerTest extends ApiTestCase
 
         $client->request(
             'POST',
-            '/api/admin/project/'. $project->getId() .'/promotion/',
+            '/api/admin/project/' . $project->getId() . '/promotion/',
             [],
             [],
             [],
@@ -48,15 +52,15 @@ class CreateControllerTest extends ApiTestCase
     {
         yield [
             [
-                'name' => 'promo',
-                'type' => 'percent',
-                'code' => 'PROMO_CODE',
-                'triggersQuantity' => 10000,
-                'isActive' => true,
-                'amount' => 15000,
+                'name'               => 'promo',
+                'type'               => 'percent',
+                'code'               => 'PROMO_CODE',
+                'triggersQuantity'   => 10000,
+                'isActive'           => true,
+                'amount'             => 15000,
                 'amountWithFraction' => '150,00',
-                'activeFrom' => '2023-12-16T23:22:00+00:00',
-                'activeTo' => '2023-12-25T23:22:00+00:00'
+                'activeFrom'         => '2023-12-16T23:22:00+00:00',
+                'activeTo'           => '2023-12-25T23:22:00+00:00',
             ],
         ];
     }

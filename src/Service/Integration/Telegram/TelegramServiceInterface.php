@@ -2,7 +2,4 @@
 
 namespace App\Service\Integration\Telegram;
 
-interface TelegramServiceInterface
-{
-
-}
+interface TelegramServiceInterface {}

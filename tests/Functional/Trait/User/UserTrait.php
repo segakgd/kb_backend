@@ -11,8 +11,7 @@ trait UserTrait
     {
         $user = (new User())
             ->setEmail('test' . uniqid() . '@test.com')
-            ->setPassword('123456')
-        ;
+            ->setPassword('123456');
 
         $manager->persist($user);
 

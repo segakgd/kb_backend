@@ -3,13 +3,15 @@
 namespace App\Controller\Webhook;
 
 use App\Dto\Webhook\Telegram\TelegramWebhookDto;
+use App\Enum\Constructor\ChannelEnum;
 use App\Message\TelegramMessage;
 use App\Repository\User\ProjectRepository;
 use App\Service\Admin\Bot\BotServiceInterface;
 use App\Service\Common\MessageHistoryService;
-use App\Service\Visitor\Event\VisitorEventService;
-use App\Service\Visitor\Session\VisitorSessionService;
+use App\Service\Constructor\Visitor\EventManager;
+use App\Service\Constructor\Visitor\Session\SessionService;
 use Exception;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,12 +24,13 @@ class MainWebhookController extends AbstractController
 {
     public function __construct(
         private readonly SerializerInterface $serializer,
-        private readonly VisitorSessionService $visitorSessionService,
-        private readonly VisitorEventService $visitorEventService,
+        private readonly SessionService $sessionService,
+        private readonly EventManager $visitorEventService,
         private readonly ProjectRepository $projectEntityRepository,
         private readonly BotServiceInterface $botService,
         private readonly MessageHistoryService $messageHistoryService,
         private readonly MessageBusInterface $bus,
+        private readonly LoggerInterface $logger,
     ) {}
 
     /**
@@ -71,6 +74,14 @@ class MainWebhookController extends AbstractController
             return new JsonResponse();
         }
 
+        if (ChannelEnum::isIn($channel)) {
+            $this->logger->error("Channel $channel не валиден");
+
+            return new JsonResponse('ok', 200);
+        }
+
+        $channel = ChannelEnum::from($channel);
+
         try {
             $webhookData = $this->serializer->deserialize(
                 $request->getContent(),
@@ -82,6 +93,8 @@ class MainWebhookController extends AbstractController
                 throw new Exception('Не активный бот');
             }
 
+            $bot = $this->botService->findOne($botId, $project->getId());
+
             $chatId = $webhookData->getWebhookChatId();
             $visitorName = $webhookData->getVisitorName();
 
@@ -91,27 +104,28 @@ class MainWebhookController extends AbstractController
                 type: MessageHistoryService::OUTGOING,
             );
 
-            $visitorSession = $this->visitorSessionService->identifyByChannel($chatId, $botId, 'telegram');
+            $session = $this->sessionService->findByMainParams($bot, $chatId, $channel);
 
-            if (!$visitorSession) {
-                $visitorSession = $this->visitorSessionService->createVisitorSession(
+            if (!$session) {
+                $session = $this->sessionService->createSession(
+                    bot: $bot,
                     visitorName: $visitorName,
                     chatId: $chatId,
-                    botId: $botId,
-                    chanel: 'telegram',
-                    projectId: $project->getId(),
+                    chanel: $channel,
                 );
             }
 
             // определяем событие
             $visitorEvent = $this->visitorEventService->createVisitorEventForSession(
-                visitorSession: $visitorSession,
+                session: $session,
                 type: $webhookData->getWebhookType(),
                 content: $webhookData->getWebhookContent(),
             );
 
             $this->bus->dispatch(new TelegramMessage($visitorEvent->getId()));
         } catch (Throwable $exception) {
+            $this->logger->error($exception->getMessage());
+
             return new JsonResponse('ok', 200);
         }
 

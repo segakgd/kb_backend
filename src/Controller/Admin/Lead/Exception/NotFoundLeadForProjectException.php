@@ -6,7 +6,8 @@ use Exception;
 
 class NotFoundLeadForProjectException extends Exception
 {
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct('Project does not belong to this resource.');
     }
 }

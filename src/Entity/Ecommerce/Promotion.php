@@ -3,6 +3,7 @@
 namespace App\Entity\Ecommerce;
 
 use App\Repository\Ecommerce\PromotionEntityRepository;
+use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
@@ -47,7 +48,7 @@ class Promotion
     #[ORM\Column(nullable: false)]
     private bool $active;
 
-    #[Orm\Column(nullable: false)]
+    #[ORM\Column(nullable: false)]
     private bool $usageWithAnyDiscount;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
@@ -67,7 +68,7 @@ class Promotion
 
     public function __construct()
     {
-        if ($this->createdAt === null){
+        if ($this->createdAt === null) {
             $this->createdAt = new DateTimeImmutable();
         }
     }
@@ -202,9 +203,9 @@ class Promotion
         return $this->createdAt;
     }
 
-    public function setCreatedAt(DateTimeImmutable|\DateTime $createdAt): static
+    public function setCreatedAt(DateTime|DateTimeImmutable $createdAt): static
     {
-        $this->createdAt = $createdAt instanceof \DateTime ? DateTimeImmutable::createFromMutable($createdAt) : $createdAt;
+        $this->createdAt = $createdAt instanceof DateTime ? DateTimeImmutable::createFromMutable($createdAt) : $createdAt;
 
         return $this;
     }

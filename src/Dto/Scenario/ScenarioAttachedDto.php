@@ -92,10 +92,10 @@ class ScenarioAttachedDto extends AbstractDto
     {
         return [
             'document' => $this->getDocument(),
-            'link' => $this->getLink(),
-            'images' => $this->getImages(),
-            'videos' => $this->getVideos(),
-            'audios' => $this->getAudios(),
+            'link'     => $this->getLink(),
+            'images'   => $this->getImages(),
+            'videos'   => $this->getVideos(),
+            'audios'   => $this->getAudios(),
         ];
     }
 }

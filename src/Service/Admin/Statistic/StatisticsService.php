@@ -13,8 +13,7 @@ class StatisticsService implements StatisticsServiceInterface
     public function getStatisticForProject(): ProjectStatisticsRespDto
     {
         $fakeStatistic = (new ProjectStatisticRespDto())
-            ->setCount(13)
-        ;
+            ->setCount(13);
 
         return (new ProjectStatisticsRespDto())
             ->setChats($fakeStatistic)

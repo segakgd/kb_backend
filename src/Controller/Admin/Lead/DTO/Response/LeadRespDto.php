@@ -7,7 +7,6 @@ namespace App\Controller\Admin\Lead\DTO\Response;
 use App\Controller\Admin\Lead\DTO\Response\Fields\LeadContactsRespDto;
 use App\Controller\Admin\Lead\DTO\Response\Fields\LeadFieldRespDto;
 use App\Controller\Admin\Lead\DTO\Response\Order\OrderRespDto;
-use App\Enum\Lead\LeadStatusEnum;
 use DateTimeImmutable;
 
 class LeadRespDto

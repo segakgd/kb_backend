@@ -10,9 +10,7 @@ use App\Repository\Ecommerce\PromotionRepository;
 
 readonly class PromotionService implements PromotionServiceInterface
 {
-    public function __construct(private PromotionRepository $promotionRepository)
-    {
-    }
+    public function __construct(private PromotionRepository $promotionRepository) {}
 
     public function create(Promotion $promotion): Promotion
     {

@@ -23,9 +23,7 @@ use Throwable;
 )]
 class RemoveController extends AbstractController
 {
-    public function __construct(private readonly LeadManager $leadManager)
-    {
-    }
+    public function __construct(private readonly LeadManager $leadManager) {}
 
     /** Удаление лида */
     #[Route('/api/admin/project/{project}/lead/{lead}/', name: 'admin_lead_remove', methods: ['DELETE'])]

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Dto\Ecommerce\Product\Variants;
 
+// todo дублирование
 use Symfony\Component\Validator\Constraints as Assert;
 
 class VariantPriceDto
@@ -41,7 +42,7 @@ class VariantPriceDto
     public function toArray(): array
     {
         return [
-            'price' => $this->price,
+            'price'    => $this->price,
             'currency' => $this->currency,
         ];
     }

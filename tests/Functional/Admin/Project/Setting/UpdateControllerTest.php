@@ -9,6 +9,10 @@ use App\Tests\Functional\Trait\User\UserTrait;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 class UpdateControllerTest extends ApiTestCase
 {
     use UserTrait;
@@ -33,7 +37,7 @@ class UpdateControllerTest extends ApiTestCase
 
         $client->request(
             'POST',
-            '/api/admin/project/'. $project->getId() .'/setting/',
+            '/api/admin/project/' . $project->getId() . '/setting/',
             [],
             [],
             [],
@@ -57,46 +61,46 @@ class UpdateControllerTest extends ApiTestCase
     {
         yield [
             [
-                "mainSettings" => [
-                    "country" => "russia",
-                    "timeZone" => "Europe/Moscow",
-                    "language" => "ru",
-                    "currency" => "RUB",
+                'mainSettings' => [
+                    'country'  => 'russia',
+                    'timeZone' => 'Europe/Moscow',
+                    'language' => 'ru',
+                    'currency' => 'RUB',
                 ],
-                "notificationSetting" => [
-                    "newLead" => [
-                        "mail" => true,
-                        "telegram" => false,
-                        "sms" => true,
+                'notificationSetting' => [
+                    'newLead' => [
+                        'mail'     => true,
+                        'telegram' => false,
+                        'sms'      => true,
                     ],
-                    "changesStatusLead" => [
-                        "mail" => true,
-                        "sms" => true,
-                    ]
-                ]
+                    'changesStatusLead' => [
+                        'mail' => true,
+                        'sms'  => true,
+                    ],
+                ],
             ],
             [
-                "notification" =>  [
-                    "aboutNewLead" =>  [
-                        "system" => true,
-                        "mail" => false,
-                        "sms" => false,
-                        "telegram" => false,
+                'notification' => [
+                    'aboutNewLead' => [
+                        'system'   => true,
+                        'mail'     => false,
+                        'sms'      => false,
+                        'telegram' => false,
                     ],
-                    "aboutChangesStatusLead" => [
-                        "system" => true,
-                        "mail" => false,
-                        "sms" => false,
-                        "telegram" => false,
+                    'aboutChangesStatusLead' => [
+                        'system'   => true,
+                        'mail'     => false,
+                        'sms'      => false,
+                        'telegram' => false,
                     ],
                 ],
-                "basic" => [
-                    "country" => "russia",
-                    "language" => "ru",
-                    "timeZone" => "Europe/Moscow",
-                    "currency" => "RUB",
+                'basic' => [
+                    'country'  => 'russia',
+                    'language' => 'ru',
+                    'timeZone' => 'Europe/Moscow',
+                    'currency' => 'RUB',
                 ],
-            ]
+            ],
         ];
     }
 }

@@ -12,15 +12,18 @@ use App\Repository\Visitor\VisitorEventRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Admin\Bot\BotServiceInterface;
 use App\Service\Admin\Scenario\ScenarioTemplateService;
+use App\Service\Constructor\Visitor\Session\SessionService;
 use App\Service\Integration\Telegram\TelegramService;
-use App\Service\Visitor\Session\VisitorSessionService;
 
+/**
+ * @legacy Пока что пусть это живёт как живёт, но потом это стоит переделать. Не стал разносить по сервисам, т.к, эта реализация сама по себе не очень.
+ */
 readonly class DashboardService
 {
     public function __construct(
         private TelegramService $telegramService,
         private BotServiceInterface $botService,
-        private VisitorSessionService $visitorSessionService,
+        private SessionService $sessionService,
         private VisitorSessionRepository $visitorSessionRepository,
         private VisitorEventRepository $visitorEventRepository,
         private ScenarioTemplateService $scenarioTemplateService,
@@ -83,20 +86,6 @@ readonly class DashboardService
         return $this->historyRepository->findAll();
     }
 
-    public function prepareSession(VisitorSession $session): array
-    {
-        $cache = $session->getCache();
-
-        return [
-            'id'             => $session->getId(),
-            'sessionName'    => $session->getName(),
-            'sessionChannel' => $session->getChannel(),
-            'cache'          => [
-                'content' => $cache->getContent() ?? null,
-            ],
-        ];
-    }
-
     public function prepareBots(Project $project): array
     {
         $prepareBots = [];
@@ -154,7 +143,7 @@ readonly class DashboardService
 
     public function getSessions(Bot $bot): array
     {
-        $sessions = $this->visitorSessionService->findAllByBotId($bot->getId());
+        $sessions = $this->sessionService->findByBot($bot);
 
         $prepareSessions = [];
 
@@ -164,5 +153,19 @@ readonly class DashboardService
         }
 
         return $prepareSessions;
+    }
+
+    private function prepareSession(VisitorSession $session): array
+    {
+        $cache = $session->getCache();
+
+        return [
+            'id'             => $session->getId(),
+            'sessionName'    => $session->getName(),
+            'sessionChannel' => $session->getChannel(),
+            'cache'          => [
+                'content' => $cache->getContent() ?? null,
+            ],
+        ];
     }
 }

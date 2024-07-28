@@ -48,9 +48,4 @@ class ScenarioResolver
 
         $responsibleMessageDto->setKeyBoard($replyMarkups);
     }
-
-    private function handleAttached(array $attachedData): void
-    {
-        // todo write an implementation
-    }
 }

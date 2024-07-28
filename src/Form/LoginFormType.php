@@ -14,13 +14,13 @@ class LoginFormType extends AbstractType
     {
         $builder
             ->add('email', TextType::class, [
-                'label' => 'Электронная почта:'
+                'label' => 'Электронная почта:',
             ])
             ->add('password', PasswordType::class, [
-                'label' => 'Пароль:'
+                'label' => 'Пароль:',
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'Войти'
+                'label' => 'Войти',
             ]);
     }
 }

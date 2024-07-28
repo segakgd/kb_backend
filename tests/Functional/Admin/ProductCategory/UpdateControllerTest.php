@@ -8,6 +8,10 @@ use App\Tests\Functional\Trait\User\UserTrait;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 class UpdateControllerTest extends ApiTestCase
 {
     use UserTrait;
@@ -32,7 +36,7 @@ class UpdateControllerTest extends ApiTestCase
 
         $client->request(
             'POST',
-            '/api/admin/project/'. $project->getId() .'/productCategory/',
+            '/api/admin/project/' . $project->getId() . '/productCategory/',
             [],
             [],
             [],

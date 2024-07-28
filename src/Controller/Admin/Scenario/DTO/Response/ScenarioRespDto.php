@@ -2,26 +2,11 @@
 
 namespace App\Controller\Admin\Scenario\DTO\Response;
 
-use App\Controller\Admin\ProductCategory\DTO\Response\ProductCategoryRespDto;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use OpenApi\Attributes as OA;
-
-class ScenarioRespDto
+readonly class ScenarioRespDto
 {
-    private readonly ?int $id;
+    private ?int $id;
 
-    private readonly string $name;
-
-    // todo реализовать
-//    #[OA\Property(
-//        type: "array",
-//        items: new OA\Items(
-//            ref: new Model(
-//                type: ProductCategoryRespDto::class
-//            )
-//        )
-//    )]
-//    private readonly array $scenario;
+    private string $name;
 
     public function getId(): ?int
     {
@@ -42,14 +27,4 @@ class ScenarioRespDto
     {
         $this->name = $name;
     }
-
-//    public function getScenario(): array
-//    {
-//        return $this->scenario;
-//    }
-//
-//    public function setScenario(array $scenario): void
-//    {
-//        $this->scenario = $scenario;
-//    }
 }

@@ -27,11 +27,11 @@ class DealOrder
     private array $productVariants = [];
 
     #[Groups(['administrator'])]
-    #[ORM\Column(type: "json", nullable: true)]
+    #[ORM\Column(type: 'json', nullable: true)]
     private array $shipping = [];
 
     #[Groups(['administrator'])]
-    #[ORM\Column(type: "json", nullable: true)]
+    #[ORM\Column(type: 'json', nullable: true)]
     private array $promotions = [];
 
     #[ORM\Column]
@@ -45,7 +45,7 @@ class DealOrder
 
     public function __construct()
     {
-        if ($this->createdAt === null){
+        if ($this->createdAt === null) {
             $this->createdAt = new DateTimeImmutable();
         }
     }
@@ -110,6 +110,7 @@ class DealOrder
         return $this;
     }
 
+    // todo почему тут используется dto request-а?
     public function addProductVariant(OrderVariantReqDto $variantReqDto): static
     {
         $this->productVariants[] = $variantReqDto;
@@ -131,7 +132,7 @@ class DealOrder
 
     public function addShipping(OrderShippingReqDto $shipping): static
     {
-       $this->shipping[] = $shipping;
+        $this->shipping[] = $shipping;
 
         return $this;
     }

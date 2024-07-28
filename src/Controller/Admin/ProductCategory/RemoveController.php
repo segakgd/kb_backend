@@ -19,9 +19,7 @@ use Throwable;
 #[OA\Tag(name: 'ProductCategoryChain')]
 class RemoveController extends AbstractController
 {
-    public function __construct(private readonly ProductCategoryManagerInterface $productCategoryManager)
-    {
-    }
+    public function __construct(private readonly ProductCategoryManagerInterface $productCategoryManager) {}
 
     /** Удаление категории продуктов */
     #[Route('/api/admin/project/{project}/productCategory/{productCategory}/', name: 'admin_product_category_remove', methods: ['DELETE'])]

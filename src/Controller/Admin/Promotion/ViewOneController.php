@@ -31,8 +31,7 @@ class ViewOneController extends AbstractController
 {
     public function __construct(
         private readonly LoggerInterface $logger,
-    ) {
-    }
+    ) {}
 
     #[Route('/api/admin/project/{project}/promotion/{promotion}/', name: 'admin_promotion_get_one', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]

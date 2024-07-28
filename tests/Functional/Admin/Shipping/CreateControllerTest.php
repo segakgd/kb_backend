@@ -8,6 +8,10 @@ use App\Tests\Functional\Trait\User\UserTrait;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 class CreateControllerTest extends ApiTestCase
 {
     use UserTrait;
@@ -32,7 +36,7 @@ class CreateControllerTest extends ApiTestCase
 
         $client->request(
             'POST',
-            '/api/admin/project/'. $project->getId() .'/shipping/',
+            '/api/admin/project/' . $project->getId() . '/shipping/',
             [],
             [],
             [],
@@ -47,20 +51,20 @@ class CreateControllerTest extends ApiTestCase
     {
         yield [
             [
-                "shipping" => [
-                    'name' => 'Доставка до самого дома',
-                    'type' => 'pickup',
-                    'calculationType' => 'percent',
-                    'amount' => 10,
-                    'amountWF' => '100,00',
-                    'applyFromAmount' => 20000,
+                'shipping' => [
+                    'name'              => 'Доставка до самого дома',
+                    'type'              => 'pickup',
+                    'calculationType'   => 'percent',
+                    'amount'            => 10,
+                    'amountWF'          => '100,00',
+                    'applyFromAmount'   => 20000,
                     'applyFromAmountWF' => '100,00',
-                    'applyToAmount' => 10000,
-                    'applyToAmountWF' => '100,00',
-                    'description' => 'Urgent delivery is required',
-                    'fields' => [
-                        'type' => 'phone',
-                        'name' => 'Добавочный телефон',
+                    'applyToAmount'     => 10000,
+                    'applyToAmountWF'   => '100,00',
+                    'description'       => 'Urgent delivery is required',
+                    'fields'            => [
+                        'type'  => 'phone',
+                        'name'  => 'Добавочный телефон',
                         'value' => '2396',
                     ],
                     'isActive' => true,

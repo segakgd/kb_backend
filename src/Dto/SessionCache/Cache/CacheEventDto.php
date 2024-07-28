@@ -15,11 +15,11 @@ class CacheEventDto extends AbstractDto
     public function __construct()
     {
         if (!$this->contract) {
-            $this->contract = new CacheContractDto;
+            $this->contract = new CacheContractDto();
         }
 
         if (!$this->data) {
-            $this->data = new CacheDataDto;
+            $this->data = new CacheDataDto();
         }
     }
 
@@ -75,7 +75,7 @@ class CacheEventDto extends AbstractDto
         return [
             'finished' => $this->finished,
             'contract' => $this->contract->toArray(),
-            'data' => $this->data->toArray(),
+            'data'     => $this->data->toArray(),
         ];
     }
 }

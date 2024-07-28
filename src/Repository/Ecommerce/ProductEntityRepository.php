@@ -24,11 +24,7 @@ class ProductEntityRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
-    /**
-     * @param  mixed     $page
-     * @throws Exception
-     */
-    public function getPromoProducts($page = 1): array
+    public function getPromoProducts(int $page = 1): array
     {
         $queryBuilder = $this->createQueryBuilder('product');
         $queryBuilder

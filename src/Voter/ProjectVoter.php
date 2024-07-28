@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class ProjectVoter extends Voter
 {
-    const EXIST_USER_PERMISSION = 'existUser';
+    public const EXIST_USER_PERMISSION = 'existUser';
 
     protected function supports(string $attribute, mixed $subject): bool
     {
@@ -36,9 +36,9 @@ class ProjectVoter extends Voter
         /** @var Project $project */
         $project = $subject;
 
-        return match($attribute) {
+        return match ($attribute) {
             self::EXIST_USER_PERMISSION => $this->isUserExistInProject($project, $user),
-            default => throw new LogicException('Access error')
+            default                     => throw new LogicException('Access error')
         };
     }
 
