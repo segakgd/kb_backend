@@ -4,13 +4,8 @@ namespace App\Controller\Dev\Dashboard;
 
 use App\Entity\User\Bot;
 use App\Entity\User\Project;
-use App\Entity\User\User;
 use App\Entity\Visitor\VisitorSession;
-use App\Repository\User\ProjectRepository;
-use App\Repository\User\UserRepository;
 use App\Service\Admin\DashboardService;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
