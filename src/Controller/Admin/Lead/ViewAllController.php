@@ -39,7 +39,7 @@ use Throwable;
         )
     ),
 )]
-class ViewAllAbstractController extends GeneralAbstractController
+class ViewAllController extends GeneralAbstractController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,

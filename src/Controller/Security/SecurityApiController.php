@@ -20,7 +20,7 @@ use Symfony\Component\Security\Http\AccessToken\Oidc\Exception\InvalidSignatureE
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class SecurityApiAbstractController extends GeneralAbstractController
+class SecurityApiController extends GeneralAbstractController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,
