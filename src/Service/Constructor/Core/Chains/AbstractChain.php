@@ -10,7 +10,7 @@ use App\Service\Constructor\Core\Jumps\JumpProvider;
 
 abstract class AbstractChain implements ChainInterface
 {
-    abstract public function complete(ResponsibleInterface $responsible): ResponsibleInterface; // complete
+    abstract public function complete(ResponsibleInterface $responsible): ResponsibleInterface;
 
     /**
      * Решает, валидно ли значение, производит доп махинации, может содержать логику.

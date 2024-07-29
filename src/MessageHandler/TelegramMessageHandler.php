@@ -17,6 +17,7 @@ use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Constructor\Core\Dto\Responsible;
 use App\Service\Constructor\Core\EventResolver;
 use App\Service\Constructor\Core\Jumps\JumpResolver;
+use App\Service\Constructor\Core\Jumps\JumpToChainResolver;
 use App\Service\Constructor\Visitor\ScenarioManager;
 use App\Service\DtoRepository\ResponsibleDtoRepository;
 use Exception;
@@ -32,6 +33,7 @@ final readonly class TelegramMessageHandler
         private EventResolver $eventResolver,
         private ScenarioManager $scenarioService,
         private JumpResolver $jumpResolver,
+        private JumpToChainResolver $jumpToChainResolver,
         private ResponsibleDtoRepository $responsibleDtoRepository,
         private SessionCacheRepository $sessionCacheRepository,
         private VisitorEventRepository $visitorEventRepository,
@@ -53,32 +55,46 @@ final readonly class TelegramMessageHandler
                 return;
             }
 
-            if ($event->isStatusAvailableForHandle()) {
-                $session = $this->visitorSessionRepository->find($event->getSessionId());
+            if (!$event->isStatusAvailableForHandle()) {
+                return;
+            }
 
-                $sessionCache = $session->getCache();
-                $sessionCache = $this->enrichContractCacheIfNeed($event, $sessionCache);
+            $session = $this->visitorSessionRepository->find($event->getSessionId());
 
-                $responsible = CommonHelper::createDefaultResponsible($session, $sessionCache);
+            $sessionCache = $session->getCache();
+            $sessionCache = $this->enrichContractCacheIfNeed($event, $sessionCache);
 
+            $responsible = CommonHelper::createDefaultResponsible($session, $sessionCache);
+
+            if ($responsible->isJump()) {
+                $this->jumpResolver->resolve(
+                    visitorEvent: $event,
+                    responsible: $responsible
+                );
+            } else {
                 $responsible = $this->eventResolver->resolve($responsible);
 
-                if ($responsible->isExistJump()) {
-                    $this->jumpResolver->resolveJump(
+                $this->bus->dispatch(new SendTelegramMessage($responsible->getResult(), $responsible->getBotDto()));
+
+                if ($responsible->isExistJumpedToChain()) {
+                    $this->jumpToChainResolver->resolve(
                         visitorEvent: $event,
                         responsible: $responsible
                     );
-                } else {
-                    $this->bus->dispatch(new SendTelegramMessage($responsible->getResult(), $responsible->getBotDto()));
                 }
 
-                $event->setStatus($responsible->getStatus());
-
-                $this->updateEntities($event, $session, $sessionCache, $responsible);
-
-                if ($event->isRepeatStates()) {
-                    $this->bus->dispatch(new TelegramMessage($event->getId()));
+                if ($responsible->isExistJump()) {
+                    $this->jumpResolver->resolve(
+                        visitorEvent: $event,
+                        responsible: $responsible
+                    );
                 }
+            }
+
+            $this->updateEntities($event, $session, $sessionCache, $responsible);
+
+            if ($event->isRepeatStatuses()) {
+                $this->bus->dispatch(new TelegramMessage($event->getId()));
             }
         } catch (Throwable $exception) {
             $message = ' MESSAGE: ' . $exception->getMessage() . "\n"
@@ -101,6 +117,8 @@ final readonly class TelegramMessageHandler
         SessionCache $sessionCache,
         Responsible $responsible,
     ): void {
+        $event->setStatus($responsible->getStatus());
+
         $this->visitorEventRepository->saveAndFlush($event);
         $this->visitorSessionRepository->saveAndFlush($session);
         $this->sessionCacheRepository->saveAndFlush($sessionCache);

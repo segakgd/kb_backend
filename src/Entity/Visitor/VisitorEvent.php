@@ -84,7 +84,7 @@ class VisitorEvent
         || VisitorEventStatusEnum::JumpedToChain === $this->getStatus();
     }
 
-    public function isRepeatStates(): bool
+    public function isRepeatStatuses(): bool
     {
         return VisitorEventStatusEnum::Repeat === $this->getStatus()
         || VisitorEventStatusEnum::Jumped === $this->getStatus()

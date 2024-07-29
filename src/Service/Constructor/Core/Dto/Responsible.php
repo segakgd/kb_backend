@@ -8,6 +8,7 @@ use App\Dto\SessionCache\Cache\CacheEventDto;
 use App\Enum\TargetEnum;
 use App\Enum\VisitorEventStatusEnum;
 use App\Helper\CacheHelper;
+use App\Service\Constructor\Core\Jumps\JumpProvider;
 
 class Responsible implements ResponsibleInterface
 {
@@ -22,6 +23,7 @@ class Responsible implements ResponsibleInterface
     private ?ResultInterface $result = null;
 
     private ?TargetEnum $jump = null;
+    private ?TargetEnum $jumpedToChain = null;
 
     private ?VisitorEventStatusEnum $status = VisitorEventStatusEnum::New;
 
@@ -126,6 +128,24 @@ class Responsible implements ResponsibleInterface
         return !is_null($this->jump);
     }
 
+
+    public function getJumpedToChain(): ?TargetEnum
+    {
+        return $this->jumpedToChain;
+    }
+
+    public function setJumpedToChain(?TargetEnum $jumpedToChain): static
+    {
+        $this->jumpedToChain = $jumpedToChain;
+
+        return $this;
+    }
+
+    public function isExistJumpedToChain(): bool
+    {
+        return !is_null($this->jumpedToChain);
+    }
+
     public function getStatus(): ?VisitorEventStatusEnum
     {
         return $this->status;
@@ -148,5 +168,20 @@ class Responsible implements ResponsibleInterface
         $this->botDto = $botDto;
 
         return $this;
+    }
+
+    public function isJump(): bool
+    {
+        $content = $this->getContent();
+
+        $jump = JumpProvider::getJumpFromNavigate($content);
+
+        if ($jump) {
+            $this->setJump($jump);
+
+            return true;
+        }
+
+        return false;
     }
 }
