@@ -24,6 +24,20 @@ class ProductCategoryEntityRepository extends ServiceEntityRepository
         parent::__construct($registry, ProductCategory::class);
     }
 
+    public function saveAndFlush(ProductCategory $entity): void
+    {
+        $entity->setUpdatedAt(new DateTimeImmutable());
+
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush($entity);
+    }
+
+    public function removeAndFlush(ProductCategory $entity): void
+    {
+        $this->getEntityManager()->remove($entity);
+        $this->getEntityManager()->flush($entity);
+    }
+
     /**
      * @throws Exception
      */
@@ -60,17 +74,4 @@ class ProductCategoryEntityRepository extends ServiceEntityRepository
         ];
     }
 
-    public function saveAndFlush(ProductCategory $entity): void
-    {
-        $entity->setUpdatedAt(new DateTimeImmutable());
-
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush($entity);
-    }
-
-    public function removeAndFlush(ProductCategory $entity): void
-    {
-        $this->getEntityManager()->remove($entity);
-        $this->getEntityManager()->flush($entity);
-    }
 }
