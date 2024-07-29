@@ -42,16 +42,16 @@ class ProductsByCategoryChain extends AbstractChain
      */
     public function perform(ResponsibleInterface $responsible): bool
     {
-        $content = $responsible->getCacheDto()->getContent();
+        $content = $responsible->getContent();
 
         if ('Добавить в корзину' === $content) {
             return true;
         }
 
-        $categoryId = $responsible->getCacheDto()->getEvent()->getData()->getCategoryId();
+        $categoryId = $responsible->getEvent()->getData()->getCategoryId();
 
         if ('Предыдущий' === $content) {
-            $data = $responsible->getCacheDto()->getEvent()->getData();
+            $data = $responsible->getEvent()->getData();
 
             $products = $this->productService->getProductsByCategory($data->getPageNow(), $categoryId, 'prev');
 
@@ -65,7 +65,7 @@ class ProductsByCategoryChain extends AbstractChain
         }
 
         if ('Следующий' === $content) {
-            $data = $responsible->getCacheDto()->getEvent()->getData();
+            $data = $responsible->getEvent()->getData();
 
             $products = $this->productService->getProductsByCategory($data->getPageNow(), $categoryId, 'next');
 

@@ -11,7 +11,7 @@ class CartStartChain extends AbstractChain
 {
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        $totalAmount = $responsible->getCacheDto()->getCart()->getTotalAmount();
+        $totalAmount = $responsible->getCart()->getTotalAmount();
 
         $message = "Сумма товаров в корзине: $totalAmount";
 

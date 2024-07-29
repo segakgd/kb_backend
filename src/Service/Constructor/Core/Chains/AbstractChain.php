@@ -81,7 +81,7 @@ abstract class AbstractChain implements ChainInterface
 
     protected function isValid(ResponsibleInterface $responsible, array $data): bool
     {
-        $content = $responsible->getCacheDto()->getContent();
+        $content = $responsible->getContent();
 
         if (in_array($content, $data)) {
             return true;
@@ -104,7 +104,7 @@ abstract class AbstractChain implements ChainInterface
     // todo этот метод нужно реализовать в интерфейсе, чтоб можно было дополнять в дочках, и вообще лучше из дочерних и управлять этим. Они и должны решить, jump или нет
     private function isJump(ResponsibleInterface $responsible): bool
     {
-        $content = $responsible->getCacheDto()->getContent();
+        $content = $responsible->getContent();
 
         $jump = JumpHelper::getJumpFromNavigate($content);
 

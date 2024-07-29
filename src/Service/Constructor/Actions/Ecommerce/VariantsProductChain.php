@@ -21,9 +21,9 @@ class VariantsProductChain extends AbstractChain
      */
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        $content = $responsible->getCacheDto()->getContent();
+        $content = $responsible->getContent();
 
-        $productId = $responsible->getCacheDto()->getEvent()->getData()->getProductId();
+        $productId = $responsible->getEvent()->getData()->getProductId();
 
         $product = $this->productService->find($productId);
 
@@ -45,7 +45,7 @@ class VariantsProductChain extends AbstractChain
             throw new Exception('Выбранного варианта не существует!');
         }
 
-        $responsible->getCacheDto()->getEvent()->getData()->setVariantId($targetVariantId);
+        $responsible->getEvent()->getData()->setVariantId($targetVariantId);
 
         $message = "Вы выбрали вариант: $content. \n\n Укажите количество: ";
 
@@ -60,7 +60,7 @@ class VariantsProductChain extends AbstractChain
 
     public function condition(ResponsibleInterface $responsible): ConditionInterface
     {
-        $productId = $responsible->getCacheDto()->getEvent()->getData()->getProductId();
+        $productId = $responsible->getEvent()->getData()->getProductId();
 
         $product = $this->productService->find($productId);
 

@@ -3,7 +3,6 @@
 namespace App\Service\Constructor\Core\Jumps;
 
 use App\Dto\SessionCache\Cache\CacheChainDto;
-use App\Dto\SessionCache\Cache\CacheDto;
 use App\Entity\Visitor\VisitorEvent;
 use App\Enum\VisitorEventStatusEnum;
 use App\Helper\CacheHelper;
@@ -37,21 +36,21 @@ readonly class JumpResolver
         if ($scenario) {
             $visitorEvent->setScenarioUUID($scenario->getUUID());
 
-            $responsible->getCacheDto()->setEvent(CacheHelper::createCacheEventDto());
+            $responsible->setEvent(CacheHelper::createCacheEventDto());
 
             $this->responsibleDtoRepository->save($visitorEvent, $responsible);
 
             $responsible->setStatus(VisitorEventStatusEnum::Jumped);
         } else {
-            $this->updateCacheContract($responsible->getCacheDto(), $jump->value);
+            $this->updateCacheContract($responsible, $jump->value);
 
             $responsible->setStatus(VisitorEventStatusEnum::JumpedToChain);
         }
     }
 
-    private function updateCacheContract(CacheDto $cacheDto, string $jumpValue): void
+    private function updateCacheContract(Responsible $responsible, string $jumpValue): void
     {
-        $contract = $cacheDto->getEvent()->getContract();
+        $contract = $responsible->getEvent()->getContract();
         $flag = true;
 
         $this->updateCacheChains($contract->getChains(), $jumpValue, $flag);

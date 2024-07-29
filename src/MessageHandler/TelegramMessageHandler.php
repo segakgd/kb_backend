@@ -9,6 +9,7 @@ use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
 use App\Enum\VisitorEventStatusEnum;
 use App\Helper\CommonHelper;
+use App\Message\SendTelegramMessage;
 use App\Message\TelegramMessage;
 use App\Repository\SessionCacheRepository;
 use App\Repository\Visitor\VisitorEventRepository;
@@ -67,6 +68,8 @@ final readonly class TelegramMessageHandler
                         visitorEvent: $event,
                         responsible: $responsible
                     );
+                } else {
+                    $this->bus->dispatch(new SendTelegramMessage($responsible->getResult(), $responsible->getBotDto()));
                 }
 
                 $event->setStatus($responsible->getStatus());

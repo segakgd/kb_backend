@@ -23,11 +23,11 @@ class CategoriesChain extends AbstractChain
      */
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        $event = $responsible->getCacheDto()->getEvent();
-        $content = $responsible->getCacheDto()->getContent();
+        $event = $responsible->getEvent();
+        $content = $responsible->getContent();
 
         if ($responsible->getChain()->isRepeat()) {
-            $categoryId = $responsible->getCacheDto()->getEvent()->getData()->getCategoryId();
+            $categoryId = $responsible->getEvent()->getData()->getCategoryId();
             $availableCategory = $this->categoryService->getCategoryById($categoryId);
         } else {
             $availableCategory = $this->categoryService->getCategoryByName($content);
@@ -40,7 +40,7 @@ class CategoriesChain extends AbstractChain
         $event->getData()->setCategoryId($availableCategory->getId());
         $event->getData()->setCategoryName($availableCategory->getName());
 
-        $data = $responsible->getCacheDto()->getEvent()->getData();
+        $data = $responsible->getEvent()->getData();
 
         $products = $this->productService->getProductsByCategory(1, $availableCategory->getId(), 'first');
 

@@ -30,7 +30,7 @@ class OrderShippingSwitch extends AbstractChain
 
     public function perform(ResponsibleInterface $responsible): bool
     {
-        $content = $responsible->getCacheDto()->getContent();
+        $content = $responsible->getContent();
 
         if ($content === 'Нет') {
             $responsible->setJump(TargetEnum::OrderFinishChain);

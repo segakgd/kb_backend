@@ -11,9 +11,9 @@ class OrderShippingChain extends AbstractChain
 {
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        $content = $responsible->getCacheDto()->getContent();
+        $content = $responsible->getContent();
 
-        $responsible->getCacheDto()->getCart()->setShipping(
+        $responsible->getCart()->setShipping(
             [
                 'fullAddress' => $content,
             ]

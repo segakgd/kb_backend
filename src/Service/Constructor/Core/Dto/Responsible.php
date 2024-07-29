@@ -2,24 +2,28 @@
 
 namespace App\Service\Constructor\Core\Dto;
 
+use App\Dto\SessionCache\Cache\CacheCartDto;
 use App\Dto\SessionCache\Cache\CacheChainDto;
-use App\Dto\SessionCache\Cache\CacheDto;
+use App\Dto\SessionCache\Cache\CacheEventDto;
 use App\Enum\TargetEnum;
 use App\Enum\VisitorEventStatusEnum;
+use App\Helper\CacheHelper;
 
 class Responsible implements ResponsibleInterface
 {
-    public ?CacheChainDto $chain = null; // todo объеденить с $nextCondition
+    private ?string $content = null;
+
+    private ?CacheCartDto $cart = null;
+
+    private ?CacheEventDto $event = null;
+
+    public ?CacheChainDto $chain = null;
 
     private ?ResultInterface $result = null;
-
-    private ?CacheDto $cacheDto;
 
     private ?TargetEnum $jump = null;
 
     private ?VisitorEventStatusEnum $status = VisitorEventStatusEnum::New;
-
-    private bool $contractStatus = false; // todo точно нужен?
 
     private ?BotDto $botDto = null;
 
@@ -28,6 +32,57 @@ class Responsible implements ResponsibleInterface
         if (is_null($this->result)) {
             $this->result = new Result();
         }
+
+        if (is_null($this->cart)) {
+            $this->cart = new CacheCartDto();
+        }
+
+        if (is_null($this->event)) {
+            $this->event = new CacheEventDto();
+        }
+    }
+
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
+    public function setContent(?string $content): static
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+
+    public function getCart(): CacheCartDto
+    {
+        return $this->cart;
+    }
+
+    public function setCart(CacheCartDto $cart): static
+    {
+        $this->cart = $cart;
+
+        return $this;
+    }
+
+    public function getEvent(): ?CacheEventDto
+    {
+        return $this->event;
+    }
+
+    public function setEvent(?CacheEventDto $event): static
+    {
+        $this->event = $event;
+
+        return $this;
+    }
+
+    public function clearEvent(): static
+    {
+        $this->event = CacheHelper::createCacheEventDto();
+
+        return $this;
     }
 
     public function getChain(): ?CacheChainDto
@@ -50,18 +105,6 @@ class Responsible implements ResponsibleInterface
     public function setResult(?ResultInterface $result): static
     {
         $this->result = $result;
-
-        return $this;
-    }
-
-    public function getCacheDto(): ?CacheDto
-    {
-        return $this->cacheDto;
-    }
-
-    public function setCacheDto(?CacheDto $cacheDto): static
-    {
-        $this->cacheDto = $cacheDto;
 
         return $this;
     }
@@ -91,18 +134,6 @@ class Responsible implements ResponsibleInterface
     public function setStatus(?VisitorEventStatusEnum $status): static
     {
         $this->status = $status;
-
-        return $this;
-    }
-
-    public function isContractStatus(): bool
-    {
-        return $this->contractStatus;
-    }
-
-    public function setContractStatus(bool $contractStatus): static
-    {
-        $this->contractStatus = $contractStatus;
 
         return $this;
     }

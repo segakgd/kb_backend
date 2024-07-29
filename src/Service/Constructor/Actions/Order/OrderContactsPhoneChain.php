@@ -11,9 +11,9 @@ class OrderContactsPhoneChain extends AbstractChain
 {
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        $content = $responsible->getCacheDto()->getContent();
+        $content = $responsible->getContent();
 
-        $responsible->getCacheDto()->getCart()->setContacts(['phone' => $content]);
+        $responsible->getCart()->setContacts(['phone' => $content]);
 
         $message = "Ваш номер $content. Вам нужна доставка?";
 

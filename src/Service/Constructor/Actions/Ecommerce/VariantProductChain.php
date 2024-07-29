@@ -21,8 +21,8 @@ class VariantProductChain extends AbstractChain
      */
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        $content = $responsible->getCacheDto()->getContent();
-        $variantId = $responsible->getCacheDto()->getEvent()->getData()->getVariantId();
+        $content = $responsible->getContent();
+        $variantId = $responsible->getEvent()->getData()->getVariantId();
 
         $variant = $this->productService->findVariant($variantId);
 
@@ -30,7 +30,7 @@ class VariantProductChain extends AbstractChain
 
         $amount = $variantPrice * (int) $content;
 
-        $responsible->getCacheDto()->getCart()->addProduct(
+        $responsible->getCart()->addProduct(
             [
                 'productName' => $variant->getProduct()->getName(),
                 'variantName' => $variant->getName(),
@@ -40,7 +40,7 @@ class VariantProductChain extends AbstractChain
             ]
         );
 
-        $cartProducts = $responsible->getCacheDto()->getCart()->getProducts();
+        $cartProducts = $responsible->getCart()->getProducts();
 
         $totalAmount = 0;
 
@@ -48,11 +48,11 @@ class VariantProductChain extends AbstractChain
             $totalAmount += $cartProduct['amount'];
         }
 
-        $responsible->getCacheDto()->getCart()->setTotalAmount($totalAmount);
+        $responsible->getCart()->setTotalAmount($totalAmount);
 
         // todo списываем с магазина товары
 
-        $responsible->getCacheDto()->getCart()->setTotalAmount($totalAmount);
+        $responsible->getCart()->setTotalAmount($totalAmount);
 
         $message = 'Отлично! Товар добавлен в корзину.';
 
@@ -91,7 +91,7 @@ class VariantProductChain extends AbstractChain
      */
     public function condition(ResponsibleInterface $responsible): ConditionInterface
     {
-        $variantId = $responsible->getCacheDto()->getEvent()->getData()->getVariantId();
+        $variantId = $responsible->getEvent()->getData()->getVariantId();
 
         $variant = $this->productService->findVariant($variantId);
 
