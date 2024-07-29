@@ -65,7 +65,7 @@ class CategoriesChain extends AbstractChain
         );
     }
 
-    public function perform(ResponsibleInterface $responsible): bool
+    public function before(ResponsibleInterface $responsible): bool
     {
         return true;
     }
@@ -79,5 +79,10 @@ class CategoriesChain extends AbstractChain
                 'Ноутбуки',
             ]
         );
+    }
+
+    public function after(ResponsibleInterface $responsible): bool
+    {
+        return true;
     }
 }

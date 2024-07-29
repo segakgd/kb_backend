@@ -40,7 +40,7 @@ class ProductsByCategoryChain extends AbstractChain
     /**
      * @throws Exception
      */
-    public function perform(ResponsibleInterface $responsible): bool
+    public function before(ResponsibleInterface $responsible): bool
     {
         $content = $responsible->getContent();
 
@@ -106,5 +106,10 @@ class ProductsByCategoryChain extends AbstractChain
                 'Вернуться к категориям',
             ]
         );
+    }
+
+    public function after(ResponsibleInterface $responsible): bool
+    {
+        return true;
     }
 }
