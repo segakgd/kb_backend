@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Helper\Ecommerce\Product;
+namespace App\Controller\Admin\Product\Mapper;
 
 use App\Controller\Admin\Product\DTO\Response\ProductVariantRespDto;
 use App\Entity\Ecommerce\ProductVariant;
 
-class ProductVariantHelper
+class ProductVariantMapper
 {
     public static function mapToResponse(ProductVariant $variant): ProductVariantRespDto
     {

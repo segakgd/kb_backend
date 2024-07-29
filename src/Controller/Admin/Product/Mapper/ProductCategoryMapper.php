@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Helper\Ecommerce\Product;
+namespace App\Controller\Admin\Product\Mapper;
 
 use App\Controller\Admin\Product\DTO\Response\ProductCategoryRespDto;
 use App\Entity\Ecommerce\ProductCategory;
 
-class ProductCategoryHelper
+class ProductCategoryMapper
 {
     public static function mapToResponse(ProductCategory $productCategory): ProductCategoryRespDto
     {
