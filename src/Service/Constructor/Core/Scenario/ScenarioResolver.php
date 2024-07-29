@@ -33,10 +33,7 @@ class ScenarioResolver
 
     private function setKeyboard(ResponsibleMessageDto $responsibleMessageDto, CacheContractDto $cacheContractDto): void
     {
-        if (
-            empty($cacheContractDto->getKeyboard())
-            || is_null($cacheContractDto->getKeyboard()->getReplyMarkup())
-        ) {
+        if ($cacheContractDto->isEmptyKeyboard()) {
             return;
         }
 

@@ -6,7 +6,7 @@ use App\Helper\MessageHelper;
 use App\Service\Constructor\Core\Dto\Condition;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
-use App\Service\Constructor\Core\Helper\JumpHelper;
+use App\Service\Constructor\Core\Jumps\JumpProvider;
 
 abstract class AbstractChain implements ChainInterface
 {
@@ -101,12 +101,11 @@ abstract class AbstractChain implements ChainInterface
         return $condition;
     }
 
-    // todo этот метод нужно реализовать в интерфейсе, чтоб можно было дополнять в дочках, и вообще лучше из дочерних и управлять этим. Они и должны решить, jump или нет
     private function isJump(ResponsibleInterface $responsible): bool
     {
         $content = $responsible->getContent();
 
-        $jump = JumpHelper::getJumpFromNavigate($content);
+        $jump = JumpProvider::getJumpFromNavigate($content);
 
         if ($jump) {
             $responsible->setJump($jump);
