@@ -91,6 +91,8 @@ abstract class AbstractChain implements ChainInterface
             $message->setKeyBoard($nextChainKeyBoard);
         }
 
+        $this->after($responsible);
+
         return true;
     }
 }
