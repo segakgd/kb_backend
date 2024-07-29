@@ -3,12 +3,13 @@
 namespace App\Service\Constructor\Core\Chains;
 
 use App\Helper\MessageHelper;
-use App\Service\Constructor\Core\Dto\Condition;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 
 abstract class AbstractChain implements ChainInterface
 {
+    use ChainUtilsTrait;
+
     /**
      * Единица, которая выполняется перед
      */
@@ -70,7 +71,7 @@ abstract class AbstractChain implements ChainInterface
         return $responsible;
     }
 
-    protected function performOrComplete(ResponsibleInterface $responsible, ?ChainInterface $nextChain): bool
+    private function performOrComplete(ResponsibleInterface $responsible, ?ChainInterface $nextChain): bool
     {
         $perform = $this->before($responsible);
 
@@ -91,27 +92,5 @@ abstract class AbstractChain implements ChainInterface
         }
 
         return true;
-    }
-
-    protected function isValid(ResponsibleInterface $responsible, array $data): bool
-    {
-        $content = $responsible->getContent();
-
-        if (in_array($content, $data)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    protected function makeCondition(array $replyMarkups = []): ConditionInterface
-    {
-        $condition = new Condition();
-
-        if (!empty($replyMarkups)) {
-            $condition->setKeyBoard($replyMarkups);
-        }
-
-        return $condition;
     }
 }

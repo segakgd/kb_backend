@@ -95,7 +95,7 @@ class ProductsByCategoryChain extends AbstractChain
 
     public function validate(ResponsibleInterface $responsible): bool
     {
-        return $this->isValid(
+        return $this->isValidContent(
             $responsible,
             [
                 'Предыдущий',
