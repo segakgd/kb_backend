@@ -9,6 +9,11 @@ use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 
 class CartStartChain extends AbstractChain
 {
+    public static function getName(): string
+    {
+        return '';
+    }
+
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
         $totalAmount = $responsible->getCart()->getTotalAmount();

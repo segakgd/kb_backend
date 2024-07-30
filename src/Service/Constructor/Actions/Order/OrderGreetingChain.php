@@ -9,6 +9,11 @@ use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 
 class OrderGreetingChain extends AbstractChain
 {
+    public static function getName(): string
+    {
+        return '';
+    }
+
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
         $message = "Давайте начнём оформление заказа! \n Как можно к вам обращаться? (отправьте ФИО)";

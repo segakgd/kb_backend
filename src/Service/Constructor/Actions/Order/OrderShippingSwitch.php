@@ -10,6 +10,11 @@ use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 
 class OrderShippingSwitch extends AbstractChain
 {
+    public static function getName(): string
+    {
+        return '';
+    }
+
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
         $message = 'Введите адрес доставки:';

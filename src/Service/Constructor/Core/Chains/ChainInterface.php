@@ -7,6 +7,8 @@ use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 
 interface ChainInterface
 {
+    public static function getName(): string;
+
     /**
      * Точка входа
      */

@@ -12,6 +12,11 @@ use Exception;
 
 class VariantProductChain extends AbstractChain
 {
+    public static function getName(): string
+    {
+        return '';
+    }
+
     public function __construct(
         private readonly ProductService $productService,
     ) {}

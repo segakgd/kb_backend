@@ -9,6 +9,11 @@ use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 
 class StartChain extends AbstractChain
 {
+    public static function getName(): string
+    {
+        return '';
+    }
+
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
         $message = 'Выберите интересующую вас категорию товаров: ';

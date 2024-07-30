@@ -12,6 +12,11 @@ use App\Service\Constructor\Core\Dto\ResponsibleInterface;
  */
 class FinishChain extends AbstractChain
 {
+    public static function getName(): string
+    {
+        return '';
+    }
+
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
         $message = 'Это финиш, что бы ты сюда не написал, это не имеет смысла';

@@ -10,6 +10,8 @@ abstract class AbstractChain implements ChainInterface
 {
     use ChainUtilsTrait;
 
+    abstract public static function getName(): string;
+
     /**
      * Единица, которая выполняется перед
      */

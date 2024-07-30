@@ -13,6 +13,11 @@ use Exception;
 
 class ProductsByCategoryChain extends AbstractChain
 {
+    public static function getName(): string
+    {
+        return '';
+    }
+
     public function __construct(
         private readonly ProductService $productService,
         private readonly PaginateService $paginateService,
