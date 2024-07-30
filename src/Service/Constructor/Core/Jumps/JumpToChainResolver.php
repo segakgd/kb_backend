@@ -11,7 +11,7 @@ use App\Service\Constructor\Visitor\Scenario\ScenarioService;
 use App\Service\DtoRepository\ResponsibleDtoRepository;
 use Exception;
 
-readonly class JumpResolver
+readonly class JumpToChainResolver
 {
     public function __construct(
         private ScenarioService $scenarioService,

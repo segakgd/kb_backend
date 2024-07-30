@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Helper\Ecommerce\Promotion;
+namespace App\Controller\Admin\Promotion\Mapper;
 
 use App\Controller\Admin\Promotion\DTO\Request\PromotionReqDto;
 use App\Controller\Admin\Promotion\DTO\Response\PromotionRespDto;
 use App\Entity\Ecommerce\Promotion;
 
-class PromotionHelper
+class PromotionMapper
 {
     public static function mapRequestToEntity(PromotionReqDto $promotionReqDto): Promotion
     {

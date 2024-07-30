@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Service\Constructor\Core\Helper;
+namespace App\Service\Constructor\Core\Jumps;
 
 use App\Enum\NavigateEnum;
 use App\Enum\TargetEnum;
 
-class JumpHelper
+class JumpProvider
 {
     public static function getJumpFromNavigate(string $content): ?TargetEnum
     {

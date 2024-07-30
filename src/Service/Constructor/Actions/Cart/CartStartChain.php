@@ -11,7 +11,7 @@ class CartStartChain extends AbstractChain
 {
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        $totalAmount = $responsible->getCacheDto()->getCart()->getTotalAmount();
+        $totalAmount = $responsible->getCart()->getTotalAmount();
 
         $message = "Сумма товаров в корзине: $totalAmount";
 
@@ -58,12 +58,17 @@ class CartStartChain extends AbstractChain
         return $this->makeCondition();
     }
 
-    public function perform(ResponsibleInterface $responsible): bool
+    public function before(ResponsibleInterface $responsible): bool
     {
         return true;
     }
 
     public function validate(ResponsibleInterface $responsible): bool
+    {
+        return true;
+    }
+
+    public function after(ResponsibleInterface $responsible): bool
     {
         return true;
     }

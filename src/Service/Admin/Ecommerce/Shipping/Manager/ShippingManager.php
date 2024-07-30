@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Service\Admin\Ecommerce\Shipping\Manager;
 
 use App\Controller\Admin\Shipping\DTO\Request\ShippingReqDto;
+use App\Controller\Admin\Shipping\Mapper\ShippingMapper;
 use App\Entity\Ecommerce\Shipping;
 use App\Entity\User\Project;
-use App\Helper\Ecommerce\Shipping\ShippingHelper;
 use App\Service\Admin\Ecommerce\Shipping\Service\ShippingService;
 
 readonly class ShippingManager implements ShippingManagerInterface
@@ -18,7 +18,7 @@ readonly class ShippingManager implements ShippingManagerInterface
     {
         $this->adjustShippingValues($shippingReqDto);
 
-        $shipping = ShippingHelper::mapRequestToEntity($shippingReqDto)->setProjectId($project->getId());
+        $shipping = ShippingMapper::mapRequestToEntity($shippingReqDto)->setProjectId($project->getId());
 
         $this->shippingService->create($shipping);
 
@@ -34,7 +34,7 @@ readonly class ShippingManager implements ShippingManagerInterface
     {
         $this->adjustShippingValues($shippingReqDto);
 
-        ShippingHelper::mapRequestToExistingEntity($shippingReqDto, $shipping);
+        ShippingMapper::mapRequestToExistingEntity($shippingReqDto, $shipping);
 
         $this->shippingService->save($shipping);
     }

@@ -11,9 +11,9 @@ class OrderContactsFullNameChain extends AbstractChain
 {
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        $content = $responsible->getCacheDto()->getContent();
+        $content = $responsible->getContent();
 
-        $responsible->getCacheDto()->getCart()->setContacts(['fullName' => $content]);
+        $responsible->getCart()->setContacts(['fullName' => $content]);
 
         $message = "Очень приятно познакомиться $content. Укажите номер телефона для связи: ";
 
@@ -31,12 +31,17 @@ class OrderContactsFullNameChain extends AbstractChain
         return $this->makeCondition();
     }
 
-    public function perform(ResponsibleInterface $responsible): bool
+    public function before(ResponsibleInterface $responsible): bool
     {
         return true;
     }
 
     public function validate(ResponsibleInterface $responsible): bool
+    {
+        return true;
+    }
+
+    public function after(ResponsibleInterface $responsible): bool
     {
         return true;
     }

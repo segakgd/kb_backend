@@ -91,6 +91,11 @@ class CacheContractDto extends AbstractDto
         return empty($this->chains);
     }
 
+    public function isEmptyKeyboard(): bool
+    {
+        return empty($this->getKeyboard()) || is_null($this->getKeyboard()->getReplyMarkup());
+    }
+
     public function getKeyboard(): ?CacheKeyboardDto
     {
         return $this->keyboard;
@@ -152,9 +157,9 @@ class CacheContractDto extends AbstractDto
         }
 
         return [
-            'message'  => $this->message,
+            'message' => $this->message,
             'finished' => $this->finished,
-            'chains'   => $chainsArray,
+            'chains' => $chainsArray,
         ];
     }
 }

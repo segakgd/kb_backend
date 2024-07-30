@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Helper\Ecommerce\Shipping;
+namespace App\Controller\Admin\Shipping\Mapper;
 
 use App\Controller\Admin\Shipping\DTO\Request\ShippingReqDto;
 use App\Entity\Ecommerce\Shipping;
 
-class ShippingHelper
+class ShippingMapper
 {
     public static function mapRequestToEntity(ShippingReqDto $shippingReqDto): Shipping
     {

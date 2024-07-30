@@ -4,7 +4,6 @@ namespace App\Tests\Integration;
 
 use App\Dto\SessionCache\Cache\CacheCartDto;
 use App\Dto\SessionCache\Cache\CacheDataDto;
-use App\Dto\SessionCache\Cache\CacheDto;
 use App\Dto\SessionCache\Cache\CacheEventDto;
 use App\Service\Constructor\Actions\Ecommerce\ProductsByCategoryChain;
 use App\Service\Constructor\Core\Dto\Responsible;
@@ -29,27 +28,24 @@ class ProductsByCategoryChainTest extends KernelTestCase
         $responsible = new Responsible();
 
         $responsible
-            ->setCacheDto(
-                (new CacheDto())
-                    ->setCart(
-                        new CacheCartDto()
-                    )
-                    ->setContent(
-                        'Предыдущий'
-                    )
-                    ->setEvent(
-                        (new CacheEventDto())
-                            ->setData(
-                                (new CacheDataDto())
-                                    ->setCategoryId(2)
-                                    ->setPageNow(1)
-                            )
+            ->setCart(
+                new CacheCartDto()
+            )
+            ->setContent(
+                'Предыдущий'
+            )
+            ->setEvent(
+                (new CacheEventDto())
+                    ->setData(
+                        (new CacheDataDto())
+                            ->setCategoryId(2)
+                            ->setPageNow(1)
                     )
             );
 
         /** @var ProductsByCategoryChain $chainService */
         $chainService = $container->get(ProductsByCategoryChain::class);
-        $chainService->perform($responsible);
+        $chainService->before($responsible);
 
         $this->assertNotEmpty($responsible->getResult()->getMessage());
     }

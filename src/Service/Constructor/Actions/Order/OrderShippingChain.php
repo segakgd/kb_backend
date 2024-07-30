@@ -11,9 +11,9 @@ class OrderShippingChain extends AbstractChain
 {
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        $content = $responsible->getCacheDto()->getContent();
+        $content = $responsible->getContent();
 
-        $responsible->getCacheDto()->getCart()->setShipping(
+        $responsible->getCart()->setShipping(
             [
                 'fullAddress' => $content,
             ]
@@ -64,12 +64,17 @@ class OrderShippingChain extends AbstractChain
         return $this->makeCondition();
     }
 
-    public function perform(ResponsibleInterface $responsible): bool
+    public function before(ResponsibleInterface $responsible): bool
     {
         return true;
     }
 
     public function validate(ResponsibleInterface $responsible): bool
+    {
+        return true;
+    }
+
+    public function after(ResponsibleInterface $responsible): bool
     {
         return true;
     }

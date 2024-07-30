@@ -2,17 +2,8 @@
 
 namespace App\Helper;
 
-use App\Service\Constructor\Core\Dto\ResponsibleInterface;
-
 class CartHelper
 {
-    public static function viewCart(ResponsibleInterface $responsible): string
-    {
-        $cartProducts = $responsible->getCacheDto()->getCart()->getProducts();
-
-        return static::viewCartFromArray($cartProducts);
-    }
-
     public static function viewCartFromArray(array $cartProducts): string
     {
         $number = 1;

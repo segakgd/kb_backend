@@ -27,12 +27,17 @@ class OrderFinishChain extends AbstractChain
         return $this->makeCondition();
     }
 
-    public function perform(ResponsibleInterface $responsible): bool
+    public function before(ResponsibleInterface $responsible): bool
     {
         return true;
     }
 
     public function validate(ResponsibleInterface $responsible): bool
+    {
+        return true;
+    }
+
+    public function after(ResponsibleInterface $responsible): bool
     {
         return true;
     }

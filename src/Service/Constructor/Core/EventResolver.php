@@ -3,17 +3,14 @@
 namespace App\Service\Constructor\Core;
 
 use App\Enum\VisitorEventStatusEnum;
-use App\Message\SendTelegramMessage;
 use App\Service\Constructor\Core\Contract\ContractResolver;
 use App\Service\Constructor\Core\Dto\Responsible;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Throwable;
 
 readonly class EventResolver
 {
     public function __construct(
         private ContractResolver $contractResolver,
-        private MessageBusInterface $bus,
     ) {}
 
     /**
@@ -28,13 +25,10 @@ readonly class EventResolver
                 return $responsible;
             }
 
-            $status = $responsible->isContractStatus() ? VisitorEventStatusEnum::Done : VisitorEventStatusEnum::Waiting;
-
-            // todo отправку нудно вынести отсюда вероятно
-            $this->bus->dispatch(new SendTelegramMessage($responsible->getResult(), $responsible->getBotDto()));
+            $status = $responsible->getStatus() ?? VisitorEventStatusEnum::Waiting; // todo ну такое
 
             if ($status === VisitorEventStatusEnum::Done) {
-                $responsible->getCacheDto()->clearEvent();
+                $responsible->clearEvent();
             }
 
             $responsible->setStatus($status);

@@ -28,9 +28,9 @@ class OrderShippingSwitch extends AbstractChain
         return $this->makeCondition();
     }
 
-    public function perform(ResponsibleInterface $responsible): bool
+    public function before(ResponsibleInterface $responsible): bool
     {
-        $content = $responsible->getCacheDto()->getContent();
+        $content = $responsible->getContent();
 
         if ($content === 'Нет') {
             $responsible->setJump(TargetEnum::OrderFinishChain);
@@ -42,6 +42,11 @@ class OrderShippingSwitch extends AbstractChain
     }
 
     public function validate(ResponsibleInterface $responsible): bool
+    {
+        return true;
+    }
+
+    public function after(ResponsibleInterface $responsible): bool
     {
         return true;
     }

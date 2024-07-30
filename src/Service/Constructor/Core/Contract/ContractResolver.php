@@ -4,6 +4,7 @@ namespace App\Service\Constructor\Core\Contract;
 
 use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Dto\SessionCache\Cache\CacheContractDto;
+use App\Enum\VisitorEventStatusEnum;
 use App\Service\Constructor\Core\Chains\ChainsResolver;
 use App\Service\Constructor\Core\Dto\Responsible;
 use App\Service\Constructor\Core\Scenario\ScenarioResolver;
@@ -24,7 +25,7 @@ readonly class ContractResolver
     public function resolve(Responsible $responsible): void
     {
         try {
-            $cacheContract = $responsible->getCacheDto()->getEvent()->getContract();
+            $cacheContract = $responsible->getEvent()->getContract();
 
             $this->resolveContract($responsible, $cacheContract);
 
@@ -32,7 +33,7 @@ readonly class ContractResolver
 
             if (empty($unfinishedChains)) {
                 $cacheContract->setFinished(true);
-                $responsible->setContractStatus(true);
+                $responsible->setStatus(VisitorEventStatusEnum::Done);
             }
         } catch (Throwable $exception) {
             $this->handleException($exception);
@@ -51,7 +52,7 @@ readonly class ContractResolver
         } else {
             $this->scenarioResolver->resolve($responsible, $cacheContractDto);
 
-            $responsible->setContractStatus(true);
+            $responsible->setStatus(VisitorEventStatusEnum::Done);
         }
     }
 

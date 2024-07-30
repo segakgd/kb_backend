@@ -3,32 +3,44 @@
 namespace App\Service\Constructor\Core\Chains;
 
 use App\Helper\MessageHelper;
-use App\Service\Constructor\Core\Dto\Condition;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
-use App\Service\Constructor\Core\Helper\JumpHelper;
 
 abstract class AbstractChain implements ChainInterface
 {
-    abstract public function complete(ResponsibleInterface $responsible): ResponsibleInterface; // complete
+    use ChainUtilsTrait;
 
     /**
-     * Решает, валидно ли значение, производит доп махинации, может содержать логику.
+     * Единица, которая выполняется перед
      */
-    abstract public function perform(ResponsibleInterface $responsible): bool;
+    abstract public function before(ResponsibleInterface $responsible): bool;
 
+    /**
+     * Основное действие
+     */
+    abstract public function complete(ResponsibleInterface $responsible): ResponsibleInterface;
+
+    /**
+     * Единица, которая выполняется перед
+     */
+    abstract public function after(ResponsibleInterface $responsible): bool;
+
+    /**
+     * Валидация того, что пришло с внешнего мира
+     */
     abstract public function validate(ResponsibleInterface $responsible): bool;
 
+    /**
+     * Условие которое нужно для прохождения данного чейна
+     */
     abstract public function condition(ResponsibleInterface $responsible): ConditionInterface;
 
+    /**
+     * Точка входа
+     */
     public function execute(ResponsibleInterface $responsible, ?ChainInterface $nextChain): bool
     {
         if (!$responsible->getChain()->isRepeat()) {
-            if ($this->isJump($responsible)) {
-                // определяем, если сообщение относится к jump-у то завершаем выполнение этого сценария.
-                return true;
-            }
-
             if (!$this->validate($responsible)) {
                 $this->fail($responsible);
 
@@ -39,6 +51,9 @@ abstract class AbstractChain implements ChainInterface
         return $this->performOrComplete($responsible, $nextChain);
     }
 
+    /**
+     * Чейн не прошёл (к примеру валидация)
+     */
     public function fail(ResponsibleInterface $responsible): ResponsibleInterface
     {
         if ($responsible->getResult()->isEmptyMessage()) {
@@ -56,9 +71,9 @@ abstract class AbstractChain implements ChainInterface
         return $responsible;
     }
 
-    protected function performOrComplete(ResponsibleInterface $responsible, ?ChainInterface $nextChain): bool
+    private function performOrComplete(ResponsibleInterface $responsible, ?ChainInterface $nextChain): bool
     {
-        $perform = $this->perform($responsible);
+        $perform = $this->before($responsible);
 
         if (!$perform) {
             return false;
@@ -76,44 +91,8 @@ abstract class AbstractChain implements ChainInterface
             $message->setKeyBoard($nextChainKeyBoard);
         }
 
+        $this->after($responsible);
+
         return true;
-    }
-
-    protected function isValid(ResponsibleInterface $responsible, array $data): bool
-    {
-        $content = $responsible->getCacheDto()->getContent();
-
-        if (in_array($content, $data)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    protected function makeCondition(array $replyMarkups = []): ConditionInterface
-    {
-        $condition = new Condition();
-
-        if (!empty($replyMarkups)) {
-            $condition->setKeyBoard($replyMarkups);
-        }
-
-        return $condition;
-    }
-
-    // todo этот метод нужно реализовать в интерфейсе, чтоб можно было дополнять в дочках, и вообще лучше из дочерних и управлять этим. Они и должны решить, jump или нет
-    private function isJump(ResponsibleInterface $responsible): bool
-    {
-        $content = $responsible->getCacheDto()->getContent();
-
-        $jump = JumpHelper::getJumpFromNavigate($content);
-
-        if ($jump) {
-            $responsible->setJump($jump);
-
-            return true;
-        }
-
-        return false;
     }
 }

@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace App\Helper\Ecommerce\Product;
+namespace App\Controller\Admin\Product\Mapper;
 
 use App\Controller\Admin\Product\DTO\Response\ProductRespDto;
 use App\Entity\Ecommerce\Product;
 
-class ProductHelper
+class ProductMapper
 {
     public static function mapToResponse(Product $product): ProductRespDto
     {
-        $categoriesDto = ProductCategoryHelper::mapArrayToResponse($product->getCategories()->toArray());
+        $categoriesDto = ProductCategoryMapper::mapArrayToResponse($product->getCategories()->toArray());
 
-        $variantsDto = ProductVariantHelper::mapArrayToResponse($product->getVariants()->toArray());
+        $variantsDto = ProductVariantMapper::mapArrayToResponse($product->getVariants()->toArray());
 
         return (new ProductRespDto())
             ->setName($product->getName())
