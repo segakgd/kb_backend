@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Service\Constructor\Core\Chains;
+namespace App\Service\Constructor\Core\Actions;
 
 use App\Service\Constructor\Core\Dto\Condition;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 
-trait ChainUtilsTrait
+trait ActionUtilsTrait
 {
     protected function isValidContent(ResponsibleInterface $responsible, array $data): bool
     {

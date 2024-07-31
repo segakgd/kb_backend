@@ -5,13 +5,18 @@ namespace App\Service\Constructor\Actions\Ecommerce;
 use App\Entity\Ecommerce\ProductVariant;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\Product\Service\ProductService;
-use App\Service\Constructor\Core\Chains\AbstractChain;
+use App\Service\Constructor\Core\Actions\AbstractAction;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 use Exception;
 
-class VariantsProductChain extends AbstractChain
+class VariantsProductAction extends AbstractAction
 {
+    public static function getName(): string
+    {
+        return 'variants.product.chain';
+    }
+
     public function __construct(
         private readonly ProductService $productService,
     ) {}

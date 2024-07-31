@@ -3,15 +3,20 @@
 namespace App\Service\Constructor\Actions\Order;
 
 use App\Helper\MessageHelper;
-use App\Service\Constructor\Core\Chains\AbstractChain;
+use App\Service\Constructor\Core\Actions\AbstractAction;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 
-class OrderFinishChain extends AbstractChain
+class OrderGreetingAction extends AbstractAction
 {
+    public static function getName(): string
+    {
+        return 'order.greeting.chain';
+    }
+
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        $message = 'Это финиш, что бы ты сюда не написал, это не имеет смысла';
+        $message = "Давайте начнём оформление заказа! \n Как можно к вам обращаться? (отправьте ФИО)";
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,

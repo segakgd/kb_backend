@@ -4,12 +4,17 @@ namespace App\Service\Constructor\Actions\Order;
 
 use App\Enum\TargetEnum;
 use App\Helper\MessageHelper;
-use App\Service\Constructor\Core\Chains\AbstractChain;
+use App\Service\Constructor\Core\Actions\AbstractAction;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 
-class OrderShippingSwitch extends AbstractChain
+class OrderShippingSwitchAction extends AbstractAction
 {
+    public static function getName(): string
+    {
+        return 'order.shipping.switch';
+    }
+
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
         $message = 'Введите адрес доставки:';

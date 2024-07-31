@@ -3,12 +3,17 @@
 namespace App\Service\Constructor\Actions\Order;
 
 use App\Helper\MessageHelper;
-use App\Service\Constructor\Core\Chains\AbstractChain;
+use App\Service\Constructor\Core\Actions\AbstractAction;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 
-class OrderContactsPhoneChain extends AbstractChain
+class OrderContactsPhoneAction extends AbstractAction
 {
+    public static function getName(): string
+    {
+        return 'order.contacts.phone.chain';
+    }
+
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
         $content = $responsible->getContent();

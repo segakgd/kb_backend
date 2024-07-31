@@ -1,20 +1,22 @@
 <?php
 
-namespace App\Service\Constructor\Actions;
+namespace App\Service\Constructor\Actions\Ecommerce;
 
 use App\Helper\MessageHelper;
-use App\Service\Constructor\Core\Chains\AbstractChain;
+use App\Service\Constructor\Core\Actions\AbstractAction;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 
-/**
- * Финальная заглушка
- */
-class FinishChain extends AbstractChain
+class StartAction extends AbstractAction
 {
+    public static function getName(): string
+    {
+        return 'start.chain';
+    }
+
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        $message = 'Это финиш, что бы ты сюда не написал, это не имеет смысла';
+        $message = 'Выберите интересующую вас категорию товаров: ';
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,

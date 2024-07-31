@@ -1,21 +1,22 @@
 <?php
 
-namespace App\Service\Constructor\Actions\Order;
+namespace App\Service\Constructor\Actions\Cart;
 
 use App\Helper\MessageHelper;
-use App\Service\Constructor\Core\Chains\AbstractChain;
+use App\Service\Constructor\Core\Actions\AbstractAction;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 
-class OrderContactsFullNameChain extends AbstractChain
+class CartFinishAction extends AbstractAction
 {
+    public static function getName(): string
+    {
+        return 'cart.finish.chain';
+    }
+
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        $content = $responsible->getContent();
-
-        $responsible->getCart()->setContacts(['fullName' => $content]);
-
-        $message = "Очень приятно познакомиться $content. Укажите номер телефона для связи: ";
+        $message = 'Это финиш, что бы ты сюда не написал, это не имеет смысла';
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,

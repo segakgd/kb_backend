@@ -1,14 +1,16 @@
 <?php
 
-namespace App\Service\Constructor\Core\Chains;
+namespace App\Service\Constructor\Core\Actions;
 
 use App\Helper\MessageHelper;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 
-abstract class AbstractChain implements ChainInterface
+abstract class AbstractAction implements ActionInterface
 {
-    use ChainUtilsTrait;
+    use ActionUtilsTrait;
+
+    abstract public static function getName(): string;
 
     /**
      * Единица, которая выполняется перед
@@ -38,7 +40,7 @@ abstract class AbstractChain implements ChainInterface
     /**
      * Точка входа
      */
-    public function execute(ResponsibleInterface $responsible, ?ChainInterface $nextChain): bool
+    public function execute(ResponsibleInterface $responsible, ?ActionInterface $nextChain): bool
     {
         if (!$responsible->getChain()->isRepeat()) {
             if (!$this->validate($responsible)) {
@@ -71,7 +73,7 @@ abstract class AbstractChain implements ChainInterface
         return $responsible;
     }
 
-    private function performOrComplete(ResponsibleInterface $responsible, ?ChainInterface $nextChain): bool
+    private function performOrComplete(ResponsibleInterface $responsible, ?ActionInterface $nextChain): bool
     {
         $perform = $this->before($responsible);
 

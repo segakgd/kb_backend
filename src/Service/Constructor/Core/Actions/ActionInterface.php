@@ -1,16 +1,18 @@
 <?php
 
-namespace App\Service\Constructor\Core\Chains;
+namespace App\Service\Constructor\Core\Actions;
 
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 
-interface ChainInterface
+interface ActionInterface
 {
+    public static function getName(): string;
+
     /**
      * Точка входа
      */
-    public function execute(ResponsibleInterface $responsible, ?ChainInterface $nextChain): bool;
+    public function execute(ResponsibleInterface $responsible, ?ActionInterface $nextChain): bool;
 
     /**
      * Единица, которая выполняется перед
