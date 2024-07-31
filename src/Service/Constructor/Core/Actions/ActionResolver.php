@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Constructor\Core\Chains;
+namespace App\Service\Constructor\Core\Actions;
 
 use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Enum\TargetEnum;
@@ -11,7 +11,7 @@ use Exception;
 readonly class ActionResolver
 {
     public function __construct(
-        private ActionProvider $chainProvider,
+        private ActionProvider $actionProvider,
     ) {}
 
     /**
@@ -55,7 +55,7 @@ readonly class ActionResolver
      */
     private function getChainInstance(Responsible $responsible): AbstractAction
     {
-        return $this->chainProvider->getByTarget($responsible->getChain()->getTarget()->value);
+        return $this->actionProvider->getByTarget($responsible->getChain()->getTarget()->value);
     }
 
     /**
@@ -67,6 +67,6 @@ readonly class ActionResolver
             return null;
         }
 
-        return $this->chainProvider->getByTarget($targetNext->value);
+        return $this->actionProvider->getByTarget($targetNext->value);
     }
 }

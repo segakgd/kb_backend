@@ -16,7 +16,7 @@ use App\Service\Constructor\Actions\Order\OrderFinishAction;
 use App\Service\Constructor\Actions\Order\OrderGreetingAction;
 use App\Service\Constructor\Actions\Order\OrderShippingAction;
 use App\Service\Constructor\Actions\Order\OrderShippingSwitchAction;
-use App\Service\Constructor\Core\Chains\AbstractAction;
+use App\Service\Constructor\Core\Actions\AbstractAction;
 use Exception;
 
 readonly class ActionProvider

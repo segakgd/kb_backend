@@ -3,7 +3,7 @@
 namespace App\Service\Constructor\Actions;
 
 use App\Helper\MessageHelper;
-use App\Service\Constructor\Core\Chains\AbstractAction;
+use App\Service\Constructor\Core\Actions\AbstractAction;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 

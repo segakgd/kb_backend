@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Constructor\Core\Chains;
+namespace App\Service\Constructor\Core\Actions;
 
 use App\Helper\MessageHelper;
 use App\Service\Constructor\Core\Dto\ConditionInterface;

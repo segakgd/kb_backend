@@ -5,7 +5,7 @@ namespace App\Service\Constructor\Actions\Ecommerce;
 use App\Service\Admin\Ecommerce\Product\Service\ProductService;
 use App\Service\Admin\Ecommerce\ProductCategory\Service\ProductCategoryService;
 use App\Service\Common\PaginateService;
-use App\Service\Constructor\Core\Chains\AbstractAction;
+use App\Service\Constructor\Core\Actions\AbstractAction;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 use Exception;
