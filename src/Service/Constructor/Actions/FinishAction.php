@@ -1,17 +1,20 @@
 <?php
 
-namespace App\Service\Constructor\Actions\Cart;
+namespace App\Service\Constructor\Actions;
 
 use App\Helper\MessageHelper;
-use App\Service\Constructor\Core\Chains\AbstractChain;
+use App\Service\Constructor\Core\Chains\AbstractAction;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 
-class CartFinishChain extends AbstractChain
+/**
+ * Финальная заглушка
+ */
+class FinishAction extends AbstractAction
 {
     public static function getName(): string
     {
-        return '';
+        return 'finish.chain';
     }
 
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface

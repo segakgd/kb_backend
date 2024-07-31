@@ -5,16 +5,16 @@ namespace App\Service\Constructor\Actions\Ecommerce;
 use App\Helper\CartHelper;
 use App\Helper\MessageHelper;
 use App\Service\Admin\Ecommerce\Product\Service\ProductService;
-use App\Service\Constructor\Core\Chains\AbstractChain;
+use App\Service\Constructor\Core\Chains\AbstractAction;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 use Exception;
 
-class VariantProductChain extends AbstractChain
+class VariantProductAction extends AbstractAction
 {
     public static function getName(): string
     {
-        return '';
+        return 'variant.product.chain';
     }
 
     public function __construct(

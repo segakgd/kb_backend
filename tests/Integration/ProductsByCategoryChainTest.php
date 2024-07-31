@@ -5,7 +5,7 @@ namespace App\Tests\Integration;
 use App\Dto\SessionCache\Cache\CacheCartDto;
 use App\Dto\SessionCache\Cache\CacheDataDto;
 use App\Dto\SessionCache\Cache\CacheEventDto;
-use App\Service\Constructor\Actions\Ecommerce\ProductsByCategoryChain;
+use App\Service\Constructor\Actions\Ecommerce\ProductsByCategoryAction;
 use App\Service\Constructor\Core\Dto\Responsible;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -43,8 +43,8 @@ class ProductsByCategoryChainTest extends KernelTestCase
                     )
             );
 
-        /** @var ProductsByCategoryChain $chainService */
-        $chainService = $container->get(ProductsByCategoryChain::class);
+        /** @var ProductsByCategoryAction $chainService */
+        $chainService = $container->get(ProductsByCategoryAction::class);
         $chainService->before($responsible);
 
         $this->assertNotEmpty($responsible->getResult()->getMessage());

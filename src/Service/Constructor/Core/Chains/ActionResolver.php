@@ -8,7 +8,7 @@ use App\Service\Constructor\ActionProvider;
 use App\Service\Constructor\Core\Dto\Responsible;
 use Exception;
 
-readonly class ChainsResolver
+readonly class ActionResolver
 {
     public function __construct(
         private ActionProvider $chainProvider,
@@ -53,20 +53,20 @@ readonly class ChainsResolver
     /**
      * @throws Exception
      */
-    private function getChainInstance(Responsible $responsible): AbstractChain
+    private function getChainInstance(Responsible $responsible): AbstractAction
     {
-        return $this->chainProvider->getByTarget($responsible->getChain()->getTarget());
+        return $this->chainProvider->getByTarget($responsible->getChain()->getTarget()->value);
     }
 
     /**
      * @throws Exception
      */
-    private function getNextChain(?TargetEnum $targetNext): ?AbstractChain
+    private function getNextChain(?TargetEnum $targetNext): ?AbstractAction
     {
         if (is_null($targetNext)) {
             return null;
         }
 
-        return $this->chainProvider->getByTarget($targetNext);
+        return $this->chainProvider->getByTarget($targetNext->value);
     }
 }

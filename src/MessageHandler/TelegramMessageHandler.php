@@ -66,6 +66,11 @@ final readonly class TelegramMessageHandler
 
             $responsible = CommonHelper::createDefaultResponsible($session, $sessionCache);
 
+            // вот кейсы:
+            // отлавливаем jump до того как начнём обрабатывать событие. (системный jump)
+            // отлавливаем jump после обработки события (пользовательский jump) - todo а такая вообще возможно? Оо
+            // отлавливаем jumpToChain после обработки события - вполне рядовая ситуация
+
             if ($responsible->isJump()) {
                 $this->jumpResolver->resolve(
                     visitorEvent: $event,

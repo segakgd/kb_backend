@@ -3,23 +3,37 @@
 namespace App\Service\Constructor\Actions\Order;
 
 use App\Helper\MessageHelper;
-use App\Service\Constructor\Core\Chains\AbstractChain;
+use App\Service\Constructor\Core\Chains\AbstractAction;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 
-class OrderFinishChain extends AbstractChain
+class OrderContactsPhoneAction extends AbstractAction
 {
     public static function getName(): string
     {
-        return '';
+        return 'order.contacts.phone.chain';
     }
 
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        $message = 'Это финиш, что бы ты сюда не написал, это не имеет смысла';
+        $content = $responsible->getContent();
+
+        $responsible->getCart()->setContacts(['phone' => $content]);
+
+        $message = "Ваш номер $content. Вам нужна доставка?";
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,
+            keyBoard: [
+                [
+                    [
+                        'text' => 'Да',
+                    ],
+                    [
+                        'text' => 'Нет',
+                    ],
+                ],
+            ]
         );
 
         $responsible->getResult()->setMessage($responsibleMessage);

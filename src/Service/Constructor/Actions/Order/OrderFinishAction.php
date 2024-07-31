@@ -2,22 +2,21 @@
 
 namespace App\Service\Constructor\Actions\Order;
 
-use App\Enum\TargetEnum;
 use App\Helper\MessageHelper;
-use App\Service\Constructor\Core\Chains\AbstractChain;
+use App\Service\Constructor\Core\Chains\AbstractAction;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 
-class OrderShippingSwitch extends AbstractChain
+class OrderFinishAction extends AbstractAction
 {
     public static function getName(): string
     {
-        return '';
+        return 'order.finish.chain';
     }
 
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        $message = 'Введите адрес доставки:';
+        $message = 'Это финиш, что бы ты сюда не написал, это не имеет смысла';
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,
@@ -35,14 +34,6 @@ class OrderShippingSwitch extends AbstractChain
 
     public function before(ResponsibleInterface $responsible): bool
     {
-        $content = $responsible->getContent();
-
-        if ($content === 'Нет') {
-            $responsible->setJump(TargetEnum::OrderFinishChain);
-
-            return false;
-        }
-
         return true;
     }
 

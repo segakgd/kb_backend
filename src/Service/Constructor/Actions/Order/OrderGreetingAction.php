@@ -3,15 +3,15 @@
 namespace App\Service\Constructor\Actions\Order;
 
 use App\Helper\MessageHelper;
-use App\Service\Constructor\Core\Chains\AbstractChain;
+use App\Service\Constructor\Core\Chains\AbstractAction;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 
-class OrderGreetingChain extends AbstractChain
+class OrderGreetingAction extends AbstractAction
 {
     public static function getName(): string
     {
-        return '';
+        return 'order.greeting.chain';
     }
 
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface

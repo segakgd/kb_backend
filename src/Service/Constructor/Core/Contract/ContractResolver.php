@@ -5,7 +5,7 @@ namespace App\Service\Constructor\Core\Contract;
 use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Dto\SessionCache\Cache\CacheContractDto;
 use App\Enum\VisitorEventStatusEnum;
-use App\Service\Constructor\Core\Chains\ChainsResolver;
+use App\Service\Constructor\Core\Chains\ActionResolver;
 use App\Service\Constructor\Core\Dto\Responsible;
 use App\Service\Constructor\Core\Scenario\ScenarioResolver;
 use Psr\Log\LoggerInterface;
@@ -14,9 +14,9 @@ use Throwable;
 readonly class ContractResolver
 {
     public function __construct(
-        private ChainsResolver $chainsResolver,
+        private ActionResolver   $chainsResolver,
         private ScenarioResolver $scenarioResolver,
-        private LoggerInterface $logger,
+        private LoggerInterface  $logger,
     ) {}
 
     /**

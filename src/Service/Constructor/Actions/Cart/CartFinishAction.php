@@ -1,39 +1,25 @@
 <?php
 
-namespace App\Service\Constructor\Actions\Order;
+namespace App\Service\Constructor\Actions\Cart;
 
 use App\Helper\MessageHelper;
-use App\Service\Constructor\Core\Chains\AbstractChain;
+use App\Service\Constructor\Core\Chains\AbstractAction;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 
-class OrderContactsPhoneChain extends AbstractChain
+class CartFinishAction extends AbstractAction
 {
     public static function getName(): string
     {
-        return '';
+        return 'cart.finish.chain';
     }
 
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface
     {
-        $content = $responsible->getContent();
-
-        $responsible->getCart()->setContacts(['phone' => $content]);
-
-        $message = "Ваш номер $content. Вам нужна доставка?";
+        $message = 'Это финиш, что бы ты сюда не написал, это не имеет смысла';
 
         $responsibleMessage = MessageHelper::createResponsibleMessage(
             message: $message,
-            keyBoard: [
-                [
-                    [
-                        'text' => 'Да',
-                    ],
-                    [
-                        'text' => 'Нет',
-                    ],
-                ],
-            ]
         );
 
         $responsible->getResult()->setMessage($responsibleMessage);

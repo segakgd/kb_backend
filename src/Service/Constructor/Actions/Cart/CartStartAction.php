@@ -3,15 +3,15 @@
 namespace App\Service\Constructor\Actions\Cart;
 
 use App\Helper\MessageHelper;
-use App\Service\Constructor\Core\Chains\AbstractChain;
+use App\Service\Constructor\Core\Chains\AbstractAction;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;
 
-class CartStartChain extends AbstractChain
+class CartStartAction extends AbstractAction
 {
     public static function getName(): string
     {
-        return '';
+        return 'cart.start.chain';
     }
 
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface

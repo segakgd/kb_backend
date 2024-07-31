@@ -2,65 +2,56 @@
 
 namespace App\Service\Constructor;
 
-use App\Enum\TargetEnum;
-use App\Service\Constructor\Actions\Cart\CartFinishChain;
-use App\Service\Constructor\Actions\Cart\CartStartChain;
-use App\Service\Constructor\Actions\Ecommerce\CategoriesChain;
-use App\Service\Constructor\Actions\Ecommerce\ProductsByCategoryChain;
-use App\Service\Constructor\Actions\Ecommerce\StartChain;
-use App\Service\Constructor\Actions\Ecommerce\VariantProductChain;
-use App\Service\Constructor\Actions\Ecommerce\VariantsProductChain;
-use App\Service\Constructor\Actions\FinishChain;
-use App\Service\Constructor\Actions\Order\OrderContactsFullNameChain;
-use App\Service\Constructor\Actions\Order\OrderContactsPhoneChain;
-use App\Service\Constructor\Actions\Order\OrderFinishChain;
-use App\Service\Constructor\Actions\Order\OrderGreetingChain;
-use App\Service\Constructor\Actions\Order\OrderShippingChain;
-use App\Service\Constructor\Actions\Order\OrderShippingSwitch;
-use App\Service\Constructor\Core\Chains\AbstractChain;
+use App\Service\Constructor\Actions\Cart\CartFinishAction;
+use App\Service\Constructor\Actions\Cart\CartStartAction;
+use App\Service\Constructor\Actions\Ecommerce\CategoriesAction;
+use App\Service\Constructor\Actions\Ecommerce\ProductsByCategoryAction;
+use App\Service\Constructor\Actions\Ecommerce\StartAction;
+use App\Service\Constructor\Actions\Ecommerce\VariantProductAction;
+use App\Service\Constructor\Actions\Ecommerce\VariantsProductAction;
+use App\Service\Constructor\Actions\FinishAction;
+use App\Service\Constructor\Actions\Order\OrderContactsFullNameAction;
+use App\Service\Constructor\Actions\Order\OrderContactsPhoneAction;
+use App\Service\Constructor\Actions\Order\OrderFinishAction;
+use App\Service\Constructor\Actions\Order\OrderGreetingAction;
+use App\Service\Constructor\Actions\Order\OrderShippingAction;
+use App\Service\Constructor\Actions\Order\OrderShippingSwitchAction;
+use App\Service\Constructor\Core\Chains\AbstractAction;
 use Exception;
 
 readonly class ActionProvider
 {
     public function __construct(
-        private ProductsByCategoryChain $productsByCategoryChain,
-        private CategoriesChain $productCategoryChain,
-        private VariantsProductChain $variantsProductChain,
-        private VariantProductChain $variantProductChain,
-    ) {
-        // todo
-        //  0. Актуализировать TestMessengerController с MainWebhookController
-        //  1. Разобраться с CacheChainDto в Responsible
-        //  2. Добить всё в Visitor
-        //  3. Начать разбираться с TelegramMessageHandler
-    }
+        private ProductsByCategoryAction $productsByCategoryChain,
+        private CategoriesAction $productCategoryChain,
+        private VariantsProductAction $variantsProductChain,
+        private VariantProductAction $variantProductChain,
+    ) {}
 
     /**
      * @throws Exception
      */
-    public function getByTarget(TargetEnum $target): AbstractChain
+    public function getByTarget(string $actionName): AbstractAction
     {
-        return match ($target) {
-            TargetEnum::StartChain              => new StartChain(),
-            TargetEnum::ProductCategoryChain    => $this->productCategoryChain,
-            TargetEnum::ProductsByCategoryChain => $this->productsByCategoryChain,
-            TargetEnum::VariantsProductChain    => $this->variantsProductChain,
-            TargetEnum::VariantProductChain     => $this->variantProductChain,
-            TargetEnum::FinishChain             => new FinishChain(),
+        return match ($actionName) {
+            StartAction::getName()              => new StartAction(),
+            CategoriesAction::getName()         => $this->productCategoryChain,
+            ProductsByCategoryAction::getName() => $this->productsByCategoryChain,
+            VariantsProductAction::getName()    => $this->variantsProductChain,
+            VariantProductAction::getName()     => $this->variantProductChain,
+            FinishAction::getName()             => new FinishAction(),
 
-            TargetEnum::OrderGreetingChain         => new OrderGreetingChain(),
-            TargetEnum::OrderContactsFullNameChain => new OrderContactsFullNameChain(),
-            TargetEnum::OrderContactsPhoneChain    => new OrderContactsPhoneChain(),
-            TargetEnum::OrderShippingSwitch        => new OrderShippingSwitch(),
-            TargetEnum::OrderShippingChain         => new OrderShippingChain(),
-            TargetEnum::OrderFinishChain           => new OrderFinishChain(),
+            OrderGreetingAction::getName()         => new OrderGreetingAction(),
+            OrderContactsFullNameAction::getName() => new OrderContactsFullNameAction(),
+            OrderContactsPhoneAction::getName()    => new OrderContactsPhoneAction(),
+            OrderShippingSwitchAction::getName()   => new OrderShippingSwitchAction(),
+            OrderShippingAction::getName()         => new OrderShippingAction(),
+            OrderFinishAction::getName()           => new OrderFinishAction(),
 
-            TargetEnum::CartFinishChain => new CartFinishChain(),
-            TargetEnum::CartStartChain  => new CartStartChain(),
+            CartFinishAction::getName() => new CartFinishAction(),
+            CartStartAction::getName()  => new CartStartAction(),
 
-            TargetEnum::Cart         => null,
-            TargetEnum::Main         => null,
-            TargetEnum::PlaceAnOrder => null,
+            default => throw new Exception('Undefined action name'),
         };
     }
 }
