@@ -46,3 +46,6 @@ dev-up:
 
 dev-build:
 	docker compose -f docker-compose.yml build
+
+certbot-issue-certificate:
+	certonly --webroot --webroot-path=/var/www/certbot --email hpsergeyy@yandex.ru --agree-tos --no-eff-email --force-renewal --no-eff-email -d mydevbot.ru -d www.mydevbot.ru

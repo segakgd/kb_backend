@@ -23,10 +23,23 @@ services:
       - ./_conf/nginx/conf.d/:/etc/nginx/conf.d
       - ./_conf/logs:/var/log/nginx
       - ./_conf/nginx/sert:/etc/nginx/ssl
+      - ./certbot/conf:/etc/nginx/cert
+      - ./certbot/data:/var/www/certbot
     depends_on:
       - php-fpm
     ports:
       - "80:80"
+      - "443:443"
+
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    depends_on:
+      - nginx
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/logs:/var/log/letsencrypt
+      - ./certbot/data:/var/www/certbot
       - "443:443"
 
 ###> doctrine/doctrine-bundle ###
