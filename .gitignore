@@ -10,6 +10,7 @@
 /vendor/
 /.idea/
 /src/Command/Local
+/certbot
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
