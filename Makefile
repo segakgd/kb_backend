@@ -4,10 +4,10 @@ BRANCH = main
 .PHONY: update install-dev-deps migrate cache-clear build
 
 # Задача для выполнения всех шагов
-build-dev: update install-dev-deps migrate cache-clear
+all: pull install-dev-deps migrate cache-clear
 
 # Подгрузка обновлений с основной ветки
-update:
+pull:
 	@echo "Fetching updates from $(BRANCH) branch..."
 	git checkout $(BRANCH)
 	git pull origin $(BRANCH)
