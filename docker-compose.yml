@@ -40,7 +40,6 @@ services:
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/logs:/var/log/letsencrypt
       - ./certbot/data:/var/www/certbot
-      - "443:443"
 
 ###> doctrine/doctrine-bundle ###
   database:
