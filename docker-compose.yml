@@ -22,8 +22,10 @@ services:
       - ./_conf/nginx/sites/:/etc/nginx/sites-available
       - ./_conf/nginx/conf.d/:/etc/nginx/conf.d
       - ./_conf/logs:/var/log/nginx
-      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/conf:/var/www/KBackend/certbot/conf
       - ./certbot/data:/var/www/certbot
+      - ./nginx/key:/etc/nginx/ssl
+      - ./certbot/conf:/etc/nginx/cert
     depends_on:
       - php-fpm
     ports:
