@@ -25,13 +25,13 @@ readonly class JumpToChainResolver
         VisitorEvent $visitorEvent,
         Responsible $responsible,
     ): void {
-        $jump = $responsible->getJump();
+        $jump = $responsible->getJumpToScenario();
 
         if (!$jump) {
             throw new Exception('Непредвиденная ситуация: переход не существует.');
         }
 
-        $scenario = $this->scenarioService->findScenarioByTarget($responsible->getJump());
+        $scenario = $this->scenarioService->findScenarioByTarget($responsible->getJumpToScenario());
 
         if ($scenario) {
             $visitorEvent->setScenarioUUID($scenario->getUUID());

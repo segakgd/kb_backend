@@ -84,7 +84,7 @@ class ProductsByCategoryAction extends AbstractAction
         }
 
         if ('Вернуться в главное меню' === $content) {
-            $responsible->setJump(TargetEnum::Main);
+            $responsible->setJumpToScenario(TargetEnum::Main);
 
             return false;
         }

@@ -32,9 +32,9 @@ interface ResponsibleInterface
 
     public function setResult(?ResultInterface $result): static;
 
-    public function getJump(): ?TargetEnum;
+    public function getJumpToScenario(): ?TargetEnum;
 
-    public function setJump(?TargetEnum $jump): static;
+    public function setJumpToScenario(?TargetEnum $jump): static;
 
     public function isExistJump(): bool;
 

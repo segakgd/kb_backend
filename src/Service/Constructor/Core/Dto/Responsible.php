@@ -22,7 +22,7 @@ class Responsible implements ResponsibleInterface
 
     private ?ResultInterface $result = null;
 
-    private ?TargetEnum $jump = null;
+    private ?TargetEnum $jumpToScenario = null;
     private ?TargetEnum $jumpedToChain = null;
 
     private ?VisitorEventStatusEnum $status = VisitorEventStatusEnum::New;
@@ -111,21 +111,21 @@ class Responsible implements ResponsibleInterface
         return $this;
     }
 
-    public function getJump(): ?TargetEnum
+    public function getJumpToScenario(): ?TargetEnum
     {
-        return $this->jump;
+        return $this->jumpToScenario;
     }
 
-    public function setJump(?TargetEnum $jump): static
+    public function setJumpToScenario(?TargetEnum $jumpToScenario): static
     {
-        $this->jump = $jump;
+        $this->jumpToScenario = $jumpToScenario;
 
         return $this;
     }
 
     public function isExistJump(): bool
     {
-        return !is_null($this->jump);
+        return !is_null($this->jumpToScenario);
     }
 
 
@@ -177,7 +177,7 @@ class Responsible implements ResponsibleInterface
         $jump = JumpProvider::getJumpFromNavigate($content);
 
         if ($jump) {
-            $this->setJump($jump);
+            $this->setJumpToScenario($jump);
 
             return true;
         }
