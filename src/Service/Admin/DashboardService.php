@@ -49,26 +49,29 @@ readonly class DashboardService
 
         $contract = [];
 
-        if (null !== $visitorSession) {
+        if (!is_null($visitorSession)) {
             $cache = $visitorSession->getCache();
-            $cacheEvent = $cache->getEvent();
 
-            $cacheContract = $cacheEvent->getContract();
+            if (!is_null($cache) && $cache->getEvent()) {
+                $cacheEvent = $cache->getEvent();
 
-            $cacheChains = $cacheContract->getChains();
-            $chains = [];
+                $cacheContract = $cacheEvent->getContract();
 
-            foreach ($cacheChains as $cacheChain) {
-                $chains[] = [
-                    'name'   => $cacheChain->getTarget(),
-                    'status' => $cacheChain->isFinished(),
+                $cacheChains = $cacheContract->getChains();
+                $chains = [];
+
+                foreach ($cacheChains as $cacheChain) {
+                    $chains[] = [
+                        'name'   => $cacheChain->getTarget(),
+                        'status' => $cacheChain->isFinished(),
+                    ];
+                }
+
+                $contract = [
+                    'chains'   => $chains,
+                    'finished' => $cacheContract->isFinished(),
                 ];
             }
-
-            $contract = [
-                'chains'   => $chains,
-                'finished' => $cacheContract->isFinished(),
-            ];
         }
 
         return [
@@ -164,7 +167,7 @@ readonly class DashboardService
             'sessionName'    => $session->getName(),
             'sessionChannel' => $session->getChannel(),
             'cache'          => [
-                'content' => $cache->getContent() ?? null,
+                'content' => $cache?->getContent() ?? null,
             ],
         ];
     }

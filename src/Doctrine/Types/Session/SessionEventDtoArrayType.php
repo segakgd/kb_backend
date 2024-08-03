@@ -23,6 +23,10 @@ class SessionEventDtoArrayType extends JsonType
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
+        if (is_null($value)) {
+            return null;
+        }
+
         /** @var CacheEventDto $value */
         return parent::convertToDatabaseValue($value->toArray(), $platform);
     }

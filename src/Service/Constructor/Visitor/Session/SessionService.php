@@ -20,7 +20,7 @@ readonly class SessionService
         return $this->visitorSessionRepository->findOneBy(
             [
                 'chatId'  => $chatId,
-                'botId'   => $bot->getId(),
+                'bot'     => $bot,
                 'channel' => $channel->value,
             ]
         );
@@ -30,7 +30,7 @@ readonly class SessionService
     {
         return $this->visitorSessionRepository->findBy(
             [
-                'botId' => $bot->getId(),
+                'bot' => $bot,
             ]
         );
     }
