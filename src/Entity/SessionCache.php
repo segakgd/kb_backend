@@ -35,6 +35,14 @@ class SessionCache
 
     public function __construct()
     {
+        if ($this->cart === null) {
+            $this->cart = new CacheCartDto();
+        }
+
+        if ($this->event === null) {
+            $this->event = new CacheEventDto();
+        }
+
         if ($this->createdAt === null) {
             $this->createdAt = new DateTimeImmutable();
         }
