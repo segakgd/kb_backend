@@ -83,11 +83,11 @@ class ProductsByCategoryAction extends AbstractAction
             return false;
         }
 
-        if ('Вернуться в главное меню' === $content) {
-            $responsible->setJumpToScenario(TargetEnum::Main);
-
-            return false;
-        }
+        //        if ('Вернуться в главное меню' === $content) {
+        //            $responsible->setJumpToScenario(TargetEnum::Main);
+        //
+        //            return false;
+        //        }
 
         if ('Вернуться к категориям' === $content) {
             // todo тут происходит прыжок

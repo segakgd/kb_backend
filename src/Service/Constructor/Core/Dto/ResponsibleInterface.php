@@ -32,18 +32,6 @@ interface ResponsibleInterface
 
     public function setResult(?ResultInterface $result): static;
 
-    public function getJumpToScenario(): ?TargetEnum;
-
-    public function setJumpToScenario(?TargetEnum $jump): static;
-
-    public function isExistJump(): bool;
-
-    public function getJumpedToChain(): ?TargetEnum;
-
-    public function setJumpedToChain(?TargetEnum $jumpedToChain): static;
-
-    public function isExistJumpedToChain(): bool;
-
     public function getStatus(): ?VisitorEventStatusEnum;
 
     public function setStatus(?VisitorEventStatusEnum $status): static;

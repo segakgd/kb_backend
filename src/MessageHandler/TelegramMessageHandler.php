@@ -16,8 +16,6 @@ use App\Repository\Visitor\VisitorEventRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Constructor\Core\Dto\Responsible;
 use App\Service\Constructor\Core\EventResolver;
-use App\Service\Constructor\Core\Jumps\JumpResolver;
-use App\Service\Constructor\Core\Jumps\JumpToChainResolver;
 use App\Service\Constructor\Visitor\ScenarioManager;
 use App\Service\DtoRepository\ResponsibleDtoRepository;
 use Exception;
@@ -32,8 +30,6 @@ final readonly class TelegramMessageHandler
     public function __construct(
         private EventResolver $eventResolver,
         private ScenarioManager $scenarioService,
-        private JumpResolver $jumpResolver,
-        private JumpToChainResolver $jumpToChainResolver,
         private ResponsibleDtoRepository $responsibleDtoRepository,
         private SessionCacheRepository $sessionCacheRepository,
         private VisitorEventRepository $visitorEventRepository,
@@ -71,30 +67,9 @@ final readonly class TelegramMessageHandler
             // отлавливаем jump после обработки события (пользовательский jump) - todo а такая вообще возможно? Оо
             // отлавливаем jumpToChain после обработки события - вполне рядовая ситуация
 
-            if ($responsible->isJump()) {
-                $this->jumpResolver->resolve(
-                    visitorEvent: $event,
-                    responsible: $responsible
-                );
-            } else {
-                $responsible = $this->eventResolver->resolve($responsible);
+            $responsible = $this->eventResolver->resolve($responsible);
 
-                $this->bus->dispatch(new SendTelegramMessage($responsible->getResult(), $responsible->getBotDto()));
-
-                if ($responsible->isExistJumpedToChain()) {
-                    $this->jumpToChainResolver->resolve(
-                        visitorEvent: $event,
-                        responsible: $responsible
-                    );
-                }
-
-                if ($responsible->isExistJump()) {
-                    $this->jumpResolver->resolve(
-                        visitorEvent: $event,
-                        responsible: $responsible
-                    );
-                }
-            }
+            $this->bus->dispatch(new SendTelegramMessage($responsible->getResult(), $responsible->getBotDto()));
 
             $this->updateEntities($event, $session, $sessionCache, $responsible);
 
@@ -138,7 +113,6 @@ final readonly class TelegramMessageHandler
     {
         if (
             VisitorEventStatusEnum::New === $event->getStatus()
-            || VisitorEventStatusEnum::Jumped === $event->getStatus()
         ) {
             $scenario = $this->scenarioService->getByUuidOrDefault($event->getScenarioUUID());
 

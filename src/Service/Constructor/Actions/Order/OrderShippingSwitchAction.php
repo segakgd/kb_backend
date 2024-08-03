@@ -37,11 +37,11 @@ class OrderShippingSwitchAction extends AbstractAction
     {
         $content = $responsible->getContent();
 
-        if ($content === 'Нет') {
-            $responsible->setJumpToScenario(TargetEnum::OrderFinishChain);
-
-            return false;
-        }
+        //        if ($content === 'Нет') {
+        //            $responsible->setJumpToScenario(TargetEnum::OrderFinishChain);
+        //
+        //            return false;
+        //        }
 
         return true;
     }
