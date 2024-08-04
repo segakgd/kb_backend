@@ -50,7 +50,7 @@ class CreateController extends GeneralAbstractController
     public function execute(Request $request): JsonResponse
     {
         if (null === $this->getUser()) {
-            return new JsonResponse([], Response::HTTP_FORBIDDEN);
+            return $this->json([], Response::HTTP_FORBIDDEN);
         }
 
         $requestDto = $this->getValidDtoFromRequest($request, ProjectCreateReqDto::class);
