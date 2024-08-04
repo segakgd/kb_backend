@@ -36,7 +36,7 @@ readonly class EventResolver
                 $responsible->setStatus(VisitorEventStatusEnum::Done);
             }
 
-            $status = $responsible->getStatus() ?? VisitorEventStatusEnum::Waiting; // todo ну такое
+            $status = $responsible->getStatus();
 
             if ($status === VisitorEventStatusEnum::Done) {
                 $responsible->clearEvent();

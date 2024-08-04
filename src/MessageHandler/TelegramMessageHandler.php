@@ -69,9 +69,9 @@ final readonly class TelegramMessageHandler
 
             $responsible = $this->eventResolver->resolve($responsible);
 
-            $this->bus->dispatch(new SendTelegramMessage($responsible->getResult(), $responsible->getBotDto()));
-
             $this->updateEntities($event, $session, $sessionCache, $responsible);
+
+            $this->bus->dispatch(new SendTelegramMessage($responsible->getResult(), $responsible->getBotDto()));
 
             if ($event->isRepeatStatuses()) {
                 $this->bus->dispatch(new TelegramMessage($event->getId()));
