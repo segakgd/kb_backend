@@ -5,7 +5,6 @@ namespace App\Service\Constructor\Core\Dto;
 use App\Dto\SessionCache\Cache\CacheCartDto;
 use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Dto\SessionCache\Cache\CacheEventDto;
-use App\Enum\TargetEnum;
 use App\Enum\VisitorEventStatusEnum;
 
 interface ResponsibleInterface
