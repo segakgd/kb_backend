@@ -29,9 +29,7 @@ readonly class EventResolver
 
             $this->resolveContract($responsible, $cacheContract);
 
-            $unfinishedChains = array_filter($cacheContract->getChains(), fn (CacheChainDto $chain) => !$chain->isFinished());
-
-            if (empty($unfinishedChains)) {
+            if ($cacheContract->isAllChainsFinished()) {
                 $cacheContract->setFinished(true);
                 $responsible->setStatus(VisitorEventStatusEnum::Done);
             }

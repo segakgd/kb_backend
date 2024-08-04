@@ -6,9 +6,23 @@ use App\Dto\Common\AbstractDto;
 
 class CacheChainDto extends AbstractDto
 {
+    private string $target;
+
     private bool $finished;
 
     private bool $repeat;
+
+    public function getTarget(): string
+    {
+        return $this->target;
+    }
+
+    public function setTarget(string $target): CacheChainDto
+    {
+        $this->target = $target;
+
+        return $this;
+    }
 
     public function isFinished(): bool
     {
@@ -43,7 +57,7 @@ class CacheChainDto extends AbstractDto
     {
         $cacheChain = new static();
 
-//        $cacheChain->target = TargetEnum::from($data['target']);
+        $cacheChain->target = $data['target'];
         $cacheChain->finished = $data['finished'] ?? false;
         $cacheChain->repeat = $data['repeat'] ?? false;
 
@@ -53,7 +67,7 @@ class CacheChainDto extends AbstractDto
     public function toArray(): array
     {
         return [
-            'target'   => $this->target->value,
+            'target'   => $this->target,
             'finished' => $this->finished,
             'repeat'   => $this->repeat,
         ];
