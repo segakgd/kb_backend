@@ -2,7 +2,6 @@
 
 namespace App\Service\Constructor\Visitor;
 
-use App\Dto\SessionCache\Cache\CacheCartDto;
 use App\Dto\SessionCache\Cache\CacheEventDto;
 use App\Entity\SessionCache;
 use App\Entity\Visitor\VisitorEvent;
@@ -50,10 +49,13 @@ readonly class EventManager
             $event = null;
         }
 
-        if (null === $event) {
+        if (is_null($event)) {
             $scenario = $this->scenarioService->getScenarioByNameAndType($type, $content);
             $event = $this->eventService->create($session, $scenario, $type);
-            $sessionCache->setEvent(CacheHelper::createCacheEventDto());
+
+            $cacheEventDto = CacheHelper::createCacheEventDto();
+
+            $sessionCache->setEvent($cacheEventDto);
         }
 
         $sessionCache->setContent($content);
