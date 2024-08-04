@@ -2,7 +2,6 @@
 
 namespace App\Service\Constructor\Visitor;
 
-use App\Dto\SessionCache\Cache\CacheEventDto;
 use App\Entity\SessionCache;
 use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
