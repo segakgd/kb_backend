@@ -7,7 +7,7 @@ namespace App\Controller\Admin\Promotion;
 use App\Controller\Admin\Promotion\DTO\Request\PromotionReqDto;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\Project;
-use App\Service\Admin\Ecommerce\Promotion\Manager\PromotionManagerInterface;
+use App\Service\Common\Ecommerce\Promotion\Manager\PromotionManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Psr\Log\LoggerInterface;

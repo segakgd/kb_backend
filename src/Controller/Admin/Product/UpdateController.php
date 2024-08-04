@@ -9,7 +9,7 @@ use App\Controller\Admin\Product\Exception\NotFoundProductForProjectException;
 use App\Controller\GeneralAbstractController;
 use App\Entity\Ecommerce\Product;
 use App\Entity\User\Project;
-use App\Service\Admin\Ecommerce\Product\Manager\ProductManagerInterface;
+use App\Service\Common\Ecommerce\Product\Manager\ProductManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;

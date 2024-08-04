@@ -6,7 +6,7 @@ namespace App\Controller\Admin\Promotion;
 
 use App\Controller\Admin\Promotion\DTO\Response\PromotionRespDto;
 use App\Entity\User\Project;
-use App\Service\Admin\Ecommerce\Promotion\Manager\PromotionManagerInterface;
+use App\Service\Common\Ecommerce\Promotion\Manager\PromotionManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

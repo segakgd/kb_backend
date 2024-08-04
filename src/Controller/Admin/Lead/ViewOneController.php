@@ -8,7 +8,7 @@ use App\Controller\Admin\Lead\DTO\Response\LeadRespDto;
 use App\Controller\Admin\Lead\Exception\NotFoundLeadForProjectException;
 use App\Entity\Lead\Deal;
 use App\Entity\User\Project;
-use App\Service\Admin\Lead\LeadMapper;
+use App\Service\Common\Lead\LeadMapper;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

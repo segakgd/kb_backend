@@ -8,7 +8,7 @@ use App\Entity\User\Bot;
 use App\Entity\User\Project;
 use App\Event\InitWebhookBotEvent;
 use App\Repository\Scenario\ScenarioTemplateRepository;
-use App\Service\Admin\Bot\BotServiceInterface;
+use App\Service\Common\Bot\BotServiceInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

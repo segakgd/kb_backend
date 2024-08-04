@@ -7,7 +7,7 @@ namespace App\Controller\Admin\Lead;
 use App\Controller\Admin\Lead\DTO\Request\LeadReqDto;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\Project;
-use App\Service\Admin\Lead\LeadManager;
+use App\Service\Common\Lead\LeadManager;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;

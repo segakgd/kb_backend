@@ -5,7 +5,7 @@ namespace App\Controller\Admin\Product;
 use App\Controller\Admin\Product\Exception\NotFoundProductForProjectException;
 use App\Entity\Ecommerce\Product;
 use App\Entity\User\Project;
-use App\Service\Admin\Ecommerce\Product\Manager\ProductManagerInterface;
+use App\Service\Common\Ecommerce\Product\Manager\ProductManagerInterface;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;

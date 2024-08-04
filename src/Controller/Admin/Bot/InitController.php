@@ -5,7 +5,7 @@ namespace App\Controller\Admin\Bot;
 use App\Controller\Admin\Bot\DTO\Request\InitBotReqDto;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\Project;
-use App\Service\Admin\Bot\BotServiceInterface;
+use App\Service\Common\Bot\BotServiceInterface;
 use Exception;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
