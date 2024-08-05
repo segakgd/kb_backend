@@ -8,7 +8,6 @@ use App\Entity\Scenario\Scenario;
 use App\Entity\User\Bot;
 use App\Enum\NavigateEnum;
 use App\Enum\TargetAliasEnum;
-use App\Enum\TargetEnum;
 use App\Repository\Scenario\ScenarioRepository;
 use Exception;
 
@@ -41,13 +40,13 @@ readonly class ScenarioService
         );
     }
 
-    public function findScenarioByTarget(TargetEnum $jumpValue): ?Scenario
+    public function findScenarioByTarget(TargetAliasEnum $targetAliasEnum): ?Scenario
     {
-        return match ($jumpValue) {
-            TargetEnum::Main         => $this->findByAlias(TargetAliasEnum::Main),
-            TargetEnum::Cart         => $this->findByAlias(TargetAliasEnum::Cart),
-            TargetEnum::PlaceAnOrder => $this->findByAlias(TargetAliasEnum::PlaceAnOrder),
-            default                  => null,
+        return match ($targetAliasEnum) {
+            TargetAliasEnum::Main         => $this->findByAlias(TargetAliasEnum::Main),
+            TargetAliasEnum::Cart         => $this->findByAlias(TargetAliasEnum::Cart),
+            TargetAliasEnum::PlaceAnOrder => $this->findByAlias(TargetAliasEnum::PlaceAnOrder),
+            default                       => null,
         };
     }
 

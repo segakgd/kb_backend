@@ -7,7 +7,7 @@ namespace App\Controller\Admin\ProductCategory;
 use App\Controller\Admin\ProductCategory\Exception\NotFoundProductCategoryForProjectException;
 use App\Entity\Ecommerce\ProductCategory;
 use App\Entity\User\Project;
-use App\Service\Admin\Ecommerce\ProductCategory\Manager\ProductCategoryManagerInterface;
+use App\Service\Common\Ecommerce\ProductCategory\Manager\ProductCategoryManagerInterface;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;

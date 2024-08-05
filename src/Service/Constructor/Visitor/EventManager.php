@@ -2,6 +2,7 @@
 
 namespace App\Service\Constructor\Visitor;
 
+use App\Entity\SessionCache;
 use App\Entity\Visitor\VisitorEvent;
 use App\Entity\Visitor\VisitorSession;
 use App\Enum\VisitorEventStatusEnum;
@@ -30,6 +31,10 @@ readonly class EventManager
     ): VisitorEvent {
         $sessionCache = $session->getCache();
 
+        if (is_null($sessionCache)) {
+            $sessionCache = new SessionCache();
+        }
+
         $event = $this->visitorEventRepository->getVisitorEventIfExist($session);
 
         if ($event?->getStatus() === VisitorEventStatusEnum::New) {
@@ -43,10 +48,13 @@ readonly class EventManager
             $event = null;
         }
 
-        if (null === $event) {
+        if (is_null($event)) {
             $scenario = $this->scenarioService->getScenarioByNameAndType($type, $content);
             $event = $this->eventService->create($session, $scenario, $type);
-            $sessionCache->setEvent(CacheHelper::createCacheEventDto());
+
+            $cacheEventDto = CacheHelper::createCacheEventDto();
+
+            $sessionCache->setEvent($cacheEventDto);
         }
 
         $sessionCache->setContent($content);

@@ -3,22 +3,21 @@
 namespace App\Dto\SessionCache\Cache;
 
 use App\Dto\Common\AbstractDto;
-use App\Enum\TargetEnum;
 
 class CacheChainDto extends AbstractDto
 {
-    private TargetEnum $target;
+    private string $target;
 
     private bool $finished;
 
     private bool $repeat;
 
-    public function getTarget(): TargetEnum
+    public function getTarget(): string
     {
         return $this->target;
     }
 
-    public function setTarget(TargetEnum $target): static
+    public function setTarget(string $target): CacheChainDto
     {
         $this->target = $target;
 
@@ -58,7 +57,7 @@ class CacheChainDto extends AbstractDto
     {
         $cacheChain = new static();
 
-        $cacheChain->target = TargetEnum::from($data['target']);
+        $cacheChain->target = $data['target'];
         $cacheChain->finished = $data['finished'] ?? false;
         $cacheChain->repeat = $data['repeat'] ?? false;
 
@@ -68,7 +67,7 @@ class CacheChainDto extends AbstractDto
     public function toArray(): array
     {
         return [
-            'target'   => $this->target->value,
+            'target'   => $this->target,
             'finished' => $this->finished,
             'repeat'   => $this->repeat,
         ];

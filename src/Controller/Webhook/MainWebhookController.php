@@ -6,7 +6,7 @@ use App\Dto\Webhook\Telegram\TelegramWebhookDto;
 use App\Enum\Constructor\ChannelEnum;
 use App\Message\TelegramMessage;
 use App\Repository\User\ProjectRepository;
-use App\Service\Admin\Bot\BotServiceInterface;
+use App\Service\Common\Bot\BotServiceInterface;
 use App\Service\Common\MessageHistoryService;
 use App\Service\Constructor\Visitor\EventManager;
 use App\Service\Constructor\Visitor\Session\SessionService;

@@ -6,7 +6,7 @@ use App\Dto\Webhook\Telegram\TelegramWebhookDto;
 use App\Entity\User\Project;
 use App\Enum\Constructor\ChannelEnum;
 use App\Message\TelegramMessage;
-use App\Service\Admin\Bot\BotServiceInterface;
+use App\Service\Common\Bot\BotServiceInterface;
 use App\Service\Constructor\Visitor\EventManager;
 use App\Service\Constructor\Visitor\Session\SessionService;
 use Exception;

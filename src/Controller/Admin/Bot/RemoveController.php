@@ -3,7 +3,7 @@
 namespace App\Controller\Admin\Bot;
 
 use App\Entity\User\Project;
-use App\Service\Admin\Bot\BotServiceInterface;
+use App\Service\Common\Bot\BotServiceInterface;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;

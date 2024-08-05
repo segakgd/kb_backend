@@ -6,7 +6,7 @@ use App\Controller\Admin\Bot\DTO\Request\BotReqDto;
 use App\Controller\Admin\Bot\Response\BotCreateResponse;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\Project;
-use App\Service\Admin\Bot\BotServiceInterface;
+use App\Service\Common\Bot\BotServiceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;

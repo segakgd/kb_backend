@@ -7,7 +7,7 @@ namespace App\Controller\Admin\ProductCategory;
 use App\Controller\Admin\ProductCategory\DTO\Request\ProductCategoryReqDto;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\Project;
-use App\Service\Admin\Ecommerce\ProductCategory\Manager\ProductCategoryManagerInterface;
+use App\Service\Common\Ecommerce\ProductCategory\Manager\ProductCategoryManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;

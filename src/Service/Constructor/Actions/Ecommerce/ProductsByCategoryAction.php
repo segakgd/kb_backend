@@ -2,9 +2,8 @@
 
 namespace App\Service\Constructor\Actions\Ecommerce;
 
-use App\Enum\TargetEnum;
 use App\Helper\MessageHelper;
-use App\Service\Admin\Ecommerce\Product\Service\ProductService;
+use App\Service\Common\Ecommerce\Product\Service\ProductService;
 use App\Service\Common\PaginateService;
 use App\Service\Constructor\Core\Actions\AbstractAction;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
@@ -83,11 +82,11 @@ class ProductsByCategoryAction extends AbstractAction
             return false;
         }
 
-        if ('Вернуться в главное меню' === $content) {
-            $responsible->setJump(TargetEnum::Main);
-
-            return false;
-        }
+        //        if ('Вернуться в главное меню' === $content) {
+        //            $responsible->setJumpToScenario(TargetEnum::Main);
+        //
+        //            return false;
+        //        }
 
         if ('Вернуться к категориям' === $content) {
             // todo тут происходит прыжок

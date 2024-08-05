@@ -4,7 +4,7 @@ namespace App\Controller\Dev\Dashboard;
 
 use App\Entity\User\Project;
 use App\Entity\User\User;
-use App\Service\Admin\DashboardService;
+use App\Service\Common\DashboardService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

@@ -3,7 +3,6 @@
 namespace App\Service\Constructor\Core\Actions;
 
 use App\Dto\SessionCache\Cache\CacheChainDto;
-use App\Enum\TargetEnum;
 use App\Service\Constructor\ActionProvider;
 use App\Service\Constructor\Core\Dto\Responsible;
 use Exception;
@@ -41,7 +40,7 @@ readonly class ActionResolver
 
             $chainInstance->execute(
                 responsible: $responsible,
-                nextChain: $this->getNextChain($nextChain?->getTarget())
+                nextChain: $this->getNextChain($nextChain->getTarget())
             );
 
             break;
@@ -55,18 +54,20 @@ readonly class ActionResolver
      */
     private function getChainInstance(Responsible $responsible): AbstractAction
     {
-        return $this->actionProvider->getByTarget($responsible->getChain()->getTarget()->value);
+        $target = $responsible->getChain()->getTarget();
+
+        return $this->actionProvider->getByTarget($target);
     }
 
     /**
      * @throws Exception
      */
-    private function getNextChain(?TargetEnum $targetNext): ?AbstractAction
+    private function getNextChain(?string $targetNext): ?AbstractAction
     {
         if (is_null($targetNext)) {
             return null;
         }
 
-        return $this->actionProvider->getByTarget($targetNext->value);
+        return $this->actionProvider->getByTarget($targetNext);
     }
 }

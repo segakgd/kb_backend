@@ -7,7 +7,7 @@ namespace App\Controller\Admin\Bot;
 use App\Controller\Admin\Bot\DTO\Response\BotResDto;
 use App\Controller\Admin\Bot\Response\BotViewAllResponse;
 use App\Entity\User\Project;
-use App\Service\Admin\Bot\BotServiceInterface;
+use App\Service\Common\Bot\BotServiceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
