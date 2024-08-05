@@ -25,7 +25,7 @@ class TariffFixtures extends Fixture implements OrderedFixtureInterface
             ]
         );
 
-        if ($defaultTariff) {
+        if (!is_null($defaultTariff)) {
             return;
         }
 

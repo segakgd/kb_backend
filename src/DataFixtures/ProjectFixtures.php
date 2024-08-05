@@ -53,6 +53,7 @@ class ProjectFixtures extends Fixture implements OrderedFixtureInterface
         $bot = (new Bot())
             ->setName('Сгенерированный бот')
             ->setType(BotTypeEnum::Telegram)
+            ->setToken('token:00000000000000000000')
             ->setProjectId($project->getId())
             ->setActive(true)
             ->setWebhookUri('local');

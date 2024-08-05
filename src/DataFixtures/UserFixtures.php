@@ -38,7 +38,7 @@ class UserFixtures extends Fixture implements OrderedFixtureInterface
             ]
         );
 
-        if (is_null($user)) {
+        if (!is_null($user)) {
             return;
         }
 
@@ -49,6 +49,9 @@ class UserFixtures extends Fixture implements OrderedFixtureInterface
         $password = $this->userPasswordHasher->hashPassword($user, static::PASSWORD);
 
         $user->setPassword($password);
+
+        $manager->persist($user);
+        $manager->flush();
 
         $this->securityService->refreshAccessToken($user);
         $this->securityService->resetRefreshToken($user);

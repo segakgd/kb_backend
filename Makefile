@@ -8,7 +8,7 @@ all: pull install-dev-deps migrate cache-clear
 
 # Первоначальная инициализация проекта
 init-project:
-	php bin/console doctrine:fixtures:load
+	php bin/console doctrine:fixtures:load --append
 
 # Подгрузка обновлений с основной ветки
 pull:
