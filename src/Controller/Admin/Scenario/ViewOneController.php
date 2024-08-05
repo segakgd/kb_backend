@@ -32,7 +32,7 @@ class ViewOneController extends AbstractController
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project, Scenario $scenario): JsonResponse
     {
-        return new JsonResponse(
+        return $this->json(
             $this->serializer->normalize(new ScenarioRespDto())
         );
     }

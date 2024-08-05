@@ -51,6 +51,6 @@ class CreateController extends GeneralAbstractController
 
         $this->scenarioTemplateService->create($requestDto, $project->getId());
 
-        return new JsonResponse('', Response::HTTP_NO_CONTENT);
+        return $this->json('', Response::HTTP_NO_CONTENT);
     }
 }

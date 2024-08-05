@@ -22,6 +22,6 @@ class RemoveController extends AbstractController
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project, Scenario $scenario): JsonResponse
     {
-        return new JsonResponse('', Response::HTTP_NO_CONTENT);
+        return $this->json('', Response::HTTP_NO_CONTENT);
     }
 }

@@ -54,7 +54,7 @@ class InitController extends GeneralAbstractController
 
             $this->botService->init($requestDto, $botId, $project->getId());
 
-            return new JsonResponse(
+            return $this->json(
                 [],
                 Response::HTTP_NO_CONTENT
             );

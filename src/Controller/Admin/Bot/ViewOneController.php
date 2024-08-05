@@ -41,7 +41,7 @@ class ViewOneController extends AbstractController
                 throw new NotFoundBotForProjectException();
             }
 
-            return new JsonResponse(
+            return $this->json(
                 $this->serializer->normalize(
                     (new BotViewOneResponse())->mapToResponse($bot)
                 )

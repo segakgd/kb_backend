@@ -31,7 +31,7 @@ class RemoveController extends AbstractController
         try {
             $this->botService->remove($botId, $project->getId());
 
-            return new JsonResponse([], Response::HTTP_NO_CONTENT);
+            return $this->json([], Response::HTTP_NO_CONTENT);
         } catch (Throwable $exception) {
             return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }

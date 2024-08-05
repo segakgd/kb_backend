@@ -42,7 +42,7 @@ class ViewAllController extends AbstractController
 
         $tariff = $this->tariffService->getTariffById($tariffId);
 
-        return new JsonResponse(
+        return $this->json(
             $this->serializer->normalize(
                 (new ViewAllSettingResponse())->mapToResponse($projectSetting, $tariff)
             )

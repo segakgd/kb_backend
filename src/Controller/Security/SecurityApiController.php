@@ -43,7 +43,7 @@ class SecurityApiController extends GeneralAbstractController
 
             $user = $this->securityService->identifyUser($requestDto);
 
-            return new JsonResponse(
+            return $this->json(
                 [
                     'accessToken'   => $this->securityService->refreshAccessToken($user),
                     'refreshTokens' => $user->getRefreshTokens(),
@@ -52,11 +52,11 @@ class SecurityApiController extends GeneralAbstractController
         } catch (InvalidPasswordException | UserNotFoundException $exception) {
             $this->logger->error($exception->getMessage(), $exception->getTrace());
 
-            return new JsonResponse($exception->getMessage(), Response::HTTP_FORBIDDEN);
+            return $this->json($exception->getMessage(), Response::HTTP_FORBIDDEN);
         } catch (Exception $exception) {
             $this->logger->error($exception->getMessage(), $exception->getTrace());
 
-            return new JsonResponse('Bad request.', Response::HTTP_BAD_REQUEST);
+            return $this->json('Bad request.', Response::HTTP_BAD_REQUEST);
         }
     }
 
@@ -77,7 +77,7 @@ class SecurityApiController extends GeneralAbstractController
         } catch (Exception $exception) {
             $this->logger->error($exception->getMessage(), $exception->getTrace());
 
-            return new JsonResponse('Bad request.', Response::HTTP_BAD_REQUEST);
+            return $this->json('Bad request.', Response::HTTP_BAD_REQUEST);
         }
 
         return $this->json($user, 200, [], ['groups' => ['openForReading']]);
@@ -98,10 +98,10 @@ class SecurityApiController extends GeneralAbstractController
         } catch (Exception $exception) {
             $this->logger->error($exception->getMessage(), $exception->getTrace());
 
-            return new JsonResponse('Bad request.', Response::HTTP_BAD_REQUEST);
+            return $this->json('Bad request.', Response::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse(
+        return $this->json(
             [
                 'accessToken' => $accessToken,
             ]
