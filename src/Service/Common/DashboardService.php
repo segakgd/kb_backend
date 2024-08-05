@@ -113,7 +113,7 @@ readonly class DashboardService
             'botId'       => $bot->getId(),
             'botName'     => $bot->getName(),
             'projectId'   => $bot->getProjectId(),
-            'botType'     => $bot->getType(),
+            'botType'     => $bot->getType()->value,
             'botToken'    => $bot->getToken(),
             'botActive'   => $bot->isActive(),
             'webhookUri'  => $bot->getWebhookUri() ?? '',

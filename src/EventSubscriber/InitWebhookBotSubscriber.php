@@ -26,7 +26,7 @@ readonly class InitWebhookBotSubscriber implements EventSubscriberInterface
     {
         $dot = $event->getBot();
 
-        $uri = 'https://mydevbot.ru/webhook/' . $dot->getProjectId() . '/' . $dot->getType() . '/';
+        $uri = 'https://mydevbot.ru/webhook/' . $dot->getProjectId() . '/' . $dot->getType()->value . '/';
         $dot->setWebhookUri($uri);
 
         $this->botRepository->saveAndFlush($dot);

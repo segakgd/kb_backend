@@ -4,6 +4,7 @@ namespace App\Tests\Functional\Trait\Bot;
 
 use App\Entity\User\Bot;
 use App\Entity\User\Project;
+use App\Service\Common\Bot\Enum\BotTypeEnum;
 use Doctrine\Persistence\ObjectManager;
 
 trait BotTrait
@@ -12,7 +13,7 @@ trait BotTrait
     {
         $project = (new Bot())
             ->setName('Мой новый бот')
-            ->setType('telegram')
+            ->setType(BotTypeEnum::Telegram)
             ->setProjectId($project->getId())
             ->setToken('token_token_token_token_token_token_token_token');
 

@@ -2,8 +2,10 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\User\Bot;
 use App\Entity\User\Enum\ProjectStatusEnum;
 use App\Entity\User\Project;
+use App\Service\Common\Bot\Enum\BotTypeEnum;
 use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -38,6 +40,16 @@ class ProjectFixtures extends Fixture
             ->setActiveTo(new DateTimeImmutable('12.12.2025'));
 
         $manager->persist($project);
+        $manager->flush();
+
+        $bot = (new Bot())
+            ->setName('Сгенерированный бот')
+            ->setType(BotTypeEnum::Telegram)
+            ->setProjectId($project->getId())
+            ->setActive(true)
+            ->setWebhookUri('local');
+
+        $manager->persist($bot);
         $manager->flush();
     }
 }
