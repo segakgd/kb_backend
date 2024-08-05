@@ -6,6 +6,10 @@ BRANCH = main
 # Задача для выполнения всех шагов
 all: pull install-dev-deps migrate cache-clear
 
+# Первоначальная инициализация проекта
+init-project:
+	php bin/console doctrine:fixtures:load --append
+
 # Подгрузка обновлений с основной ветки
 pull:
 	@echo "Fetching updates from $(BRANCH) branch..."

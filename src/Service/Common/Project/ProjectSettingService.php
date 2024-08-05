@@ -8,6 +8,7 @@ use App\Entity\User\ProjectSetting;
 use App\Entity\User\Tariff;
 use App\Repository\User\ProjectSettingRepository;
 use App\Repository\User\TariffRepository;
+use App\Service\Common\Project\Enum\TariffCodeEnum;
 use Exception;
 
 readonly class ProjectSettingService implements ProjectSettingServiceInterface
@@ -143,7 +144,7 @@ readonly class ProjectSettingService implements ProjectSettingServiceInterface
     {
         $tariff = $this->tariffRepository->findOneBy(
             [
-                'code' => TariffService::DEFAULT_TARIFF_CODE,
+                'code' => TariffCodeEnum::Trial->value,
             ]
         );
 

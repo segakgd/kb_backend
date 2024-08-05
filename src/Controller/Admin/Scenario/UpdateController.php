@@ -30,6 +30,6 @@ class UpdateController extends GeneralAbstractController
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project, Scenario $scenario): JsonResponse
     {
-        return new JsonResponse();
+        return $this->json();
     }
 }

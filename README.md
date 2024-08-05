@@ -1,8 +1,17 @@
+На local: 
+----
+
+~~~
+make init-project
+make local-build
+make local-up
+~~~
+
 Сборка на dev-e
 ---
 
 ~~~
-Запускаем: make build-dev
+Запускаем: make all
 ~~~
 
 Па-пара-па-пам Всё!

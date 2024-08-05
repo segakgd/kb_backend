@@ -71,13 +71,13 @@ class MainWebhookController extends AbstractController
         $project = $this->projectEntityRepository->find($projectId);
 
         if (!$project) {
-            return new JsonResponse();
+            return $this->json();
         }
 
         if (ChannelEnum::isIn($channel)) {
             $this->logger->error("Channel $channel не валиден");
 
-            return new JsonResponse('ok', 200);
+            return $this->json('ok', 200);
         }
 
         $channel = ChannelEnum::from($channel);
@@ -126,9 +126,9 @@ class MainWebhookController extends AbstractController
         } catch (Throwable $exception) {
             $this->logger->error($exception->getMessage());
 
-            return new JsonResponse('ok', 200);
+            return $this->json('ok', 200);
         }
 
-        return new JsonResponse('ok', 200);
+        return $this->json('ok', 200);
     }
 }

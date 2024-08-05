@@ -4,7 +4,7 @@ namespace App\Dto\Core\Telegram\Response;
 
 use App\Service\HttpClient\Response\Response;
 
-class GetWebhookInfoDto extends Response // todo перенести в App\Service\System\HttpClient\Response
+class GetWebhookInfoDto extends Response
 {
     private string $url;
 

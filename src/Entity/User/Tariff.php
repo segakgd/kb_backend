@@ -3,6 +3,7 @@
 namespace App\Entity\User;
 
 use App\Repository\User\TariffRepository;
+use App\Service\Common\Project\Enum\TariffCodeEnum;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TariffRepository::class)]
@@ -84,14 +85,14 @@ class Tariff
         return $this;
     }
 
-    public function getCode(): ?string
+    public function getCode(): ?TariffCodeEnum
     {
-        return $this->code;
+        return TariffCodeEnum::tryFrom($this->code);
     }
 
-    public function setCode(string $code): static
+    public function setCode(TariffCodeEnum $code): static
     {
-        $this->code = $code;
+        $this->code = $code->value;
 
         return $this;
     }

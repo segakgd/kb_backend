@@ -12,6 +12,6 @@ class BotViewOneResponse
         return (new BotResDto())
             ->setId($bot->getId())
             ->setName($bot->getName())
-            ->setType($bot->getType());
+            ->setType($bot->getType()->value);
     }
 }

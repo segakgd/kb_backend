@@ -37,7 +37,7 @@ class ViewAllController extends AbstractController
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project): JsonResponse
     {
-        return new JsonResponse(
+        return $this->json(
             $this->serializer->normalize(
                 [
                     new ScenarioRespDto(),

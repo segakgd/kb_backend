@@ -14,6 +14,7 @@ use App\Service\Common\Bot\BotServiceInterface;
 use App\Service\Common\Scenario\ScenarioTemplateService;
 use App\Service\Constructor\Visitor\Session\SessionService;
 use App\Service\Integration\Telegram\TelegramService;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * @legacy Пока что пусть это живёт как живёт, но потом это стоит переделать. Не стал разносить по сервисам, т.к, эта реализация сама по себе не очень.
@@ -28,6 +29,7 @@ readonly class DashboardService
         private VisitorEventRepository $visitorEventRepository,
         private ScenarioTemplateService $scenarioTemplateService,
         private MessageHistoryRepository $historyRepository,
+        private KernelInterface $kernel,
     ) {}
 
     public function prepareEvents(VisitorSession $visitorSession): array
@@ -105,7 +107,13 @@ readonly class DashboardService
 
     public function prepareBot(Bot $bot, Project $project): array
     {
-        $webhookBotInfo = $this->telegramService->getWebhookInfo($bot->getToken());
+        $environment = $this->kernel->getEnvironment();
+        $webhookBotInfo = null;
+
+        if ($environment !== 'dev') {
+            $webhookBotInfo = $this->telegramService->getWebhookInfo($bot->getToken());
+        }
+
         $projectName = $project->getName();
 
         return [
@@ -113,14 +121,14 @@ readonly class DashboardService
             'botId'       => $bot->getId(),
             'botName'     => $bot->getName(),
             'projectId'   => $bot->getProjectId(),
-            'botType'     => $bot->getType(),
+            'botType'     => $bot->getType()->value,
             'botToken'    => $bot->getToken(),
             'botActive'   => $bot->isActive(),
             'webhookUri'  => $bot->getWebhookUri() ?? '',
             'webhookInfo' => [
-                'pendingUpdateCount' => $webhookBotInfo->getPendingUpdateCount() ?? 0,
-                'lastErrorDate'      => $webhookBotInfo->getLastErrorDate() ?? null,
-                'lastErrorMessage'   => $webhookBotInfo->getLastErrorMessage() ?? null,
+                'pendingUpdateCount' => $webhookBotInfo?->getPendingUpdateCount() ?? 0,
+                'lastErrorDate'      => $webhookBotInfo?->getLastErrorDate() ?? null,
+                'lastErrorMessage'   => $webhookBotInfo?->getLastErrorMessage() ?? null,
             ],
         ];
     }

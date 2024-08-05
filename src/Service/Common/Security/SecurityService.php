@@ -116,6 +116,7 @@ readonly class SecurityService
 
     /**
      * @throws RandomException
+     * @throws Exception
      */
     public function refreshAccessToken(User $user): string
     {
@@ -130,7 +131,8 @@ readonly class SecurityService
     }
 
     /**
-     * @throws RandomException|Exception
+     * @throws RandomException
+     * @throws Exception
      */
     private function generateAccessToken(int $userId): string
     {
@@ -148,7 +150,8 @@ readonly class SecurityService
     }
 
     /**
-     * @throws RandomException|Exception
+     * @throws RandomException
+     * @throws Exception
      */
     private function generateRefreshToken(): string
     {

@@ -3,22 +3,39 @@
 namespace App\DataFixtures;
 
 use App\Entity\User\Tariff;
-use App\Service\Common\Project\TariffService;
+use App\Service\Common\Project\Enum\TariffCodeEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class TariffFixtures extends Fixture
+class TariffFixtures extends Fixture implements OrderedFixtureInterface
 {
+    public function getOrder(): int
+    {
+        return 1;
+    }
+
     public function load(ObjectManager $manager): void
     {
-        $defaultTariff = new Tariff();
-        $defaultTariff
-            ->setCode(TariffService::DEFAULT_TARIFF_CODE)
-            ->setName('Default Tariff')
+        $tariffRepository = $manager->getRepository(Tariff::class);
+
+        $defaultTariff = $tariffRepository->findOneBy(
+            [
+                'code' => TariffCodeEnum::Trial->value,
+            ]
+        );
+
+        if (!is_null($defaultTariff)) {
+            return;
+        }
+
+        $defaultTariff = (new Tariff())
+            ->setName('Триал')
+            ->setActive(true)
+            ->setCode(TariffCodeEnum::Trial)
             ->setPrice(0)
-            ->setPriceWF('0.00')
-            ->setDescription('System tariff')
-            ->setActive(true);
+            ->setDescription('Триал период')
+            ->setPriceWF(0.0);
 
         $manager->persist($defaultTariff);
         $manager->flush();

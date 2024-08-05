@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin\Bot\DTO\Request;
 
+use App\Service\Common\Bot\Enum\BotTypeEnum;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class UpdateBotReqDto
@@ -28,9 +29,9 @@ class UpdateBotReqDto
         $this->name = $name;
     }
 
-    public function getType(): string
+    public function getType(): BotTypeEnum
     {
-        return $this->type;
+        return BotTypeEnum::tryFrom($this->type);
     }
 
     public function setType(string $type): self

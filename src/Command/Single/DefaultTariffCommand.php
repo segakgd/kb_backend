@@ -4,6 +4,7 @@ namespace App\Command\Single;
 
 use App\Entity\User\Tariff;
 use App\Repository\User\TariffRepository;
+use App\Service\Common\Project\Enum\TariffCodeEnum;
 use App\Service\Common\Project\TariffService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -31,7 +32,7 @@ class DefaultTariffCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         try {
-            $tariff = $this->tariffService->getTariffByCode(TariffService::DEFAULT_TARIFF_CODE);
+            $tariff = $this->tariffService->getTariffByCode(TariffCodeEnum::Trial);
 
             if ($tariff) {
                 $io->info('Tariff already created');
@@ -42,7 +43,7 @@ class DefaultTariffCommand extends Command
             $tariff = (new Tariff())
                 ->setName('Триал')
                 ->setActive(true)
-                ->setCode(TariffService::DEFAULT_TARIFF_CODE)
+                ->setCode(TariffCodeEnum::Trial)
                 ->setPrice(0)
                 ->setDescription('Триал период')
                 ->setPriceWF(0.0);

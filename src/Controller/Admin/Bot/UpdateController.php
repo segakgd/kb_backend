@@ -52,7 +52,7 @@ class UpdateController extends GeneralAbstractController
 
             $bot = $this->botService->update($requestDto, $bot->getId(), $project->getId());
 
-            return new JsonResponse(
+            return $this->json(
                 $this->serializer->normalize(
                     (new BotUpdateResponse())->mapToResponse($bot)
                 )

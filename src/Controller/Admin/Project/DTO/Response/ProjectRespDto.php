@@ -3,7 +3,7 @@
 namespace App\Controller\Admin\Project\DTO\Response;
 
 use App\Controller\Admin\Project\DTO\Response\Statistic\ProjectStatisticsRespDto;
-use App\Entity\User\Project;
+use App\Entity\User\Enum\ProjectStatusEnum;
 use DateTimeImmutable;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -13,7 +13,7 @@ class ProjectRespDto
 
     private string $name;
 
-    #[Assert\Choice([Project::STATUS_ACTIVE, Project::STATUS_FROZEN, Project::STATUS_BLOCKED])]
+    #[Assert\Choice([ProjectStatusEnum::Active->value, ProjectStatusEnum::Frozen->value, ProjectStatusEnum::Blocked->value])]
     private string $status;
 
     private ?DateTimeImmutable $activeTo;
@@ -46,14 +46,14 @@ class ProjectRespDto
         return $this;
     }
 
-    public function getStatus(): string
+    public function getStatus(): ProjectStatusEnum
     {
-        return $this->status;
+        return ProjectStatusEnum::tryFrom($this->status);
     }
 
-    public function setStatus(string $status): self
+    public function setStatus(ProjectStatusEnum $status): self
     {
-        $this->status = $status;
+        $this->status = $status->value;
 
         return $this;
     }

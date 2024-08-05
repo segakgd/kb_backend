@@ -48,7 +48,7 @@ class UpdateAbstractController extends GeneralAbstractController
 
         $projectSetting = $this->projectSettingService->updateSetting($project->getId(), $requestDto);
 
-        return new JsonResponse(
+        return $this->json(
             $this->serializer->normalize(
                 (new UpdateSettingResponse())->mapResponse($projectSetting),
             )
