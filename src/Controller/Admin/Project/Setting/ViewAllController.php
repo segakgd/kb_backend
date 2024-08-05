@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\Serializer\SerializerInterface;
 
 #[OA\Tag(name: 'Project')]
 #[OA\Response(
@@ -27,12 +26,11 @@ use Symfony\Component\Serializer\SerializerInterface;
 class ViewAllController extends AbstractController
 {
     public function __construct(
-        private readonly SerializerInterface $serializer,
         private readonly ProjectSettingServiceInterface $projectSettingService,
         private readonly TariffServiceInterface $tariffService,
     ) {}
 
-    #[Route('/api/admin/project/{project}/setting/', name: 'admin_list_project_setting', methods: ['GET'])]
+    #[Route('/api/admin/project/{project}/settings/', name: 'admin_list_project_setting', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project): JsonResponse
     {
@@ -43,9 +41,8 @@ class ViewAllController extends AbstractController
         $tariff = $this->tariffService->getTariffById($tariffId);
 
         return $this->json(
-            $this->serializer->normalize(
-                (new ViewAllSettingResponse())->mapToResponse($projectSetting, $tariff)
-            )
+            (new ViewAllSettingResponse())
+                ->mapToResponse($projectSetting, $tariff)
         );
     }
 }

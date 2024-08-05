@@ -7,7 +7,7 @@ namespace App\Controller\Admin\Product;
 use App\Controller\Admin\Product\DTO\Response\ProductRespDto;
 use App\Controller\Admin\Product\Response\ProductViewAllResponse;
 use App\Entity\User\Project;
-use App\Service\Admin\Ecommerce\Product\Manager\ProductManagerInterface;
+use App\Service\Common\Ecommerce\Product\Manager\ProductManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

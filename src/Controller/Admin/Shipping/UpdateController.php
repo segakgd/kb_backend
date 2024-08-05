@@ -9,7 +9,7 @@ use App\Controller\Admin\Shipping\Exception\NotFoundShippingForProjectException;
 use App\Controller\GeneralAbstractController;
 use App\Entity\Ecommerce\Shipping;
 use App\Entity\User\Project;
-use App\Service\Admin\Ecommerce\Shipping\Manager\ShippingManagerInterface;
+use App\Service\Common\Ecommerce\Shipping\Manager\ShippingManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Psr\Log\LoggerInterface;

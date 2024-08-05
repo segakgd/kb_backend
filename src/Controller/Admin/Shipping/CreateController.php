@@ -7,7 +7,7 @@ namespace App\Controller\Admin\Shipping;
 use App\Controller\Admin\Shipping\DTO\Request\ShippingReqDto;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\Project;
-use App\Service\Admin\Ecommerce\Shipping\Manager\ShippingManagerInterface;
+use App\Service\Common\Ecommerce\Shipping\Manager\ShippingManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Psr\Log\LoggerInterface;

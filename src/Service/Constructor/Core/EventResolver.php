@@ -29,18 +29,12 @@ readonly class EventResolver
 
             $this->resolveContract($responsible, $cacheContract);
 
-            if ($responsible->isExistJump()) {
-                return $responsible;
-            }
-
-            $unfinishedChains = array_filter($cacheContract->getChains(), fn (CacheChainDto $chain) => !$chain->isFinished());
-
-            if (empty($unfinishedChains)) {
+            if ($cacheContract->isAllChainsFinished()) {
                 $cacheContract->setFinished(true);
                 $responsible->setStatus(VisitorEventStatusEnum::Done);
             }
 
-            $status = $responsible->getStatus() ?? VisitorEventStatusEnum::Waiting; // todo ну такое
+            $status = $responsible->getStatus();
 
             if ($status === VisitorEventStatusEnum::Done) {
                 $responsible->clearEvent();

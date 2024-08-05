@@ -66,6 +66,13 @@ class CacheContractDto extends AbstractDto
         return !empty($this->chains);
     }
 
+    public function isAllChainsFinished(): bool
+    {
+        $unfinishedChains = array_filter($this->getChains(), fn (CacheChainDto $chain) => !$chain->isFinished());
+
+        return empty($unfinishedChains);
+    }
+
     public function setChains(array $chains): static
     {
         $this->chains = $chains;
@@ -157,9 +164,9 @@ class CacheContractDto extends AbstractDto
         }
 
         return [
-            'message' => $this->message,
+            'message'  => $this->message,
             'finished' => $this->finished,
-            'chains' => $chainsArray,
+            'chains'   => $chainsArray,
         ];
     }
 }

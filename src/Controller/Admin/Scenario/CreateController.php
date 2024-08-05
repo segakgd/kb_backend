@@ -5,7 +5,7 @@ namespace App\Controller\Admin\Scenario;
 use App\Controller\Admin\Scenario\DTO\Request\ScenarioReqDto;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\Project;
-use App\Service\Admin\Scenario\ScenarioTemplateService;
+use App\Service\Common\Scenario\ScenarioTemplateService;
 use Exception;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;

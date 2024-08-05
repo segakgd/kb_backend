@@ -7,7 +7,7 @@ namespace App\Controller\Admin\Project;
 use App\Controller\Admin\Project\DTO\Response\ProjectRespDto;
 use App\Controller\Admin\Project\Response\ProjectResponse;
 use App\Entity\User\Project;
-use App\Service\Admin\Statistic\StatisticsService;
+use App\Service\Common\Statistic\StatisticsService;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

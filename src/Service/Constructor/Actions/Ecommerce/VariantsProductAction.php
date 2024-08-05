@@ -4,7 +4,7 @@ namespace App\Service\Constructor\Actions\Ecommerce;
 
 use App\Entity\Ecommerce\ProductVariant;
 use App\Helper\MessageHelper;
-use App\Service\Admin\Ecommerce\Product\Service\ProductService;
+use App\Service\Common\Ecommerce\Product\Service\ProductService;
 use App\Service\Constructor\Core\Actions\AbstractAction;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
 use App\Service\Constructor\Core\Dto\ResponsibleInterface;

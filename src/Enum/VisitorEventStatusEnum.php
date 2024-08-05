@@ -16,12 +16,6 @@ enum VisitorEventStatusEnum: string
     /** Повтор в цепи */
     case Repeat = 'repeat';
 
-    /** Прыжок на другое сообщение */
-    case Jumped = 'jumped';
-
-    /** Прыжок на другое сообщение в цепи */
-    case JumpedToChain = 'jumped_to_chain';
-
     /** Ожидание - сигнализирует нам что сейчас выполняется цепочка, ожидающая следующее действие пользователя */
     case Waiting = 'waiting';
 

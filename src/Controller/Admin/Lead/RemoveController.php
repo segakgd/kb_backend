@@ -7,7 +7,7 @@ namespace App\Controller\Admin\Lead;
 use App\Controller\Admin\Lead\Exception\NotFoundLeadForProjectException;
 use App\Entity\Lead\Deal;
 use App\Entity\User\Project;
-use App\Service\Admin\Lead\LeadManager;
+use App\Service\Common\Lead\LeadManager;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;

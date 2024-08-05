@@ -7,7 +7,7 @@ namespace App\Controller\Admin\Shipping;
 use App\Controller\Admin\Shipping\Exception\NotFoundShippingForProjectException;
 use App\Entity\Ecommerce\Shipping;
 use App\Entity\User\Project;
-use App\Service\Admin\Ecommerce\Shipping\Manager\ShippingManagerInterface;
+use App\Service\Common\Ecommerce\Shipping\Manager\ShippingManagerInterface;
 use OpenApi\Attributes as OA;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

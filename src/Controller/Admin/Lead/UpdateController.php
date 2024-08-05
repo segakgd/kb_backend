@@ -9,7 +9,7 @@ use App\Controller\Admin\Lead\Exception\NotFoundLeadForProjectException;
 use App\Controller\GeneralAbstractController;
 use App\Entity\Lead\Deal;
 use App\Entity\User\Project;
-use App\Service\Admin\Lead\LeadManager;
+use App\Service\Common\Lead\LeadManager;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;

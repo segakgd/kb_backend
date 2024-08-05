@@ -7,7 +7,7 @@ namespace App\Controller\Admin\Promotion;
 use App\Controller\Admin\Promotion\Exception\NotFoundPromotionForProjectException;
 use App\Entity\Ecommerce\Promotion;
 use App\Entity\User\Project;
-use App\Service\Admin\Ecommerce\Promotion\Manager\PromotionManagerInterface;
+use App\Service\Common\Ecommerce\Promotion\Manager\PromotionManagerInterface;
 use OpenApi\Attributes as OA;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

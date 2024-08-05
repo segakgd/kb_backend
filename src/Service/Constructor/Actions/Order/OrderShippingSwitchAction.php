@@ -2,7 +2,6 @@
 
 namespace App\Service\Constructor\Actions\Order;
 
-use App\Enum\TargetEnum;
 use App\Helper\MessageHelper;
 use App\Service\Constructor\Core\Actions\AbstractAction;
 use App\Service\Constructor\Core\Dto\ConditionInterface;
@@ -37,11 +36,11 @@ class OrderShippingSwitchAction extends AbstractAction
     {
         $content = $responsible->getContent();
 
-        if ($content === 'Нет') {
-            $responsible->setJump(TargetEnum::OrderFinishChain);
-
-            return false;
-        }
+        //        if ($content === 'Нет') {
+        //            $responsible->setJumpToScenario(TargetEnum::OrderFinishChain);
+        //
+        //            return false;
+        //        }
 
         return true;
     }
