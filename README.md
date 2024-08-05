@@ -2,9 +2,9 @@
 ----
 
 ~~~
-make init-project
 make local-build
 make local-up
+make init-project
 ~~~
 
 Сборка на dev-e
