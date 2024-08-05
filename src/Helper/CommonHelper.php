@@ -46,7 +46,7 @@ class CommonHelper
         $bot = $visitorSession->getBot();
 
         return (new BotDto())
-            ->setType($bot->getType()->value)
+            ->setType($bot->getType())
             ->setToken($bot->getToken())
             ->setChatId($visitorSession->getChatId());
     }
