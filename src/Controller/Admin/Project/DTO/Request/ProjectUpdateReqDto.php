@@ -2,14 +2,14 @@
 
 namespace App\Controller\Admin\Project\DTO\Request;
 
-use App\Entity\User\Project;
+use App\Entity\User\Enum\ProjectStatusEnum;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ProjectUpdateReqDto
 {
     private string $name;
 
-    #[Assert\Choice([Project::STATUS_ACTIVE, Project::STATUS_FROZEN])]
+    #[Assert\Choice([ProjectStatusEnum::Active->value, ProjectStatusEnum::Frozen->value])]
     private string $status;
 
     public function getName(): string

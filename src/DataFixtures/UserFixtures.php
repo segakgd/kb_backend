@@ -11,7 +11,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserFixtures extends Fixture
 {
-    private const EMAIL = 'admin@test.email';
+    private const ADMIN_EMAIL = 'admin@test.email';
     private const PASSWORD = '12345678';
 
     public function __construct(
@@ -28,7 +28,7 @@ class UserFixtures extends Fixture
 
         $user = $userRepository->findOneBy(
             [
-                'email' => static::EMAIL,
+                'email' => static::ADMIN_EMAIL,
             ]
         );
 

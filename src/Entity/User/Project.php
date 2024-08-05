@@ -2,6 +2,7 @@
 
 namespace App\Entity\User;
 
+use App\Entity\User\Enum\ProjectStatusEnum;
 use App\Repository\User\ProjectRepository;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -12,12 +13,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
 class Project
 {
-    public const STATUS_ACTIVE = 'active';
-
-    public const STATUS_FROZEN = 'frozen';
-
-    public const STATUS_BLOCKED = 'blocked';
-
     #[Groups(['administrator'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -32,7 +27,7 @@ class Project
     private Collection $users;
 
     #[ORM\Column(length: 20, nullable: true)]
-    private ?string $status = self::STATUS_ACTIVE;
+    private ?string $status = ProjectStatusEnum::Active->value;
 
     #[ORM\Column(nullable: true)]
     private ?DateTimeImmutable $activeFrom = null;
@@ -89,14 +84,14 @@ class Project
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?ProjectStatusEnum
     {
-        return $this->status;
+        return ProjectStatusEnum::tryFrom($this->status);
     }
 
-    public function setStatus(string $status): static
+    public function setStatus(ProjectStatusEnum $status): static
     {
-        $this->status = $status;
+        $this->status = $status->value;
 
         return $this;
     }

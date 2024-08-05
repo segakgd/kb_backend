@@ -4,6 +4,7 @@ namespace App\Service\Common\Project;
 
 use App\Controller\Admin\Project\DTO\Request\ProjectCreateReqDto;
 use App\Controller\Admin\Project\DTO\Request\ProjectUpdateReqDto;
+use App\Entity\User\Enum\ProjectStatusEnum;
 use App\Entity\User\Project;
 use App\Entity\User\User;
 use App\Repository\User\ProjectRepository;
@@ -45,7 +46,9 @@ readonly class ProjectService implements ProjectServiceInterface
     public function update(ProjectUpdateReqDto $projectUpdateReqDto, Project $project): Project
     {
         $project->setName($projectUpdateReqDto->getName());
-        $project->setStatus($projectUpdateReqDto->getStatus());
+        $project->setStatus(
+            ProjectStatusEnum::tryFrom($projectUpdateReqDto->getStatus())
+        );
 
         $this->projectEntityRepository->saveAndFlush($project);
 
