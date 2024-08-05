@@ -6,7 +6,7 @@ use App\Entity\User\Project;
 use App\Entity\User\ProjectSetting;
 use App\Entity\User\Tariff;
 use App\Entity\User\User;
-use App\Service\Common\Project\TariffService;
+use App\Service\Common\Project\Enum\TariffCodeEnum;
 use DateTimeImmutable;
 use Doctrine\Persistence\ObjectManager;
 
@@ -52,7 +52,7 @@ trait ProjectTrait
 
         $tariff = $tariffRepository->findOneBy(
             [
-                'code' => TariffService::DEFAULT_TARIFF_CODE,
+                'code' => TariffCodeEnum::Trial->value,
             ]
         );
 

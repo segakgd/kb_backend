@@ -5,16 +5,14 @@ namespace App\Service\Common\Project;
 use App\Entity\User\Project;
 use App\Entity\User\Tariff;
 use App\Repository\User\TariffRepository;
+use App\Service\Common\Project\Enum\TariffCodeEnum;
 use Exception;
 
-class TariffService implements TariffServiceInterface
+readonly class TariffService implements TariffServiceInterface
 {
-    // todo завести enum под тарифы
-    public const DEFAULT_TARIFF_CODE = 'TRIAL'; // todo нужно запрещать переходить на такой тариф. так как он системный.
-
     public function __construct(
-        private readonly TariffRepository $tariffRepository,
-        private readonly ProjectSettingServiceInterface $projectSettingServiceInterface,
+        private TariffRepository $tariffRepository,
+        private ProjectSettingServiceInterface $projectSettingServiceInterface,
     ) {}
 
     public function getTariffById(int $tariffId): ?Tariff
@@ -22,11 +20,11 @@ class TariffService implements TariffServiceInterface
         return $this->tariffRepository->find($tariffId);
     }
 
-    public function getTariffByCode(string $code): ?Tariff
+    public function getTariffByCode(TariffCodeEnum $code): ?Tariff
     {
         return $this->tariffRepository->findOneBy(
             [
-                'code' => $code,
+                'code' => $code->value,
             ]
         );
     }
