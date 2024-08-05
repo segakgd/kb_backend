@@ -5,10 +5,16 @@ namespace App\DataFixtures;
 use App\Entity\User\Tariff;
 use App\Service\Common\Project\Enum\TariffCodeEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class TariffFixtures extends Fixture
+class TariffFixtures extends Fixture implements OrderedFixtureInterface
 {
+    public function getOrder(): int
+    {
+        return 1;
+    }
+
     public function load(ObjectManager $manager): void
     {
         $tariffRepository = $manager->getRepository(Tariff::class);

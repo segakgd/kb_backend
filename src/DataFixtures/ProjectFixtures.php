@@ -6,30 +6,37 @@ use App\Entity\Scenario\ScenarioTemplate;
 use App\Entity\User\Bot;
 use App\Entity\User\Enum\ProjectStatusEnum;
 use App\Entity\User\Project;
+use App\Entity\User\User;
 use App\Service\Common\Bot\Enum\BotTypeEnum;
 use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
 
-class ProjectFixtures extends Fixture
+class ProjectFixtures extends Fixture implements OrderedFixtureInterface
 {
     private const ADMIN_EMAIL = 'admin@test.email';
+
+    public function getOrder(): int
+    {
+        return 3;
+    }
 
     /**
      * @throws Exception
      */
     public function load(ObjectManager $manager): void
     {
-        $projectRepository = $manager->getRepository(Project::class);
+        $userRepository = $manager->getRepository(User::class);
 
-        $user = $projectRepository->findOneBy(
+        $user = $userRepository->findOneBy(
             [
                 'email' => static::ADMIN_EMAIL,
             ]
         );
 
-        if ($user) {
+        if (is_null($user)) {
             throw new Exception('Не нашёл админа');
         }
 
