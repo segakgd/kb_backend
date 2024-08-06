@@ -115,13 +115,8 @@ bin/console lexik:jwt:generate-keypair
 ~~~
 
 ~~~
-Запуск Unti тестов:
-bin/phpunit tests/Unit/
-~~~
-
-~~~
 Запуск Functionsl тестов:
-bin/phpunit tests/Functionsl/
+bin/phpunit tests/Functional/
 ~~~
 
 ~~~
