@@ -93,12 +93,12 @@ class UpdateControllerTest extends ApiTestCase
         yield [
             [
                 'name'  => 'Новое название бота',
-                'type'  => 'vk',
+                'type'  => 'telegram',
                 'token' => '0000000000:0000000000-1111111111',
             ],
             [
                 'name' => 'Новое название бота',
-                'type' => 'vk',
+                'type' => 'telegram',
             ],
         ];
     }
