@@ -34,12 +34,9 @@ class CreateControllerTest extends ApiTestCase
         $client->loginUser($user);
 
         $client->request(
-            'POST',
-            '/api/admin/project/',
-            [],
-            [],
-            [],
-            json_encode($requestContent)
+            method: 'POST',
+            uri: '/api/admin/project/',
+            content: json_encode($requestContent)
         );
 
         $this->assertEquals(

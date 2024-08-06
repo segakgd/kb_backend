@@ -35,8 +35,8 @@ class ViewAllControllerTest extends ApiTestCase
         $client->loginUser($user);
 
         $client->request(
-            'GET',
-            '/api/admin/tariffs/',
+            method: 'GET',
+            uri: '/api/admin/tariffs/',
         );
 
         $this->assertEquals(

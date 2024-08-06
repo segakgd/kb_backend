@@ -33,8 +33,8 @@ class RemoveControllerTest extends ApiTestCase
         $client->loginUser($user);
 
         $client->request(
-            'DELETE',
-            '/api/admin/project/' . $project->getId() . '/promotion/' . 1 . '/',
+            method: 'DELETE',
+            uri: '/api/admin/project/' . $project->getId() . '/promotion/' . 1 . '/',
         );
 
         $this->assertEquals(

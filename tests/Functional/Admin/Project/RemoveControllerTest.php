@@ -36,8 +36,8 @@ class RemoveControllerTest extends ApiTestCase
         $projectId = $project->getId();
 
         $client->request(
-            'DELETE',
-            '/api/admin/project/' . $project->getId() . '/',
+            method: 'DELETE',
+            uri: '/api/admin/project/' . $project->getId() . '/',
         );
 
         $this->assertEquals(

@@ -35,12 +35,9 @@ class ViewAllControllerTest extends ApiTestCase
         $client->loginUser($user);
 
         $client->request(
-            'GET',
-            '/api/admin/project/' . $project->getId() . '/promotion/',
-            [],
-            [],
-            [],
-            json_encode($requestContent)
+            method: 'GET',
+            uri: '/api/admin/project/' . $project->getId() . '/promotion/',
+            content: json_encode($requestContent)
         );
 
         $this->assertEquals(

@@ -35,8 +35,8 @@ class ViewOneControllerTest extends ApiTestCase
         $client->loginUser($user);
 
         $client->request(
-            'GET',
-            '/api/admin/project/' . $project->getId() . '/productCategory/' . 1 . '/', // todo ВНИМАНИЕ! захардкодил 1
+            method: 'GET',
+            uri: '/api/admin/project/' . $project->getId() . '/productCategory/' . 1 . '/', // todo ВНИМАНИЕ! захардкодил 1
         );
 
         $this->assertEquals(
