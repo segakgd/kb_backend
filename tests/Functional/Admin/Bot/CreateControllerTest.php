@@ -60,15 +60,16 @@ class CreateControllerTest extends ApiTestCase
         $client->loginUser($user);
 
         $client->request(
-            'POST',
-            '/api/admin/project/' . $project->getId() . '/bot/',
-            [],
-            [],
-            [],
-            json_encode($requestContent)
+            method: 'POST',
+            uri: '/api/admin/project/' . $project->getId() . '/bot/',
+            content: json_encode($requestContent)
         );
 
-        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        $this->assertEquals(
+            expected: Response::HTTP_OK,
+            actual: $client->getResponse()->getStatusCode(),
+            message: $client->getResponse()->getContent()
+        );
 
         $response = $client->getResponse()->getContent();
         $response = json_decode($response, true);

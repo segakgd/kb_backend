@@ -64,12 +64,9 @@ class UpdateControllerTest extends ApiTestCase
         $client->loginUser($user);
 
         $client->request(
-            'PATCH',
-            '/api/admin/project/' . $project->getId() . '/bot/' . $bot->getId() . '/',
-            [],
-            [],
-            [],
-            json_encode($requestContent)
+            method: 'PATCH',
+            uri: '/api/admin/project/' . $project->getId() . '/bot/' . $bot->getId() . '/',
+            content: json_encode($requestContent)
         );
 
         $this->assertEquals(

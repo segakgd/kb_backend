@@ -26,7 +26,11 @@ class GeneralAbstractController extends AbstractController
     {
         $content = $request->getContent();
 
-        $requestDto = $this->serializer->deserialize($content, $className, 'json');
+        $requestDto = $this->serializer->deserialize(
+            data: $content,
+            type: $className,
+            format: 'json',
+        );
 
         $errors = $this->validator->validate($requestDto);
 
