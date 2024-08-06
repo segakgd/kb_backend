@@ -8,6 +8,10 @@ use App\Tests\Functional\Trait\User\UserTrait;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 class RemoveControllerTest extends ApiTestCase
 {
     use UserTrait;
@@ -30,9 +34,13 @@ class RemoveControllerTest extends ApiTestCase
 
         $client->request(
             'DELETE',
-            '/api/admin/project/'. $project->getId() .'/lead/' . 1 . '/',
+            '/api/admin/project/' . $project->getId() . '/lead/' . 1 . '/',
         );
 
-        $this->assertEquals(Response::HTTP_NO_CONTENT, $client->getResponse()->getStatusCode());
+        $this->assertEquals(
+            expected: Response::HTTP_NO_CONTENT,
+            actual: $client->getResponse()->getStatusCode(),
+            message: $client->getResponse()->getContent()
+        );
     }
 }

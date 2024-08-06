@@ -43,7 +43,11 @@ class UpdateControllerTest extends ApiTestCase
             json_encode($requestContent)
         );
 
-        $this->assertEquals(Response::HTTP_NO_CONTENT, $client->getResponse()->getStatusCode());
+        $this->assertEquals(
+            expected: Response::HTTP_NO_CONTENT,
+            actual: $client->getResponse()->getStatusCode(),
+            message: $client->getResponse()->getContent()
+        );
 
         // todo когда будет готова реализация - проверить изменения в базе
     }

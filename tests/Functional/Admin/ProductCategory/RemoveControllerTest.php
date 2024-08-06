@@ -37,6 +37,10 @@ class RemoveControllerTest extends ApiTestCase
             '/api/admin/project/' . $project->getId() . '/productCategory/' . 1 . '/',
         );
 
-        $this->assertEquals(Response::HTTP_NO_CONTENT, $client->getResponse()->getStatusCode());
+        $this->assertEquals(
+            expected: Response::HTTP_NO_CONTENT,
+            actual: $client->getResponse()->getStatusCode(),
+            message: $client->getResponse()->getContent()
+        );
     }
 }

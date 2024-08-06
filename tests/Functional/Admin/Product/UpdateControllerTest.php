@@ -8,6 +8,10 @@ use App\Tests\Functional\Trait\User\UserTrait;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 class UpdateControllerTest extends ApiTestCase
 {
     use UserTrait;
@@ -32,14 +36,18 @@ class UpdateControllerTest extends ApiTestCase
 
         $client->request(
             'POST',
-            '/api/admin/project/'. $project->getId() .'/product/',
+            '/api/admin/project/' . $project->getId() . '/product/',
             [],
             [],
             [],
             json_encode($requestContent)
         );
 
-        $this->assertEquals(Response::HTTP_NO_CONTENT, $client->getResponse()->getStatusCode());
+        $this->assertEquals(
+            expected: Response::HTTP_NO_CONTENT,
+            actual: $client->getResponse()->getStatusCode(),
+            message: $client->getResponse()->getContent()
+        );
 
         // todo когда будет готова реализация - проверить изменения в базе
     }
@@ -48,26 +56,26 @@ class UpdateControllerTest extends ApiTestCase
     {
         yield [
             [
-                'name' => 'Подушка',
-                'article' => 'ARTICLE_2024',
-                'type' => 'service',
-                'visible' => true,
+                'name'        => 'Подушка',
+                'article'     => 'ARTICLE_2024',
+                'type'        => 'service',
+                'visible'     => true,
                 'description' => 'Какое-то описание',
-                'image' => 'image.fake',
-                'category' => [
+                'image'       => 'image.fake',
+                'category'    => [
                     [
-                        'id' => 111,
+                        'id'   => 111,
                         'name' => 'Category name',
-                    ]
+                    ],
                 ],
                 'variants' => [
                     [
-                        'name' => 'Красная',
+                        'name'  => 'Красная',
                         'count' => 1,
                         'price' => 10000,
                     ],
                     [
-                        'name' => 'Синяя',
+                        'name'  => 'Синяя',
                         'count' => 1,
                         'price' => 10000,
                     ],

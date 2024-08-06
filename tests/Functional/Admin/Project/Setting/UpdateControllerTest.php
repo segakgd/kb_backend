@@ -44,7 +44,11 @@ class UpdateControllerTest extends ApiTestCase
             json_encode($requestContent)
         );
 
-        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        $this->assertEquals(
+            expected: Response::HTTP_OK,
+            actual: $client->getResponse()->getStatusCode(),
+            message: $client->getResponse()->getContent()
+        );
 
         $serializer = $this->getContainer()->get('serializer');
         $projectSettingRepository = $entityManager->getRepository(ProjectSetting::class);

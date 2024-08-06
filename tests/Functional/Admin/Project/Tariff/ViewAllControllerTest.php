@@ -39,7 +39,11 @@ class ViewAllControllerTest extends ApiTestCase
             '/api/admin/tariffs/',
         );
 
-        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        $this->assertEquals(
+            expected: Response::HTTP_OK,
+            actual: $client->getResponse()->getStatusCode(),
+            message: $client->getResponse()->getContent()
+        );
 
         $jsonResponse = $client->getResponse()->getContent();
 
