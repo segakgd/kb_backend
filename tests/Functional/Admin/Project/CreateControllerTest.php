@@ -61,11 +61,13 @@ class CreateControllerTest extends ApiTestCase
                 'bot'  => 'vk',
             ],
             [
-                'name'       => 'Новый проект',
-                'status'     => 'active',
-                'activeTo'   => null,
-                'activeFrom' => null,
-                'statistic'  => [
+                'name'             => 'Новый проект',
+                'status'           => 'active',
+                'activeTo'         => null,
+                'formatActiveFrom' => null,
+                'activeFrom'       => null,
+                'formatActiveTo'   => null,
+                'statistic'        => [
                     'lead' => [
                         'count' => 13,
                     ],

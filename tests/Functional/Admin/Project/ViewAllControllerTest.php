@@ -56,11 +56,13 @@ class ViewAllControllerTest extends ApiTestCase
         yield [
             [
                 [
-                    'name'       => 'Проект тестовый',
-                    'status'     => 'active',
-                    'activeTo'   => '2023-12-29T17:35:02+00:00',
-                    'activeFrom' => '2023-12-29T17:35:02+00:00',
-                    'statistic'  => [
+                    'name'             => 'Проект тестовый',
+                    'status'           => 'active',
+                    'activeTo'         => '2023-12-29T17:35:02+00:00',
+                    'activeFrom'       => '2023-12-29T17:35:02+00:00',
+                    'formatActiveFrom' => null,
+                    'formatActiveTo'   => null,
+                    'statistic'        => [
                         'lead' => [
                             'count' => 13,
                         ],
@@ -73,11 +75,13 @@ class ViewAllControllerTest extends ApiTestCase
                     ],
                 ],
                 [
-                    'name'       => 'Проект тестовый',
-                    'status'     => 'active',
-                    'activeTo'   => '2023-12-29T17:35:02+00:00',
-                    'activeFrom' => '2023-12-29T17:35:02+00:00',
-                    'statistic'  => [
+                    'name'             => 'Проект тестовый',
+                    'status'           => 'active',
+                    'activeTo'         => '2023-12-29T17:35:02+00:00',
+                    'activeFrom'       => '2023-12-29T17:35:02+00:00',
+                    'formatActiveFrom' => null,
+                    'formatActiveTo'   => null,
+                    'statistic'        => [
                         'lead' => [
                             'count' => 13,
                         ],
