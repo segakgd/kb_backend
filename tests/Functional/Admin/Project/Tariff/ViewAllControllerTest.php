@@ -57,10 +57,10 @@ class ViewAllControllerTest extends ApiTestCase
     {
         yield [
             [
-                'name'        => 'Тестовый тариф',
-                'price'       => 10000,
-                'priceWF'     => '100,00',
-                'description' => 'For test',
+                'name'        => 'Триал',
+                'price'       => 0,
+                'priceWF'     => '0',
+                'description' => 'Триал период',
                 'active'      => true,
             ],
         ];

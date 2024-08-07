@@ -3,6 +3,7 @@
 namespace App\Tests\Functional\Admin\Project\Tariff;
 
 use App\Entity\User\ProjectSetting;
+use App\Service\Common\Project\Enum\TariffCodeEnum;
 use App\Tests\Functional\ApiTestCase;
 use App\Tests\Functional\Trait\Project\ProjectTrait;
 use App\Tests\Functional\Trait\User\UserTrait;
@@ -40,7 +41,7 @@ class ApplyControllerTest extends ApiTestCase
             uri: '/api/admin/project/' . $project->getId() . '/setting/tariff/',
             content: json_encode(
                 [
-                    'code' => $tariffForTest->getCode(),
+                    'code' => TariffCodeEnum::Trial->value,
                 ]
             )
         );
