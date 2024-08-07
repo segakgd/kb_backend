@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         type: ProjectSettingReqDto::class,
     )
 )]
-class UpdateAbstractController extends GeneralAbstractController
+class UpdateController extends GeneralAbstractController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,
