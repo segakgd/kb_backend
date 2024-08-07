@@ -36,7 +36,7 @@ class ViewAllControllerTest extends ApiTestCase
 
         $client->request(
             method: 'GET',
-            uri: '/api/admin/project/' . $project->getId() . '/setting/',
+            uri: '/api/admin/project/' . $project->getId() . '/settings/',
         );
 
         $this->assertEquals(

@@ -40,7 +40,7 @@ class UpdateController extends GeneralAbstractController
     /**
      * @throws Exception
      */
-    #[Route('/api/admin/project/{project}/setting/', name: 'admin_project_update', methods: ['PATCH'])]
+    #[Route('/api/admin/project/{project}/setting/', name: 'admin_project_setting_update', methods: ['PATCH'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project): JsonResponse
     {
