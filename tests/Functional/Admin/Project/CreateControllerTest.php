@@ -34,17 +34,19 @@ class CreateControllerTest extends ApiTestCase
         $client->loginUser($user);
 
         $client->request(
-            'POST',
-            '/api/admin/project/',
-            [],
-            [],
-            [],
-            json_encode($requestContent)
+            method: 'POST',
+            uri: '/api/admin/project/',
+            content: json_encode($requestContent)
+        );
+
+        $this->assertEquals(
+            expected: Response::HTTP_OK,
+            actual: $client->getResponse()->getStatusCode(),
+            message: $client->getResponse()->getContent()
         );
 
         $responseArr = json_decode($client->getResponse()->getContent(), true);
 
-        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertResponse($responseArr, $response);
 
         // todo проверить что вместе с проектом создаются и настройки (можно в отдельном тесте)
@@ -59,11 +61,13 @@ class CreateControllerTest extends ApiTestCase
                 'bot'  => 'vk',
             ],
             [
-                'name'       => 'Новый проект',
-                'status'     => 'active',
-                'activeTo'   => null,
-                'activeFrom' => null,
-                'statistic'  => [
+                'name'             => 'Новый проект',
+                'status'           => 'active',
+                'activeTo'         => null,
+                'formatActiveFrom' => null,
+                'activeFrom'       => null,
+                'formatActiveTo'   => null,
+                'statistic'        => [
                     'lead' => [
                         'count' => 13,
                     ],

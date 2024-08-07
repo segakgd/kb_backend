@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         type: ProjectSettingReqDto::class,
     )
 )]
-class UpdateAbstractController extends GeneralAbstractController
+class UpdateController extends GeneralAbstractController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,
@@ -40,7 +40,7 @@ class UpdateAbstractController extends GeneralAbstractController
     /**
      * @throws Exception
      */
-    #[Route('/api/admin/project/{project}/setting/', name: 'admin_project_update', methods: ['PATCH'])]
+    #[Route('/api/admin/project/{project}/setting/', name: 'admin_project_setting_update', methods: ['PATCH'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project): JsonResponse
     {

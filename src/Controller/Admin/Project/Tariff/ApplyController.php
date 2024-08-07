@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     response: Response::HTTP_NO_CONTENT,
     description: 'Возвращает 204 если новый тариф применён',
 )]
-class ApplyAbstractController extends GeneralAbstractController
+class ApplyController extends GeneralAbstractController
 {
     public function __construct(
         private readonly ValidatorInterface $validator,

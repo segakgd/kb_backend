@@ -8,6 +8,10 @@ use App\Tests\Functional\Trait\User\UserTrait;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 class ViewAllControllerTest extends ApiTestCase
 {
     use UserTrait;
@@ -30,17 +34,19 @@ class ViewAllControllerTest extends ApiTestCase
 
         $client->loginUser($user);
         $client->request(
-            'GET',
-            '/api/admin/project/'. $project->getId() .'/shipping/',
-            [],
-            [],
-            [],
-            json_encode($requestContent)
+            method: 'GET',
+            uri: '/api/admin/project/' . $project->getId() . '/shipping/',
+            content: json_encode($requestContent)
         );
 
-        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        $this->assertEquals(
+            expected: Response::HTTP_OK,
+            actual: $client->getResponse()->getStatusCode(),
+            message: $client->getResponse()->getContent()
+        );
 
         $responseArr = json_decode($client->getResponse()->getContent(), true);
+
         $this->assertResponse($responseArr, $response);
     }
 
@@ -48,28 +54,28 @@ class ViewAllControllerTest extends ApiTestCase
     {
         yield [
             [
-                'type' => 'phone',
-                'name' => 'Добавочный телефон',
+                'type'  => 'phone',
+                'name'  => 'Добавочный телефон',
                 'value' => '2396',
             ],
             [
                 [
-                    'name' => 'Доставка до самого дома',
-                    'applyFromAmount' => 10000,
+                    'name'              => 'Доставка до самого дома',
+                    'applyFromAmount'   => 10000,
                     'applyFromAmountWF' => '100,00',
-                    'applyToAmount' => 1000,
-                    'applyToAmountWF' => '10,00',
-                    'active' => true,
-                    'type' => 'pickup',
+                    'applyToAmount'     => 1000,
+                    'applyToAmountWF'   => '10,00',
+                    'active'            => true,
+                    'type'              => 'pickup',
                 ],
                 [
-                    'name' => 'Доставка до самого дома',
-                    'applyFromAmount' => 10000,
+                    'name'              => 'Доставка до самого дома',
+                    'applyFromAmount'   => 10000,
                     'applyFromAmountWF' => '100,00',
-                    'applyToAmount' => 1000,
-                    'applyToAmountWF' => '10,00',
-                    'active' => true,
-                    'type' => 'pickup',
+                    'applyToAmount'     => 1000,
+                    'applyToAmountWF'   => '10,00',
+                    'active'            => true,
+                    'type'              => 'pickup',
                 ],
             ],
         ];

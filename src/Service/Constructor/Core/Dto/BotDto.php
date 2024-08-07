@@ -2,22 +2,24 @@
 
 namespace App\Service\Constructor\Core\Dto;
 
+use App\Service\Common\Bot\Enum\BotTypeEnum;
+
 class BotDto
 {
-    private string $type; // todo заюзать enum
+    private string $type;
 
     private string $token;
 
     private string $chatId;
 
-    public function getType(): string
+    public function getType(): BotTypeEnum
     {
-        return $this->type;
+        return BotTypeEnum::tryFrom($this->type);
     }
 
-    public function setType(string $type): static
+    public function setType(BotTypeEnum $type): static
     {
-        $this->type = $type;
+        $this->type = $type->value;
 
         return $this;
     }

@@ -35,11 +35,15 @@ class ViewOneControllerTest extends ApiTestCase
         $client->loginUser($user);
 
         $client->request(
-            'GET',
-            '/api/admin/project/' . $project->getId() . '/shipping/' . 1 . '/', // todo ВНИМАНИЕ! я пока что поставил 1, но нужно брать существующую доставку
+            method: 'GET',
+            uri: '/api/admin/project/' . $project->getId() . '/shipping/' . 1 . '/', // todo ВНИМАНИЕ! я пока что поставил 1, но нужно брать существующую доставку
         );
 
-        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        $this->assertEquals(
+            expected: Response::HTTP_OK,
+            actual: $client->getResponse()->getStatusCode(),
+            message: $client->getResponse()->getContent()
+        );
 
         $responseArr = json_decode($client->getResponse()->getContent(), true);
         $this->assertResponse($responseArr, $response);

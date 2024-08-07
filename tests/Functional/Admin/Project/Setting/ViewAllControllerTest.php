@@ -8,6 +8,10 @@ use App\Tests\Functional\Trait\User\UserTrait;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 class ViewAllControllerTest extends ApiTestCase
 {
     use UserTrait;
@@ -31,11 +35,15 @@ class ViewAllControllerTest extends ApiTestCase
         $client->loginUser($user);
 
         $client->request(
-            'GET',
-            '/api/admin/project/'. $project->getId() .'/setting/',
+            method: 'GET',
+            uri: '/api/admin/project/' . $project->getId() . '/settings/',
         );
 
-        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        $this->assertEquals(
+            expected: Response::HTTP_OK,
+            actual: $client->getResponse()->getStatusCode(),
+            message: $client->getResponse()->getContent()
+        );
 
         $responseArr = json_decode($client->getResponse()->getContent(), true);
         $this->assertResponse($responseArr, $response);
@@ -45,32 +53,32 @@ class ViewAllControllerTest extends ApiTestCase
     {
         yield [
             [
-                "mainSettings" => [
-                    "country" => "russia",
-                    "timeZone" => "Europe/Moscow",
-                    "language" => "ru",
-                    "currency" => "RUB",
-                    "tariff" => [
-                        "name" => "Триал",
-                        "price" => 0,
-                        "priceWF" => "0"
-                    ]
-                ],
-                "notificationSetting" => [
-                    "newLead" => [
-                        "system" => true,
-                        "mail" => false,
-                        "telegram" => false,
-                        "sms" => false
+                'mainSettings' => [
+                    'country'  => 'russia',
+                    'timeZone' => 'Europe/Moscow',
+                    'language' => 'ru',
+                    'currency' => 'RUB',
+                    'tariff'   => [
+                        'name'    => 'Триал',
+                        'price'   => 0,
+                        'priceWF' => '0',
                     ],
-                    "changesStatusLead" => [
-                        "system" => true,
-                        "mail" => false,
-                        "telegram" => false,
-                        "sms" => false
-                    ]
-                ]
-            ]
+                ],
+                'notificationSetting' => [
+                    'newLead' => [
+                        'system'   => true,
+                        'mail'     => false,
+                        'telegram' => false,
+                        'sms'      => false,
+                    ],
+                    'changesStatusLead' => [
+                        'system'   => true,
+                        'mail'     => false,
+                        'telegram' => false,
+                        'sms'      => false,
+                    ],
+                ],
+            ],
         ];
     }
 }

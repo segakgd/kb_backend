@@ -3,19 +3,12 @@
 namespace App\Controller\Admin\Bot\DTO\Request;
 
 use App\Service\Common\Bot\Enum\BotTypeEnum;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class UpdateBotReqDto
 {
-    private const AVAILABLE_MESSENGER = [
-        'telegram',
-        'vk',
-    ];
-
     protected ?string $name = null;
 
-    #[Assert\Choice(self::AVAILABLE_MESSENGER)]
-    protected ?string $type = null;
+    protected ?BotTypeEnum $type = null;
 
     protected ?string $token = null;
 
@@ -31,10 +24,10 @@ class UpdateBotReqDto
 
     public function getType(): BotTypeEnum
     {
-        return BotTypeEnum::tryFrom($this->type);
+        return $this->type;
     }
 
-    public function setType(string $type): self
+    public function setType(BotTypeEnum $type): self
     {
         $this->type = $type;
 

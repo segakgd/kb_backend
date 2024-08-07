@@ -37,11 +37,15 @@ class ViewAllControllerTest extends ApiTestCase
         $client->loginUser($user);
 
         $client->request(
-            'GET',
-            '/api/admin/project/',
+            method: 'GET',
+            uri: '/api/admin/project/',
         );
 
-        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        $this->assertEquals(
+            expected: Response::HTTP_OK,
+            actual: $client->getResponse()->getStatusCode(),
+            message: $client->getResponse()->getContent()
+        );
 
         $responseArr = json_decode($client->getResponse()->getContent(), true);
         $this->assertResponse($responseArr, $response);
@@ -52,11 +56,13 @@ class ViewAllControllerTest extends ApiTestCase
         yield [
             [
                 [
-                    'name'       => 'Проект тестовый',
-                    'status'     => 'active',
-                    'activeTo'   => '2023-12-29T17:35:02+00:00',
-                    'activeFrom' => '2023-12-29T17:35:02+00:00',
-                    'statistic'  => [
+                    'name'             => 'Проект тестовый',
+                    'status'           => 'active',
+                    'activeTo'         => '2023-12-29T17:35:02+00:00',
+                    'activeFrom'       => '2023-12-29T17:35:02+00:00',
+                    'formatActiveFrom' => null,
+                    'formatActiveTo'   => null,
+                    'statistic'        => [
                         'lead' => [
                             'count' => 13,
                         ],
@@ -69,11 +75,13 @@ class ViewAllControllerTest extends ApiTestCase
                     ],
                 ],
                 [
-                    'name'       => 'Проект тестовый',
-                    'status'     => 'active',
-                    'activeTo'   => '2023-12-29T17:35:02+00:00',
-                    'activeFrom' => '2023-12-29T17:35:02+00:00',
-                    'statistic'  => [
+                    'name'             => 'Проект тестовый',
+                    'status'           => 'active',
+                    'activeTo'         => '2023-12-29T17:35:02+00:00',
+                    'activeFrom'       => '2023-12-29T17:35:02+00:00',
+                    'formatActiveFrom' => null,
+                    'formatActiveTo'   => null,
+                    'statistic'        => [
                         'lead' => [
                             'count' => 13,
                         ],

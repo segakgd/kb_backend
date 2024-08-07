@@ -64,15 +64,16 @@ class UpdateControllerTest extends ApiTestCase
         $client->loginUser($user);
 
         $client->request(
-            'POST',
-            '/api/admin/project/' . $project->getId() . '/bot/' . $bot->getId() . '/',
-            [],
-            [],
-            [],
-            json_encode($requestContent)
+            method: 'PATCH',
+            uri: '/api/admin/project/' . $project->getId() . '/bot/' . $bot->getId() . '/',
+            content: json_encode($requestContent)
         );
 
-        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        $this->assertEquals(
+            expected: Response::HTTP_OK,
+            actual: $client->getResponse()->getStatusCode(),
+            message: $client->getResponse()->getContent()
+        );
 
         $responseArr = json_decode($client->getResponse()->getContent(), true);
         $this->assertResponse($responseArr, $response);
@@ -92,12 +93,12 @@ class UpdateControllerTest extends ApiTestCase
         yield [
             [
                 'name'  => 'Новое название бота',
-                'type'  => 'vk',
+                'type'  => 'telegram',
                 'token' => '0000000000:0000000000-1111111111',
             ],
             [
                 'name' => 'Новое название бота',
-                'type' => 'vk',
+                'type' => 'telegram',
             ],
         ];
     }

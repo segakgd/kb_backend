@@ -35,14 +35,16 @@ class ViewAllControllerTest extends ApiTestCase
         $client->loginUser($user);
 
         $client->request(
-            'GET',
-            '/api/admin/project/' . $project->getId() . '/lead/',
-            [],
-            [],
-            [],
-            json_encode($requestContent)
+            method: 'GET',
+            uri: '/api/admin/project/' . $project->getId() . '/lead/',
+            content: json_encode($requestContent)
         );
-        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+
+        $this->assertEquals(
+            expected: Response::HTTP_OK,
+            actual: $client->getResponse()->getStatusCode(),
+            message: $client->getResponse()->getContent()
+        );
 
         $responseArr = json_decode($client->getResponse()->getContent(), true);
         $this->assertResponse($responseArr, $response);

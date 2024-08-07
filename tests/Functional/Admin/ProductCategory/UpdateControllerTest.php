@@ -35,15 +35,16 @@ class UpdateControllerTest extends ApiTestCase
         $client->loginUser($user);
 
         $client->request(
-            'POST',
-            '/api/admin/project/' . $project->getId() . '/productCategory/',
-            [],
-            [],
-            [],
-            json_encode($requestContent)
+            method: 'POST',
+            uri: '/api/admin/project/' . $project->getId() . '/productCategory/',
+            content: json_encode($requestContent)
         );
 
-        $this->assertEquals(Response::HTTP_NO_CONTENT, $client->getResponse()->getStatusCode());
+        $this->assertEquals(
+            expected: Response::HTTP_NO_CONTENT,
+            actual: $client->getResponse()->getStatusCode(),
+            message: $client->getResponse()->getContent()
+        );
 
         // todo когда будет готова реализация - проверить изменения в базе
     }
