@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Throwable;
 
-#[OA\Tag(name: 'ProductCategoryChain')]
+#[OA\Tag(name: 'ProductCategory')]
 #[OA\Response(
     response: Response::HTTP_OK,
     description: 'Возвращает коллекцию категорий продуктов проекта',
