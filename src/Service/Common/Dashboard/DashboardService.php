@@ -2,7 +2,6 @@
 
 namespace App\Service\Common\Dashboard;
 
-use App\Entity\MessageHistory;
 use App\Entity\Scenario\ScenarioTemplate;
 use App\Entity\User\Bot;
 use App\Entity\User\Project;
@@ -154,6 +153,20 @@ readonly class DashboardService
         return $prepareSessions;
     }
 
+    public function prepareSession(Session $session): SessionDto
+    {
+        $cache = $session->getCache();
+
+        return (new SessionDto())
+            ->setId($session->getId())
+            ->setSessionName($session->getName())
+            ->setSessionChannel($session->getChannel())
+            ->setCache(
+                (new SessionCacheDto())
+                    ->setContent($cache?->getContent() ?? null)
+            );
+    }
+
     private function prepareEvent(Event $event): EventDto
     {
         $visitorSession = $this->visitorSessionRepository->find($event->getSessionId());
@@ -189,19 +202,5 @@ readonly class DashboardService
             ->setContract($contract)
             ->setError($event->getError())
             ->setCreatedAt($event->getCreatedAt());
-    }
-
-    private function prepareSession(Session $session): SessionDto
-    {
-        $cache = $session->getCache();
-
-        return (new SessionDto())
-            ->setId($session->getId())
-            ->setSessionName($session->getName())
-            ->setSessionChannel($session->getChannel())
-            ->setCache(
-                (new SessionCacheDto())
-                    ->setContent($cache?->getContent() ?? null)
-            );
     }
 }

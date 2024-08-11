@@ -86,19 +86,19 @@
                         {% for event in events %}
                             <div class=""
                                     {% if event.status == 'failed' %}
-                                 style="padding: 20px; background: #ffd4d4; margin-bottom: 3px; border-radius: 9px;"
+                                        style="padding: 20px; background: #ffd4d4; margin-bottom: 3px; border-radius: 9px;"
                                     {% elseif event.status == 'done' %}
-                                 style="padding: 20px; background: #d7ffd4; margin-bottom: 3px; border-radius: 9px;"
+                                        style="padding: 20px; background: #d7ffd4; margin-bottom: 3px; border-radius: 9px;"
                                     {% elseif event.status == 'new' %}
-                                 style="padding: 20px; background: #d4e2ff; margin-bottom: 3px; border-radius: 9px;"
+                                        style="padding: 20px; background: #d4e2ff; margin-bottom: 3px; border-radius: 9px;"
                                     {% elseif event.status == 'waiting' %}
-                                 style="padding: 20px; background: #ecd4ff; margin-bottom: 3px; border-radius: 9px;"
+                                        style="padding: 20px; background: #ecd4ff; margin-bottom: 3px; border-radius: 9px;"
                                     {% elseif event.status == 'repeat' %}
-                                 style="padding: 20px; background: #ecd4ff; margin-bottom: 2px;"
+                                        style="padding: 20px; background: #ecd4ff; margin-bottom: 2px;"
                                     {% else %}
-                                 style="padding: 20px; margin-bottom: 2px;"
-                                {% endif %}
-                                >
+                                        style="padding: 20px; margin-bottom: 2px;"
+                                    {% endif %}
+                            >
                                 <div class="">Событие #{{ event.id }}</div>
 
                                 <div class="">
@@ -163,4 +163,32 @@
         </div>
     </div>
 
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="wrapper--block">
+                    <div class="admin--title--wrapper">
+                        <h2>Прошлый контракт</h2>
+                    </div>
+
+                    {% if contract.chains is not empty %}
+                        {% for action in contract.chains %}
+                            {% if action.finished == 'true' %}
+                                <li class="action-item action-item--brake">{{ action.target }}</li>
+                            {% else %}
+                                <li class="action-item">{{ action.target }}</li>
+                            {% endif %}
+
+                        {% endfor %}
+                    {% endif %}
+
+                    {% if contract.message is empty %}
+                        <div>Нету сообщения</div>
+                    {% else %}
+                        {{ contract.message }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

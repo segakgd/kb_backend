@@ -236,6 +236,7 @@ h1, h2 {
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.12);
     border-radius: 10px;
     background: #fff;
+    margin-bottom: 20px;
 }
 
 .wrapper--block--user {
@@ -269,6 +270,7 @@ h1, h2 {
     overflow: hidden;
     box-shadow: 0 1px 4px rgb(0 0 0 / 12%), 0 4px 12px rgb(0 0 0 / 12%);
     border-radius: 10px;
+    margin-bottom: 20px;
 }
 
 .messenger-block {
@@ -369,4 +371,26 @@ h1, h2 {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+}
+
+.action-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+.action-list .action-item {
+    margin: 0 10px 0 0;
+    color: #29d323;
+    background: #f8f8f8;
+    padding: 3px 8px;
+    border-radius: 10px;
+    -webkit-box-shadow: 0 0 5px 0 rgba(34, 60, 80, 0.2);
+    -moz-box-shadow: 0 0 5px 0 rgba(34, 60, 80, 0.2);
+    box-shadow: 0 0 5px 0 rgba(34, 60, 80, 0.2);
+}
+
+.action-list .action-item--brake {
+    color: #ef0048;
 }
