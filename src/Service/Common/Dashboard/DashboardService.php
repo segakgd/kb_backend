@@ -11,6 +11,8 @@ use App\Repository\MessageHistoryRepository;
 use App\Repository\Visitor\VisitorEventRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Common\Bot\BotServiceInterface;
+use App\Service\Common\Dashboard\Dto\BotDto;
+use App\Service\Common\Dashboard\Dto\WebhookInfoDto;
 use App\Service\Common\Scenario\ScenarioTemplateService;
 use App\Service\Constructor\Visitor\Session\SessionService;
 use App\Service\Integration\Telegram\TelegramService;
@@ -105,7 +107,7 @@ readonly class DashboardService
         return $prepareBots;
     }
 
-    public function prepareBot(Bot $bot, Project $project): array
+    public function prepareBot(Bot $bot, Project $project): BotDto
     {
         $environment = $this->kernel->getEnvironment();
         $webhookBotInfo = null;
@@ -114,23 +116,27 @@ readonly class DashboardService
             $webhookBotInfo = $this->telegramService->getWebhookInfo($bot->getToken());
         }
 
-        $projectName = $project->getName();
+        $webhookInfoDto = (new WebhookInfoDto())
+            ->setLastErrorDate(
+                $webhookBotInfo?->getLastErrorMessage() ?? null
+            )
+            ->setLastErrorMessage(
+                $webhookBotInfo?->getLastErrorDate() ?? null
+            )
+            ->setPendingUpdateCount(
+                $webhookBotInfo?->getPendingUpdateCount() ?? 0
+            );
 
-        return [
-            'projectName' => $projectName,
-            'botId'       => $bot->getId(),
-            'botName'     => $bot->getName(),
-            'projectId'   => $bot->getProjectId(),
-            'botType'     => $bot->getType()->value,
-            'botToken'    => $bot->getToken(),
-            'botActive'   => $bot->isActive(),
-            'webhookUri'  => $bot->getWebhookUri() ?? '',
-            'webhookInfo' => [
-                'pendingUpdateCount' => $webhookBotInfo?->getPendingUpdateCount() ?? 0,
-                'lastErrorDate'      => $webhookBotInfo?->getLastErrorDate() ?? null,
-                'lastErrorMessage'   => $webhookBotInfo?->getLastErrorMessage() ?? null,
-            ],
-        ];
+        return (new BotDto())
+            ->setBotId($bot->getId())
+            ->setBotName($bot->getName())
+            ->setProjectId($project->getId())
+            ->setProjectName($project->getName())
+            ->setBotType($bot->getType())
+            ->setBotToken($bot->getToken())
+            ->setBotActive($bot->isActive())
+            ->setWebhookUri($bot->getWebhookUri())
+            ->setWebhookInfo($webhookInfoDto);
     }
 
     public function prepareScenario(Project $project): array
