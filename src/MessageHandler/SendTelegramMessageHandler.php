@@ -13,7 +13,7 @@ final readonly class SendTelegramMessageHandler
 {
     public function __construct(
         private TelegramSenderService $senderService,
-        private LoggerInterface       $logger,
+        private LoggerInterface $logger,
     ) {}
 
     /**
@@ -22,7 +22,11 @@ final readonly class SendTelegramMessageHandler
     public function __invoke(SendTelegramMessage $message): void
     {
         try {
-            $this->senderService->sendMessages($message->getResult(), $message->getBotDto());
+            $this->senderService->sendMessages(
+                session: $message->getSession(),
+                result: $message->getResult(),
+                botDto: $message->getBotDto()
+            );
         } catch (Throwable $exception) {
             $this->logger->error($exception->getMessage(), $exception->getTrace());
 

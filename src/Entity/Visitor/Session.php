@@ -2,10 +2,13 @@
 
 namespace App\Entity\Visitor;
 
+use App\Entity\MessageHistory;
 use App\Entity\SessionCache;
 use App\Entity\User\Bot;
 use App\Repository\Visitor\VisitorSessionRepository;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -40,11 +43,18 @@ class Session
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?SessionCache $cache = null;
 
+    /**
+     * @var Collection<int, MessageHistory>
+     */
+    #[ORM\OneToMany(mappedBy: 'session', targetEntity: MessageHistory::class)]
+    private Collection $messageHistory;
+
     public function __construct()
     {
         if ($this->createdAt === null) {
             $this->createdAt = new DateTimeImmutable();
         }
+        $this->messageHistory = new ArrayCollection();
     }
 
     public function getId(): int
@@ -132,6 +142,36 @@ class Session
     public function setCache(?SessionCache $cache): static
     {
         $this->cache = $cache;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MessageHistory>
+     */
+    public function getMessageHistory(): Collection
+    {
+        return $this->messageHistory;
+    }
+
+    public function addMessageHistory(MessageHistory $messageHistory): static
+    {
+        if (!$this->messageHistory->contains($messageHistory)) {
+            $this->messageHistory->add($messageHistory);
+            $messageHistory->setSession($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessageHistory(MessageHistory $messageHistory): static
+    {
+        if ($this->messageHistory->removeElement($messageHistory)) {
+            // set the owning side to null (unless already changed)
+            if ($messageHistory->getSession() === $this) {
+                $messageHistory->setSession(null);
+            }
+        }
 
         return $this;
     }

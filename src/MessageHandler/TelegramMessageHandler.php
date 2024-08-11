@@ -71,7 +71,11 @@ final readonly class TelegramMessageHandler
 
             $this->updateEntities($event, $session, $sessionCache, $responsible);
 
-            $this->bus->dispatch(new SendTelegramMessage($responsible->getResult(), $responsible->getBotDto()));
+            $this->bus->dispatch(new SendTelegramMessage(
+                session: $session,
+                result: $responsible->getResult(),
+                botDto: $responsible->getBotDto(),
+            ));
 
             if ($event->isRepeatStatuses()) {
                 $this->bus->dispatch(new TelegramMessage($event->getId()));
@@ -92,10 +96,10 @@ final readonly class TelegramMessageHandler
     }
 
     private function updateEntities(
-        Event        $event,
-        Session      $session,
+        Event $event,
+        Session $session,
         SessionCache $sessionCache,
-        Responsible  $responsible,
+        Responsible $responsible,
     ): void {
         $event->setStatus($responsible->getStatus());
 

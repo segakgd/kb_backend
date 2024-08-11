@@ -3,6 +3,7 @@
 namespace App\Service\Common\Sender;
 
 use App\Dto\Responsible\ResponsibleMessageDto;
+use App\Entity\Visitor\Session;
 use App\Service\Common\History\Enum\HistoryTypeEnum;
 use App\Service\Common\History\MessageHistoryService;
 use App\Service\Constructor\Core\Dto\BotDto;
@@ -21,6 +22,7 @@ readonly class TelegramSenderService
      * @throws Exception
      */
     public function sendMessages(
+        Session $session,
         ResultInterface $result,
         BotDto $botDto,
     ): void {
@@ -32,7 +34,7 @@ readonly class TelegramSenderService
             $this->sendProd($message, $token, $chatId);
         }
 
-        $this->sendDev($message);
+        $this->sendDev($session, $message);
     }
 
     /**
@@ -61,9 +63,10 @@ readonly class TelegramSenderService
         }
     }
 
-    private function sendDev(ResponsibleMessageDto $message): void
+    private function sendDev(Session $session, ResponsibleMessageDto $message): void
     {
         $this->messageHistoryService->create(
+            session: $session,
             message: $message->getMessage(),
             type: HistoryTypeEnum::Outgoing,
             keyboard: $message->getKeyBoard() ?? [],
