@@ -2,9 +2,9 @@
 
 namespace App\Dto\Scenario;
 
-use App\Dto\Common\AbstractDto;
+use App\Doctrine\DoctrineMappingInterface;
 
-class ScenarioAttachedDto extends AbstractDto
+class ScenarioAttachedDto implements DoctrineMappingInterface
 {
     private ?string $document = null;
 
@@ -76,7 +76,7 @@ class ScenarioAttachedDto extends AbstractDto
         return $this;
     }
 
-    public static function fromArray(array $data): self
+    public static function fromArray(array $data): static
     {
         $attached = new self();
         $attached->setDocument($data['document'] ?? null);

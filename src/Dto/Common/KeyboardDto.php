@@ -2,7 +2,9 @@
 
 namespace App\Dto\Common;
 
-class KeyboardDto extends AbstractDto
+use App\Doctrine\DoctrineMappingInterface;
+
+class KeyboardDto implements DoctrineMappingInterface
 {
     private ?array $replyMarkup = null;
 

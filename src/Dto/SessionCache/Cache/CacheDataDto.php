@@ -2,9 +2,9 @@
 
 namespace App\Dto\SessionCache\Cache;
 
-use App\Dto\Common\AbstractDto;
+use App\Doctrine\DoctrineMappingInterface;
 
-class CacheDataDto extends AbstractDto
+class CacheDataDto implements DoctrineMappingInterface
 {
     private ?int $pageNow = null;
 

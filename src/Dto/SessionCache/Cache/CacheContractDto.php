@@ -2,15 +2,15 @@
 
 namespace App\Dto\SessionCache\Cache;
 
-use App\Dto\Common\AbstractDto;
+use App\Doctrine\DoctrineMappingInterface;
 
-class CacheContractDto extends AbstractDto
+class CacheContractDto implements DoctrineMappingInterface
 {
     private ?string $message = null;
 
     private bool $finished = false;
 
-    /** @var array<CacheChainDto> */
+    /** @var array<CacheActionDto> */
     private array $chains = [];
 
     private ?CacheKeyboardDto $keyboard = null;
@@ -46,7 +46,7 @@ class CacheContractDto extends AbstractDto
         return $this->chains;
     }
 
-    public function getCurrentChain(): ?CacheChainDto
+    public function getCurrentChain(): ?CacheActionDto
     {
         if (empty($this->chains)) {
             return null;
@@ -68,7 +68,7 @@ class CacheContractDto extends AbstractDto
 
     public function isAllChainsFinished(): bool
     {
-        $unfinishedChains = array_filter($this->getChains(), fn (CacheChainDto $chain) => !$chain->isFinished());
+        $unfinishedChains = array_filter($this->getChains(), fn (CacheActionDto $chain) => !$chain->isFinished());
 
         return empty($unfinishedChains);
     }
@@ -80,7 +80,7 @@ class CacheContractDto extends AbstractDto
         return $this;
     }
 
-    public function addChain(CacheChainDto $chain): static
+    public function addChain(CacheActionDto $chain): static
     {
         $this->chains[] = $chain;
 
@@ -140,13 +140,13 @@ class CacheContractDto extends AbstractDto
 
         if (isset($data['chains'])) {
             foreach ($data['chains'] as $chainData) {
-                $chains[] = CacheChainDto::fromArray($chainData);
+                $chains[] = CacheActionDto::fromArray($chainData);
             }
         }
 
         if (isset($data['chain'])) {
             foreach ($data['chain'] as $chainData) {
-                $chains[] = CacheChainDto::fromArray($chainData);
+                $chains[] = CacheActionDto::fromArray($chainData);
             }
         }
 

@@ -2,7 +2,7 @@
 
 namespace App\Service\Constructor\Core\Actions;
 
-use App\Dto\SessionCache\Cache\CacheChainDto;
+use App\Dto\SessionCache\Cache\CacheActionDto;
 use App\Service\Constructor\ActionProvider;
 use App\Service\Constructor\Core\Dto\Responsible;
 use Exception;
@@ -14,7 +14,7 @@ readonly class ActionResolver
     ) {}
 
     /**
-     * @param array<CacheChainDto> $chains
+     * @param array<CacheActionDto> $chains
      *
      * @throws Exception
      */

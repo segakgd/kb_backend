@@ -4,14 +4,14 @@ namespace App\Service\Constructor\Core\Dto;
 
 use App\Doctrine\DoctrineMappingInterface;
 use App\Dto\SessionCache\Cache\CacheCartDto;
-use App\Dto\SessionCache\Cache\CacheChainDto;
+use App\Dto\SessionCache\Cache\CacheActionDto;
 use App\Dto\SessionCache\Cache\CacheEventDto;
 use App\Enum\VisitorEventStatusEnum;
 use App\Helper\CacheHelper;
 
 class Responsible implements ResponsibleInterface, DoctrineMappingInterface
 {
-    public ?CacheChainDto $chain = null;
+    public ?CacheActionDto $chain = null;
     private ?string $content = null;
 
     private ?CacheCartDto $cart = null;
@@ -82,12 +82,12 @@ class Responsible implements ResponsibleInterface, DoctrineMappingInterface
         return $this;
     }
 
-    public function getChain(): ?CacheChainDto
+    public function getChain(): ?CacheActionDto
     {
         return $this->chain;
     }
 
-    public function setChain(?CacheChainDto $chain): static
+    public function setChain(?CacheActionDto $chain): static
     {
         $this->chain = $chain;
 
@@ -149,7 +149,7 @@ class Responsible implements ResponsibleInterface, DoctrineMappingInterface
         $dto->setContent($data['content']);
         $dto->setCart(CacheCartDto::fromArray($data['cart'] ?? []));
         $dto->setEvent(CacheEventDto::fromArray($data['event'] ?? []));
-        $dto->setChain(CacheChainDto::fromArray($data['chain'] ?? []));
+        $dto->setChain(CacheActionDto::fromArray($data['chain'] ?? []));
         $dto->setResult(Result::fromArray($data['result'] ?? []));
         $dto->setStatus(VisitorEventStatusEnum::tryFrom($data['status']));
         $dto->setBot(BotDto::fromArray($data['bot'] ?? []));

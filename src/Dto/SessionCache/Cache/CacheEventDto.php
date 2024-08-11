@@ -3,9 +3,8 @@
 namespace App\Dto\SessionCache\Cache;
 
 use App\Doctrine\DoctrineMappingInterface;
-use App\Dto\Common\AbstractDto;
 
-class CacheEventDto extends AbstractDto implements DoctrineMappingInterface
+class CacheEventDto implements DoctrineMappingInterface
 {
     private bool $finished = false;
 

@@ -3,9 +3,8 @@
 namespace App\Dto\SessionCache\Cache;
 
 use App\Doctrine\DoctrineMappingInterface;
-use App\Dto\Common\AbstractDto;
 
-class CacheChainDto extends AbstractDto implements DoctrineMappingInterface
+class CacheActionDto implements DoctrineMappingInterface
 {
     private string $target;
 
@@ -18,7 +17,7 @@ class CacheChainDto extends AbstractDto implements DoctrineMappingInterface
         return $this->target;
     }
 
-    public function setTarget(string $target): CacheChainDto
+    public function setTarget(string $target): CacheActionDto
     {
         $this->target = $target;
 
@@ -47,7 +46,7 @@ class CacheChainDto extends AbstractDto implements DoctrineMappingInterface
         return $this->repeat;
     }
 
-    public function setRepeat(bool $repeat): CacheChainDto
+    public function setRepeat(bool $repeat): CacheActionDto
     {
         $this->repeat = $repeat;
 

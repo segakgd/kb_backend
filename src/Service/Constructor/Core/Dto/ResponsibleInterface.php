@@ -3,7 +3,7 @@
 namespace App\Service\Constructor\Core\Dto;
 
 use App\Dto\SessionCache\Cache\CacheCartDto;
-use App\Dto\SessionCache\Cache\CacheChainDto;
+use App\Dto\SessionCache\Cache\CacheActionDto;
 use App\Dto\SessionCache\Cache\CacheEventDto;
 use App\Enum\VisitorEventStatusEnum;
 
@@ -23,9 +23,9 @@ interface ResponsibleInterface
 
     public function clearEvent(): static;
 
-    public function getChain(): ?CacheChainDto;
+    public function getChain(): ?CacheActionDto;
 
-    public function setChain(?CacheChainDto $chain): static;
+    public function setChain(?CacheActionDto $chain): static;
 
     public function getResult(): ?ResultInterface;
 

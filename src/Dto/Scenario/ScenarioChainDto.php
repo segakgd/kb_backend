@@ -2,9 +2,9 @@
 
 namespace App\Dto\Scenario;
 
-use App\Dto\Common\AbstractDto;
+use App\Doctrine\DoctrineMappingInterface;
 
-class ScenarioChainDto extends AbstractDto
+class ScenarioChainDto implements DoctrineMappingInterface
 {
     private string $target;
 
@@ -48,7 +48,7 @@ class ScenarioChainDto extends AbstractDto
         return $this;
     }
 
-    public static function fromArray(array $data): self
+    public static function fromArray(array $data): static
     {
         $chain = new self();
         $chain->setTarget($data['target'] ?? '');
