@@ -20,7 +20,7 @@ class CategoriesAction extends AbstractAction
 
     public static function getName(): string
     {
-        return 'product.category.chain';
+        return 'product.category.action';
     }
 
     /**

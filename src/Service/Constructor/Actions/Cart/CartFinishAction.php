@@ -11,7 +11,7 @@ class CartFinishAction extends AbstractAction
 {
     public static function getName(): string
     {
-        return 'cart.finish.chain';
+        return 'cart.finish.action';
     }
 
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface

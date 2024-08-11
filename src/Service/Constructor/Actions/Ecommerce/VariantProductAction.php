@@ -14,7 +14,7 @@ class VariantProductAction extends AbstractAction
 {
     public static function getName(): string
     {
-        return 'variant.product.chain';
+        return 'variant.product.action';
     }
 
     public function __construct(

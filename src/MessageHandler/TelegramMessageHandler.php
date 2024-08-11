@@ -67,7 +67,7 @@ final readonly class TelegramMessageHandler
             // вот кейсы:
             // отлавливаем jump до того как начнём обрабатывать событие. (системный jump)
             // отлавливаем jump после обработки события (пользовательский jump) - todo а такая вообще возможно? Оо
-            // отлавливаем jumpToChain после обработки события - вполне рядовая ситуация
+            // отлавливаем jumpToAction после обработки события - вполне рядовая ситуация
 
             $responsible = $this->eventResolver->resolve($responsible);
 

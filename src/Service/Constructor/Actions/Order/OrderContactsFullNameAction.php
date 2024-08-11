@@ -11,7 +11,7 @@ class OrderContactsFullNameAction extends AbstractAction
 {
     public static function getName(): string
     {
-        return 'order.contacts.full-name.chain';
+        return 'order.contacts.full-name.action';
     }
 
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface

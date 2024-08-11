@@ -14,7 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  * @internal
  * @coversNothing
  */
-class ProductsByCategoryChainTest extends KernelTestCase
+class ProductsByCategoryTest extends KernelTestCase
 {
     /**
      * @throws Exception
