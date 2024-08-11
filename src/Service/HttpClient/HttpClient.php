@@ -10,18 +10,15 @@ use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
-class HttpClient implements HttpClientInterface
+readonly class HttpClient implements HttpClientInterface
 {
-    public const METHOD_POST = 'POST';
-    public const METHOD_GET = 'GET';
-
     public function __construct(
-        private readonly SerializerInterface $serializer,
-        private readonly LoggerInterface $logger,
+        private SerializerInterface $serializer,
+        private LoggerInterface $logger,
     ) {}
 
     public static function buildRequest(
-        string $method,
+        RequestMethodEnum $method,
         string $scenario,
         string $token,
         ?array $data = null,
@@ -76,9 +73,9 @@ class HttpClient implements HttpClientInterface
         return new Response($code, $description);
     }
 
-    private function curlRequest(string $uri, array $requestArray, string $method): array
+    private function curlRequest(string $uri, array $requestArray, RequestMethodEnum $method): array
     {
-        if ($method === self::METHOD_GET) {
+        if ($method === RequestMethodEnum::Get) {
             $ch = curl_init($uri . http_build_query($requestArray));
 
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -88,7 +85,7 @@ class HttpClient implements HttpClientInterface
             $response = curl_exec($ch);
 
             curl_close($ch);
-        } elseif ($method === self::METHOD_POST) {
+        } elseif ($method === RequestMethodEnum::Post) {
             $ch = curl_init($uri);
 
             curl_setopt($ch, CURLOPT_POST, 1);

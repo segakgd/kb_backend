@@ -2,6 +2,8 @@
 
 namespace App\Service\HttpClient\Request;
 
+use App\Service\HttpClient\RequestMethodEnum;
+
 interface RequestInterface
 {
     public function getData(): ?array;
@@ -16,9 +18,9 @@ interface RequestInterface
 
     public function setToken(string $token): self;
 
-    public function getMethod(): string;
+    public function getMethod(): RequestMethodEnum;
 
-    public function setMethod(string $method): self;
+    public function setMethod(RequestMethodEnum $method): self;
 
     public function getResponseClassName(): ?string;
 

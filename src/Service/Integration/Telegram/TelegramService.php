@@ -10,6 +10,7 @@ use App\Dto\Core\Telegram\Response\GetWebhookInfoDto;
 use App\Dto\Responsible\ResponsibleMessageDto;
 use App\Service\HttpClient\HttpClient;
 use App\Service\HttpClient\HttpClientInterface;
+use App\Service\HttpClient\RequestMethodEnum;
 use App\Service\HttpClient\Response\ResponseInterface;
 
 readonly class TelegramService implements TelegramServiceInterface
@@ -24,7 +25,7 @@ readonly class TelegramService implements TelegramServiceInterface
     public function getWebhookInfo(string $token): ResponseInterface
     {
         $request = HttpClient::buildRequest(
-            method: HttpClient::METHOD_GET,
+            method: RequestMethodEnum::Get,
             scenario: 'getWebhookInfo',
             token: $token,
             responseClassName: GetWebhookInfoDto::class
@@ -48,7 +49,7 @@ readonly class TelegramService implements TelegramServiceInterface
         $photoDto->setParseMode('MarkdownV2');
 
         $request = HttpClient::buildRequest(
-            method: HttpClient::METHOD_POST,
+            method: RequestMethodEnum::Post,
             scenario: 'sendPhoto',
             token: $token,
             data: $photoDto->getArray(),
@@ -70,7 +71,7 @@ readonly class TelegramService implements TelegramServiceInterface
         $messageDto->setReplyMarkup($replyMarkup);
 
         $request = HttpClient::buildRequest(
-            method: HttpClient::METHOD_POST,
+            method: RequestMethodEnum::Post,
             scenario: 'sendMessage',
             token: $token,
             data: $messageDto->getArray(),
@@ -82,7 +83,7 @@ readonly class TelegramService implements TelegramServiceInterface
     public function sendInvoice(InvoiceDto $invoiceDto, string $token): void
     {
         $request = HttpClient::buildRequest(
-            method: HttpClient::METHOD_POST,
+            method: RequestMethodEnum::Post,
             scenario: 'sendInvoice',
             token: $token,
             data: $invoiceDto->getArray(),
@@ -94,7 +95,7 @@ readonly class TelegramService implements TelegramServiceInterface
     public function setWebhook(WebhookDto $webhookDto, string $token): void
     {
         $request = HttpClient::buildRequest(
-            method: HttpClient::METHOD_POST,
+            method: RequestMethodEnum::Post,
             scenario: 'setWebhook',
             token: $token,
             data: $webhookDto->getArray(),
