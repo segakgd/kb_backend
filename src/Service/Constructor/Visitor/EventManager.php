@@ -26,8 +26,8 @@ readonly class EventManager
      */
     public function createVisitorEventForSession(
         Session $session,
-        string  $type,
-        string  $content,
+        string $type,
+        string $content,
     ): Event {
         $sessionCache = $session->getCache();
 

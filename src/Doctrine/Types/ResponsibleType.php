@@ -12,6 +12,10 @@ class ResponsibleType extends JsonType
 
     public function convertToPHPValue($value, AbstractPlatform $platform): array
     {
+        if (is_null($value)) {
+            return [];
+        }
+
         $values = parent::convertToPHPValue($value, $platform);
 
         return array_map(function ($value) {
@@ -21,8 +25,12 @@ class ResponsibleType extends JsonType
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
-        $values = array_map(function (Responsible $variantPriceDto) {
-            return $variantPriceDto->toArray();
+        if (is_null($value)) {
+            return null;
+        }
+
+        $values = array_map(function (Responsible $responsible) {
+            return $responsible->toArray();
         }, $value);
 
         return parent::convertToDatabaseValue($values, $platform);
