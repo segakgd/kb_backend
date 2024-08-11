@@ -134,12 +134,12 @@ class Responsible implements ResponsibleInterface, DoctrineMappingInterface
     {
         return [
             'content' => $this->content,
-            'cart'    => $this->cart->toArray(),
-            'event'   => $this->event->toArray(),
-            'chain'   => $this->chain->toArray(),
-            'result'  => $this->result->toArray(),
+            'cart'    => $this->cart?->toArray() ?? [],
+            'event'   => $this->event?->toArray() ?? [],
+            'chain'   => $this->chain?->toArray() ?? [],
+            'result'  => $this->result?->toArray() ?? [],
             'status'  => $this->status->value,
-            'bot'     => $this->bot->toArray(),
+            'bot'     => $this->bot?->toArray() ?? [],
         ];
     }
 
@@ -151,7 +151,7 @@ class Responsible implements ResponsibleInterface, DoctrineMappingInterface
         $dto->setEvent(CacheEventDto::fromArray($data['event'] ?? []));
         $dto->setChain(CacheChainDto::fromArray($data['chain'] ?? []));
         $dto->setResult(Result::fromArray($data['result'] ?? []));
-        $dto->setStatus($data['status']);
+        $dto->setStatus(VisitorEventStatusEnum::tryFrom($data['status']));
         $dto->setBot(BotDto::fromArray($data['bot'] ?? []));
 
         return $dto;

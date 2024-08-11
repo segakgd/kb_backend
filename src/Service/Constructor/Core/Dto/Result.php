@@ -36,7 +36,11 @@ class Result implements ResultInterface, DoctrineMappingInterface
     public static function fromArray(array $data): static
     {
         $dto = new self();
-        $dto->setMessage($data['message']);
+        $dto->setMessage(
+            ResponsibleMessageDto::fromArray(
+                $data['message'] ?? ''
+            )
+        );
 
         return $dto;
     }

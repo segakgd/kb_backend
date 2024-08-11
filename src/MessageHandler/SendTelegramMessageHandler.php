@@ -12,7 +12,7 @@ use Throwable;
 final readonly class SendTelegramMessageHandler
 {
     public function __construct(
-        private SenderService   $senderService,
+        private SenderService $senderService,
         private LoggerInterface $logger,
     ) {}
 

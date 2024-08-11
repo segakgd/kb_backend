@@ -61,7 +61,7 @@ class BotDto implements DoctrineMappingInterface
     public static function fromArray(array $data): static
     {
         $dto = new self();
-        $dto->setType($data['type']);
+        $dto->setType(BotTypeEnum::tryFrom($data['type']));
         $dto->setToken($data['token']);
         $dto->setChatId($data['chatId']);
 

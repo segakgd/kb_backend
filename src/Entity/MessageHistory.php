@@ -28,9 +28,8 @@ class MessageHistory
     #[ORM\Column(length: 20)]
     private ?string $type = null;
 
-    #[ORM\Column(nullable: false)]
     #[ORM\ManyToOne(inversedBy: 'messageHistory')]
-    private Session $session;
+    private ?Session $session;
 
     public function getId(): ?int
     {
@@ -85,12 +84,12 @@ class MessageHistory
         return $this;
     }
 
-    public function getSession(): Session
+    public function getSession(): ?Session
     {
         return $this->session;
     }
 
-    public function setSession(Session $session): static
+    public function setSession(?Session $session): static
     {
         $this->session = $session;
 

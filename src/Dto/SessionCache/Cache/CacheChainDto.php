@@ -58,7 +58,7 @@ class CacheChainDto extends AbstractDto implements DoctrineMappingInterface
     {
         $cacheChain = new static();
 
-        $cacheChain->target = $data['target'];
+        $cacheChain->target = $data['target'] ?? 'undefined'; // todo убрать?
         $cacheChain->finished = $data['finished'] ?? false;
         $cacheChain->repeat = $data['repeat'] ?? false;
 

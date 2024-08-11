@@ -60,9 +60,15 @@ class ResponsibleMessageDto implements DoctrineMappingInterface
     public static function fromArray(array $data): static
     {
         $dto = new self();
-        $dto->setMessage($data['message']);
-        $dto->setPhoto($data['photo']);
-        $dto->setKeyBoard($data['keyBoard']);
+        $dto->setMessage(
+            $data['message'] ?? ''
+        );
+        $dto->setPhoto(
+            $data['photo'] ?? ''
+        );
+        $dto->setKeyBoard(
+            $data['keyBoard'] ?? null
+        );
 
         return $dto;
     }
