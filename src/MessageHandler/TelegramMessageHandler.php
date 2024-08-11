@@ -3,7 +3,6 @@
 namespace App\MessageHandler;
 
 use App\Dto\SessionCache\Cache\CacheContractDto;
-use App\Entity\Scenario\Scenario;
 use App\Entity\SessionCache;
 use App\Entity\Visitor\Event;
 use App\Entity\Visitor\Session;
@@ -120,21 +119,16 @@ final readonly class TelegramMessageHandler
         if (
             VisitorEventStatusEnum::New === $event->getStatus()
         ) {
-            $scenario = $this->scenarioService->getByUuidOrDefault($event->getScenarioUUID());
+            $scenario = $this->scenarioService->getByUuidOrDefault(
+                uuid: $event->getScenarioUUID()
+            );
 
-            $sessionCache = $this->enrichContractCache($scenario, $sessionCache);
+            $scenarioContract = $scenario->getContract();
+            $cacheContractDto = CacheContractDto::fromArray($scenarioContract->toArray());
+
+            $sessionCache->getEvent()->setContract($cacheContractDto);
+            $sessionCache->getEvent()->setFinished(false);
         }
-
-        return $sessionCache;
-    }
-
-    private function enrichContractCache(Scenario $scenario, SessionCache $sessionCache): SessionCache
-    {
-        $scenarioContract = $scenario->getContract();
-        $cacheContractDto = CacheContractDto::fromArray($scenarioContract->toArray());
-
-        $sessionCache->getEvent()->setContract($cacheContractDto);
-        $sessionCache->getEvent()->setFinished(false);
 
         return $sessionCache;
     }

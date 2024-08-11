@@ -11,7 +11,7 @@ class ScenarioContractDto
     private ?ScenarioKeyboardDto $keyboard = null;
 
     /** @var array|null<ScenarioActionDto> */
-    private ?array $action = null;
+    private ?array $actions = null;
 
     private ?ScenarioAttachedDto $attached = null;
 
@@ -44,26 +44,26 @@ class ScenarioContractDto
         return $this;
     }
 
-    public function getAction(): ?array
+    public function getActions(): ?array
     {
-        return $this->action;
+        return $this->actions;
     }
 
     public function hasAction(): bool
     {
-        return !empty($this->action);
+        return !empty($this->actions);
     }
 
     public function addAction(ScenarioActionDto $action): static
     {
-        $this->action[] = $action;
+        $this->actions[] = $action;
 
         return $this;
     }
 
-    public function setAction(?array $action): static
+    public function setActions(?array $actions): static
     {
-        $this->action = $action;
+        $this->actions = $actions;
 
         return $this;
     }
@@ -137,7 +137,7 @@ class ScenarioContractDto
             }
         }
 
-        $scenarioContractDto->setAction($action);
+        $scenarioContractDto->setActions($action);
 
         $scenarioContractDto->setAttached(isset($data['attached']) ? ScenarioAttachedDto::fromArray($data['attached']) : null);
         $scenarioContractDto->setFinish($data['finish'] ?? false);
@@ -148,7 +148,7 @@ class ScenarioContractDto
     public function toArray(): array
     {
         $actionArray = [];
-        $action = $this->getAction() ?? [];
+        $action = $this->getActions() ?? [];
 
         /** @var ScenarioActionDto $actionItem */
         foreach ($action as $actionItem) {
@@ -162,7 +162,7 @@ class ScenarioContractDto
         return [
             'message'  => $this->getMessage(),
             'keyboard' => $this->getKeyboard()?->toArray(),
-            'action'   => $actionArray,
+            'actions'  => $actionArray,
             'attached' => $this->getAttached()?->toArray(),
             'finish'   => $this->getFinish(),
         ];

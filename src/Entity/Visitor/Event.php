@@ -80,6 +80,7 @@ class Event
     public function isStatusAvailableForHandle(): bool
     {
         return VisitorEventStatusEnum::New === $this->getStatus()
+        || VisitorEventStatusEnum::Waiting === $this->getStatus()
         || VisitorEventStatusEnum::Repeat === $this->getStatus();
     }
 
