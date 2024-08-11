@@ -2,9 +2,10 @@
 
 namespace App\Service\Constructor\Core\Dto;
 
+use App\Doctrine\DoctrineMappingInterface;
 use App\Service\Common\Bot\Enum\BotTypeEnum;
 
-class BotDto
+class BotDto implements DoctrineMappingInterface
 {
     private string $type;
 
@@ -46,5 +47,24 @@ class BotDto
         $this->chatId = $chatId;
 
         return $this;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'type'   => $this->type,
+            'token'  => $this->token,
+            'chatId' => $this->chatId,
+        ];
+    }
+
+    public static function fromArray(array $data): static
+    {
+        $dto = new self();
+        $dto->setType($data['type']);
+        $dto->setToken($data['token']);
+        $dto->setChatId($data['chatId']);
+
+        return $dto;
     }
 }

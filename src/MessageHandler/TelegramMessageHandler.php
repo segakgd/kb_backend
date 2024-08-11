@@ -74,7 +74,7 @@ final readonly class TelegramMessageHandler
             $this->bus->dispatch(new SendTelegramMessage(
                 session: $session,
                 result: $responsible->getResult(),
-                botDto: $responsible->getBotDto(),
+                botDto: $responsible->getBot(),
             ));
 
             if ($event->isRepeatStatuses()) {
@@ -107,7 +107,7 @@ final readonly class TelegramMessageHandler
         $this->visitorSessionRepository->saveAndFlush($session);
         $this->sessionCacheRepository->saveAndFlush($sessionCache);
 
-        $this->responsibleDtoRepository->save($event, $responsible);
+        $event->setResponsible($responsible);
     }
 
     /**

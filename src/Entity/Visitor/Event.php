@@ -2,6 +2,7 @@
 
 namespace App\Entity\Visitor;
 
+use App\Doctrine\Types\ResponsibleType;
 use App\Enum\VisitorEventStatusEnum;
 use App\Repository\Visitor\VisitorEventRepository;
 use DateTimeImmutable;
@@ -33,8 +34,7 @@ class Event
     #[ORM\Column(length: 36)]
     private ?string $scenarioUUID = null;
 
-    // todo переделать под работу с дто
-    #[ORM\Column]
+    #[ORM\Column(type: ResponsibleType::RESPONSIBLE_TYPE)]
     private array $responsible = [];
 
     #[ORM\Column]

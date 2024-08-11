@@ -2,27 +2,27 @@
 
 namespace App\Service\Constructor\Core\Dto;
 
+use App\Doctrine\DoctrineMappingInterface;
 use App\Dto\SessionCache\Cache\CacheCartDto;
 use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Dto\SessionCache\Cache\CacheEventDto;
 use App\Enum\VisitorEventStatusEnum;
 use App\Helper\CacheHelper;
 
-class Responsible implements ResponsibleInterface
+class Responsible implements ResponsibleInterface, DoctrineMappingInterface
 {
+    public ?CacheChainDto $chain = null;
     private ?string $content = null;
 
     private ?CacheCartDto $cart = null;
 
     private ?CacheEventDto $event = null;
 
-    public ?CacheChainDto $chain = null;
-
     private ?ResultInterface $result = null;
 
     private ?VisitorEventStatusEnum $status = VisitorEventStatusEnum::New;
 
-    private ?BotDto $botDto = null;
+    private ?BotDto $bot = null;
 
     public function __construct()
     {
@@ -118,15 +118,42 @@ class Responsible implements ResponsibleInterface
         return $this;
     }
 
-    public function getBotDto(): ?BotDto
+    public function getBot(): ?BotDto
     {
-        return $this->botDto;
+        return $this->bot;
     }
 
-    public function setBotDto(?BotDto $botDto): Responsible
+    public function setBot(?BotDto $bot): Responsible
     {
-        $this->botDto = $botDto;
+        $this->bot = $bot;
 
         return $this;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'content' => $this->content,
+            'cart'    => $this->cart->toArray(),
+            'event'   => $this->event->toArray(),
+            'chain'   => $this->chain->toArray(),
+            'result'  => $this->result->toArray(),
+            'status'  => $this->status->value,
+            'bot'     => $this->bot->toArray(),
+        ];
+    }
+
+    public static function fromArray(array $data): static
+    {
+        $dto = new self();
+        $dto->setContent($data['content']);
+        $dto->setCart(CacheCartDto::fromArray($data['cart'] ?? []));
+        $dto->setEvent(CacheEventDto::fromArray($data['event'] ?? []));
+        $dto->setChain(CacheChainDto::fromArray($data['chain'] ?? []));
+        $dto->setResult(Result::fromArray($data['result'] ?? []));
+        $dto->setStatus($data['status']);
+        $dto->setBot(BotDto::fromArray($data['bot'] ?? []));
+
+        return $dto;
     }
 }

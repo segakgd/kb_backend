@@ -2,9 +2,10 @@
 
 namespace App\Dto\SessionCache\Cache;
 
+use App\Doctrine\DoctrineMappingInterface;
 use App\Dto\Common\AbstractDto;
 
-class CacheChainDto extends AbstractDto
+class CacheChainDto extends AbstractDto implements DoctrineMappingInterface
 {
     private string $target;
 

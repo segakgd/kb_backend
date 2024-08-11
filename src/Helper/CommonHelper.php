@@ -16,8 +16,8 @@ class CommonHelper
             ->setEvent($sessionCache->getEvent())
             ->setCart($sessionCache->getCart())
             ->setContent($sessionCache->getContent())
-            ->setBotDto(
-                botDto: static::createBotBto($session)
+            ->setBot(
+                bot: static::createBotBto($session)
             );
     }
 
