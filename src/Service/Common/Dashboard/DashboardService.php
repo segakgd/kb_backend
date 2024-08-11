@@ -11,7 +11,10 @@ use App\Repository\MessageHistoryRepository;
 use App\Repository\Visitor\VisitorEventRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Common\Bot\BotServiceInterface;
+use App\Service\Common\Dashboard\Dto\ActionDto;
 use App\Service\Common\Dashboard\Dto\BotDto;
+use App\Service\Common\Dashboard\Dto\ContractDto;
+use App\Service\Common\Dashboard\Dto\EventDto;
 use App\Service\Common\Dashboard\Dto\ScenarioDto;
 use App\Service\Common\Dashboard\Dto\SessionCacheDto;
 use App\Service\Common\Dashboard\Dto\SessionDto;
@@ -48,47 +51,6 @@ readonly class DashboardService
         }
 
         return array_reverse($prepareEvents);
-    }
-
-    public function prepareEvent(Event $event): array
-    {
-        $visitorSession = $this->visitorSessionRepository->find($event->getSessionId());
-
-        $contract = [];
-
-        if (!is_null($visitorSession)) {
-            $cache = $visitorSession->getCache();
-
-            if (!is_null($cache) && $cache->getEvent()) {
-                $cacheEvent = $cache->getEvent();
-
-                $cacheContract = $cacheEvent->getContract();
-
-                $cacheChains = $cacheContract->getChains();
-                $chains = [];
-
-                foreach ($cacheChains as $cacheChain) {
-                    $chains[] = [
-                        'name'   => $cacheChain->getTarget(),
-                        'status' => $cacheChain->isFinished(),
-                    ];
-                }
-
-                $contract = [
-                    'chains'   => $chains,
-                    'finished' => $cacheContract->isFinished(),
-                ];
-            }
-        }
-
-        return [
-            'id'        => $event->getId(),
-            'type'      => $event->getType(),
-            'status'    => $event->getStatus()->value,
-            'createdAt' => $event->getCreatedAt(),
-            'contract'  => $contract,
-            'error'     => $event->getError(),
-        ];
     }
 
     public function getMessageHistory(): array
@@ -173,6 +135,43 @@ readonly class DashboardService
         }
 
         return $prepareSessions;
+    }
+
+    private function prepareEvent(Event $event): EventDto
+    {
+        $visitorSession = $this->visitorSessionRepository->find($event->getSessionId());
+
+        $contract = new ContractDto();
+
+        if (!is_null($visitorSession)) {
+            $cache = $visitorSession->getCache();
+
+            if (!is_null($cache) && $cache->getEvent()) {
+                $cacheEvent = $cache->getEvent();
+
+                $cacheContract = $cacheEvent->getContract();
+
+                $cacheActions = $cacheContract->getChains();
+
+                foreach ($cacheActions as $cacheAction) {
+                    $contract->addChain(
+                        (new ActionDto())
+                        ->setName($cacheAction->getTarget())
+                        ->setStatus($cacheAction->isFinished())
+                    );
+                }
+
+                $contract->setFinished($cacheContract->isFinished());
+            }
+        }
+
+        return (new EventDto())
+            ->setId($event->getId())
+            ->setType($event->getType())
+            ->setStatus($event->getStatus())
+            ->setContract($contract)
+            ->setError($event->getError())
+            ->setCreatedAt($event->getCreatedAt());
     }
 
     private function prepareSession(Session $session): SessionDto
