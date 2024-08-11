@@ -52,12 +52,14 @@ readonly class EventResolver
     /**
      * @throws Throwable
      */
-    private function resolveContract(Responsible $responsible, CacheContractDto $cacheContractDto): void
+    private function resolveContract(Responsible $responsible, CacheContractDto $cacheContract): void
     {
-        if ($cacheContractDto->hasChain()) {
-            $this->actionResolver->resolve($responsible, $cacheContractDto->getChains());
+        if ($cacheContract->hasChain()) {
+            $responsible->setStatus(VisitorEventStatusEnum::Waiting);
+
+            $this->actionResolver->resolve($responsible, $cacheContract->getChains());
         } else {
-            $this->scenarioResolver->resolve($responsible, $cacheContractDto);
+            $this->scenarioResolver->resolve($responsible, $cacheContract);
 
             $responsible->setStatus(VisitorEventStatusEnum::Done);
         }

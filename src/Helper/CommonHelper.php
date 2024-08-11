@@ -10,8 +10,10 @@ use Exception;
 
 class CommonHelper
 {
-    public static function createDefaultResponsible(Session $session, SessionCache $sessionCache): Responsible
+    public static function createDefaultResponsible(Session $session): Responsible
     {
+        $sessionCache = $session->getCache();
+
         return (new Responsible())
             ->setEvent($sessionCache->getEvent())
             ->setCart($sessionCache->getCart())

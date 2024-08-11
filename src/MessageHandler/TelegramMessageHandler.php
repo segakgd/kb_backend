@@ -62,7 +62,7 @@ final readonly class TelegramMessageHandler
             $sessionCache = $session->getCache();
             $sessionCache = $this->enrichContractCacheIfNeed($event, $sessionCache);
 
-            $responsible = CommonHelper::createDefaultResponsible($session, $sessionCache);
+            $responsible = CommonHelper::createDefaultResponsible($session);
 
             // вот кейсы:
             // отлавливаем jump до того как начнём обрабатывать событие. (системный jump)
