@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\MessageHistoryRepository;
+use App\Service\Common\History\Enum\HistoryTypeEnum;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -67,14 +68,14 @@ class MessageHistory
         return $this;
     }
 
-    public function getType(): ?string
+    public function getType(): ?HistoryTypeEnum
     {
-        return $this->type;
+        return HistoryTypeEnum::from($this->type);
     }
 
-    public function setType(string $type): static
+    public function setType(HistoryTypeEnum $type): static
     {
-        $this->type = $type;
+        $this->type = $type->value;
 
         return $this;
     }

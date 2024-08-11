@@ -3,6 +3,8 @@
 namespace App\Service\Common;
 
 use App\Dto\Responsible\ResponsibleMessageDto;
+use App\Service\Common\History\Enum\HistoryTypeEnum;
+use App\Service\Common\History\MessageHistoryService;
 use App\Service\Constructor\Core\Dto\BotDto;
 use App\Service\Constructor\Core\Dto\ResultInterface;
 use App\Service\Integration\Telegram\TelegramService;
@@ -63,7 +65,7 @@ readonly class SenderService
     {
         $this->messageHistoryService->create(
             message: $message->getMessage(),
-            type: MessageHistoryService::INCOMING,
+            type: HistoryTypeEnum::Outgoing,
             keyboard: $message->getKeyBoard() ?? [],
             images: [
                 [
