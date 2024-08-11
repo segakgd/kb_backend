@@ -33,8 +33,10 @@ readonly class TelegramSenderService
                 token: $token,
                 chatId: $chatId
             );
-        } else {
-            throw new Exception('not found message');
+
+            return;
         }
+
+        throw new Exception('not found message');
     }
 }
