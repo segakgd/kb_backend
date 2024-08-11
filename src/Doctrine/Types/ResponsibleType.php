@@ -10,17 +10,15 @@ class ResponsibleType extends JsonType
 {
     public const RESPONSIBLE_TYPE = 'responsible_type';
 
-    public function convertToPHPValue($value, AbstractPlatform $platform): array
+    public function convertToPHPValue($value, AbstractPlatform $platform): ?Responsible
     {
         if (is_null($value)) {
-            return [];
+            return null;
         }
 
-        $values = parent::convertToPHPValue($value, $platform);
+        $arrayValue = parent::convertToPHPValue($value, $platform);
 
-        return array_map(function ($value) {
-            return Responsible::fromArray($value);
-        }, $values);
+        return Responsible::fromArray($arrayValue);
     }
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
@@ -29,11 +27,10 @@ class ResponsibleType extends JsonType
             return null;
         }
 
-        $values = array_map(function (Responsible $responsible) {
-            return $responsible->toArray();
-        }, $value);
+        /** @var Responsible $value */
+        $arrayValue = $value->toArray();
 
-        return parent::convertToDatabaseValue($values, $platform);
+        return parent::convertToDatabaseValue($arrayValue, $platform);
     }
 
     public function getName(): string
