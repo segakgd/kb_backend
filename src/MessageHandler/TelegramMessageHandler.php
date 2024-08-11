@@ -46,10 +46,14 @@ final readonly class TelegramMessageHandler
 
         try {
             if (null === $event) {
+                $this->logger->warning("Event with ID: $eventId not found");
+
                 return;
             }
 
             if (!$event->isStatusAvailableForHandle()) {
+                $this->logger->warning("Event with ID: $eventId without available status");
+
                 return;
             }
 
