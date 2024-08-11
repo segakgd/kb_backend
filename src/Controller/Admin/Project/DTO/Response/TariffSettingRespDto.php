@@ -2,13 +2,15 @@
 
 namespace App\Controller\Admin\Project\DTO\Response;
 
+use App\Service\Common\Project\Enum\TariffCodeEnum;
+
 class TariffSettingRespDto
 {
     private int $id;
 
     private string $name;
 
-    private string $code;
+    private TariffCodeEnum $code;
 
     private int $price;
 
@@ -42,12 +44,12 @@ class TariffSettingRespDto
         return $this;
     }
 
-    public function getCode(): string
+    public function getCode(): TariffCodeEnum
     {
         return $this->code;
     }
 
-    public function setCode(string $code): self
+    public function setCode(TariffCodeEnum $code): self
     {
         $this->code = $code;
 

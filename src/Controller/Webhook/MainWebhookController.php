@@ -7,7 +7,8 @@ use App\Enum\Constructor\ChannelEnum;
 use App\Message\TelegramMessage;
 use App\Repository\User\ProjectRepository;
 use App\Service\Common\Bot\BotServiceInterface;
-use App\Service\Common\MessageHistoryService;
+use App\Service\Common\History\Enum\HistoryTypeEnum;
+use App\Service\Common\History\MessageHistoryService;
 use App\Service\Constructor\Visitor\EventManager;
 use App\Service\Constructor\Visitor\Session\SessionService;
 use Exception;
@@ -101,7 +102,7 @@ class MainWebhookController extends AbstractController
             // todo проверить на IS_DEV
             $this->messageHistoryService->create(
                 message: $webhookData->getWebhookContent(),
-                type: MessageHistoryService::OUTGOING,
+                type: HistoryTypeEnum::Outgoing,
             );
 
             $session = $this->sessionService->findByMainParams($bot, $chatId, $channel);

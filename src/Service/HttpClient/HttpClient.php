@@ -2,18 +2,39 @@
 
 namespace App\Service\HttpClient;
 
+use App\Service\HttpClient\Request\Request;
 use App\Service\HttpClient\Request\RequestInterface;
 use App\Service\HttpClient\Response\Response;
 use App\Service\HttpClient\Response\ResponseInterface;
+use Exception;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
-class HttpClient implements HttpClientInterface
+readonly class HttpClient implements HttpClientInterface
 {
-    public const METHOD_POST = 'POST';
-    public const METHOD_GET = 'GET';
+    public function __construct(
+        private SerializerInterface $serializer,
+        private LoggerInterface $logger,
+    ) {}
 
-    public function __construct(private readonly SerializerInterface $serializer) {}
+    public static function buildRequest(
+        RequestMethodEnum $method,
+        string $scenario,
+        string $token,
+        ?array $data = null,
+        ?string $responseClassName = null,
+    ): Request {
+        return (new Request())
+            ->setMethod($method)
+            ->setScenario($scenario)
+            ->setToken($token)
+            ->setData($data)
+            ->setResponseClassName($responseClassName);
+    }
 
+    /**
+     * @throws Exception
+     */
     public function request(RequestInterface $request): ResponseInterface
     {
         $token = $request->getToken();
@@ -38,7 +59,11 @@ class HttpClient implements HttpClientInterface
         $responseClassName = $request->getResponseClassName();
 
         if ($code == 400) {
-            dd('HTTP error!', $result, $request);
+            $exception = new Exception("HTTP error! For uri: $uri \n Result data: " . json_encode($result));
+
+            $this->logger->error($exception);
+
+            throw $exception;
         }
 
         if ($responseClassName) {
@@ -48,9 +73,9 @@ class HttpClient implements HttpClientInterface
         return new Response($code, $description);
     }
 
-    private function curlRequest(string $uri, array $requestArray, string $method): array
+    private function curlRequest(string $uri, array $requestArray, RequestMethodEnum $method): array
     {
-        if ($method === self::METHOD_GET) {
+        if ($method === RequestMethodEnum::Get) {
             $ch = curl_init($uri . http_build_query($requestArray));
 
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -60,7 +85,7 @@ class HttpClient implements HttpClientInterface
             $response = curl_exec($ch);
 
             curl_close($ch);
-        } elseif ($method === self::METHOD_POST) {
+        } elseif ($method === RequestMethodEnum::Post) {
             $ch = curl_init($uri);
 
             curl_setopt($ch, CURLOPT_POST, 1);

@@ -2,13 +2,15 @@
 
 namespace App\Entity\Visitor;
 
+use App\Doctrine\Types\ResponsibleType;
 use App\Enum\VisitorEventStatusEnum;
 use App\Repository\Visitor\VisitorEventRepository;
+use App\Service\Constructor\Core\Dto\Responsible;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: VisitorEventRepository::class)]
-class VisitorEvent
+class Event
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -33,9 +35,8 @@ class VisitorEvent
     #[ORM\Column(length: 36)]
     private ?string $scenarioUUID = null;
 
-    // todo переделать под работу с дто
-    #[ORM\Column]
-    private array $responsible = [];
+    #[ORM\Column(type: ResponsibleType::RESPONSIBLE_TYPE, nullable: true)]
+    private ?Responsible $responsible = null;
 
     #[ORM\Column]
     private ?int $sessionId = null;
@@ -111,7 +112,7 @@ class VisitorEvent
         return $this;
     }
 
-    public function getCreatedAt(): ?DateTimeImmutable
+    public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
     }
@@ -135,12 +136,12 @@ class VisitorEvent
         return $this;
     }
 
-    public function getResponsible(): array
+    public function getResponsible(): ?Responsible
     {
         return $this->responsible;
     }
 
-    public function setResponsible(array $responsible): static
+    public function setResponsible(?Responsible $responsible): static
     {
         $this->responsible = $responsible;
 

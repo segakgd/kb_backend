@@ -2,17 +2,21 @@
 
 namespace App\Entity\Visitor;
 
+use App\Entity\MessageHistory;
 use App\Entity\SessionCache;
 use App\Entity\User\Bot;
+use App\Enum\Constructor\ChannelEnum;
 use App\Repository\Visitor\VisitorSessionRepository;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Сессия пользователя бота
  */
 #[ORM\Entity(repositoryClass: VisitorSessionRepository::class)]
-class VisitorSession
+class Session
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -40,11 +44,18 @@ class VisitorSession
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?SessionCache $cache = null;
 
+    /**
+     * @var Collection<int, MessageHistory>
+     */
+    #[ORM\OneToMany(mappedBy: 'session', targetEntity: MessageHistory::class)]
+    private Collection $messageHistory;
+
     public function __construct()
     {
         if ($this->createdAt === null) {
             $this->createdAt = new DateTimeImmutable();
         }
+        $this->messageHistory = new ArrayCollection();
     }
 
     public function getId(): int
@@ -64,14 +75,14 @@ class VisitorSession
         return $this;
     }
 
-    public function getChannel(): ?string
+    public function getChannel(): ?ChannelEnum
     {
-        return $this->channel;
+        return ChannelEnum::tryFrom($this->channel);
     }
 
-    public function setChannel(string $channel): static
+    public function setChannel(ChannelEnum $channel): static
     {
-        $this->channel = $channel;
+        $this->channel = $channel->value;
 
         return $this;
     }
@@ -132,6 +143,36 @@ class VisitorSession
     public function setCache(?SessionCache $cache): static
     {
         $this->cache = $cache;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MessageHistory>
+     */
+    public function getMessageHistory(): Collection
+    {
+        return $this->messageHistory;
+    }
+
+    public function addMessageHistory(MessageHistory $messageHistory): static
+    {
+        if (!$this->messageHistory->contains($messageHistory)) {
+            $this->messageHistory->add($messageHistory);
+            $messageHistory->setSession($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessageHistory(MessageHistory $messageHistory): static
+    {
+        if ($this->messageHistory->removeElement($messageHistory)) {
+            // set the owning side to null (unless already changed)
+            if ($messageHistory->getSession() === $this) {
+                $messageHistory->setSession(null);
+            }
+        }
 
         return $this;
     }

@@ -2,9 +2,10 @@
 
 namespace App\Dto\SessionCache\Cache;
 
+use App\Doctrine\DoctrineMappingInterface;
 use App\Dto\Common\AbstractDto;
 
-class CacheCartDto extends AbstractDto
+class CacheCartDto extends AbstractDto implements DoctrineMappingInterface
 {
     // todo use CacheContactDto.php
     private array $contacts = [];

@@ -10,7 +10,7 @@ use App\Dto\Core\Telegram\Response\GetWebhookInfoDto;
 use App\Dto\Responsible\ResponsibleMessageDto;
 use App\Service\HttpClient\HttpClient;
 use App\Service\HttpClient\HttpClientInterface;
-use App\Service\HttpClient\Request\Request;
+use App\Service\HttpClient\RequestMethodEnum;
 use App\Service\HttpClient\Response\ResponseInterface;
 
 readonly class TelegramService implements TelegramServiceInterface
@@ -19,19 +19,16 @@ readonly class TelegramService implements TelegramServiceInterface
         private HttpClientInterface $httpClient,
     ) {}
 
-    // todo если ожидать тут бота, то многие проблемы решит это, т.к у бота есть и id проекта и токены
-
     /**
      * @return GetWebhookInfoDto
      */
     public function getWebhookInfo(string $token): ResponseInterface
     {
-        $request = $this->buildRequest(
-            HttpClient::METHOD_GET,
-            'getWebhookInfo',
-            $token,
-            null,
-            GetWebhookInfoDto::class
+        $request = HttpClient::buildRequest(
+            method: RequestMethodEnum::Get,
+            scenario: 'getWebhookInfo',
+            token: $token,
+            responseClassName: GetWebhookInfoDto::class
         );
 
         return $this->httpClient->request($request);
@@ -51,11 +48,11 @@ readonly class TelegramService implements TelegramServiceInterface
         $photoDto->setReplyMarkup($replyMarkup);
         $photoDto->setParseMode('MarkdownV2');
 
-        $request = $this->buildRequest(
-            HttpClient::METHOD_POST,
-            'sendPhoto',
-            $token,
-            $photoDto->getArray(),
+        $request = HttpClient::buildRequest(
+            method: RequestMethodEnum::Post,
+            scenario: 'sendPhoto',
+            token: $token,
+            data: $photoDto->getArray(),
         );
 
         $this->httpClient->request($request);
@@ -63,8 +60,7 @@ readonly class TelegramService implements TelegramServiceInterface
 
     public function sendMessage(ResponsibleMessageDto $responsibleMessageDto, string $token, int $chatId): void
     {
-        // БАГ! при отправке в реживе setParseMode = MarkdownV2, с сообщением в котором есть многоточие - случается 400я - нтелега не может распарсить
-
+        // todo БАГ! при отправке в режиме setParseMode = MarkdownV2, с сообщением в котором есть многоточие - случается 400я - телега не может парсить
         $message = $responsibleMessageDto->getMessage();
         $replyMarkup = $responsibleMessageDto->getKeyBoard();
 
@@ -74,11 +70,11 @@ readonly class TelegramService implements TelegramServiceInterface
         $messageDto->setText($message);
         $messageDto->setReplyMarkup($replyMarkup);
 
-        $request = $this->buildRequest(
-            HttpClient::METHOD_POST,
-            'sendMessage',
-            $token,
-            $messageDto->getArray(),
+        $request = HttpClient::buildRequest(
+            method: RequestMethodEnum::Post,
+            scenario: 'sendMessage',
+            token: $token,
+            data: $messageDto->getArray(),
         );
 
         $this->httpClient->request($request);
@@ -86,11 +82,11 @@ readonly class TelegramService implements TelegramServiceInterface
 
     public function sendInvoice(InvoiceDto $invoiceDto, string $token): void
     {
-        $request = $this->buildRequest(
-            HttpClient::METHOD_POST,
-            'sendInvoice',
-            $token,
-            $invoiceDto->getArray(),
+        $request = HttpClient::buildRequest(
+            method: RequestMethodEnum::Post,
+            scenario: 'sendInvoice',
+            token: $token,
+            data: $invoiceDto->getArray(),
         );
 
         $this->httpClient->request($request);
@@ -98,28 +94,13 @@ readonly class TelegramService implements TelegramServiceInterface
 
     public function setWebhook(WebhookDto $webhookDto, string $token): void
     {
-        $request = $this->buildRequest(
-            HttpClient::METHOD_POST,
-            'setWebhook',
-            $token,
-            $webhookDto->getArray(),
+        $request = HttpClient::buildRequest(
+            method: RequestMethodEnum::Post,
+            scenario: 'setWebhook',
+            token: $token,
+            data: $webhookDto->getArray(),
         );
 
         $this->httpClient->request($request);
-    }
-
-    private function buildRequest(
-        string $method,
-        string $scenario,
-        string $token,
-        ?array $data = null,
-        ?string $responseClassName = null,
-    ): Request {
-        return (new Request())
-            ->setMethod($method)
-            ->setScenario($scenario)
-            ->setToken($token)
-            ->setData($data)
-            ->setResponseClassName($responseClassName);
     }
 }

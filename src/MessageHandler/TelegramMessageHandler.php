@@ -5,8 +5,8 @@ namespace App\MessageHandler;
 use App\Dto\SessionCache\Cache\CacheContractDto;
 use App\Entity\Scenario\Scenario;
 use App\Entity\SessionCache;
-use App\Entity\Visitor\VisitorEvent;
-use App\Entity\Visitor\VisitorSession;
+use App\Entity\Visitor\Event;
+use App\Entity\Visitor\Session;
 use App\Enum\VisitorEventStatusEnum;
 use App\Helper\CommonHelper;
 use App\Message\SendTelegramMessage;
@@ -17,7 +17,6 @@ use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Constructor\Core\Dto\Responsible;
 use App\Service\Constructor\Core\EventResolver;
 use App\Service\Constructor\Visitor\ScenarioManager;
-use App\Service\DtoRepository\ResponsibleDtoRepository;
 use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -30,7 +29,6 @@ final readonly class TelegramMessageHandler
     public function __construct(
         private EventResolver $eventResolver,
         private ScenarioManager $scenarioService,
-        private ResponsibleDtoRepository $responsibleDtoRepository,
         private SessionCacheRepository $sessionCacheRepository,
         private VisitorEventRepository $visitorEventRepository,
         private VisitorSessionRepository $visitorSessionRepository,
@@ -71,7 +69,11 @@ final readonly class TelegramMessageHandler
 
             $this->updateEntities($event, $session, $sessionCache, $responsible);
 
-            $this->bus->dispatch(new SendTelegramMessage($responsible->getResult(), $responsible->getBotDto()));
+            $this->bus->dispatch(new SendTelegramMessage(
+                session: $session,
+                result: $responsible->getResult(),
+                botDto: $responsible->getBot(),
+            ));
 
             if ($event->isRepeatStatuses()) {
                 $this->bus->dispatch(new TelegramMessage($event->getId()));
@@ -92,8 +94,8 @@ final readonly class TelegramMessageHandler
     }
 
     private function updateEntities(
-        VisitorEvent $event,
-        VisitorSession $session,
+        Event $event,
+        Session $session,
         SessionCache $sessionCache,
         Responsible $responsible,
     ): void {
@@ -103,13 +105,13 @@ final readonly class TelegramMessageHandler
         $this->visitorSessionRepository->saveAndFlush($session);
         $this->sessionCacheRepository->saveAndFlush($sessionCache);
 
-        $this->responsibleDtoRepository->save($event, $responsible);
+        $event->setResponsible($responsible);
     }
 
     /**
      * @throws Exception
      */
-    private function enrichContractCacheIfNeed(VisitorEvent $event, SessionCache $sessionCache): SessionCache
+    private function enrichContractCacheIfNeed(Event $event, SessionCache $sessionCache): SessionCache
     {
         if (
             VisitorEventStatusEnum::New === $event->getStatus()

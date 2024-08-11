@@ -2,7 +2,6 @@
 
 namespace App\Service\Constructor\Core;
 
-use App\Dto\SessionCache\Cache\CacheChainDto;
 use App\Dto\SessionCache\Cache\CacheContractDto;
 use App\Enum\VisitorEventStatusEnum;
 use App\Service\Constructor\Core\Actions\ActionResolver;

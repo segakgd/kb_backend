@@ -2,6 +2,8 @@
 
 namespace App\Service\HttpClient\Request;
 
+use App\Service\HttpClient\RequestMethodEnum;
+
 class Request implements RequestInterface
 {
     private ?array $data = null;
@@ -10,7 +12,7 @@ class Request implements RequestInterface
 
     private string $token;
 
-    private string $method;
+    private RequestMethodEnum $method;
 
     private ?string $responseClassName;
 
@@ -50,12 +52,12 @@ class Request implements RequestInterface
         return $this;
     }
 
-    public function getMethod(): string
+    public function getMethod(): RequestMethodEnum
     {
         return $this->method;
     }
 
-    public function setMethod(string $method): self
+    public function setMethod(RequestMethodEnum $method): self
     {
         $this->method = $method;
 

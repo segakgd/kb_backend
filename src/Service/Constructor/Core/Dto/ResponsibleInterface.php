@@ -35,7 +35,7 @@ interface ResponsibleInterface
 
     public function setStatus(?VisitorEventStatusEnum $status): static;
 
-    public function getBotDto(): ?BotDto;
+    public function getBot(): ?BotDto;
 
-    public function setBotDto(?BotDto $botDto): Responsible;
+    public function setBot(?BotDto $bot): Responsible;
 }

@@ -2,9 +2,10 @@
 
 namespace App\Dto\SessionCache\Cache;
 
+use App\Doctrine\DoctrineMappingInterface;
 use App\Dto\Common\AbstractDto;
 
-class CacheChainDto extends AbstractDto
+class CacheChainDto extends AbstractDto implements DoctrineMappingInterface
 {
     private string $target;
 
@@ -57,7 +58,7 @@ class CacheChainDto extends AbstractDto
     {
         $cacheChain = new static();
 
-        $cacheChain->target = $data['target'];
+        $cacheChain->target = $data['target'] ?? 'undefined'; // todo убрать?
         $cacheChain->finished = $data['finished'] ?? false;
         $cacheChain->repeat = $data['repeat'] ?? false;
 

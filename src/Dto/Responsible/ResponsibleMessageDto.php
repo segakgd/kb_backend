@@ -2,7 +2,9 @@
 
 namespace App\Dto\Responsible;
 
-class ResponsibleMessageDto
+use App\Doctrine\DoctrineMappingInterface;
+
+class ResponsibleMessageDto implements DoctrineMappingInterface
 {
     private string $message = '';
 
@@ -44,5 +46,30 @@ class ResponsibleMessageDto
         $this->keyBoard = $keyBoard;
 
         return $this;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'message'  => $this->message,
+            'photo'    => $this->photo,
+            'keyBoard' => $this->keyBoard,
+        ];
+    }
+
+    public static function fromArray(array $data): static
+    {
+        $dto = new self();
+        $dto->setMessage(
+            $data['message'] ?? ''
+        );
+        $dto->setPhoto(
+            $data['photo'] ?? ''
+        );
+        $dto->setKeyBoard(
+            $data['keyBoard'] ?? null
+        );
+
+        return $dto;
     }
 }
