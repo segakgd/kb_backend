@@ -6,6 +6,8 @@ use App\Service\HttpClient\Request\Request;
 use App\Service\HttpClient\Request\RequestInterface;
 use App\Service\HttpClient\Response\Response;
 use App\Service\HttpClient\Response\ResponseInterface;
+use Exception;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class HttpClient implements HttpClientInterface
@@ -13,7 +15,10 @@ class HttpClient implements HttpClientInterface
     public const METHOD_POST = 'POST';
     public const METHOD_GET = 'GET';
 
-    public function __construct(private readonly SerializerInterface $serializer) {}
+    public function __construct(
+        private readonly SerializerInterface $serializer,
+        private readonly LoggerInterface $logger,
+    ) {}
 
     public static function buildRequest(
         string $method,
@@ -30,6 +35,9 @@ class HttpClient implements HttpClientInterface
             ->setResponseClassName($responseClassName);
     }
 
+    /**
+     * @throws Exception
+     */
     public function request(RequestInterface $request): ResponseInterface
     {
         $token = $request->getToken();
@@ -54,7 +62,11 @@ class HttpClient implements HttpClientInterface
         $responseClassName = $request->getResponseClassName();
 
         if ($code == 400) {
-            dd('HTTP error!', $result, $request);
+            $exception = new Exception("HTTP error! For uri: $uri \n Result data: " . json_encode($result));
+
+            $this->logger->error($exception);
+
+            throw $exception;
         }
 
         if ($responseClassName) {
