@@ -18,8 +18,6 @@ class ScenarioContractDto
     /** @deprecated delete it */
     private bool $finish = false;
 
-    private ?Scenario $scenario = null;
-
     public function getMessage(): ?string
     {
         return $this->message;
@@ -105,18 +103,6 @@ class ScenarioContractDto
         return $this;
     }
 
-    public function getScenario(): ?Scenario
-    {
-        return $this->scenario;
-    }
-
-    public function setScenario(?Scenario $scenario): static
-    {
-        $this->scenario = $scenario;
-
-        return $this;
-    }
-
     public static function fromArray(array $data): self
     {
         $scenarioContractDto = new self();
@@ -124,20 +110,11 @@ class ScenarioContractDto
         $scenarioContractDto->setMessage($data['message'] ?? null);
         $scenarioContractDto->setKeyboard(isset($data['keyboard']) ? ScenarioKeyboardDto::fromArray($data['keyboard']) : null);
 
-        $actionData = $data['action'] ?? null;
-        $action = [];
-
-        if ($actionData !== null) {
-            foreach ($actionData as $actionItem) {
-                if (is_array($actionItem)) {
-                    $action[] = $actionItem;
-                } else {
-                    $action[] = ScenarioActionDto::fromArray($actionItem);
-                }
+        if (isset($data['actions'])) {
+            foreach ($data['actions'] as $action) {
+                $scenarioContractDto->addAction(ScenarioActionDto::fromArray($action));
             }
         }
-
-        $scenarioContractDto->setActions($action);
 
         $scenarioContractDto->setAttached(isset($data['attached']) ? ScenarioAttachedDto::fromArray($data['attached']) : null);
         $scenarioContractDto->setFinish($data['finish'] ?? false);

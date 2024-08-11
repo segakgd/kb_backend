@@ -4,7 +4,7 @@ doctrine:
         use_savepoints: true
         types:
             variant_price_type: App\Doctrine\Types\VariantPriceType
-            scenario_contract_dto_array: App\Doctrine\Types\ScenarioContractDtoArrayType
+            scenario_contract_dto_array: App\Doctrine\Types\ScenarioContractType
             session_cart_dto_array: App\Doctrine\Types\Session\SessionCartDtoArrayType
             session_event_dto_array: App\Doctrine\Types\Session\SessionEventDtoArrayType
             order_variant: App\Doctrine\Types\OrderVariantType
