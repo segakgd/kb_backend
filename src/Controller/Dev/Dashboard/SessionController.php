@@ -40,7 +40,7 @@ class SessionController extends AbstractController
         $response = [
             'projectId' => $project->getId(),
             'botId'     => $visitorSession->getBot()->getId(),
-            'messages'  => $this->dashboardService->getMessageHistory(),
+            'messages'  => $this->dashboardService->getMessageHistory($visitorSession),
             'events'    => $this->dashboardService->prepareEvents($visitorSession),
         ];
 

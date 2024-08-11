@@ -2,6 +2,7 @@
 
 namespace App\Service\Common\Dashboard;
 
+use App\Entity\MessageHistory;
 use App\Entity\Scenario\ScenarioTemplate;
 use App\Entity\User\Bot;
 use App\Entity\User\Project;
@@ -15,6 +16,7 @@ use App\Service\Common\Dashboard\Dto\ActionDto;
 use App\Service\Common\Dashboard\Dto\BotDto;
 use App\Service\Common\Dashboard\Dto\ContractDto;
 use App\Service\Common\Dashboard\Dto\EventDto;
+use App\Service\Common\Dashboard\Dto\MessageDto;
 use App\Service\Common\Dashboard\Dto\ScenarioDto;
 use App\Service\Common\Dashboard\Dto\SessionCacheDto;
 use App\Service\Common\Dashboard\Dto\SessionDto;
@@ -53,9 +55,24 @@ readonly class DashboardService
         return array_reverse($prepareEvents);
     }
 
-    public function getMessageHistory(): array
+    public function getMessageHistory(Session $session): array
     {
-        return $this->historyRepository->findAll();
+        $histories = $this->historyRepository->findBy([
+            'session' => $session,
+        ]);
+
+        $result = [];
+
+        foreach ($histories as $history) {
+            $result[] = (new MessageDto())
+                ->setId($history->getId())
+                ->setMessage($history->getMessage())
+                ->setType($history->getType())
+                ->setKeyBoard($history->getKeyBoard())
+                ->setImages($history->getImages());
+        }
+
+        return $result;
     }
 
     public function prepareBots(Project $project): array
