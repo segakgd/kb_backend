@@ -11,7 +11,7 @@ class CacheContractDto implements DoctrineMappingInterface
     private bool $finished = false;
 
     /** @var array<CacheActionDto> */
-    private array $chains = [];
+    private array $actions = [];
 
     private ?CacheKeyboardDto $keyboard = null;
 
@@ -41,61 +41,61 @@ class CacheContractDto implements DoctrineMappingInterface
         return $this;
     }
 
-    public function getChains(): array
+    public function getActions(): array
     {
-        return $this->chains;
+        return $this->actions;
     }
 
-    public function getCurrentChain(): ?CacheActionDto
+    public function getCurrentAction(): ?CacheActionDto
     {
-        if (empty($this->chains)) {
+        if (empty($this->actions)) {
             return null;
         }
 
-        foreach ($this->chains as $chain) {
-            if (!$chain->isFinished()) {
-                return $chain;
+        foreach ($this->actions as $action) {
+            if (!$action->isFinished()) {
+                return $action;
             }
         }
 
         return null;
     }
 
-    public function hasChain(): bool
+    public function hasActions(): bool
     {
-        return !empty($this->chains);
+        return !empty($this->actions);
     }
 
-    public function isAllChainsFinished(): bool
+    public function isAllActionsFinished(): bool
     {
-        $unfinishedChains = array_filter($this->getChains(), fn (CacheActionDto $chain) => !$chain->isFinished());
+        $unfinishedActions = array_filter($this->getActions(), fn (CacheActionDto $action) => !$action->isFinished());
 
-        return empty($unfinishedChains);
+        return empty($unfinishedActions);
     }
 
-    public function setChains(array $chains): static
+    public function setActions(array $actions): static
     {
-        $this->chains = $chains;
+        $this->actions = $actions;
 
         return $this;
     }
 
-    public function addChain(CacheActionDto $chain): static
+    public function addAction(CacheActionDto $action): static
     {
-        $this->chains[] = $chain;
+        $this->actions[] = $action;
 
         return $this;
     }
 
     /** @deprecated */
-    public function isExistChains(): bool
+    public function isExistActions(): bool
     {
-        return !empty($this->chains);
+        return !empty($this->actions);
     }
 
-    public function isEmptyChains(): bool
+    public function isEmptyActions(): bool
     {
-        return empty($this->chains);
+        return empty($this->actions);
     }
 
     public function isEmptyKeyboard(): bool
@@ -134,39 +134,31 @@ class CacheContractDto implements DoctrineMappingInterface
         $cacheContractDto->message = $data['message'] ?? null;
         $cacheContractDto->keyboard = CacheKeyboardDto::fromArray($data['keyboard'] ?? []) ?? null;
 
-        $chains = [];
+        $actions = [];
 
-        // todo костыль, когда мы мапим из dto сценария. Нужно подправить в сценарии этот косяк
-
-        if (isset($data['chains'])) {
-            foreach ($data['chains'] as $chainData) {
-                $chains[] = CacheActionDto::fromArray($chainData);
+        if (isset($data['actions'])) {
+            foreach ($data['actions'] as $actionData) {
+                $actions[] = CacheActionDto::fromArray($actionData);
             }
         }
 
-        if (isset($data['chain'])) {
-            foreach ($data['chain'] as $chainData) {
-                $chains[] = CacheActionDto::fromArray($chainData);
-            }
-        }
-
-        $cacheContractDto->chains = $chains;
+        $cacheContractDto->actions = $actions;
 
         return $cacheContractDto;
     }
 
     public function toArray(): array
     {
-        $chainsArray = [];
+        $actionsArray = [];
 
-        foreach ($this->chains as $chain) {
-            $chainsArray[] = $chain->toArray();
+        foreach ($this->actions as $action) {
+            $actionsArray[] = $action->toArray();
         }
 
         return [
             'message'  => $this->message,
             'finished' => $this->finished,
-            'chains'   => $chainsArray,
+            'actions'  => $actionsArray,
         ];
     }
 }

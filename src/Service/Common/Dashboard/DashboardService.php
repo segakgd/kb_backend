@@ -181,7 +181,7 @@ readonly class DashboardService
 
                 $cacheContract = $cacheEvent->getContract();
 
-                $cacheActions = $cacheContract->getChains();
+                $cacheActions = $cacheContract->getActions();
 
                 foreach ($cacheActions as $cacheAction) {
                     $contract->addChain(
