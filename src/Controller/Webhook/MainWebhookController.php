@@ -64,7 +64,7 @@ class MainWebhookController extends AbstractController
      *
      * @throws Exception
      */
-    #[Route('/webhook/{projectId}/{channel}/bot/{botId}', name: 'app_webhook_handler', methods: ['POST'])]
+    #[Route('/webhook/{projectId}/{channel}/bot/{bot}', name: 'app_webhook_handler', methods: ['POST'])]
     public function addWebhookAction(Request $request, Bot $bot, int $projectId, string $channel): JsonResponse
     {
         $project = $this->projectEntityRepository->find($projectId);
@@ -88,7 +88,7 @@ class MainWebhookController extends AbstractController
                 'json'
             );
 
-            if (!$this->botService->isActive($botId)) {
+            if (!$this->botService->isActive($bot)) {
                 throw new Exception('Не активный бот');
             }
 

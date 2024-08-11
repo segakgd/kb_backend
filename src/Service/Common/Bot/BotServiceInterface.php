@@ -20,5 +20,5 @@ interface BotServiceInterface
 
     public function remove(int $botId, int $projectId): void;
 
-    public function isActive(int $botId): bool;
+    public function isActive(Bot $bot): bool;
 }
