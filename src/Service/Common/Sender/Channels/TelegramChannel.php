@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Service\Common\Sender;
+namespace App\Service\Common\Sender\Channels;
 
 use App\Dto\Responsible\ResponsibleMessageDto;
 use App\Service\Integration\Telegram\TelegramService;
 use Exception;
 
-readonly class TelegramSenderService
+readonly class TelegramChannel
 {
     public function __construct(
         private TelegramService $telegramService,

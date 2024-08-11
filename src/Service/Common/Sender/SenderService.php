@@ -7,6 +7,7 @@ use App\Entity\Visitor\Session;
 use App\Enum\Constructor\ChannelEnum;
 use App\Service\Common\History\Enum\HistoryTypeEnum;
 use App\Service\Common\History\MessageHistoryService;
+use App\Service\Common\Sender\Channels\TelegramChannel;
 use App\Service\Constructor\Core\Dto\BotDto;
 use App\Service\Constructor\Core\Dto\ResultInterface;
 use Exception;
@@ -14,7 +15,7 @@ use Exception;
 readonly class SenderService
 {
     public function __construct(
-        private TelegramSenderService $telegramSenderService,
+        private TelegramChannel       $telegramSenderService,
         private MessageHistoryService $messageHistoryService,
     ) {}
 

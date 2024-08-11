@@ -2,6 +2,7 @@
 
 namespace App\Service\HttpClient;
 
+use App\Service\HttpClient\Request\Request;
 use App\Service\HttpClient\Request\RequestInterface;
 use App\Service\HttpClient\Response\Response;
 use App\Service\HttpClient\Response\ResponseInterface;
@@ -13,6 +14,21 @@ class HttpClient implements HttpClientInterface
     public const METHOD_GET = 'GET';
 
     public function __construct(private readonly SerializerInterface $serializer) {}
+
+    public static function buildRequest(
+        string $method,
+        string $scenario,
+        string $token,
+        ?array $data = null,
+        ?string $responseClassName = null,
+    ): Request {
+        return (new Request())
+            ->setMethod($method)
+            ->setScenario($scenario)
+            ->setToken($token)
+            ->setData($data)
+            ->setResponseClassName($responseClassName);
+    }
 
     public function request(RequestInterface $request): ResponseInterface
     {
