@@ -22,10 +22,10 @@ use Exception;
 readonly class ActionProvider
 {
     public function __construct(
-        private ProductsByCategoryAction $productsByCategoryChain,
-        private CategoriesAction $productCategoryChain,
-        private VariantsProductAction $variantsProductChain,
-        private VariantProductAction $variantProductChain,
+        private ProductsByCategoryAction $productsByCategoryAction,
+        private CategoriesAction $productCategoryAction,
+        private VariantsProductAction $variantsProductAction,
+        private VariantProductAction $variantProductAction,
     ) {}
 
     /**
@@ -35,10 +35,10 @@ readonly class ActionProvider
     {
         return match ($actionName) {
             StartAction::getName()              => new StartAction(),
-            CategoriesAction::getName()         => $this->productCategoryChain,
-            ProductsByCategoryAction::getName() => $this->productsByCategoryChain,
-            VariantsProductAction::getName()    => $this->variantsProductChain,
-            VariantProductAction::getName()     => $this->variantProductChain,
+            CategoriesAction::getName()         => $this->productCategoryAction,
+            ProductsByCategoryAction::getName() => $this->productsByCategoryAction,
+            VariantsProductAction::getName()    => $this->variantsProductAction,
+            VariantProductAction::getName()     => $this->variantProductAction,
             FinishAction::getName()             => new FinishAction(),
 
             OrderGreetingAction::getName()         => new OrderGreetingAction(),

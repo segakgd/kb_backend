@@ -23,9 +23,9 @@ interface ResponsibleInterface
 
     public function clearEvent(): static;
 
-    public function getChain(): ?CacheActionDto;
+    public function getAction(): ?CacheActionDto;
 
-    public function setChain(?CacheActionDto $chain): static;
+    public function setAction(?CacheActionDto $action): static;
 
     public function getResult(): ?ResultInterface;
 

@@ -12,7 +12,7 @@ interface ActionInterface
     /**
      * Точка входа
      */
-    public function execute(ResponsibleInterface $responsible, ?ActionInterface $nextChain): bool;
+    public function execute(ResponsibleInterface $responsible, ?ActionInterface $nextAction): bool;
 
     /**
      * Единица, которая выполняется перед

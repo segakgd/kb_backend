@@ -14,47 +14,47 @@ readonly class ActionResolver
     ) {}
 
     /**
-     * @param array<CacheActionDto> $chains
+     * @param array<CacheActionDto> $actions
      *
      * @throws Exception
      */
-    public function resolve(Responsible $responsible, array $chains): array
+    public function resolve(Responsible $responsible, array $actions): array
     {
-        $count = count($chains);
+        $count = count($actions);
         $now = 1;
-        $nextChain = null;
+        $nextAction = null;
 
-        foreach ($chains as $key => $chain) {
-            if ($chain->isFinished()) {
+        foreach ($actions as $key => $action) {
+            if ($action->isFinished()) {
                 continue;
             }
 
             if ($now < $count) {
                 $nextKey = $key + 1;
-                $nextChain = $chains[$nextKey] ?? null;
+                $nextAction = $actions[$nextKey] ?? null;
             }
 
-            $responsible->setChain($chain);
+            $responsible->setAction($action);
 
-            $chainInstance = $this->getChainInstance($responsible);
+            $actionInstance = $this->getActionInstance($responsible);
 
-            $chainInstance->execute(
+            $actionInstance->execute(
                 responsible: $responsible,
-                nextChain: $this->getNextChain($nextChain->getTarget())
+                nextAction: $this->getNextAction($nextAction->getTarget())
             );
 
             break;
         }
 
-        return $chains;
+        return $actions;
     }
 
     /**
      * @throws Exception
      */
-    private function getChainInstance(Responsible $responsible): AbstractAction
+    private function getActionInstance(Responsible $responsible): AbstractAction
     {
-        $target = $responsible->getChain()->getTarget();
+        $target = $responsible->getAction()->getTarget();
 
         return $this->actionProvider->getByTarget($target);
     }
@@ -62,7 +62,7 @@ readonly class ActionResolver
     /**
      * @throws Exception
      */
-    private function getNextChain(?string $targetNext): ?AbstractAction
+    private function getNextAction(?string $targetNext): ?AbstractAction
     {
         if (is_null($targetNext)) {
             return null;
