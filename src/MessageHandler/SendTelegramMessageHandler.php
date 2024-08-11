@@ -3,7 +3,7 @@
 namespace App\MessageHandler;
 
 use App\Message\SendTelegramMessage;
-use App\Service\Common\SenderService;
+use App\Service\Common\Sender\TelegramSenderService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Throwable;
@@ -12,8 +12,8 @@ use Throwable;
 final readonly class SendTelegramMessageHandler
 {
     public function __construct(
-        private SenderService $senderService,
-        private LoggerInterface $logger,
+        private TelegramSenderService $senderService,
+        private LoggerInterface       $logger,
     ) {}
 
     /**

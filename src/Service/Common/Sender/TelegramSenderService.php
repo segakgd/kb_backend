@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Common;
+namespace App\Service\Common\Sender;
 
 use App\Dto\Responsible\ResponsibleMessageDto;
 use App\Service\Common\History\Enum\HistoryTypeEnum;
@@ -10,7 +10,7 @@ use App\Service\Constructor\Core\Dto\ResultInterface;
 use App\Service\Integration\Telegram\TelegramService;
 use Exception;
 
-readonly class SenderService
+readonly class TelegramSenderService
 {
     public function __construct(
         private TelegramService $telegramService,

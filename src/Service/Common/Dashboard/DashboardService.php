@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Common;
+namespace App\Service\Common\Dashboard;
 
 use App\Entity\Scenario\ScenarioTemplate;
 use App\Entity\User\Bot;
