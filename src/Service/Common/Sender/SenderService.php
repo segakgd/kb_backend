@@ -4,17 +4,17 @@ namespace App\Service\Common\Sender;
 
 use App\Dto\Responsible\ResponsibleMessageDto;
 use App\Entity\Visitor\Session;
+use App\Enum\Constructor\ChannelEnum;
 use App\Service\Common\History\Enum\HistoryTypeEnum;
 use App\Service\Common\History\MessageHistoryService;
 use App\Service\Constructor\Core\Dto\BotDto;
 use App\Service\Constructor\Core\Dto\ResultInterface;
-use App\Service\Integration\Telegram\TelegramService;
 use Exception;
 
 readonly class SenderService
 {
     public function __construct(
-        private TelegramService $telegramService,
+        private TelegramSenderService $telegramSenderService,
         private MessageHistoryService $messageHistoryService,
     ) {}
 
@@ -30,37 +30,20 @@ readonly class SenderService
         $token = $botDto->getToken();
         $chatId = $botDto->getChatId();
 
-        if (isset($_SERVER['APP_ENV']) && $_SERVER['APP_ENV'] === 'prod') {
-            $this->sendProd($message, $token, $chatId);
+        $this->sendDev($session, $message);
+
+        if (!isset($_SERVER['APP_ENV'])) {
+            throw new Exception('Undefined app env.');
         }
 
-        $this->sendDev($session, $message);
-    }
-
-    /**
-     * @throws Exception
-     */
-    private function sendProd(ResponsibleMessageDto $message, string $token, int $chatId): void
-    {
-        if ($message->getPhoto()) {
-            $this->telegramService->sendPhoto(
-                responsibleMessageDto: $message,
-                token: $token,
-                chatId: $chatId
-            );
-
+        if ($_SERVER['APP_ENV'] !== 'prod') {
             return;
         }
 
-        if ($message->getMessage()) {
-            $this->telegramService->sendMessage(
-                responsibleMessageDto: $message,
-                token: $token,
-                chatId: $chatId
-            );
-        } else {
-            throw new Exception('not found message');
-        }
+        match ($session->getChannel()) {
+            ChannelEnum::Telegram => $this->telegramSenderService->send($message, $token, $chatId),
+            default               => throw new Exception('Undefined channel ' . $session->getChannel()->value),
+        };
     }
 
     private function sendDev(Session $session, ResponsibleMessageDto $message): void

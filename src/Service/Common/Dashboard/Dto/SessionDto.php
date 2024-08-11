@@ -2,11 +2,13 @@
 
 namespace App\Service\Common\Dashboard\Dto;
 
+use App\Enum\Constructor\ChannelEnum;
+
 class SessionDto
 {
     private int $id;
     private string $sessionName;
-    private string $sessionChannel;
+    private ChannelEnum $sessionChannel;
     private SessionCacheDto $cache;
 
     public function getId(): int
@@ -33,12 +35,12 @@ class SessionDto
         return $this;
     }
 
-    public function getSessionChannel(): string
+    public function getSessionChannel(): ChannelEnum
     {
         return $this->sessionChannel;
     }
 
-    public function setSessionChannel(string $sessionChannel): static
+    public function setSessionChannel(ChannelEnum $sessionChannel): static
     {
         $this->sessionChannel = $sessionChannel;
 

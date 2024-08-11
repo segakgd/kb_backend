@@ -43,7 +43,7 @@ readonly class SessionService
     ): Session {
         $visitorSession = (new Session())
             ->setName($visitorName)
-            ->setChannel($chanel->value)
+            ->setChannel($chanel)
             ->setChatId($chatId)
             ->setBot($bot)
             ->setProjectId($bot->getProjectId())

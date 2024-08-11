@@ -5,6 +5,7 @@ namespace App\Entity\Visitor;
 use App\Entity\MessageHistory;
 use App\Entity\SessionCache;
 use App\Entity\User\Bot;
+use App\Enum\Constructor\ChannelEnum;
 use App\Repository\Visitor\VisitorSessionRepository;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -74,14 +75,14 @@ class Session
         return $this;
     }
 
-    public function getChannel(): ?string
+    public function getChannel(): ?ChannelEnum
     {
-        return $this->channel;
+        return ChannelEnum::tryFrom($this->channel);
     }
 
-    public function setChannel(string $channel): static
+    public function setChannel(ChannelEnum $channel): static
     {
-        $this->channel = $channel;
+        $this->channel = $channel->value;
 
         return $this;
     }
