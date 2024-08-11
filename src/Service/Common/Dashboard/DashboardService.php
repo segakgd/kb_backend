@@ -68,7 +68,7 @@ readonly class DashboardService
                 ->setId($history->getId())
                 ->setMessage($history->getMessage())
                 ->setType($history->getType())
-                ->setKeyBoard($history->getKeyBoard())
+                ->setKeyboard($history->getKeyBoard())
                 ->setImages($history->getImages());
         }
 

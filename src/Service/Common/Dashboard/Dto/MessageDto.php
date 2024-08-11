@@ -12,7 +12,7 @@ class MessageDto
 
     private array $images = [];
 
-    private array $keyBoard = [];
+    private array $keyboard = [];
 
     private ?HistoryTypeEnum $type = null;
 
@@ -52,14 +52,14 @@ class MessageDto
         return $this;
     }
 
-    public function getKeyBoard(): array
+    public function getKeyboard(): array
     {
-        return $this->keyBoard;
+        return $this->keyboard;
     }
 
-    public function setKeyBoard(array $keyBoard): static
+    public function setKeyboard(array $keyboard): static
     {
-        $this->keyBoard = $keyBoard;
+        $this->keyboard = $keyboard;
 
         return $this;
     }
