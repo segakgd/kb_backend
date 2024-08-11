@@ -1,3 +1,11 @@
+Админ по умолчанию: 
+----
+
+~~~
+E-mail: admin@test.email
+Password: 12345678
+~~~
+
 На local: 
 ----
 
