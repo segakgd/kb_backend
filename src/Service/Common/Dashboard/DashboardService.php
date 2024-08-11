@@ -12,6 +12,9 @@ use App\Repository\Visitor\VisitorEventRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Common\Bot\BotServiceInterface;
 use App\Service\Common\Dashboard\Dto\BotDto;
+use App\Service\Common\Dashboard\Dto\ScenarioDto;
+use App\Service\Common\Dashboard\Dto\SessionCacheDto;
+use App\Service\Common\Dashboard\Dto\SessionDto;
 use App\Service\Common\Dashboard\Dto\WebhookInfoDto;
 use App\Service\Common\Scenario\ScenarioTemplateService;
 use App\Service\Constructor\Visitor\Session\SessionService;
@@ -139,6 +142,9 @@ readonly class DashboardService
             ->setWebhookInfo($webhookInfoDto);
     }
 
+    /**
+     * @return array<ScenarioDto>
+     */
     public function prepareScenario(Project $project): array
     {
         $scenarios = $this->scenarioTemplateService->getAllByProjectId($project->getId());
@@ -147,12 +153,9 @@ readonly class DashboardService
 
         /** @var ScenarioTemplate $scenario */
         foreach ($scenarios as $scenario) {
-            $prepareScenario = [
-                'id'   => $scenario->getId(),
-                'name' => $scenario->getName(),
-            ];
-
-            $prepareScenarios[] = $prepareScenario;
+            $prepareScenarios[] = (new ScenarioDto())
+                ->setId($scenario->getId())
+                ->setName($scenario->getName());
         }
 
         return $prepareScenarios;
@@ -172,17 +175,17 @@ readonly class DashboardService
         return $prepareSessions;
     }
 
-    private function prepareSession(Session $session): array
+    private function prepareSession(Session $session): SessionDto
     {
         $cache = $session->getCache();
 
-        return [
-            'id'             => $session->getId(),
-            'sessionName'    => $session->getName(),
-            'sessionChannel' => $session->getChannel(),
-            'cache'          => [
-                'content' => $cache?->getContent() ?? null,
-            ],
-        ];
+        return (new SessionDto())
+            ->setId($session->getId())
+            ->setSessionName($session->getName())
+            ->setSessionChannel($session->getChannel())
+            ->setCache(
+                (new SessionCacheDto())
+                    ->setContent($cache?->getContent() ?? null)
+            );
     }
 }
