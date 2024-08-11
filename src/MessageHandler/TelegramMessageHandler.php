@@ -17,7 +17,6 @@ use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Constructor\Core\Dto\Responsible;
 use App\Service\Constructor\Core\EventResolver;
 use App\Service\Constructor\Visitor\ScenarioManager;
-use App\Service\DtoRepository\ResponsibleDtoRepository;
 use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -30,7 +29,6 @@ final readonly class TelegramMessageHandler
     public function __construct(
         private EventResolver $eventResolver,
         private ScenarioManager $scenarioService,
-        private ResponsibleDtoRepository $responsibleDtoRepository,
         private SessionCacheRepository $sessionCacheRepository,
         private VisitorEventRepository $visitorEventRepository,
         private VisitorSessionRepository $visitorSessionRepository,

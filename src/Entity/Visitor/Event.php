@@ -5,6 +5,7 @@ namespace App\Entity\Visitor;
 use App\Doctrine\Types\ResponsibleType;
 use App\Enum\VisitorEventStatusEnum;
 use App\Repository\Visitor\VisitorEventRepository;
+use App\Service\Constructor\Core\Dto\Responsible;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -34,8 +35,8 @@ class Event
     #[ORM\Column(length: 36)]
     private ?string $scenarioUUID = null;
 
-    #[ORM\Column(type: ResponsibleType::RESPONSIBLE_TYPE)]
-    private array $responsible = [];
+    #[ORM\Column(type: ResponsibleType::RESPONSIBLE_TYPE, nullable: true)]
+    private ?Responsible $responsible = null;
 
     #[ORM\Column]
     private ?int $sessionId = null;
@@ -135,12 +136,12 @@ class Event
         return $this;
     }
 
-    public function getResponsible(): array
+    public function getResponsible(): ?Responsible
     {
         return $this->responsible;
     }
 
-    public function setResponsible(array $responsible): static
+    public function setResponsible(?Responsible $responsible): static
     {
         $this->responsible = $responsible;
 
