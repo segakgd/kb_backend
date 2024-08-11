@@ -290,7 +290,7 @@ h1, h2 {
     overflow: hidden
 }
 
-.messenger-message--outgoing {
+.messenger-message--incoming {
     width: max-content;
     max-width: 350px;
     margin: 10px 30px 10px auto;

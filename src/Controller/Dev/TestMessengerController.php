@@ -7,6 +7,8 @@ use App\Entity\User\Project;
 use App\Enum\Constructor\ChannelEnum;
 use App\Message\TelegramMessage;
 use App\Service\Common\Bot\BotServiceInterface;
+use App\Service\Common\History\Enum\HistoryTypeEnum;
+use App\Service\Common\History\MessageHistoryService;
 use App\Service\Constructor\Visitor\EventManager;
 use App\Service\Constructor\Visitor\Session\SessionService;
 use Exception;
@@ -24,6 +26,7 @@ class TestMessengerController extends AbstractController
         private readonly BotServiceInterface $botService,
         private readonly SessionService $sessionService,
         private readonly EventManager $visitorEventService,
+        private readonly MessageHistoryService $messageHistoryService,
         private readonly SerializerInterface $serializer,
         private readonly MessageBusInterface $bus,
     ) {}
@@ -64,6 +67,12 @@ class TestMessengerController extends AbstractController
                 chanel: $channel,
             );
         }
+
+        $this->messageHistoryService->create(
+            session: $session,
+            message: $webhookData->getWebhookContent(),
+            type: HistoryTypeEnum::Incoming,
+        );
 
         // определяем событие
         $visitorEvent = $this->visitorEventService->createVisitorEventForSession(

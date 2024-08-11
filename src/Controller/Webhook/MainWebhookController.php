@@ -3,6 +3,7 @@
 namespace App\Controller\Webhook;
 
 use App\Dto\Webhook\Telegram\TelegramWebhookDto;
+use App\Entity\User\Bot;
 use App\Enum\Constructor\ChannelEnum;
 use App\Message\TelegramMessage;
 use App\Repository\User\ProjectRepository;
@@ -63,22 +64,19 @@ class MainWebhookController extends AbstractController
      *
      * @throws Exception
      */
-    #[Route('/webhook/{projectId}/{channel}/', name: 'app_webhook_handler', methods: ['POST'])]
-    public function addWebhookAction(Request $request, int $projectId, string $channel): JsonResponse
+    #[Route('/webhook/{projectId}/{channel}/bot/{botId}', name: 'app_webhook_handler', methods: ['POST'])]
+    public function addWebhookAction(Request $request, Bot $bot, int $projectId, string $channel): JsonResponse
     {
-        // todo нужно прокинуть в запрос botId
-        $botId = 10;
-
         $project = $this->projectEntityRepository->find($projectId);
 
         if (!$project) {
-            return $this->json();
+            return $this->json('ok');
         }
 
         if (ChannelEnum::isIn($channel)) {
             $this->logger->error("Channel $channel не валиден");
 
-            return $this->json('ok', 200);
+            return $this->json('ok');
         }
 
         $channel = ChannelEnum::from($channel);
@@ -94,18 +92,18 @@ class MainWebhookController extends AbstractController
                 throw new Exception('Не активный бот');
             }
 
-            $bot = $this->botService->findOne($botId, $project->getId());
-
             $chatId = $webhookData->getWebhookChatId();
             $visitorName = $webhookData->getVisitorName();
 
-            // todo проверить на IS_DEV
-            $this->messageHistoryService->create(
-                message: $webhookData->getWebhookContent(),
-                type: HistoryTypeEnum::Outgoing,
-            );
-
             $session = $this->sessionService->findByMainParams($bot, $chatId, $channel);
+
+            if (isset($_SERVER['APP_ENV']) && $_SERVER['APP_ENV'] === 'dev') {
+                $this->messageHistoryService->create(
+                    session: $session,
+                    message: $webhookData->getWebhookContent(),
+                    type: HistoryTypeEnum::Incoming,
+                );
+            }
 
             if (!$session) {
                 $session = $this->sessionService->createSession(
@@ -127,9 +125,9 @@ class MainWebhookController extends AbstractController
         } catch (Throwable $exception) {
             $this->logger->error($exception->getMessage());
 
-            return $this->json('ok', 200);
+            return $this->json('ok');
         }
 
-        return $this->json('ok', 200);
+        return $this->json('ok');
     }
 }

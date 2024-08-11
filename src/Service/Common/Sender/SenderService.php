@@ -15,7 +15,7 @@ use Exception;
 readonly class SenderService
 {
     public function __construct(
-        private TelegramChannel       $telegramSenderService,
+        private TelegramChannel $telegramSenderService,
         private MessageHistoryService $messageHistoryService,
     ) {}
 

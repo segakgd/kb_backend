@@ -8,7 +8,7 @@
                 <div class="messenger-wr">
                     <div class="messenger-block" id="scroll">
                         {% for message in messages %}
-                            <div class="messenger-message {% if message.type == 'outgoing' %} messenger-message--outgoing {% endif %}">
+                            <div class="messenger-message {% if message.type == 'incoming' %} messenger-message--incoming {% endif %}">
                                 {% if message.images is not empty %}
                                     {% if message.images.0.uri is not empty %}
                                         <div class="messenger-message-image"
