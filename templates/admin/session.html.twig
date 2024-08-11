@@ -124,20 +124,20 @@
 
                                         {% if event.contract is not null %}
                                             {% if event.contract is not empty %}
-                                                {% if event.contract.chains is not null %}
-                                                    {% if event.contract.chains is not empty %}
+                                                {% if event.contract.actions is not null %}
+                                                    {% if event.contract.actions is not empty %}
                                                         <section>
                                                             <span style="font-weight: 500">Цепочка:</span>
                                                             <ul>
-                                                                {% for chain in event.contract.chains %}
+                                                                {% for action in event.contract.actions %}
                                                                     <li>
-                                                                        {% if chain.status == 1 %}
+                                                                        {% if action.status == 1 %}
                                                                             <span class="" style="color: #0abe2e;">Пройдено</span>
                                                                         {% else %}
                                                                             <span class="" style="color: #be0a0a;">Не пройдено</span>
                                                                         {% endif %}
 
-                                                                        {{ chain.name.value }}
+                                                                        {{ action.name.value }}
                                                                     </li>
                                                                 {% endfor %}
                                                             </ul>
@@ -171,8 +171,8 @@
                         <h2>Прошлый контракт</h2>
                     </div>
 
-                    {% if contract.chains is not empty %}
-                        {% for action in contract.chains %}
+                    {% if contract.actions is not empty %}
+                        {% for action in contract.actions %}
                             {% if action.finished == 'true' %}
                                 <li class="action-item action-item--brake">{{ action.target }}</li>
                             {% else %}

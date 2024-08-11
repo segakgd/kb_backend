@@ -184,7 +184,7 @@ readonly class DashboardService
                 $cacheActions = $cacheContract->getActions();
 
                 foreach ($cacheActions as $cacheAction) {
-                    $contract->addChain(
+                    $contract->addAction(
                         (new ActionDto())
                         ->setName($cacheAction->getTarget())
                         ->setStatus($cacheAction->isFinished())

@@ -55,13 +55,13 @@ class CacheActionDto implements DoctrineMappingInterface
 
     public static function fromArray(array $data): static
     {
-        $cacheChain = new static();
+        $cacheAction = new static();
 
-        $cacheChain->target = $data['target'] ?? 'undefined'; // todo убрать?
-        $cacheChain->finished = $data['finished'] ?? false;
-        $cacheChain->repeat = $data['repeat'] ?? false;
+        $cacheAction->target = $data['target'] ?? 'undefined'; // todo убрать?
+        $cacheAction->finished = $data['finished'] ?? false;
+        $cacheAction->repeat = $data['repeat'] ?? false;
 
-        return $cacheChain;
+        return $cacheAction;
     }
 
     public function toArray(): array

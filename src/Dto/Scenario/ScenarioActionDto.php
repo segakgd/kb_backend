@@ -50,12 +50,12 @@ class ScenarioActionDto implements DoctrineMappingInterface
 
     public static function fromArray(array $data): static
     {
-        $chain = new self();
-        $chain->setTarget($data['target'] ?? '');
-        $chain->setRequirements($data['requirements'] ?? []);
-        $chain->setIsFinish($data['isFinish'] ?? false);
+        $action = new self();
+        $action->setTarget($data['target'] ?? '');
+        $action->setRequirements($data['requirements'] ?? []);
+        $action->setIsFinish($data['isFinish'] ?? false);
 
-        return $chain;
+        return $action;
     }
 
     public function toArray(): array

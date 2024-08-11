@@ -89,7 +89,7 @@ class ProjectFixtures extends Fixture implements OrderedFixtureInterface
                             ],
                         ],
                     ],
-                    'chain'    => null,
+                    'action'   => null,
                     'attached' => null,
                 ],
             ],
@@ -114,7 +114,7 @@ class ProjectFixtures extends Fixture implements OrderedFixtureInterface
                             ],
                         ],
                     ],
-                    'chain'    => null,
+                    'action'   => null,
                     'attached' => null,
                 ],
             ],
@@ -126,7 +126,7 @@ class ProjectFixtures extends Fixture implements OrderedFixtureInterface
                 'contract' => [
                     'message'  => null,
                     'keyboard' => null,
-                    'chain'    => [
+                    'action'   => [
                         [
                             'target' => 'start.chain',
                             'finish' => false,
@@ -163,7 +163,7 @@ class ProjectFixtures extends Fixture implements OrderedFixtureInterface
                 'contract' => [
                     'message'  => 'Добро пожаловать в нашем шопе. Хотите приобрести товар? Выберите одну из категорий:',
                     'keyboard' => null,
-                    'chain'    => [
+                    'action'   => [
                         [
                             'target' => 'cart.start.chain',
                             'finish' => false,
@@ -184,7 +184,7 @@ class ProjectFixtures extends Fixture implements OrderedFixtureInterface
                 'contract' => [
                     'message'  => null,
                     'keyboard' => null,
-                    'chain'    => [
+                    'action'   => [
                         [
                             'target' => 'order.greeting.chain',
                             'finish' => false,
@@ -221,7 +221,7 @@ class ProjectFixtures extends Fixture implements OrderedFixtureInterface
                 'contract' => [
                     'message'  => null,
                     'keyboard' => null,
-                    'chain'    => [
+                    'action'   => [
                         [
                             'target' => 'order.shipping-change.greeting.chain',
                             'finish' => false,
@@ -246,7 +246,7 @@ class ProjectFixtures extends Fixture implements OrderedFixtureInterface
                 'contract' => [
                     'message'  => null,
                     'keyboard' => null,
-                    'chain'    => [
+                    'action'   => [
                         [
                             'target' => 'order.contacts-change.greeting.chain',
                             'finish' => false,
@@ -275,7 +275,7 @@ class ProjectFixtures extends Fixture implements OrderedFixtureInterface
                 'contract' => [
                     'message'  => null,
                     'keyboard' => null,
-                    'chain'    => [
+                    'action'   => [
                         [
                             'target' => 'order.change.greeting.chain',
                             'finish' => false,
@@ -296,7 +296,7 @@ class ProjectFixtures extends Fixture implements OrderedFixtureInterface
                 'contract' => [
                     'message'  => null,
                     'keyboard' => null,
-                    'chain'    => [
+                    'action'   => [
                         [
                             'target' => 'order.remove.greeting.chain',
                             'finish' => false,
@@ -321,7 +321,7 @@ class ProjectFixtures extends Fixture implements OrderedFixtureInterface
                 'contract' => [
                     'message'  => null,
                     'keyboard' => null,
-                    'chain'    => [
+                    'action'   => [
                     ],
                     'attached' => null,
                 ],
