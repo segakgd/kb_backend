@@ -2,7 +2,7 @@
 
 namespace App\Entity\User;
 
-use App\Entity\Visitor\VisitorSession;
+use App\Entity\Visitor\Session;
 use App\Repository\User\BotRepository;
 use App\Service\Common\Bot\Enum\BotTypeEnum;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -36,9 +36,9 @@ class Bot
     private ?string $webhookUri = null;
 
     /**
-     * @var Collection<int, VisitorSession>
+     * @var Collection<int, Session>
      */
-    #[ORM\OneToMany(mappedBy: 'bot', targetEntity: VisitorSession::class)]
+    #[ORM\OneToMany(mappedBy: 'bot', targetEntity: Session::class)]
     private Collection $visitorSessions;
 
     public function __construct()
@@ -124,14 +124,14 @@ class Bot
     }
 
     /**
-     * @return Collection<int, VisitorSession>
+     * @return Collection<int, Session>
      */
     public function getVisitorSessions(): Collection
     {
         return $this->visitorSessions;
     }
 
-    public function addVisitorSession(VisitorSession $visitorSession): static
+    public function addVisitorSession(Session $visitorSession): static
     {
         if (!$this->visitorSessions->contains($visitorSession)) {
             $this->visitorSessions->add($visitorSession);
@@ -141,7 +141,7 @@ class Bot
         return $this;
     }
 
-    public function removeVisitorSession(VisitorSession $visitorSession): static
+    public function removeVisitorSession(Session $visitorSession): static
     {
         if ($this->visitorSessions->removeElement($visitorSession)) {
             // set the owning side to null (unless already changed)

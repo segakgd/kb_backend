@@ -8,7 +8,7 @@ use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: VisitorEventRepository::class)]
-class VisitorEvent
+class Event
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

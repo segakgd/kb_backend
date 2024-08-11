@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Сессия пользователя бота
  */
 #[ORM\Entity(repositoryClass: VisitorSessionRepository::class)]
-class VisitorSession
+class Session
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

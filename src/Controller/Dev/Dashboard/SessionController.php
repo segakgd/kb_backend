@@ -4,7 +4,7 @@ namespace App\Controller\Dev\Dashboard;
 
 use App\Entity\User\Bot;
 use App\Entity\User\Project;
-use App\Entity\Visitor\VisitorSession;
+use App\Entity\Visitor\Session;
 use App\Service\Common\DashboardService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,7 +31,7 @@ class SessionController extends AbstractController
     }
 
     #[Route('/admin/projects/{project}/sessions/{visitorSession}/', name: 'admin_project_sessions')]
-    public function session(Project $project, VisitorSession $visitorSession): Response
+    public function session(Project $project, Session $visitorSession): Response
     {
         return $this->render(
             'admin/session.html.twig',

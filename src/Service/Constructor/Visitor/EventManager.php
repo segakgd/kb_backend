@@ -3,8 +3,8 @@
 namespace App\Service\Constructor\Visitor;
 
 use App\Entity\SessionCache;
-use App\Entity\Visitor\VisitorEvent;
-use App\Entity\Visitor\VisitorSession;
+use App\Entity\Visitor\Event;
+use App\Entity\Visitor\Session;
 use App\Enum\VisitorEventStatusEnum;
 use App\Helper\CacheHelper;
 use App\Repository\Visitor\VisitorEventRepository;
@@ -25,10 +25,10 @@ readonly class EventManager
      * @throws Exception
      */
     public function createVisitorEventForSession(
-        VisitorSession $session,
-        string $type,
-        string $content,
-    ): VisitorEvent {
+        Session $session,
+        string  $type,
+        string  $content,
+    ): Event {
         $sessionCache = $session->getCache();
 
         if (is_null($sessionCache)) {

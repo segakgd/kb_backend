@@ -2,7 +2,7 @@
 
 namespace App\Service\DtoRepository;
 
-use App\Entity\Visitor\VisitorEvent;
+use App\Entity\Visitor\Event;
 use App\Service\Constructor\Core\Dto\Responsible;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -12,7 +12,7 @@ readonly class ResponsibleDtoRepository
         private SerializerInterface $serializer,
     ) {}
 
-    public function save(VisitorEvent $visitorEvent, Responsible $dto): void
+    public function save(Event $visitorEvent, Responsible $dto): void
     {
         $normalizeDto = $this->serializer->normalize($dto);
 

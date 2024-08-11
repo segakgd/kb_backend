@@ -5,8 +5,8 @@ namespace App\Service\Common;
 use App\Entity\Scenario\ScenarioTemplate;
 use App\Entity\User\Bot;
 use App\Entity\User\Project;
-use App\Entity\Visitor\VisitorEvent;
-use App\Entity\Visitor\VisitorSession;
+use App\Entity\Visitor\Event;
+use App\Entity\Visitor\Session;
 use App\Repository\MessageHistoryRepository;
 use App\Repository\Visitor\VisitorEventRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
@@ -32,7 +32,7 @@ readonly class DashboardService
         private KernelInterface $kernel,
     ) {}
 
-    public function prepareEvents(VisitorSession $visitorSession): array
+    public function prepareEvents(Session $visitorSession): array
     {
         $events = $this->visitorEventRepository->findAllByProjectId($visitorSession->getProjectId());
 
@@ -45,7 +45,7 @@ readonly class DashboardService
         return array_reverse($prepareEvents);
     }
 
-    public function prepareEvent(VisitorEvent $event): array
+    public function prepareEvent(Event $event): array
     {
         $visitorSession = $this->visitorSessionRepository->find($event->getSessionId());
 
@@ -158,7 +158,7 @@ readonly class DashboardService
 
         $prepareSessions = [];
 
-        /** @var VisitorSession $session */
+        /** @var Session $session */
         foreach ($sessions as $session) {
             $prepareSessions[] = $this->prepareSession($session);
         }
@@ -166,7 +166,7 @@ readonly class DashboardService
         return $prepareSessions;
     }
 
-    private function prepareSession(VisitorSession $session): array
+    private function prepareSession(Session $session): array
     {
         $cache = $session->getCache();
 

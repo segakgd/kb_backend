@@ -3,14 +3,14 @@
 namespace App\Helper;
 
 use App\Entity\SessionCache;
-use App\Entity\Visitor\VisitorSession;
+use App\Entity\Visitor\Session;
 use App\Service\Constructor\Core\Dto\BotDto;
 use App\Service\Constructor\Core\Dto\Responsible;
 use Exception;
 
 class CommonHelper
 {
-    public static function createDefaultResponsible(VisitorSession $session, SessionCache $sessionCache): Responsible
+    public static function createDefaultResponsible(Session $session, SessionCache $sessionCache): Responsible
     {
         return (new Responsible())
             ->setEvent($sessionCache->getEvent())
@@ -41,7 +41,7 @@ class CommonHelper
         ];
     }
 
-    private static function createBotBto(VisitorSession $visitorSession): BotDto
+    private static function createBotBto(Session $visitorSession): BotDto
     {
         $bot = $visitorSession->getBot();
 

@@ -3,8 +3,8 @@
 namespace App\Service\Constructor\Visitor\Event;
 
 use App\Entity\Scenario\Scenario;
-use App\Entity\Visitor\VisitorEvent;
-use App\Entity\Visitor\VisitorSession;
+use App\Entity\Visitor\Event;
+use App\Entity\Visitor\Session;
 use App\Repository\Visitor\VisitorEventRepository;
 
 readonly class EventService
@@ -13,9 +13,9 @@ readonly class EventService
         private VisitorEventRepository $visitorEventRepository,
     ) {}
 
-    public function create(VisitorSession $visitorSession, Scenario $scenario, string $type): VisitorEvent
+    public function create(Session $visitorSession, Scenario $scenario, string $type): Event
     {
-        $visitorEvent = (new VisitorEvent())
+        $visitorEvent = (new Event())
             ->setType($type)
             ->setScenarioUUID($scenario->getUUID())
             ->setSessionId($visitorSession->getId())

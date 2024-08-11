@@ -5,8 +5,8 @@ namespace App\MessageHandler;
 use App\Dto\SessionCache\Cache\CacheContractDto;
 use App\Entity\Scenario\Scenario;
 use App\Entity\SessionCache;
-use App\Entity\Visitor\VisitorEvent;
-use App\Entity\Visitor\VisitorSession;
+use App\Entity\Visitor\Event;
+use App\Entity\Visitor\Session;
 use App\Enum\VisitorEventStatusEnum;
 use App\Helper\CommonHelper;
 use App\Message\SendTelegramMessage;
@@ -92,10 +92,10 @@ final readonly class TelegramMessageHandler
     }
 
     private function updateEntities(
-        VisitorEvent $event,
-        VisitorSession $session,
+        Event        $event,
+        Session      $session,
         SessionCache $sessionCache,
-        Responsible $responsible,
+        Responsible  $responsible,
     ): void {
         $event->setStatus($responsible->getStatus());
 
@@ -109,7 +109,7 @@ final readonly class TelegramMessageHandler
     /**
      * @throws Exception
      */
-    private function enrichContractCacheIfNeed(VisitorEvent $event, SessionCache $sessionCache): SessionCache
+    private function enrichContractCacheIfNeed(Event $event, SessionCache $sessionCache): SessionCache
     {
         if (
             VisitorEventStatusEnum::New === $event->getStatus()

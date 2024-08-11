@@ -4,7 +4,7 @@ namespace App\Service\Constructor\Visitor\Session;
 
 use App\Entity\SessionCache;
 use App\Entity\User\Bot;
-use App\Entity\Visitor\VisitorSession;
+use App\Entity\Visitor\Session;
 use App\Enum\Constructor\ChannelEnum;
 use App\Repository\Visitor\VisitorSessionRepository;
 use DateTimeImmutable;
@@ -15,7 +15,7 @@ readonly class SessionService
         private VisitorSessionRepository $visitorSessionRepository,
     ) {}
 
-    public function findByMainParams(Bot $bot, int $chatId, ChannelEnum $channel): ?VisitorSession
+    public function findByMainParams(Bot $bot, int $chatId, ChannelEnum $channel): ?Session
     {
         return $this->visitorSessionRepository->findOneBy(
             [
@@ -40,8 +40,8 @@ readonly class SessionService
         string $visitorName,
         int $chatId,
         ChannelEnum $chanel,
-    ): VisitorSession {
-        $visitorSession = (new VisitorSession())
+    ): Session {
+        $visitorSession = (new Session())
             ->setName($visitorName)
             ->setChannel($chanel->value)
             ->setChatId($chatId)
