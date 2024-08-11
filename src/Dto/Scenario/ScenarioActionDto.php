@@ -4,7 +4,7 @@ namespace App\Dto\Scenario;
 
 use App\Doctrine\DoctrineMappingInterface;
 
-class ScenarioChainDto implements DoctrineMappingInterface
+class ScenarioActionDto implements DoctrineMappingInterface
 {
     private string $target;
 

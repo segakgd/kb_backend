@@ -10,8 +10,8 @@ class ScenarioContractDto
 
     private ?ScenarioKeyboardDto $keyboard = null;
 
-    /** @var array|null<ScenarioChainDto> */
-    private ?array $chain = null;
+    /** @var array|null<ScenarioActionDto> */
+    private ?array $action = null;
 
     private ?ScenarioAttachedDto $attached = null;
 
@@ -44,26 +44,26 @@ class ScenarioContractDto
         return $this;
     }
 
-    public function getChain(): ?array
+    public function getAction(): ?array
     {
-        return $this->chain;
+        return $this->action;
     }
 
-    public function hasChain(): bool
+    public function hasAction(): bool
     {
-        return !empty($this->chain);
+        return !empty($this->action);
     }
 
-    public function addChain(ScenarioChainDto $chain): static
+    public function addAction(ScenarioActionDto $action): static
     {
-        $this->chain[] = $chain;
+        $this->action[] = $action;
 
         return $this;
     }
 
-    public function setChain(?array $chain): static
+    public function setAction(?array $action): static
     {
-        $this->chain = $chain;
+        $this->action = $action;
 
         return $this;
     }
@@ -124,20 +124,20 @@ class ScenarioContractDto
         $scenarioContractDto->setMessage($data['message'] ?? null);
         $scenarioContractDto->setKeyboard(isset($data['keyboard']) ? ScenarioKeyboardDto::fromArray($data['keyboard']) : null);
 
-        $chainData = $data['chain'] ?? null;
-        $chain = [];
+        $actionData = $data['action'] ?? null;
+        $action = [];
 
-        if ($chainData !== null) {
-            foreach ($chainData as $chainItem) {
-                if (is_array($chainItem)) {
-                    $chain[] = $chainItem;
+        if ($actionData !== null) {
+            foreach ($actionData as $actionItem) {
+                if (is_array($actionItem)) {
+                    $action[] = $actionItem;
                 } else {
-                    $chain[] = ScenarioChainDto::fromArray($chainItem);
+                    $action[] = ScenarioActionDto::fromArray($actionItem);
                 }
             }
         }
 
-        $scenarioContractDto->setChain($chain);
+        $scenarioContractDto->setAction($action);
 
         $scenarioContractDto->setAttached(isset($data['attached']) ? ScenarioAttachedDto::fromArray($data['attached']) : null);
         $scenarioContractDto->setFinish($data['finish'] ?? false);
@@ -147,22 +147,22 @@ class ScenarioContractDto
 
     public function toArray(): array
     {
-        $chainArray = [];
-        $chain = $this->getChain() ?? [];
+        $actionArray = [];
+        $action = $this->getAction() ?? [];
 
-        /** @var ScenarioChainDto $chainItem */
-        foreach ($chain as $chainItem) {
-            if (is_array($chainItem)) {
-                $chainArray[] = $chainItem;
+        /** @var ScenarioActionDto $actionItem */
+        foreach ($action as $actionItem) {
+            if (is_array($actionItem)) {
+                $actionArray[] = $actionItem;
             } else {
-                $chainArray[] = $chainItem->toArray();
+                $actionArray[] = $actionItem->toArray();
             }
         }
 
         return [
             'message'  => $this->getMessage(),
             'keyboard' => $this->getKeyboard()?->toArray(),
-            'chain'    => $chainArray,
+            'action'   => $actionArray,
             'attached' => $this->getAttached()?->toArray(),
             'finish'   => $this->getFinish(),
         ];
