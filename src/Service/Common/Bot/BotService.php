@@ -150,10 +150,8 @@ readonly class BotService implements BotServiceInterface
         $this->botRepository->removeAndFlush($bot);
     }
 
-    public function isActive(int $botId): bool
+    public function isActive(Bot $bot): bool
     {
-        $bot = $this->botRepository->find($botId);
-
         return $bot?->isActive() ?? false;
     }
 }

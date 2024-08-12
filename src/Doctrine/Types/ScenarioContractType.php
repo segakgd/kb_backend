@@ -6,7 +6,7 @@ use App\Dto\Scenario\ScenarioContractDto;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\JsonType;
 
-class ScenarioContractDtoArrayType extends JsonType
+class ScenarioContractType extends JsonType
 {
     public const TYPE_NAME = 'scenario_contract_dto_array';
 

@@ -21,7 +21,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Throwable;
 
-#[OA\Tag(name: 'ProductCategoryChain')]
+#[OA\Tag(name: 'ProductCategory')]
 #[OA\RequestBody(
     content: new Model(
         type: ProductCategoryReqDto::class,

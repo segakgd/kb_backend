@@ -3,7 +3,6 @@
 namespace App\MessageHandler;
 
 use App\Dto\SessionCache\Cache\CacheContractDto;
-use App\Entity\Scenario\Scenario;
 use App\Entity\SessionCache;
 use App\Entity\Visitor\Event;
 use App\Entity\Visitor\Session;
@@ -28,7 +27,7 @@ final readonly class TelegramMessageHandler
 {
     public function __construct(
         private EventResolver $eventResolver,
-        private ScenarioManager $scenarioService,
+        private ScenarioManager $scenarioManager,
         private SessionCacheRepository $sessionCacheRepository,
         private VisitorEventRepository $visitorEventRepository,
         private VisitorSessionRepository $visitorSessionRepository,
@@ -46,10 +45,14 @@ final readonly class TelegramMessageHandler
 
         try {
             if (null === $event) {
+                $this->logger->warning("Event with ID: $eventId not found");
+
                 return;
             }
 
             if (!$event->isStatusAvailableForHandle()) {
+                $this->logger->warning("Event with ID: $eventId without available status");
+
                 return;
             }
 
@@ -58,12 +61,12 @@ final readonly class TelegramMessageHandler
             $sessionCache = $session->getCache();
             $sessionCache = $this->enrichContractCacheIfNeed($event, $sessionCache);
 
-            $responsible = CommonHelper::createDefaultResponsible($session, $sessionCache);
+            $responsible = CommonHelper::createDefaultResponsible($session);
 
             // вот кейсы:
             // отлавливаем jump до того как начнём обрабатывать событие. (системный jump)
             // отлавливаем jump после обработки события (пользовательский jump) - todo а такая вообще возможно? Оо
-            // отлавливаем jumpToChain после обработки события - вполне рядовая ситуация
+            // отлавливаем jumpToAction после обработки события - вполне рядовая ситуация
 
             $responsible = $this->eventResolver->resolve($responsible);
 
@@ -116,21 +119,20 @@ final readonly class TelegramMessageHandler
         if (
             VisitorEventStatusEnum::New === $event->getStatus()
         ) {
-            $scenario = $this->scenarioService->getByUuidOrDefault($event->getScenarioUUID());
+            $scenario = $this->scenarioManager->getByUuidOrDefault(
+                uuid: $event->getScenarioUUID()
+            );
 
-            $sessionCache = $this->enrichContractCache($scenario, $sessionCache);
+            $scenarioContract = $scenario->getContract();
+            $cacheContractDto = CacheContractDto::fromArray($scenarioContract->toArray());
+
+            $eventCache = $sessionCache->getEvent();
+
+            $eventCache->setContract($cacheContractDto);
+            $eventCache->setFinished(false);
+
+            $sessionCache->setEvent($eventCache);
         }
-
-        return $sessionCache;
-    }
-
-    private function enrichContractCache(Scenario $scenario, SessionCache $sessionCache): SessionCache
-    {
-        $scenarioContract = $scenario->getContract();
-        $cacheContractDto = CacheContractDto::fromArray($scenarioContract->toArray());
-
-        $sessionCache->getEvent()->setContract($cacheContractDto);
-        $sessionCache->getEvent()->setFinished(false);
 
         return $sessionCache;
     }

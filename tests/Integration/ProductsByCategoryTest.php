@@ -14,7 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  * @internal
  * @coversNothing
  */
-class ProductsByCategoryChainTest extends KernelTestCase
+class ProductsByCategoryTest extends KernelTestCase
 {
     /**
      * @throws Exception
@@ -43,9 +43,9 @@ class ProductsByCategoryChainTest extends KernelTestCase
                     )
             );
 
-        /** @var ProductsByCategoryAction $chainService */
-        $chainService = $container->get(ProductsByCategoryAction::class);
-        $chainService->before($responsible);
+        /** @var ProductsByCategoryAction $actionService */
+        $actionService = $container->get(ProductsByCategoryAction::class);
+        $actionService->before($responsible);
 
         $this->assertNotEmpty($responsible->getResult()->getMessage());
     }

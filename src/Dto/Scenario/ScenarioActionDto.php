@@ -2,9 +2,9 @@
 
 namespace App\Dto\Scenario;
 
-use App\Dto\Common\AbstractDto;
+use App\Doctrine\DoctrineMappingInterface;
 
-class ScenarioChainDto extends AbstractDto
+class ScenarioActionDto implements DoctrineMappingInterface
 {
     private string $target;
 
@@ -48,14 +48,14 @@ class ScenarioChainDto extends AbstractDto
         return $this;
     }
 
-    public static function fromArray(array $data): self
+    public static function fromArray(array $data): static
     {
-        $chain = new self();
-        $chain->setTarget($data['target'] ?? '');
-        $chain->setRequirements($data['requirements'] ?? []);
-        $chain->setIsFinish($data['isFinish'] ?? false);
+        $action = new self();
+        $action->setTarget($data['target'] ?? '');
+        $action->setRequirements($data['requirements'] ?? []);
+        $action->setIsFinish($data['isFinish'] ?? false);
 
-        return $chain;
+        return $action;
     }
 
     public function toArray(): array

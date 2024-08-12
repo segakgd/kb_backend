@@ -40,9 +40,9 @@ abstract class AbstractAction implements ActionInterface
     /**
      * Точка входа
      */
-    public function execute(ResponsibleInterface $responsible, ?ActionInterface $nextChain): bool
+    public function execute(ResponsibleInterface $responsible, ?ActionInterface $nextAction): bool
     {
-        if (!$responsible->getChain()->isRepeat()) {
+        if (!$responsible->getAction()->isRepeat()) {
             if (!$this->validate($responsible)) {
                 $this->fail($responsible);
 
@@ -50,7 +50,7 @@ abstract class AbstractAction implements ActionInterface
             }
         }
 
-        return $this->performOrComplete($responsible, $nextChain);
+        return $this->performOrComplete($responsible, $nextAction);
     }
 
     /**
@@ -73,7 +73,7 @@ abstract class AbstractAction implements ActionInterface
         return $responsible;
     }
 
-    private function performOrComplete(ResponsibleInterface $responsible, ?ActionInterface $nextChain): bool
+    private function performOrComplete(ResponsibleInterface $responsible, ?ActionInterface $nextAction): bool
     {
         $perform = $this->before($responsible);
 
@@ -83,14 +83,14 @@ abstract class AbstractAction implements ActionInterface
 
         $this->complete($responsible);
 
-        $responsible->getChain()->setFinished(true);
+        $responsible->getAction()->setFinished(true);
 
-        $nextChainKeyBoard = $nextChain?->condition($responsible)->getKeyBoard();
+        $nextActionKeyBoard = $nextAction?->condition($responsible)->getKeyBoard();
 
-        if (null !== $nextChainKeyBoard) {
+        if (null !== $nextActionKeyBoard) {
             $message = $responsible->getResult()->getMessage();
 
-            $message->setKeyBoard($nextChainKeyBoard);
+            $message->setKeyBoard($nextActionKeyBoard);
         }
 
         $this->after($responsible);

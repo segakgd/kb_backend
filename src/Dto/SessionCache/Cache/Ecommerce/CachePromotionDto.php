@@ -2,13 +2,13 @@
 
 namespace App\Dto\SessionCache\Cache\Ecommerce;
 
-use App\Dto\Common\AbstractDto;
+use App\Doctrine\DoctrineMappingInterface;
 
-class CachePromotionDto extends AbstractDto
+class CachePromotionDto implements DoctrineMappingInterface
 {
-    public static function fromArray(array $data): AbstractDto
+    public static function fromArray(array $data): static
     {
-        return new CachePromotionDto;
+        return new CachePromotionDto();
     }
 
     public function toArray(): array

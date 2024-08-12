@@ -28,7 +28,7 @@ readonly class EventResolver
 
             $this->resolveContract($responsible, $cacheContract);
 
-            if ($cacheContract->isAllChainsFinished()) {
+            if ($cacheContract->isAllActionsFinished()) {
                 $cacheContract->setFinished(true);
                 $responsible->setStatus(VisitorEventStatusEnum::Done);
             }
@@ -52,12 +52,14 @@ readonly class EventResolver
     /**
      * @throws Throwable
      */
-    private function resolveContract(Responsible $responsible, CacheContractDto $cacheContractDto): void
+    private function resolveContract(Responsible $responsible, CacheContractDto $cacheContract): void
     {
-        if ($cacheContractDto->hasChain()) {
-            $this->actionResolver->resolve($responsible, $cacheContractDto->getChains());
+        if ($cacheContract->hasActions()) {
+            $responsible->setStatus(VisitorEventStatusEnum::Waiting);
+
+            $this->actionResolver->resolve($responsible, $cacheContract->getActions());
         } else {
-            $this->scenarioResolver->resolve($responsible, $cacheContractDto);
+            $this->scenarioResolver->resolve($responsible, $cacheContract);
 
             $responsible->setStatus(VisitorEventStatusEnum::Done);
         }

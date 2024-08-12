@@ -42,6 +42,8 @@ class SessionController extends AbstractController
             'botId'     => $visitorSession->getBot()->getId(),
             'messages'  => $this->dashboardService->getMessageHistory($visitorSession),
             'events'    => $this->dashboardService->prepareEvents($visitorSession),
+            'sessions'  => $this->dashboardService->prepareSession($visitorSession),
+            'contract'  => $visitorSession->getCache()->getEvent()->getContract(),
         ];
 
         return $this->render(

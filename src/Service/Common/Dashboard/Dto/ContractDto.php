@@ -4,25 +4,25 @@ namespace App\Service\Common\Dashboard\Dto;
 
 class ContractDto
 {
-    private array $chains = [];
+    private array $actions = [];
 
     private bool $finished = false;
 
-    public function getChains(): array
+    public function getActions(): array
     {
-        return $this->chains;
+        return $this->actions;
     }
 
-    public function setChains(array $chains): static
+    public function setActions(array $actions): static
     {
-        $this->chains = $chains;
+        $this->actions = $actions;
 
         return $this;
     }
 
-    public function addChain(ActionDto $action): static
+    public function addAction(ActionDto $action): static
     {
-        $this->chains[] = $action;
+        $this->actions[] = $action;
 
         return $this;
     }

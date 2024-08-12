@@ -14,7 +14,7 @@ class FinishAction extends AbstractAction
 {
     public static function getName(): string
     {
-        return 'finish.chain';
+        return 'finish.action';
     }
 
     public function complete(ResponsibleInterface $responsible): ResponsibleInterface

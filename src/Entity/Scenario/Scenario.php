@@ -2,7 +2,7 @@
 
 namespace App\Entity\Scenario;
 
-use App\Doctrine\Types\ScenarioContractDtoArrayType;
+use App\Doctrine\Types\ScenarioContractType;
 use App\Dto\Scenario\ScenarioContractDto;
 use App\Repository\Scenario\ScenarioRepository;
 use DateTimeImmutable;
@@ -31,7 +31,7 @@ class Scenario
     #[ORM\Column(nullable: true)]
     private ?int $botId = null;
 
-    #[ORM\Column(type: ScenarioContractDtoArrayType::TYPE_NAME, nullable: true)]
+    #[ORM\Column(type: ScenarioContractType::TYPE_NAME, nullable: true)]
     private ?ScenarioContractDto $contract = null;
 
     #[ORM\Column(nullable: true)]

@@ -89,7 +89,7 @@ class ProjectFixtures extends Fixture implements OrderedFixtureInterface
                             ],
                         ],
                     ],
-                    'chain'    => null,
+                    'actions'  => null,
                     'attached' => null,
                 ],
             ],
@@ -114,7 +114,7 @@ class ProjectFixtures extends Fixture implements OrderedFixtureInterface
                             ],
                         ],
                     ],
-                    'chain'    => null,
+                    'actions'  => null,
                     'attached' => null,
                 ],
             ],
@@ -126,29 +126,29 @@ class ProjectFixtures extends Fixture implements OrderedFixtureInterface
                 'contract' => [
                     'message'  => null,
                     'keyboard' => null,
-                    'chain'    => [
+                    'actions'  => [
                         [
-                            'target' => 'start.chain',
+                            'target' => 'start.action',
                             'finish' => false,
                         ],
                         [
-                            'target' => 'product.category.chain',
+                            'target' => 'product.category.action',
                             'finish' => false,
                         ],
                         [
-                            'target' => 'products.by.category.chain',
+                            'target' => 'products.by.category.action',
                             'finish' => false,
                         ],
                         [
-                            'target' => 'variants.product.chain',
+                            'target' => 'variants.product.action',
                             'finish' => false,
                         ],
                         [
-                            'target' => 'variant.product.chain',
+                            'target' => 'variant.product.action',
                             'finish' => false,
                         ],
                         [
-                            'target' => 'finish.chain',
+                            'target' => 'finish.action',
                             'finish' => false,
                         ],
                     ],
@@ -163,13 +163,13 @@ class ProjectFixtures extends Fixture implements OrderedFixtureInterface
                 'contract' => [
                     'message'  => 'Добро пожаловать в нашем шопе. Хотите приобрести товар? Выберите одну из категорий:',
                     'keyboard' => null,
-                    'chain'    => [
+                    'actions'  => [
                         [
-                            'target' => 'cart.start.chain',
+                            'target' => 'cart.start.action',
                             'finish' => false,
                         ],
                         [
-                            'target' => 'cart.finish.chain',
+                            'target' => 'cart.finish.action',
                             'finish' => false,
                         ],
                     ],
@@ -184,17 +184,17 @@ class ProjectFixtures extends Fixture implements OrderedFixtureInterface
                 'contract' => [
                     'message'  => null,
                     'keyboard' => null,
-                    'chain'    => [
+                    'actions'  => [
                         [
-                            'target' => 'order.greeting.chain',
+                            'target' => 'order.greeting.action',
                             'finish' => false,
                         ],
                         [
-                            'target' => 'order.contacts.full-name.chain',
+                            'target' => 'order.contacts.full-name.action',
                             'finish' => false,
                         ],
                         [
-                            'target' => 'order.contacts.phone.chain',
+                            'target' => 'order.contacts.phone.action',
                             'finish' => false,
                         ],
                         [
@@ -202,11 +202,11 @@ class ProjectFixtures extends Fixture implements OrderedFixtureInterface
                             'finish' => false,
                         ],
                         [
-                            'target' => 'order.shipping.chain',
+                            'target' => 'order.shipping.action',
                             'finish' => false,
                         ],
                         [
-                            'target' => 'order.finish.chain',
+                            'target' => 'order.finish.action',
                             'finish' => false,
                         ],
                     ],
@@ -221,17 +221,17 @@ class ProjectFixtures extends Fixture implements OrderedFixtureInterface
                 'contract' => [
                     'message'  => null,
                     'keyboard' => null,
-                    'chain'    => [
+                    'actions'  => [
                         [
-                            'target' => 'order.shipping-change.greeting.chain',
+                            'target' => 'order.shipping-change.greeting.action',
                             'finish' => false,
                         ],
                         [
-                            'target' => 'order.shipping-change.chain',
+                            'target' => 'order.shipping-change.action',
                             'finish' => false,
                         ],
                         [
-                            'target' => 'order.shipping-change.finish.chain',
+                            'target' => 'order.shipping-change.finish.action',
                             'finish' => false,
                         ],
                     ],
@@ -246,21 +246,21 @@ class ProjectFixtures extends Fixture implements OrderedFixtureInterface
                 'contract' => [
                     'message'  => null,
                     'keyboard' => null,
-                    'chain'    => [
+                    'actions'  => [
                         [
-                            'target' => 'order.contacts-change.greeting.chain',
+                            'target' => 'order.contacts-change.greeting.action',
                             'finish' => false,
                         ],
                         [
-                            'target' => 'order.contacts-change.full-name.chain',
+                            'target' => 'order.contacts-change.full-name.action',
                             'finish' => false,
                         ],
                         [
-                            'target' => 'order.contacts-change.phone.chain',
+                            'target' => 'order.contacts-change.phone.action',
                             'finish' => false,
                         ],
                         [
-                            'target' => 'order.contacts-change.finish.chain',
+                            'target' => 'order.contacts-change.finish.action',
                             'finish' => false,
                         ],
                     ],
@@ -275,13 +275,13 @@ class ProjectFixtures extends Fixture implements OrderedFixtureInterface
                 'contract' => [
                     'message'  => null,
                     'keyboard' => null,
-                    'chain'    => [
+                    'actions'  => [
                         [
-                            'target' => 'order.change.greeting.chain',
+                            'target' => 'order.change.greeting.action',
                             'finish' => false,
                         ],
                         [
-                            'target' => 'order.change.finish.chain',
+                            'target' => 'order.change.finish.action',
                             'finish' => false,
                         ],
                     ],
@@ -296,17 +296,17 @@ class ProjectFixtures extends Fixture implements OrderedFixtureInterface
                 'contract' => [
                     'message'  => null,
                     'keyboard' => null,
-                    'chain'    => [
+                    'actions'  => [
                         [
-                            'target' => 'order.remove.greeting.chain',
+                            'target' => 'order.remove.greeting.action',
                             'finish' => false,
                         ],
                         [
-                            'target' => 'order.remove.approve.chain',
+                            'target' => 'order.remove.approve.action',
                             'finish' => false,
                         ],
                         [
-                            'target' => 'order.remove.finish.chain',
+                            'target' => 'order.remove.finish.action',
                             'finish' => false,
                         ],
                     ],
@@ -321,7 +321,7 @@ class ProjectFixtures extends Fixture implements OrderedFixtureInterface
                 'contract' => [
                     'message'  => null,
                     'keyboard' => null,
-                    'chain'    => [
+                    'actions'  => [
                     ],
                     'attached' => null,
                 ],

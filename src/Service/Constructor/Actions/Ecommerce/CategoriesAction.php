@@ -20,7 +20,7 @@ class CategoriesAction extends AbstractAction
 
     public static function getName(): string
     {
-        return 'product.category.chain';
+        return 'product.category.action';
     }
 
     /**
@@ -31,7 +31,7 @@ class CategoriesAction extends AbstractAction
         $event = $responsible->getEvent();
         $content = $responsible->getContent();
 
-        if ($responsible->getChain()->isRepeat()) {
+        if ($responsible->getAction()->isRepeat()) {
             $categoryId = $responsible->getEvent()->getData()->getCategoryId();
             $availableCategory = $this->categoryService->getCategoryById($categoryId);
         } else {
