@@ -27,7 +27,7 @@ final readonly class TelegramMessageHandler
 {
     public function __construct(
         private EventResolver $eventResolver,
-        private ScenarioManager $scenarioService,
+        private ScenarioManager $scenarioManager,
         private SessionCacheRepository $sessionCacheRepository,
         private VisitorEventRepository $visitorEventRepository,
         private VisitorSessionRepository $visitorSessionRepository,
@@ -119,15 +119,19 @@ final readonly class TelegramMessageHandler
         if (
             VisitorEventStatusEnum::New === $event->getStatus()
         ) {
-            $scenario = $this->scenarioService->getByUuidOrDefault(
+            $scenario = $this->scenarioManager->getByUuidOrDefault(
                 uuid: $event->getScenarioUUID()
             );
 
             $scenarioContract = $scenario->getContract();
             $cacheContractDto = CacheContractDto::fromArray($scenarioContract->toArray());
 
-            $sessionCache->getEvent()->setContract($cacheContractDto);
-            $sessionCache->getEvent()->setFinished(false);
+            $eventCache = $sessionCache->getEvent();
+
+            $eventCache->setContract($cacheContractDto);
+            $eventCache->setFinished(false);
+
+            $sessionCache->setEvent($eventCache);
         }
 
         return $sessionCache;

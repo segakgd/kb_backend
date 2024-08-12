@@ -2,7 +2,6 @@
 
 namespace App\Helper;
 
-use App\Entity\SessionCache;
 use App\Entity\Visitor\Session;
 use App\Service\Constructor\Core\Dto\BotDto;
 use App\Service\Constructor\Core\Dto\Responsible;

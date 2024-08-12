@@ -76,7 +76,7 @@ class SessionCache
 
     public function setEvent(?CacheEventDto $event): static
     {
-        $this->event = $event;
+        $this->event = clone $event;
 
         return $this;
     }
