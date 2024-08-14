@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Constructor\Visitor;
+namespace App\Service\Constructor;
 
 use App\Entity\SessionCache;
 use App\Entity\Visitor\Event;
@@ -8,7 +8,7 @@ use App\Entity\Visitor\Session;
 use App\Enum\VisitorEventStatusEnum;
 use App\Helper\CacheHelper;
 use App\Repository\Visitor\VisitorEventRepository;
-use App\Service\Constructor\Visitor\Event\EventService;
+use App\Service\Constructor\Event\EventService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 

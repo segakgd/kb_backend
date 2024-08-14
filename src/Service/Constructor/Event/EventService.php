@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Constructor\Visitor\Event;
+namespace App\Service\Constructor\Event;
 
 use App\Entity\Scenario\Scenario;
 use App\Entity\Visitor\Event;

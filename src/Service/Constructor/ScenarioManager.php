@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Service\Constructor\Visitor;
+namespace App\Service\Constructor;
 
 use App\Entity\Scenario\Scenario;
 use App\Enum\TargetAliasEnum;
-use App\Service\Constructor\Visitor\Scenario\ScenarioService;
+use App\Service\Constructor\Scenario\ScenarioService;
 use Exception;
 
 readonly class ScenarioManager

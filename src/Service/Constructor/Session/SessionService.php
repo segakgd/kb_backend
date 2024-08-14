@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Constructor\Visitor\Session;
+namespace App\Service\Constructor\Session;
 
 use App\Entity\SessionCache;
 use App\Entity\User\Bot;
