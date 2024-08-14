@@ -1,14 +1,18 @@
 <?php
 
-namespace App\Controller\Admin\Bot\DTO\Response;
+declare(strict_types=1);
 
-class BotResDto
+namespace App\Controller\Admin\Product\DTO\Request;
+
+use Symfony\Component\Validator\Constraints as Assert;
+
+class ProductCategoryRequest
 {
-    protected int $id;
+    #[Assert\NotBlank]
+    private int $id;
 
-    protected string $name;
-
-    protected string $type;
+    #[Assert\NotBlank]
+    private string $name;
 
     public function getId(): int
     {
@@ -30,18 +34,6 @@ class BotResDto
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getType(): string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): self
-    {
-        $this->type = $type;
 
         return $this;
     }

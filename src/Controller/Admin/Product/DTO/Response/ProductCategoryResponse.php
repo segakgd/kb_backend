@@ -2,16 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin\Product\DTO\Request;
+namespace App\Controller\Admin\Product\DTO\Response;
 
-use Symfony\Component\Validator\Constraints as Assert;
-
-class ProductCategoryReqDto
+class ProductCategoryResponse
 {
-    #[Assert\NotBlank]
     private int $id;
 
-    #[Assert\NotBlank]
     private string $name;
 
     public function getId(): int

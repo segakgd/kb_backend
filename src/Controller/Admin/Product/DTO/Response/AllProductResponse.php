@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Product\DTO\Response;
 
-class AllProductRespDto
+class AllProductResponse
 {
     private int $id;
 

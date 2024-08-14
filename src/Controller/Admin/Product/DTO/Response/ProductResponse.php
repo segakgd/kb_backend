@@ -2,25 +2,33 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin\Product\DTO\Request;
+namespace App\Controller\Admin\Product\DTO\Response;
 
-use Symfony\Component\Validator\Constraints as Assert;
-
-class ProductReqDto
+class ProductResponse
 {
-    #[Assert\NotBlank]
+    private int $id;
+
     private string $name;
 
-    #[Assert\Choice(choices: [true, false])]
     private bool $visible;
 
-    private ?string $description = null;
+    private string $description;
 
-    #[Assert\Valid]
-    private array $categories = [];
+    private array $categories;
 
-    #[Assert\Valid]
-    private array $variants = [];
+    private array $variants;
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 
     public function getName(): string
     {
@@ -46,12 +54,12 @@ class ProductReqDto
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->description;
     }
 
-    public function setDescription(?string $description): self
+    public function setDescription(string $description): self
     {
         $this->description = $description;
 
@@ -65,13 +73,12 @@ class ProductReqDto
         return $this;
     }
 
-    /** @return ProductCategoryReqDto[] */
     public function getCategories(): array
     {
         return $this->categories;
     }
 
-    public function addCategory(ProductCategoryReqDto $category): self
+    public function addCategory(ProductCategoryResponse $category): self
     {
         $this->categories[] = $category;
 
@@ -85,15 +92,12 @@ class ProductReqDto
         return $this;
     }
 
-    /**
-     * @return ProductVariantReqDto[]
-     */
     public function getVariants(): array
     {
         return $this->variants;
     }
 
-    public function addVariant(ProductVariantReqDto $variant): self
+    public function addVariants(ProductVariantResponse $variant): self
     {
         $this->variants[] = $variant;
 

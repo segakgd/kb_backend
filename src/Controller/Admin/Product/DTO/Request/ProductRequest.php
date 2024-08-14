@@ -2,33 +2,25 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin\Product\DTO\Response;
+namespace App\Controller\Admin\Product\DTO\Request;
 
-class ProductRespDto
+use Symfony\Component\Validator\Constraints as Assert;
+
+class ProductRequest
 {
-    private int $id;
-
+    #[Assert\NotBlank]
     private string $name;
 
+    #[Assert\Choice(choices: [true, false])]
     private bool $visible;
 
-    private string $description;
+    private ?string $description = null;
 
-    private array $categories;
+    #[Assert\Valid]
+    private array $categories = [];
 
-    private array $variants;
-
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    public function setId(int $id): self
-    {
-        $this->id = $id;
-
-        return $this;
-    }
+    #[Assert\Valid]
+    private array $variants = [];
 
     public function getName(): string
     {
@@ -54,12 +46,12 @@ class ProductRespDto
         return $this;
     }
 
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
@@ -73,12 +65,13 @@ class ProductRespDto
         return $this;
     }
 
+    /** @return ProductCategoryRequest[] */
     public function getCategories(): array
     {
         return $this->categories;
     }
 
-    public function addCategory(ProductCategoryRespDto $category): self
+    public function addCategory(ProductCategoryRequest $category): self
     {
         $this->categories[] = $category;
 
@@ -92,12 +85,15 @@ class ProductRespDto
         return $this;
     }
 
+    /**
+     * @return ProductVariantRequest[]
+     */
     public function getVariants(): array
     {
         return $this->variants;
     }
 
-    public function addVariants(ProductVariantRespDto $variant): self
+    public function addVariant(ProductVariantRequest $variant): self
     {
         $this->variants[] = $variant;
 

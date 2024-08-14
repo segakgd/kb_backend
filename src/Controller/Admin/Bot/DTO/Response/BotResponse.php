@@ -1,14 +1,14 @@
 <?php
 
-declare(strict_types=1);
+namespace App\Controller\Admin\Bot\DTO\Response;
 
-namespace App\Controller\Admin\Product\DTO\Response;
-
-class ProductCategoryRespDto
+class BotResponse
 {
-    private int $id;
+    protected int $id;
 
-    private string $name;
+    protected string $name;
+
+    protected string $type;
 
     public function getId(): int
     {
@@ -30,6 +30,18 @@ class ProductCategoryRespDto
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

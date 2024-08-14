@@ -4,7 +4,7 @@ namespace App\Controller\Admin\Bot\DTO\Request;
 
 use App\Service\Common\Bot\Enum\BotTypeEnum;
 
-class UpdateBotReqDto
+class UpdateBotRequest
 {
     protected ?string $name = null;
 

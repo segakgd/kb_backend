@@ -9,7 +9,7 @@ use App\Dto\Ecommerce\Product\Variants\VariantPriceDto;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-class ProductVariantReqDto
+class ProductVariantRequest
 {
     private ?int $id = null;
 

@@ -5,7 +5,7 @@ namespace App\Controller\Admin\Bot\DTO\Request;
 use App\Service\Common\Bot\Enum\BotTypeEnum;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class BotReqDto
+class BotRequest
 {
     private const AVAILABLE_MESSENGER = [
         'telegram',

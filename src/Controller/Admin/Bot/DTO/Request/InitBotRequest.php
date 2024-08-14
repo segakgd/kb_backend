@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Bot\DTO\Request;
 
-class InitBotReqDto
+class InitBotRequest
 {
     protected bool $active;
 
