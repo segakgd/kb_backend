@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Service\Common\Lead;
 
-use App\Controller\Admin\Lead\DTO\Request\Order\Product\OrderVariantReqDto;
-use App\Controller\Admin\Lead\DTO\Response\Fields\LeadContactsRespDto;
-use App\Controller\Admin\Lead\DTO\Response\Fields\LeadFieldRespDto;
-use App\Controller\Admin\Lead\DTO\Response\LeadRespDto;
-use App\Controller\Admin\Lead\DTO\Response\Order\OrderRespDto;
-use App\Controller\Admin\Lead\DTO\Response\Order\Product\ProductRespDto;
-use App\Controller\Admin\Lead\DTO\Response\Order\Product\ProductVariantRespDto;
+use App\Controller\Admin\Lead\Request\Order\Product\OrderVariantReqDto;
+use App\Controller\Admin\Lead\Response\Fields\LeadContactsRespDto;
+use App\Controller\Admin\Lead\Response\Fields\LeadFieldRespDto;
+use App\Controller\Admin\Lead\Response\LeadRespDto;
+use App\Controller\Admin\Lead\Response\Order\OrderRespDto;
+use App\Controller\Admin\Lead\Response\Order\Product\ProductRespDto;
+use App\Controller\Admin\Lead\Response\Order\Product\ProductVariantRespDto;
 use App\Entity\Lead\Deal;
 use App\Repository\Ecommerce\ProductVariantRepository;
 

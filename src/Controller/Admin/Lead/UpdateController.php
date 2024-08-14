@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Lead;
 
-use App\Controller\Admin\Lead\DTO\Request\LeadReqDto;
 use App\Controller\Admin\Lead\Exception\NotFoundLeadForProjectException;
+use App\Controller\Admin\Lead\Request\LeadReqDto;
 use App\Controller\GeneralAbstractController;
 use App\Entity\Lead\Deal;
 use App\Entity\User\Project;

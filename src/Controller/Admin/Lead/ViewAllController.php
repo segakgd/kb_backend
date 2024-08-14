@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Lead;
 
-use App\Controller\Admin\Lead\DTO\Request\FilterLeadsReqDto;
-use App\Controller\Admin\Lead\DTO\Response\AllLeadRespDto;
+use App\Controller\Admin\Lead\Request\FilterLeadsReqDto;
+use App\Controller\Admin\Lead\Response\AllLeadRespDto;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\Project;
 use App\Service\Common\Lead\LeadManager;
