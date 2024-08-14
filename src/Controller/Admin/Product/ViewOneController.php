@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Product;
 
-use App\Controller\Admin\Product\DTO\Response\ProductRespDto;
+use App\Controller\Admin\Product\DTO\Response\ProductResponse;
 use App\Controller\Admin\Product\Exception\NotFoundProductForProjectException;
 use App\Controller\Admin\Product\Response\ProductViewOneResponse;
 use App\Entity\Ecommerce\Product;
@@ -23,7 +23,7 @@ use Throwable;
     response: Response::HTTP_OK,
     description: 'Возвращает продукт',
     content: new Model(
-        type: ProductRespDto::class
+        type: ProductResponse::class
     ),
 )]
 class ViewOneController extends AbstractController

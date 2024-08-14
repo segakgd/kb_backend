@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Bot;
 
-use App\Controller\Admin\Bot\DTO\Request\UpdateBotReqDto;
+use App\Controller\Admin\Bot\DTO\Request\UpdateBotRequest;
 use App\Controller\Admin\Bot\Response\BotUpdateResponse;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\Bot;
@@ -22,7 +22,7 @@ use Throwable;
 #[OA\Tag(name: 'Bot')]
 #[OA\RequestBody(
     content: new Model(
-        type: UpdateBotReqDto::class,
+        type: UpdateBotRequest::class,
     )
 )]
 #[OA\Response(
@@ -48,7 +48,7 @@ class UpdateController extends GeneralAbstractController
     public function execute(Request $request, Project $project, Bot $bot): JsonResponse
     {
         try {
-            $requestDto = $this->getValidDtoFromRequest($request, UpdateBotReqDto::class);
+            $requestDto = $this->getValidDtoFromRequest($request, UpdateBotRequest::class);
 
             $bot = $this->botService->update($requestDto, $bot->getId(), $project->getId());
 

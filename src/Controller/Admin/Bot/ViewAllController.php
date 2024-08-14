@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Bot;
 
-use App\Controller\Admin\Bot\DTO\Response\BotResDto;
+use App\Controller\Admin\Bot\DTO\Response\BotResponse;
 use App\Controller\Admin\Bot\Response\BotViewAllResponse;
 use App\Entity\User\Project;
 use App\Service\Common\Bot\BotServiceInterface;
@@ -25,7 +25,7 @@ use Throwable;
         type: 'array',
         items: new OA\Items(
             ref: new Model(
-                type: BotResDto::class
+                type: BotResponse::class
             )
         )
     ),

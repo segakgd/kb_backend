@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Bot;
 
-use App\Controller\Admin\Bot\DTO\Request\BotReqDto;
+use App\Controller\Admin\Bot\DTO\Request\BotRequest;
 use App\Controller\Admin\Bot\Response\BotCreateResponse;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\Project;
@@ -21,7 +21,7 @@ use Throwable;
 #[OA\Tag(name: 'Bot')]
 #[OA\RequestBody(
     content: new Model(
-        type: BotReqDto::class,
+        type: BotRequest::class,
     )
 )]
 #[OA\Response(
@@ -47,7 +47,7 @@ class CreateController extends GeneralAbstractController
     public function execute(Request $request, Project $project): JsonResponse
     {
         try {
-            $requestDto = $this->getValidDtoFromRequest($request, BotReqDto::class);
+            $requestDto = $this->getValidDtoFromRequest($request, BotRequest::class);
 
             $bot = $this->botService->add($requestDto, $project->getId());
 

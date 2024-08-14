@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Product;
 
-use App\Controller\Admin\Product\DTO\Request\ProductReqDto;
+use App\Controller\Admin\Product\DTO\Request\ProductRequest;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\Project;
 use App\Service\Common\Ecommerce\Product\Manager\ProductManagerInterface;
@@ -22,7 +22,7 @@ use Throwable;
 #[OA\Tag(name: 'Product')]
 #[OA\RequestBody(
     content: new Model(
-        type: ProductReqDto::class,
+        type: ProductRequest::class,
     )
 )]
 #[OA\Response(
@@ -48,7 +48,7 @@ class CreateController extends GeneralAbstractController
     public function execute(Request $request, Project $project): JsonResponse
     {
         try {
-            $requestDto = $this->getValidDtoFromRequest($request, ProductReqDto::class);
+            $requestDto = $this->getValidDtoFromRequest($request, ProductRequest::class);
 
             $this->productManager->create($requestDto, $project);
 

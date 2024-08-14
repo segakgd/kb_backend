@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Common\Ecommerce\ProductCategory\Service;
 
-use App\Controller\Admin\Product\DTO\Request\ProductCategoryReqDto;
+use App\Controller\Admin\Product\DTO\Request\ProductCategoryRequest;
 use App\Entity\Ecommerce\ProductCategory;
 use App\Repository\Ecommerce\ProductCategoryEntityRepository;
 
@@ -16,7 +16,7 @@ readonly class ProductCategoryService implements ProductCategoryServiceInterface
 
     public function getByProjectIdAndReqDto(int $projectId, array $categories): array
     {
-        $categoriesId = array_map(function (ProductCategoryReqDto $productCategory) {
+        $categoriesId = array_map(function (ProductCategoryRequest $productCategory) {
             return $productCategory->getId();
         }, $categories);
 

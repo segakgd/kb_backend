@@ -2,14 +2,14 @@
 
 namespace App\Controller\Admin\ProductCategory\Response;
 
-use App\Controller\Admin\Product\DTO\Response\ProductCategoryRespDto;
+use App\Controller\Admin\Product\DTO\Response\ProductCategoryResponse;
 use App\Entity\Ecommerce\ProductCategory;
 
 class ProductCategoryViewOneResponse
 {
-    public function makeResponse(ProductCategory $productCategory): ProductCategoryRespDto
+    public function makeResponse(ProductCategory $productCategory): ProductCategoryResponse
     {
-        return (new ProductCategoryRespDto())
+        return (new ProductCategoryResponse())
             ->setName($productCategory->getName())
             ->setId($productCategory->getId());
     }

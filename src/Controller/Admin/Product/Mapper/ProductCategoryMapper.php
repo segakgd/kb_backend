@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Product\Mapper;
 
-use App\Controller\Admin\Product\DTO\Response\ProductCategoryRespDto;
+use App\Controller\Admin\Product\DTO\Response\ProductCategoryResponse;
 use App\Entity\Ecommerce\ProductCategory;
 
 class ProductCategoryMapper
 {
-    public static function mapToResponse(ProductCategory $productCategory): ProductCategoryRespDto
+    public static function mapToResponse(ProductCategory $productCategory): ProductCategoryResponse
     {
-        return (new ProductCategoryRespDto())
+        return (new ProductCategoryResponse())
             ->setName($productCategory->getName())
             ->setId($productCategory->getId());
     }

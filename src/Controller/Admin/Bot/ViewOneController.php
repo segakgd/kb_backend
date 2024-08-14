@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Bot;
 
-use App\Controller\Admin\Bot\DTO\Response\BotResDto;
+use App\Controller\Admin\Bot\DTO\Response\BotResponse;
 use App\Controller\Admin\Bot\Exception\NotFoundBotForProjectException;
 use App\Controller\Admin\Bot\Response\BotViewOneResponse;
 use App\Entity\User\Bot;
@@ -22,7 +22,7 @@ use Throwable;
     response: Response::HTTP_OK,
     description: 'Возвращает продукт',
     content: new Model(
-        type: BotResDto::class
+        type: BotResponse::class
     ),
 )]
 class ViewOneController extends AbstractController

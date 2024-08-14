@@ -2,9 +2,9 @@
 
 namespace App\Service\Common\Bot;
 
-use App\Controller\Admin\Bot\DTO\Request\BotReqDto;
-use App\Controller\Admin\Bot\DTO\Request\InitBotReqDto;
-use App\Controller\Admin\Bot\DTO\Request\UpdateBotReqDto;
+use App\Controller\Admin\Bot\DTO\Request\BotRequest;
+use App\Controller\Admin\Bot\DTO\Request\InitBotRequest;
+use App\Controller\Admin\Bot\DTO\Request\UpdateBotRequest;
 use App\Entity\User\Bot;
 use App\Event\InitWebhookBotEvent;
 use App\Repository\User\BotRepository;
@@ -21,7 +21,7 @@ readonly class BotService implements BotServiceInterface
     /**
      * @throws Exception
      */
-    public function init(InitBotReqDto $requestDto, int $botId, int $projectId): void
+    public function init(InitBotRequest $requestDto, int $botId, int $projectId): void
     {
         $bot = $this->botRepository->findOneBy(
             [
@@ -68,7 +68,7 @@ readonly class BotService implements BotServiceInterface
         );
     }
 
-    public function add(BotReqDto $botSettingDto, int $projectId): Bot
+    public function add(BotRequest $botSettingDto, int $projectId): Bot
     {
         $newBot = (new Bot())
             ->setName($botSettingDto->getName())
@@ -84,7 +84,7 @@ readonly class BotService implements BotServiceInterface
     /**
      * @throws Exception
      */
-    public function update(UpdateBotReqDto $botSettingDto, int $botId, int $projectId): Bot
+    public function update(UpdateBotRequest $botSettingDto, int $botId, int $projectId): Bot
     {
         $bot = $this->botRepository->findOneBy(
             [
