@@ -56,11 +56,9 @@ readonly class ProductCategoryManager implements ProductCategoryManagerInterface
     public function update(
         ProductCategoryReqDto $categoryReqDto,
         ProductCategory $productCategory,
-        Project $project
+        Project $project,
     ): ProductCategory {
-        $productCategory
-            ->setName($categoryReqDto->getName())
-            ->markAsUpdated();
+        $productCategory->setName($categoryReqDto->getName());
 
         return $this->productCategoryService->save($productCategory);
     }
