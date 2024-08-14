@@ -15,7 +15,7 @@ use App\Repository\Visitor\VisitorEventRepository;
 use App\Repository\Visitor\VisitorSessionRepository;
 use App\Service\Constructor\Core\Dto\Responsible;
 use App\Service\Constructor\Core\EventResolver;
-use App\Service\Constructor\Visitor\ScenarioManager;
+use App\Service\Constructor\ScenarioManager;
 use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
