@@ -2,47 +2,24 @@
 
 namespace App\Controller\Admin\Bot\DTO\Response;
 
+use App\Entity\User\Bot;
+
 class BotResponse
 {
-    protected int $id;
+    public int $id;
 
-    protected string $name;
+    public string $name;
 
-    protected string $type;
+    public string $type;
 
-    public function getId(): int
+    public static function mapFromEntity(Bot $bot): static
     {
-        return $this->id;
-    }
+        $response = new static();
 
-    public function setId(int $id): self
-    {
-        $this->id = $id;
+        $response->id = $bot->getId();
+        $response->name = $bot->getName();
+        $response->type = $bot->getType()->value;
 
-        return $this;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getType(): string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): self
-    {
-        $this->type = $type;
-
-        return $this;
+        return $response;
     }
 }
