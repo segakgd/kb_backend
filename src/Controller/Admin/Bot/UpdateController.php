@@ -2,8 +2,8 @@
 
 namespace App\Controller\Admin\Bot;
 
-use App\Controller\Admin\Bot\DTO\Response\BotResponse;
 use App\Controller\Admin\Bot\Request\UpdateBotRequest;
+use App\Controller\Admin\Bot\Response\BotResponse;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\Bot;
 use App\Entity\User\Project;

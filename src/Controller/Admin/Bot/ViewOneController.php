@@ -2,9 +2,8 @@
 
 namespace App\Controller\Admin\Bot;
 
-use App\Controller\Admin\Bot\DTO\Response\BotResponse;
 use App\Controller\Admin\Bot\Exception\NotFoundBotForProjectException;
-use App\Controller\Admin\Bot\Response\BotViewOneResponse;
+use App\Controller\Admin\Bot\Response\BotResponse;
 use App\Entity\User\Bot;
 use App\Entity\User\Project;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -14,7 +13,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\Serializer\SerializerInterface;
 use Throwable;
 
 #[OA\Tag(name: 'Bot')]
@@ -27,10 +25,6 @@ use Throwable;
 )]
 class ViewOneController extends AbstractController
 {
-    public function __construct(
-        private readonly SerializerInterface $serializer,
-    ) {}
-
     /** Получение бота */
     #[Route('/api/admin/project/{project}/bot/{bot}/', name: 'admin_bot_get_one', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
@@ -41,11 +35,7 @@ class ViewOneController extends AbstractController
                 throw new NotFoundBotForProjectException();
             }
 
-            return $this->json(
-                $this->serializer->normalize(
-                    (new BotViewOneResponse())->mapToResponse($bot)
-                )
-            );
+            return $this->json(BotResponse::mapFromEntity($bot));
         } catch (Throwable $exception) {
             return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }

@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Bot;
 
-use App\Controller\Admin\Bot\DTO\Response\BotResponse;
-use App\Controller\Admin\Bot\Response\BotViewAllResponse;
+use App\Controller\Admin\Bot\Response\BotResponse;
 use App\Entity\User\Project;
 use App\Service\Common\Bot\BotServiceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -15,7 +14,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\Serializer\SerializerInterface;
 use Throwable;
 
 #[OA\Response(
@@ -34,7 +32,6 @@ use Throwable;
 class ViewAllController extends AbstractController
 {
     public function __construct(
-        private readonly SerializerInterface $serializer,
         private readonly BotServiceInterface $botService,
     ) {}
 
@@ -45,9 +42,7 @@ class ViewAllController extends AbstractController
         try {
             $bots = $this->botService->findAll($project->getId());
 
-            return $this->json($this->serializer->normalize(
-                (new BotViewAllResponse())->mapToResponse($bots)
-            ));
+            return $this->json(BotResponse::mapFromCollection($bots));
         } catch (Throwable $exception) {
             return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
