@@ -43,7 +43,7 @@ class CreateController extends GeneralAbstractController
     }
 
     /** Создание категории продуктов */
-    #[Route('/api/admin/project/{project}/productCategory/', name: 'admin_product_category_create', methods: ['POST'])]
+    #[Route('/api/admin/project/{project}/product-categories/', name: 'admin_product_category_create', methods: ['POST'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project): JsonResponse
     {

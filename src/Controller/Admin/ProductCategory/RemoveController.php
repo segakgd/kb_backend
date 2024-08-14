@@ -22,7 +22,7 @@ class RemoveController extends AbstractController
     public function __construct(private readonly ProductCategoryManagerInterface $productCategoryManager) {}
 
     /** Удаление категории продуктов */
-    #[Route('/api/admin/project/{project}/productCategory/{productCategory}/', name: 'admin_product_category_remove', methods: ['DELETE'])]
+    #[Route('/api/admin/project/{project}/product-categories/{productCategory}/', name: 'admin_product_category_remove', methods: ['DELETE'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project, ProductCategory $productCategory): JsonResponse
     {

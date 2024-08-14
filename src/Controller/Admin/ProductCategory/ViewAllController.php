@@ -36,8 +36,8 @@ class ViewAllController extends AbstractController
         private readonly ProductCategoryManagerInterface $productCategoryManager,
     ) {}
 
-    /** Получение колекции категорий */
-    #[Route('/api/admin/project/{project}/productCategory/', name: 'admin_product_category_get_all', methods: ['GET'])]
+    /** Получение коллекции категорий */
+    #[Route('/api/admin/project/{project}/product-categories/', name: 'admin_product_category_get_all', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project): JsonResponse
     {

@@ -45,7 +45,7 @@ class UpdateController extends GeneralAbstractController
     }
 
     /** Обновление категории продуктов */
-    #[Route('/api/admin/project/{project}/productCategory/{productCategory}/', name: 'admin_product_category_update', methods: ['PATCH'])]
+    #[Route('/api/admin/project/{project}/product-categories/{productCategory}/', name: 'admin_product_category_update', methods: ['PATCH'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project, ProductCategory $productCategory): JsonResponse
     {

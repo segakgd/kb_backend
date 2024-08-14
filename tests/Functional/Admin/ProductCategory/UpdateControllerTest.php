@@ -36,7 +36,7 @@ class UpdateControllerTest extends ApiTestCase
 
         $client->request(
             method: 'POST',
-            uri: '/api/admin/project/' . $project->getId() . '/productCategory/',
+            uri: '/api/admin/project/' . $project->getId() . '/product-categories/',
             content: json_encode($requestContent)
         );
 
