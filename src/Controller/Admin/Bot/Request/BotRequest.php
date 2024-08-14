@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin\Bot\DTO\Request;
+namespace App\Controller\Admin\Bot\Request;
 
 use App\Service\Common\Bot\Enum\BotTypeEnum;
 use Symfony\Component\Validator\Constraints as Assert;

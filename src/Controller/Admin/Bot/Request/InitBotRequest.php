@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin\Bot\DTO\Request;
+namespace App\Controller\Admin\Bot\Request;
 
 class InitBotRequest
 {

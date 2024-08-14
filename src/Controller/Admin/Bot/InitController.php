@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Bot;
 
-use App\Controller\Admin\Bot\DTO\Request\InitBotRequest;
+use App\Controller\Admin\Bot\Request\InitBotRequest;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\Project;
 use App\Service\Common\Bot\BotServiceInterface;

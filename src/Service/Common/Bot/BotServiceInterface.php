@@ -2,8 +2,8 @@
 
 namespace App\Service\Common\Bot;
 
-use App\Controller\Admin\Bot\DTO\Request\BotRequest;
-use App\Controller\Admin\Bot\DTO\Request\UpdateBotRequest;
+use App\Controller\Admin\Bot\Request\BotRequest;
+use App\Controller\Admin\Bot\Request\UpdateBotRequest;
 use App\Entity\User\Bot;
 
 interface BotServiceInterface

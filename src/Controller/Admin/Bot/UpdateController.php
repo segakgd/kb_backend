@@ -2,8 +2,8 @@
 
 namespace App\Controller\Admin\Bot;
 
-use App\Controller\Admin\Bot\DTO\Request\UpdateBotRequest;
-use App\Controller\Admin\Bot\Response\BotUpdateResponse;
+use App\Controller\Admin\Bot\DTO\Response\BotResponse;
+use App\Controller\Admin\Bot\Request\UpdateBotRequest;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\Bot;
 use App\Entity\User\Project;
@@ -52,11 +52,7 @@ class UpdateController extends GeneralAbstractController
 
             $bot = $this->botService->update($requestDto, $bot->getId(), $project->getId());
 
-            return $this->json(
-                $this->serializer->normalize(
-                    (new BotUpdateResponse())->mapToResponse($bot)
-                )
-            );
+            return $this->json(BotResponse::mapFromEntity($bot));
         } catch (Throwable $exception) {
             return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }

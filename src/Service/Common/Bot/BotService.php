@@ -2,9 +2,9 @@
 
 namespace App\Service\Common\Bot;
 
-use App\Controller\Admin\Bot\DTO\Request\BotRequest;
-use App\Controller\Admin\Bot\DTO\Request\InitBotRequest;
-use App\Controller\Admin\Bot\DTO\Request\UpdateBotRequest;
+use App\Controller\Admin\Bot\Request\BotRequest;
+use App\Controller\Admin\Bot\Request\InitBotRequest;
+use App\Controller\Admin\Bot\Request\UpdateBotRequest;
 use App\Entity\User\Bot;
 use App\Event\InitWebhookBotEvent;
 use App\Repository\User\BotRepository;
