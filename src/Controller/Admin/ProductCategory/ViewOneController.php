@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\ProductCategory;
 
+use App\Controller\Admin\Product\DTO\Response\ProductCategoryResponse;
 use App\Controller\Admin\ProductCategory\DTO\Response\ProductCategoryRespDto;
 use App\Controller\Admin\ProductCategory\Exception\NotFoundProductCategoryForProjectException;
 use App\Controller\Admin\ProductCategory\Response\ProductCategoryViewOneResponse;
@@ -39,7 +40,7 @@ class ViewOneController extends AbstractController
             }
 
             return $this->json(
-                (new ProductCategoryViewOneResponse())->makeResponse($productCategory)
+                ProductCategoryResponse::mapFromEntity($productCategory)
             );
         } catch (Throwable $exception) {
             return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
