@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Scenario;
 
-use App\Controller\Admin\Scenario\DTO\Request\ScenarioUpdateReqDto;
+use App\Controller\Admin\Scenario\Request\ScenarioUpdateRequest;
 use App\Controller\GeneralAbstractController;
 use App\Entity\Scenario\Scenario;
 use App\Entity\User\Project;
@@ -17,7 +17,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[OA\Tag(name: 'Scenario')]
 #[OA\RequestBody(
     content: new Model(
-        type: ScenarioUpdateReqDto::class,
+        type: ScenarioUpdateRequest::class,
     )
 )]
 #[OA\Response(

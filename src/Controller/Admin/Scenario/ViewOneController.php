@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Scenario;
 
-use App\Controller\Admin\Scenario\DTO\Response\ScenarioRespDto;
+use App\Controller\Admin\Scenario\Response\ScenarioResponse;
 use App\Entity\Scenario\Scenario;
 use App\Entity\User\Project;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -19,7 +19,7 @@ use Symfony\Component\Serializer\SerializerInterface;
     response: Response::HTTP_OK,
     description: 'Получение одного сценария',
     content: new Model(
-        type: ScenarioRespDto::class
+        type: ScenarioResponse::class
     ),
 )]
 class ViewOneController extends AbstractController
@@ -33,7 +33,7 @@ class ViewOneController extends AbstractController
     public function execute(Project $project, Scenario $scenario): JsonResponse
     {
         return $this->json(
-            $this->serializer->normalize(new ScenarioRespDto())
+            $this->serializer->normalize(new ScenarioResponse())
         );
     }
 }
