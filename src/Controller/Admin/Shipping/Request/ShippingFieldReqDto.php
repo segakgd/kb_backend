@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin\Shipping\DTO\Request;
+namespace App\Controller\Admin\Shipping\Request;
 
 use App\Enum\Shipping\ShippingFieldEnum;
 use Symfony\Component\Validator\Constraints as Assert;

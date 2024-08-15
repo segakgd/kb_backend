@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin\Shipping\DTO\Request;
+namespace App\Controller\Admin\Shipping\Request;
 
 use App\Dto\Ecommerce\Shipping\ShippingPriceDto;
 use App\Enum\Shipping\ShippingCalculationTypeEnum;

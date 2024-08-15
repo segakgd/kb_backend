@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Shipping;
 
 use App\Controller\Admin\Lead\Response\Order\Shipping\ShippingRespDto;
+use App\Controller\Admin\Shipping\Response\ShippingResponse;
 use App\Controller\Admin\Shipping\Response\ShippingViewAllResponse;
 use App\Entity\User\Project;
 use App\Service\Common\Ecommerce\Shipping\Manager\ShippingManagerInterface;
@@ -47,7 +48,7 @@ class ViewAllController extends AbstractController
             $shippingCollection = $this->shippingManager->getAllByByProject($project);
 
             return $this->json(
-                (new ShippingViewAllResponse())->makeResponse($shippingCollection)
+                ShippingResponse::mapFromCollection($shippingCollection)
             );
         } catch (Throwable $exception) {
             $this->logger->error($exception->getMessage());

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Doctrine\Types\Shipping;
 
-use App\Controller\Admin\Shipping\DTO\Request\ShippingFieldReqDto;
+use App\Controller\Admin\Shipping\Request\ShippingFieldReqDto;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\JsonType;
 use InvalidArgumentException;

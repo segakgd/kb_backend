@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Shipping\Mapper;
 
-use App\Controller\Admin\Shipping\DTO\Request\ShippingReqDto;
+use App\Controller\Admin\Shipping\Request\ShippingReqDto;
 use App\Entity\Ecommerce\Shipping;
 
 class ShippingMapper
@@ -16,7 +16,7 @@ class ShippingMapper
             ->setDescription($shippingReqDto->getDescription())
             ->setType($shippingReqDto->getType())
             ->setCalculationType($shippingReqDto->getCalculationType())
-            ->setIsActive($shippingReqDto->isActive())
+            ->setActive($shippingReqDto->isActive())
             ->setApplyFromAmount($shippingReqDto->getApplyFromAmount())
             ->setApplyToAmount($shippingReqDto->getApplyToAmount())
             ->setFreeFrom($shippingReqDto->getFreeFrom())
@@ -31,7 +31,7 @@ class ShippingMapper
             ->setDescription($shippingReqDto->getDescription())
             ->setType($shippingReqDto->getType())
             ->setCalculationType($shippingReqDto->getCalculationType())
-            ->setIsActive($shippingReqDto->isActive())
+            ->setActive($shippingReqDto->isActive())
             ->setApplyFromAmount($shippingReqDto->getApplyFromAmount())
             ->setApplyToAmount($shippingReqDto->getApplyToAmount())
             ->setFreeFrom($shippingReqDto->getFreeFrom())

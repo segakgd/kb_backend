@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Shipping;
 
-use App\Controller\Admin\Shipping\DTO\Request\ShippingReqDto;
+use App\Controller\Admin\Shipping\Request\ShippingReqDto;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\Project;
 use App\Service\Common\Ecommerce\Shipping\Manager\ShippingManagerInterface;
