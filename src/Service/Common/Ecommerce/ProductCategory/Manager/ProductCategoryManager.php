@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Common\Ecommerce\ProductCategory\Manager;
 
-use App\Controller\Admin\ProductCategory\Request\ProductCategoryReqDto;
+use App\Controller\Admin\ProductCategory\Request\ProductCategoryRequest;
 use App\Entity\Ecommerce\ProductCategory;
 use App\Entity\User\Project;
 use App\Exception\Ecommerce\ProductCategoryExistException;
@@ -19,7 +19,7 @@ readonly class ProductCategoryManager implements ProductCategoryManagerInterface
      * @throws ProductCategoryExistException
      * @throws Exception
      */
-    public function create(ProductCategoryReqDto $categoryReqDto, Project $project): ProductCategory
+    public function create(ProductCategoryRequest $categoryReqDto, Project $project): ProductCategory
     {
         $existingCategory = $this->productCategoryService->getCategoryByNameAndProjectId(
             $categoryReqDto->getName(),
@@ -54,7 +54,7 @@ readonly class ProductCategoryManager implements ProductCategoryManagerInterface
     }
 
     public function update(
-        ProductCategoryReqDto $categoryReqDto,
+        ProductCategoryRequest $categoryReqDto,
         ProductCategory $productCategory,
         Project $project,
     ): ProductCategory {

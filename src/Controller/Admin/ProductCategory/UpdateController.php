@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin\ProductCategory;
 
 use App\Controller\Admin\ProductCategory\Exception\NotFoundProductCategoryForProjectException;
-use App\Controller\Admin\ProductCategory\Request\ProductCategoryReqDto;
+use App\Controller\Admin\ProductCategory\Request\ProductCategoryRequest;
 use App\Controller\GeneralAbstractController;
 use App\Entity\Ecommerce\ProductCategory;
 use App\Entity\User\Project;
@@ -24,7 +24,7 @@ use Throwable;
 #[OA\Tag(name: 'ProductCategory')]
 #[OA\RequestBody(
     content: new Model(
-        type: ProductCategoryReqDto::class,
+        type: ProductCategoryRequest::class,
     )
 )]
 #[OA\Response(
@@ -54,7 +54,7 @@ class UpdateController extends GeneralAbstractController
                 throw new NotFoundProductCategoryForProjectException();
             }
 
-            $requestDto = $this->getValidDtoFromRequest($request, ProductCategoryReqDto::class);
+            $requestDto = $this->getValidDtoFromRequest($request, ProductCategoryRequest::class);
 
             $this->productCategoryManager->update($requestDto, $productCategory, $project);
 

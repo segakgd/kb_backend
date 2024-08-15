@@ -4,7 +4,7 @@ namespace App\Controller\Admin\ProductCategory\Request;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class ProductCategoryReqDto
+class ProductCategoryRequest
 {
     #[Assert\NotBlank]
     #[Assert\Length(max: 100)]
