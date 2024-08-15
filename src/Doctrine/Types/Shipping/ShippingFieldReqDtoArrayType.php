@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Doctrine\Types\Shipping;
 
-use App\Controller\Admin\Shipping\Request\ShippingFieldReqDto;
+use App\Controller\Admin\Shipping\Request\ShippingFieldRequest;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\JsonType;
 use InvalidArgumentException;
@@ -27,7 +27,7 @@ class ShippingFieldReqDtoArrayType extends JsonType
         }
 
         return array_map(function ($item) {
-            $dto = new ShippingFieldReqDto();
+            $dto = new ShippingFieldRequest();
             $dto->setName($item['name']);
             $dto->setValue($item['value']);
             $dto->setType($item['type']);
@@ -42,7 +42,7 @@ class ShippingFieldReqDtoArrayType extends JsonType
             throw new InvalidArgumentException('Value must be an array of ShippingFieldReqDto objects');
         }
 
-        return json_encode(array_map(function (ShippingFieldReqDto $dto) {
+        return json_encode(array_map(function (ShippingFieldRequest $dto) {
             return [
                 'name'  => $dto->getName(),
                 'value' => $dto->getValue(),

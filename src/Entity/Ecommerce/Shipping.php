@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Ecommerce;
 
-use App\Controller\Admin\Shipping\Request\ShippingFieldReqDto;
+use App\Controller\Admin\Shipping\Request\ShippingFieldRequest;
 use App\Doctrine\Types\Shipping\ShippingFieldReqDtoArrayType;
 use App\Doctrine\Types\Shipping\ShippingPriceType;
 use App\Dto\Ecommerce\Shipping\ShippingPriceDto;
@@ -248,7 +248,7 @@ class Shipping
         return $this;
     }
 
-    public function addField(ShippingFieldReqDto $field): static
+    public function addField(ShippingFieldRequest $field): static
     {
         $this->fields[] = $field;
 

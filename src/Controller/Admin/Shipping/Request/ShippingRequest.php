@@ -10,7 +10,7 @@ use App\Enum\Shipping\ShippingTypeEnum;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-class ShippingReqDto
+class ShippingRequest
 {
     #[Assert\NotBlank]
     private string $title;
@@ -158,7 +158,7 @@ class ShippingReqDto
         return $this->fields;
     }
 
-    public function addFields(ShippingFieldReqDto $field): self
+    public function addFields(ShippingFieldRequest $field): self
     {
         $this->fields[] = $field;
 

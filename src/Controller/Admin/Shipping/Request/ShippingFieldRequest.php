@@ -7,7 +7,7 @@ namespace App\Controller\Admin\Shipping\Request;
 use App\Enum\Shipping\ShippingFieldEnum;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class ShippingFieldReqDto
+class ShippingFieldRequest
 {
     #[Assert\NotBlank]
     private string $name;
