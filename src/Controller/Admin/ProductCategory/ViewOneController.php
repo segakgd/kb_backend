@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Admin\ProductCategory;
 
 use App\Controller\Admin\Product\DTO\Response\ProductCategoryResponse;
-use App\Controller\Admin\ProductCategory\DTO\Response\ProductCategoryRespDto;
 use App\Controller\Admin\ProductCategory\Exception\NotFoundProductCategoryForProjectException;
+use App\Controller\Admin\ProductCategory\Response\ProductCategoryResponse;
 use App\Controller\Admin\ProductCategory\Response\ProductCategoryViewOneResponse;
 use App\Entity\Ecommerce\ProductCategory;
 use App\Entity\User\Project;
@@ -24,7 +24,7 @@ use Throwable;
     response: Response::HTTP_NO_CONTENT,
     description: 'Возвращает запрашиваемую категорию по проекту',
     content: new Model(
-        type: ProductCategoryRespDto::class,
+        type: ProductCategoryResponse::class,
     ),
 )]
 class ViewOneController extends AbstractController

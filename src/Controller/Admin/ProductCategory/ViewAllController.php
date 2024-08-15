@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin\ProductCategory;
 
 use App\Controller\Admin\Product\DTO\Response\ProductCategoryResponse;
-use App\Controller\Admin\ProductCategory\DTO\Response\ProductCategoryRespDto;
+use App\Controller\Admin\ProductCategory\Response\ProductCategoryResponse;
 use App\Entity\User\Project;
 use App\Service\Common\Ecommerce\ProductCategory\Manager\ProductCategoryManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -25,7 +25,7 @@ use Throwable;
         type: 'array',
         items: new OA\Items(
             ref: new Model(
-                type: ProductCategoryRespDto::class
+                type: ProductCategoryResponse::class
             )
         )
     ),

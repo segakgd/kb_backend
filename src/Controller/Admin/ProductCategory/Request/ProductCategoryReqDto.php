@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin\ProductCategory\DTO\Request;
+namespace App\Controller\Admin\ProductCategory\Request;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
