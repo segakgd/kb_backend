@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\ProductCategory;
 
-use App\Controller\Admin\ProductCategory\DTO\Request\ProductCategoryReqDto;
 use App\Controller\Admin\ProductCategory\Exception\NotFoundProductCategoryForProjectException;
+use App\Controller\Admin\ProductCategory\Request\ProductCategoryReqDto;
 use App\Controller\GeneralAbstractController;
 use App\Entity\Ecommerce\ProductCategory;
 use App\Entity\User\Project;
