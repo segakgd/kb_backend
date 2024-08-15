@@ -28,18 +28,4 @@ class ProductCategoryResponse extends AbstractResponse
 
         return $response;
     }
-
-    /**
-     * @throws Exception
-     */
-    public static function mapFromCollection(iterable $collection): array
-    {
-        $mapResult = [];
-
-        foreach ($collection as $item) {
-            $mapResult = static::mapFromEntity($item);
-        }
-
-        return $mapResult;
-    }
 }
