@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Scenario;
 
-use App\Controller\Admin\Scenario\DTO\Response\ScenarioRespDto;
+use App\Controller\Admin\Scenario\Response\ScenarioResponse;
 use App\Entity\User\Project;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -22,7 +22,7 @@ use Symfony\Component\Serializer\SerializerInterface;
         type: 'array',
         items: new OA\Items(
             ref: new Model(
-                type: ScenarioRespDto::class
+                type: ScenarioResponse::class
             )
         )
     ),
@@ -40,8 +40,8 @@ class ViewAllController extends AbstractController
         return $this->json(
             $this->serializer->normalize(
                 [
-                    new ScenarioRespDto(),
-                    new ScenarioRespDto(),
+                    new ScenarioResponse(),
+                    new ScenarioResponse(),
                 ]
             )
         );

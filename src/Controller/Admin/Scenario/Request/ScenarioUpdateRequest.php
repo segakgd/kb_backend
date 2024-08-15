@@ -1,19 +1,21 @@
 <?php
 
-namespace App\Controller\Admin\Scenario\DTO\Response;
+namespace App\Controller\Admin\Scenario\Request;
 
-readonly class ScenarioRespDto
+readonly class ScenarioUpdateRequest
 {
-    private ?int $id;
+    private int $id;
 
     private string $name;
 
-    public function getId(): ?int
+    // todo реализовать private readonly array $scenario;
+
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function setId(?int $id): void
+    public function setId(int $id): void
     {
         $this->id = $id;
     }

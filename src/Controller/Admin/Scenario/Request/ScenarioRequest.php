@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controller\Admin\Scenario\DTO\Request;
+namespace App\Controller\Admin\Scenario\Request;
 
-readonly class ScenarioReqDto
+readonly class ScenarioRequest
 {
     private string $name;
 
