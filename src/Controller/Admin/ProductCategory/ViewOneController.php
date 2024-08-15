@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\ProductCategory;
 
-use App\Controller\Admin\Product\DTO\Response\ProductCategoryResponse;
 use App\Controller\Admin\ProductCategory\Exception\NotFoundProductCategoryForProjectException;
 use App\Controller\Admin\ProductCategory\Response\ProductCategoryResponse;
-use App\Controller\Admin\ProductCategory\Response\ProductCategoryViewOneResponse;
 use App\Entity\Ecommerce\ProductCategory;
 use App\Entity\User\Project;
 use Nelmio\ApiDocBundle\Annotation\Model;

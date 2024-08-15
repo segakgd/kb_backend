@@ -2,33 +2,44 @@
 
 namespace App\Controller\Admin\ProductCategory\Response;
 
-class ProductCategoryResponse
+use App\Controller\AbstractResponse;
+use App\Entity\Ecommerce\ProductCategory;
+use Exception;
+
+class ProductCategoryResponse extends AbstractResponse
 {
-    private string $id;
+    public string $id;
 
-    private string $name;
+    public string $name;
 
-    public function getId(): string
+    /**
+     * @throws Exception
+     */
+    public static function mapFromEntity(object $entity): static
     {
-        return $this->id;
+        if (!$entity instanceof ProductCategory) {
+            throw new Exception('Entity with undefined type.');
+        }
+
+        $response = new static();
+
+        $response->id = $entity->getId();
+        $response->name = $entity->getName();
+
+        return $response;
     }
 
-    public function setId(string $id): self
+    /**
+     * @throws Exception
+     */
+    public static function mapFromCollection(iterable $collection): array
     {
-        $this->id = $id;
+        $mapResult = [];
 
-        return $this;
-    }
+        foreach ($collection as $item) {
+            $mapResult = static::mapFromEntity($item);
+        }
 
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
+        return $mapResult;
     }
 }

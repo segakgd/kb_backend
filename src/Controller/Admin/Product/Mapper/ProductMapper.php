@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Product\Mapper;
 
-use App\Controller\Admin\Product\DTO\Response\ProductCategoryResponse;
 use App\Controller\Admin\Product\DTO\Response\ProductResponse;
+use App\Controller\Admin\ProductCategory\Response\ProductCategoryResponse;
 use App\Entity\Ecommerce\Product;
 use Exception;
 

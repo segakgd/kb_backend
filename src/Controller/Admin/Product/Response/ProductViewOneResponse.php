@@ -2,9 +2,9 @@
 
 namespace App\Controller\Admin\Product\Response;
 
-use App\Controller\Admin\Product\DTO\Response\ProductCategoryResponse;
 use App\Controller\Admin\Product\DTO\Response\ProductResponse;
 use App\Controller\Admin\Product\Mapper\ProductVariantMapper;
+use App\Controller\Admin\ProductCategory\Response\ProductCategoryResponse;
 use App\Entity\Ecommerce\Product;
 use Exception;
 

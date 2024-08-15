@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Product\DTO\Response;
 
+use App\Controller\Admin\ProductCategory\Response\ProductCategoryResponse;
+
 class ProductResponse
 {
     private int $id;
