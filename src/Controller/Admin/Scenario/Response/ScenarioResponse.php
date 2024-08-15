@@ -2,29 +2,30 @@
 
 namespace App\Controller\Admin\Scenario\Response;
 
-readonly class ScenarioResponse
+use App\Controller\AbstractResponse;
+use App\Entity\Scenario\Scenario;
+use Exception;
+
+class ScenarioResponse extends AbstractResponse
 {
-    private ?int $id;
+    public ?int $id;
 
-    private string $name;
+    public string $name;
 
-    public function getId(): ?int
+    /**
+     * @throws Exception
+     */
+    public static function mapFromEntity(object $entity): static
     {
-        return $this->id;
-    }
+        if (!$entity instanceof Scenario) {
+            throw new Exception('Entity with undefined type.');
+        }
 
-    public function setId(?int $id): void
-    {
-        $this->id = $id;
-    }
+        $response = new static();
 
-    public function getName(): string
-    {
-        return $this->name;
-    }
+        $response->id = $entity->getId();
+        $response->name = $entity->getName();
 
-    public function setName(string $name): void
-    {
-        $this->name = $name;
+        return $response;
     }
 }
