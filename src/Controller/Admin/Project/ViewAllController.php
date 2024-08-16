@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Project;
 
 use App\Controller\Admin\Project\DTO\Response\ProjectRespDto;
-use App\Controller\Admin\Project\Response\ProjectsResponse;
 use App\Entity\User\User;
 use App\Service\Common\Project\ProjectServiceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -48,7 +47,7 @@ class ViewAllController extends AbstractController
         $projects = $this->projectService->getAll($user);
 
         return $this->json(
-            (new ProjectsResponse())->mapToResponse($projects)
+            ProjectRespDto::mapCollection($projects)
         );
     }
 }
