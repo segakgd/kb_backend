@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Project;
 
-use App\Controller\Admin\Project\DTO\Request\ProjectCreateReqDto;
+use App\Controller\Admin\Project\Request\ProjectCreateRequest;
 use App\Controller\Admin\Project\Response\ProjectResponse;
 use App\Controller\GeneralAbstractController;
 use App\Repository\User\UserRepository;
@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[OA\Tag(name: 'Project')]
 #[OA\RequestBody(
     content: new Model(
-        type: ProjectCreateReqDto::class,
+        type: ProjectCreateRequest::class,
     )
 )]
 #[OA\Response(
@@ -53,7 +53,7 @@ class CreateController extends GeneralAbstractController
             return $this->json([], Response::HTTP_FORBIDDEN);
         }
 
-        $requestDto = $this->getValidDtoFromRequest($request, ProjectCreateReqDto::class);
+        $requestDto = $this->getValidDtoFromRequest($request, ProjectCreateRequest::class);
 
         $user = $this->userRepository->find($this->getUser());
 

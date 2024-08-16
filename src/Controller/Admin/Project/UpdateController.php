@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Project;
 
-use App\Controller\Admin\Project\DTO\Request\ProjectUpdateReqDto;
+use App\Controller\Admin\Project\Request\ProjectUpdateRequest;
 use App\Controller\Admin\Project\Response\ProjectResponse;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\Project;
@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[OA\Tag(name: 'Project')]
 #[OA\RequestBody(
     content: new Model(
-        type: ProjectUpdateReqDto::class,
+        type: ProjectUpdateRequest::class,
     )
 )]
 #[OA\Response(
@@ -52,7 +52,7 @@ class UpdateController extends GeneralAbstractController
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project): JsonResponse
     {
-        $requestDto = $this->getValidDtoFromRequest($request, ProjectUpdateReqDto::class);
+        $requestDto = $this->getValidDtoFromRequest($request, ProjectUpdateRequest::class);
 
         $project = $this->projectService->update($requestDto, $project);
 
