@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controller\Admin\Project\DTO\Request\Setting\Notification;
+namespace App\Controller\Admin\Project\Request\Setting\Notification;
 
-class ProjectNotificationSettingReqDto
+class ProjectNotificationSettingRequest
 {
     private ?bool $system = null;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controller\Admin\Project\DTO\Request;
+namespace App\Controller\Admin\Project\Request;
 
-class ProjectCreateReqDto
+class ProjectCreateRequest
 {
     private string $name;
 

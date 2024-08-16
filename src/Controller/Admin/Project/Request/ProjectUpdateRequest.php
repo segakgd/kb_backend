@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Controller\Admin\Project\DTO\Request;
+namespace App\Controller\Admin\Project\Request;
 
 use App\Entity\User\Enum\ProjectStatusEnum;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class ProjectUpdateReqDto
+class ProjectUpdateRequest
 {
     private string $name;
 

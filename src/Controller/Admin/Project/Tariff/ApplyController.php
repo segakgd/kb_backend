@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Project\Tariff;
 
-use App\Controller\Admin\Project\DTO\Request\TariffSettingReqDto;
+use App\Controller\Admin\Project\Request\TariffSettingRequest;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\Project;
 use App\Service\Common\Project\TariffServiceInterface;
@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[OA\Tag(name: 'Tariff')]
 #[OA\RequestBody(
     content: new Model(
-        type: TariffSettingReqDto::class,
+        type: TariffSettingRequest::class,
     )
 )]
 #[OA\Response(
@@ -47,7 +47,7 @@ class ApplyController extends GeneralAbstractController
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project): JsonResponse
     {
-        $requestDto = $this->getValidDtoFromRequest($request, TariffSettingReqDto::class);
+        $requestDto = $this->getValidDtoFromRequest($request, TariffSettingRequest::class);
 
         $isApply = $this->tariffService->applyTariff($project, $requestDto->getCode());
 

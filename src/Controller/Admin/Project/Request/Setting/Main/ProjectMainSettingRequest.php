@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controller\Admin\Project\DTO\Request\Setting\Main;
+namespace App\Controller\Admin\Project\Request\Setting\Main;
 
-class ProjectMainSettingReqDto
+class ProjectMainSettingRequest
 {
     private ?string $country = null;
 

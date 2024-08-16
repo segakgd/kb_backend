@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Controller\Admin\Project\DTO\Request;
+namespace App\Controller\Admin\Project\Request;
 
 use App\Service\Common\Project\Enum\TariffCodeEnum;
 
-class TariffSettingReqDto
+class TariffSettingRequest
 {
     /** Код применяемого тарифа */
     private ?TariffCodeEnum $code;
