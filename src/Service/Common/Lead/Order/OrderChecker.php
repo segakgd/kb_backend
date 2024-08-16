@@ -8,7 +8,7 @@ use App\Controller\Admin\Lead\Request\Order\OrderReqDto;
 use App\Controller\Admin\Lead\Request\Order\Product\OrderVariantReqDto;
 use App\Controller\Admin\Lead\Request\Order\Promotion\OrderPromotionReqDto;
 use App\Controller\Admin\Lead\Request\Order\Shipping\OrderShippingReqDto;
-use App\Controller\Admin\Promotion\DTO\Request\PromotionReqDto;
+use App\Controller\Admin\Promotion\Request\PromotionRequest;
 use App\Dto\Ecommerce\Product\Variants\VariantPriceDto;
 use App\Entity\Ecommerce\ProductVariant;
 use App\Entity\Ecommerce\Shipping;
@@ -92,7 +92,7 @@ readonly class OrderChecker
     }
 
     /**
-     * @param  PromotionReqDto[] $promotions
+     * @param  PromotionRequest[] $promotions
      * @throws Exception
      */
     private function checkPromotions(Project $project, array $promotions): void

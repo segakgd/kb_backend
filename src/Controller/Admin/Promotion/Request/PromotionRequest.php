@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin\Promotion\DTO\Request;
+namespace App\Controller\Admin\Promotion\Request;
 
 use App\Enum\Promotion\PromotionDiscountTypeEnum;
 use App\Enum\Promotion\PromotionTypeEnum;
@@ -10,7 +10,7 @@ use DateTimeInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-class PromotionReqDto
+class PromotionRequest
 {
     private string $name;
 

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Promotion\Mapper;
 
-use App\Controller\Admin\Promotion\DTO\Request\PromotionReqDto;
-use App\Controller\Admin\Promotion\DTO\Response\PromotionRespDto;
+use App\Controller\Admin\Promotion\Request\PromotionRequest;
+use App\Controller\Admin\Promotion\Response\PromotionResponse;
 use App\Entity\Ecommerce\Promotion;
 
 class PromotionMapper
 {
-    public static function mapRequestToEntity(PromotionReqDto $promotionReqDto): Promotion
+    public static function mapRequestToEntity(PromotionRequest $promotionReqDto): Promotion
     {
         return (new Promotion())
             ->setName($promotionReqDto->getName())
@@ -25,7 +25,7 @@ class PromotionMapper
             ->setActiveTo($promotionReqDto->getActiveTo());
     }
 
-    public static function mapRequestToExistingEntity(PromotionReqDto $promotionReqDto, Promotion $promotion): Promotion
+    public static function mapRequestToExistingEntity(PromotionRequest $promotionReqDto, Promotion $promotion): Promotion
     {
         return $promotion
             ->setName($promotionReqDto->getName())
@@ -40,9 +40,9 @@ class PromotionMapper
             ->setActiveTo($promotionReqDto->getActiveTo());
     }
 
-    public static function mapToResponseDto(Promotion $promotion): PromotionRespDto
+    public static function mapToResponseDto(Promotion $promotion): PromotionResponse
     {
-        return (new PromotionRespDto())
+        return (new PromotionResponse())
             ->setName($promotion->getName())
             ->setType($promotion->getType())
             ->setCode($promotion->getCode())

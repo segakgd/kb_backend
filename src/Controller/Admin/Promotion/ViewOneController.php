@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Promotion;
 
-use App\Controller\Admin\Promotion\DTO\Response\PromotionRespDto;
 use App\Controller\Admin\Promotion\Exception\NotFoundPromotionForProjectException;
+use App\Controller\Admin\Promotion\Response\PromotionResponse;
 use App\Controller\Admin\Promotion\Response\PromotionViewOneResponse;
 use App\Entity\Ecommerce\Promotion;
 use App\Entity\User\Project;
@@ -24,7 +24,7 @@ use Throwable;
     response: Response::HTTP_OK,
     description: 'Возвращает скидку',
     content: new Model(
-        type: PromotionRespDto::class
+        type: PromotionResponse::class
     ),
 )]
 class ViewOneController extends AbstractController
@@ -43,7 +43,7 @@ class ViewOneController extends AbstractController
             }
 
             return $this->json(
-                (new PromotionViewOneResponse())->makeResponse($promotion)
+                PromotionResponse::mapFromEntity($promotion)
             );
         } catch (Throwable $exception) {
             $this->logger->error($exception->getMessage());

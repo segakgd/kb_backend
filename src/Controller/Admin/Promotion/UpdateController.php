@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Promotion;
 
-use App\Controller\Admin\Promotion\DTO\Request\PromotionReqDto;
 use App\Controller\Admin\Promotion\Exception\NotFoundPromotionForProjectException;
+use App\Controller\Admin\Promotion\Request\PromotionRequest;
 use App\Controller\GeneralAbstractController;
 use App\Entity\Ecommerce\Promotion;
 use App\Entity\User\Project;
@@ -25,7 +25,7 @@ use Throwable;
 #[OA\Tag(name: 'Promotion')]
 #[OA\RequestBody(
     content: new Model(
-        type: PromotionReqDto::class,
+        type: PromotionRequest::class,
     )
 )]
 #[OA\Response(
@@ -55,7 +55,7 @@ class UpdateController extends GeneralAbstractController
                 throw new NotFoundPromotionForProjectException();
             }
 
-            $requestDto = $this->getValidDtoFromRequest($request, PromotionReqDto::class);
+            $requestDto = $this->getValidDtoFromRequest($request, PromotionRequest::class);
 
             $this->promotionManager->update($requestDto, $promotion, $project);
         } catch (Throwable $exception) {

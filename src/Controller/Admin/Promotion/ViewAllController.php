@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Promotion;
 
-use App\Controller\Admin\Promotion\DTO\Response\PromotionRespDto;
+use App\Controller\Admin\Promotion\Response\PromotionResponse;
 use App\Entity\User\Project;
 use App\Service\Common\Ecommerce\Promotion\Manager\PromotionManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -23,7 +23,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
         type: 'array',
         items: new OA\Items(
             ref: new Model(
-                type: PromotionRespDto::class
+                type: PromotionResponse::class
             )
         )
     ),
@@ -38,6 +38,10 @@ class ViewAllController extends AbstractController
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project): JsonResponse
     {
-        return $this->json($this->promotionManager->getAllByProject($project));
+        return $this->json(
+            PromotionResponse::mapFromCollection(
+                $this->promotionManager->getAllByProject($project)
+            )
+        );
     }
 }
