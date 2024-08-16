@@ -3,7 +3,6 @@
 namespace App\Controller\Admin\Project\DTO\Response;
 
 use App\Controller\AbstractResponse;
-use App\Controller\Admin\Project\DTO\Response\Statistic\ProjectStatisticsRespDto;
 use App\Entity\User\Enum\ProjectStatusEnum;
 use App\Entity\User\Project;
 use DateTimeImmutable;
@@ -23,8 +22,6 @@ class ProjectRespDto extends AbstractResponse
 
     public ?DateTimeImmutable $activeFrom;
 
-    public ProjectStatisticsRespDto $statistic;
-
     /**
      * @throws Exception
      */
@@ -41,8 +38,6 @@ class ProjectRespDto extends AbstractResponse
         $response->status = $entity->getStatus();
         $response->activeFrom = $entity->getActiveFrom()?->format('Y-m-d h:i:s');
         $response->activeTo = $entity->getActiveTo()?->format('Y-m-d h:i:s');
-
-        // todo реализовать statistic
 
         return $response;
     }
