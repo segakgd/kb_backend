@@ -8,7 +8,6 @@ use App\Controller\Admin\Project\Response\ProjectResponse;
 use App\Controller\GeneralAbstractController;
 use App\Repository\User\UserRepository;
 use App\Service\Common\Project\ProjectServiceInterface;
-use App\Service\Common\Statistic\StatisticsServiceInterface;
 use Exception;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -36,7 +35,6 @@ class CreateController extends GeneralAbstractController
         private readonly SerializerInterface $serializer,
         private readonly ProjectServiceInterface $projectService,
         private readonly UserRepository $userRepository,
-        private readonly StatisticsServiceInterface $statisticsService,
     ) {
         parent::__construct(
             $this->serializer,
@@ -63,8 +61,6 @@ class CreateController extends GeneralAbstractController
         }
 
         $project = $this->projectService->add($requestDto, $user);
-
-        $fakeStatisticsByProject = $this->statisticsService->getStatisticForProject(); // todo use or remove
 
         return $this->json($this->serializer->normalize(
             ProjectRespDto::mapFromEntity($project)

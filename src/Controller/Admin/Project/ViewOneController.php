@@ -6,7 +6,6 @@ namespace App\Controller\Admin\Project;
 
 use App\Controller\Admin\Project\DTO\Response\ProjectRespDto;
 use App\Entity\User\Project;
-use App\Service\Common\Statistic\StatisticsService;
 use Exception;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -26,8 +25,6 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 )]
 class ViewOneController extends AbstractController
 {
-    public function __construct(private readonly StatisticsService $statisticsService) {}
-
     /**
      * @throws Exception
      */
@@ -35,8 +32,6 @@ class ViewOneController extends AbstractController
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project): JsonResponse
     {
-        $fakeStatisticsByProject = $this->statisticsService->getStatisticForProject(); // todo use or remove
-
         return $this->json(
             ProjectRespDto::mapFromEntity($project)
         );
