@@ -39,7 +39,7 @@ class ViewAllController extends AbstractController
     public function execute(Project $project): JsonResponse
     {
         return $this->json(
-            PromotionResponse::mapFromCollection(
+            PromotionResponse::mapCollection(
                 $this->promotionManager->getAllByProject($project)
             )
         );

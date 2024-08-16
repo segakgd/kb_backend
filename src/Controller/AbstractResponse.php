@@ -9,7 +9,7 @@ abstract class AbstractResponse
         return new static();
     }
 
-    public static function mapFromCollection(iterable $collection): array
+    public static function mapCollection(iterable $collection): array
     {
         $mapResult = [];
 

@@ -42,7 +42,7 @@ class ViewAllController extends AbstractController
         try {
             $bots = $this->botService->findAll($project->getId());
 
-            return $this->json(BotResponse::mapFromCollection($bots));
+            return $this->json(BotResponse::mapCollection($bots));
         } catch (Throwable $exception) {
             return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }

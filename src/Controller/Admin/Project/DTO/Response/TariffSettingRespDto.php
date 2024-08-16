@@ -2,105 +2,46 @@
 
 namespace App\Controller\Admin\Project\DTO\Response;
 
+use App\Controller\AbstractResponse;
+use App\Entity\User\Tariff;
 use App\Service\Common\Project\Enum\TariffCodeEnum;
+use Exception;
 
-class TariffSettingRespDto
+class TariffSettingRespDto extends AbstractResponse
 {
-    private int $id;
+    public int $id;
 
-    private string $name;
+    public string $name;
 
-    private TariffCodeEnum $code;
+    public TariffCodeEnum $code;
 
-    private int $price;
+    public int $price;
 
-    private string $priceWF;
+    public string $priceWF;
 
-    private string $description;
+    public string $description;
 
-    private bool $active;
+    public bool $active;
 
-    public function getId(): int
+    /**
+     * @throws Exception
+     */
+    public static function mapFromEntity(object $entity): static
     {
-        return $this->id;
-    }
+        if (!$entity instanceof Tariff) {
+            throw new Exception('Entity with undefined type.');
+        }
 
-    public function setId(int $id): self
-    {
-        $this->id = $id;
+        $response = new static();
 
-        return $this;
-    }
+        $response->id = $entity->getId();
+        $response->name = $entity->getName();
+        $response->price = $entity->getPrice();
+        $response->priceWF = $entity->getPriceWF();
+        $response->description = $entity->getDescription();
+        $response->code = $entity->getCode();
+        $response->active = $entity->isActive();
 
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getCode(): TariffCodeEnum
-    {
-        return $this->code;
-    }
-
-    public function setCode(TariffCodeEnum $code): self
-    {
-        $this->code = $code;
-
-        return $this;
-    }
-
-    public function getPrice(): int
-    {
-        return $this->price;
-    }
-
-    public function setPrice(int $price): self
-    {
-        $this->price = $price;
-
-        return $this;
-    }
-
-    public function getPriceWF(): string
-    {
-        return $this->priceWF;
-    }
-
-    public function setPriceWF(string $priceWF): self
-    {
-        $this->priceWF = $priceWF;
-
-        return $this;
-    }
-
-    public function getDescription(): string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): self
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    public function isActive(): bool
-    {
-        return $this->active;
-    }
-
-    public function setActive(bool $active): self
-    {
-        $this->active = $active;
-
-        return $this;
+        return $response;
     }
 }

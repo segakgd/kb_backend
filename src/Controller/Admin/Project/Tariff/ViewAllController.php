@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Project\Tariff;
 
 use App\Controller\Admin\Project\DTO\Response\TariffSettingRespDto;
-use App\Controller\Admin\Project\Response\Tariff\ViewAllTariffResponse;
 use App\Service\Common\Project\TariffServiceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -46,7 +45,7 @@ class ViewAllController extends AbstractController
         $tariffs = $this->tariffService->getAllTariff();
 
         return $this->json($this->serializer->normalize(
-            (new ViewAllTariffResponse())->mapResponse($tariffs)
+            TariffSettingRespDto::mapCollection($tariffs)
         ));
     }
 }

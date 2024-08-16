@@ -33,7 +33,7 @@ class ViewAllController extends AbstractController
     public function execute(Request $request, Project $project): JsonResponse
     {
         return $this->json(
-            ScenarioResponse::mapFromCollection(
+            ScenarioResponse::mapCollection(
                 [
                     new ScenarioResponse(),
                     new ScenarioResponse(),

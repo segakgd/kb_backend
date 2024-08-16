@@ -42,7 +42,7 @@ class ViewAllController extends AbstractController
     {
         try {
             return $this->json(
-                ProductCategoryResponse::mapFromCollection(
+                ProductCategoryResponse::mapCollection(
                     $this->productCategoryManager->getAll($project)
                 )
             );

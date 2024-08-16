@@ -16,7 +16,7 @@ class ProductMapper
      */
     public static function mapToResponse(Product $product): ProductResponse
     {
-        $categoriesDto = ProductCategoryResponse::mapFromCollection($product->getCategories());
+        $categoriesDto = ProductCategoryResponse::mapCollection($product->getCategories());
 
         $variantsDto = ProductVariantMapper::mapArrayToResponse($product->getVariants()->toArray());
 

@@ -48,7 +48,7 @@ class ViewAllController extends AbstractController
             $shippingCollection = $this->shippingManager->getAllByByProject($project);
 
             return $this->json(
-                ShippingResponse::mapFromCollection($shippingCollection)
+                ShippingResponse::mapCollection($shippingCollection)
             );
         } catch (Throwable $exception) {
             $this->logger->error($exception->getMessage());
