@@ -2,47 +2,33 @@
 
 namespace App\Controller\Admin\Project\DTO\Response;
 
-class ProjectTariffSettingRespDto
+use App\Controller\AbstractResponse;
+use App\Entity\User\Tariff;
+use Exception;
+
+class ProjectTariffSettingRespDto extends AbstractResponse
 {
-    private string $name;
+    public string $name;
 
-    private int $price;
+    public int $price;
 
-    private string $priceWF;
+    public string $priceWF;
 
-    public function getName(): string
+    /**
+     * @throws Exception
+     */
+    public static function mapFromEntity(object $entity): static
     {
-        return $this->name;
-    }
+        if (!$entity instanceof Tariff) {
+            throw new Exception('Entity with undefined type.');
+        }
 
-    public function setName(string $name): self
-    {
-        $this->name = $name;
+        $response = new static();
 
-        return $this;
-    }
+        $response->name = $entity->getName();
+        $response->price = $entity->getPrice();
+        $response->priceWF = $entity->getPriceWF();
 
-    public function getPrice(): int
-    {
-        return $this->price;
-    }
-
-    public function setPrice(int $price): self
-    {
-        $this->price = $price;
-
-        return $this;
-    }
-
-    public function getPriceWF(): string
-    {
-        return $this->priceWF;
-    }
-
-    public function setPriceWF(string $priceWithFraction): self
-    {
-        $this->priceWF = $priceWithFraction;
-
-        return $this;
+        return $response;
     }
 }
