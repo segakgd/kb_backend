@@ -2,105 +2,48 @@
 
 namespace App\Controller\Admin\Project\DTO\Response;
 
+use App\Controller\AbstractResponse;
 use App\Controller\Admin\Project\DTO\Response\Statistic\ProjectStatisticsRespDto;
 use App\Entity\User\Enum\ProjectStatusEnum;
+use App\Entity\User\Project;
 use DateTimeImmutable;
+use Exception;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class ProjectRespDto
+class ProjectRespDto extends AbstractResponse
 {
-    private int $id;
+    public int $id;
 
-    private string $name;
+    public string $name;
 
     #[Assert\Choice([ProjectStatusEnum::Active->value, ProjectStatusEnum::Frozen->value, ProjectStatusEnum::Blocked->value])]
-    private string $status;
+    public string $status;
 
-    private ?DateTimeImmutable $activeTo;
+    public ?DateTimeImmutable $activeTo;
 
-    private ?DateTimeImmutable $activeFrom;
+    public ?DateTimeImmutable $activeFrom;
 
-    private ProjectStatisticsRespDto $statistic;
+    public ProjectStatisticsRespDto $statistic;
 
-    public function getId(): int
+    /**
+     * @throws Exception
+     */
+    public static function mapFromEntity(object $entity): static
     {
-        return $this->id;
-    }
+        if (!$entity instanceof Project) {
+            throw new Exception('Entity with undefined type.');
+        }
 
-    public function setId(int $id): self
-    {
-        $this->id = $id;
+        $response = new static();
 
-        return $this;
-    }
+        $response->id = $entity->getId();
+        $response->name = $entity->getName();
+        $response->status = $entity->getStatus();
+        $response->activeFrom = $entity->getActiveFrom()?->format('Y-m-d h:i:s');
+        $response->activeTo = $entity->getActiveTo()?->format('Y-m-d h:i:s');
 
-    public function getName(): string
-    {
-        return $this->name;
-    }
+        // todo реализовать statistic
 
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getStatus(): ProjectStatusEnum
-    {
-        return ProjectStatusEnum::tryFrom($this->status);
-    }
-
-    public function setStatus(ProjectStatusEnum $status): self
-    {
-        $this->status = $status->value;
-
-        return $this;
-    }
-
-    public function getActiveTo(): ?DateTimeImmutable
-    {
-        return $this->activeTo;
-    }
-
-    public function getFormatActiveFrom(): ?string
-    {
-        return $this->activeFrom?->format('Y-m-d h:i:s');
-    }
-
-    public function setActiveTo(?DateTimeImmutable $activeTo): self
-    {
-        $this->activeTo = $activeTo;
-
-        return $this;
-    }
-
-    public function getActiveFrom(): ?DateTimeImmutable
-    {
-        return $this->activeFrom;
-    }
-
-    public function getFormatActiveTo(): ?string
-    {
-        return $this->activeTo?->format('Y-m-d h:i:s');
-    }
-
-    public function setActiveFrom(?DateTimeImmutable $activeFrom): self
-    {
-        $this->activeFrom = $activeFrom;
-
-        return $this;
-    }
-
-    public function getStatistic(): ProjectStatisticsRespDto
-    {
-        return $this->statistic;
-    }
-
-    public function setStatistic(ProjectStatisticsRespDto $statistic): self
-    {
-        $this->statistic = $statistic;
-
-        return $this;
+        return $response;
     }
 }

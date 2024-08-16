@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin\Project;
 
+use App\Controller\Admin\Project\DTO\Response\ProjectRespDto;
 use App\Controller\Admin\Project\Request\ProjectCreateRequest;
 use App\Controller\Admin\Project\Response\ProjectResponse;
 use App\Controller\GeneralAbstractController;
@@ -63,10 +64,10 @@ class CreateController extends GeneralAbstractController
 
         $project = $this->projectService->add($requestDto, $user);
 
-        $fakeStatisticsByProject = $this->statisticsService->getStatisticForProject();
+        $fakeStatisticsByProject = $this->statisticsService->getStatisticForProject(); // todo use or remove
 
         return $this->json($this->serializer->normalize(
-            (new ProjectResponse())->mapToResponse($project, $fakeStatisticsByProject)
+            ProjectRespDto::mapFromEntity($project)
         ));
     }
 }
