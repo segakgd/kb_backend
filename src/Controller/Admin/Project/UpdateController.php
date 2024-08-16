@@ -7,7 +7,6 @@ use App\Controller\Admin\Project\Response\ProjectResponse;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\Project;
 use App\Service\Common\Project\ProjectServiceInterface;
-use App\Service\Common\Statistic\StatisticsServiceInterface;
 use Exception;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -35,7 +34,6 @@ class UpdateController extends GeneralAbstractController
         private readonly ValidatorInterface $validator,
         private readonly SerializerInterface $serializer,
         private readonly ProjectServiceInterface $projectService,
-        private readonly StatisticsServiceInterface $statisticsService,
     ) {
         parent::__construct(
             $this->serializer,
@@ -56,10 +54,8 @@ class UpdateController extends GeneralAbstractController
 
         $project = $this->projectService->update($requestDto, $project);
 
-        $fakeStatisticsByProject = $this->statisticsService->getStatisticForProject();
-
         return $this->json($this->serializer->normalize(
-            (new ProjectResponse())->mapToResponse($project, $fakeStatisticsByProject)
+            (new ProjectResponse())->mapToResponse($project)
         ));
     }
 }
