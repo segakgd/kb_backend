@@ -6,7 +6,7 @@ use App\Controller\AbstractResponse;
 use App\Entity\User\Tariff;
 use Exception;
 
-class ProjectTariffSettingRespDto extends AbstractResponse
+class ProjectTariffSettingResponse extends AbstractResponse
 {
     public string $name;
 

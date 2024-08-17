@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Project;
 
-use App\Controller\Admin\Project\Response\ProjectRespDto;
+use App\Controller\Admin\Project\Response\ProjectResponse;
 use App\Entity\User\Project;
 use Exception;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -20,7 +20,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
     response: Response::HTTP_OK,
     description: 'Возвращает проект',
     content: new Model(
-        type: ProjectRespDto::class
+        type: ProjectResponse::class
     ),
 )]
 class ViewOneController extends AbstractController
@@ -33,7 +33,7 @@ class ViewOneController extends AbstractController
     public function execute(Project $project): JsonResponse
     {
         return $this->json(
-            ProjectRespDto::mapFromEntity($project)
+            ProjectResponse::mapFromEntity($project)
         );
     }
 }

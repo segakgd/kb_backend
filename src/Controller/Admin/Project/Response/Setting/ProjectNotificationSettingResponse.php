@@ -5,7 +5,7 @@ namespace App\Controller\Admin\Project\Response\Setting;
 use App\Controller\AbstractResponse;
 use Exception;
 
-class ProjectNotificationSettingRespDto extends AbstractResponse
+class ProjectNotificationSettingResponse extends AbstractResponse
 {
     public ?bool $system = true;
 

@@ -5,7 +5,7 @@ namespace App\Controller\Admin\Project\Response\Setting;
 use App\Controller\AbstractResponse;
 use Exception;
 
-class ProjectMainSettingRespDto extends AbstractResponse
+class ProjectMainSettingResponse extends AbstractResponse
 {
     public ?string $name;
 

@@ -6,13 +6,13 @@ use App\Controller\AbstractResponse;
 use App\Entity\User\ProjectSetting;
 use Exception;
 
-class ProjectSettingRespDto extends AbstractResponse
+class ProjectSettingResponse extends AbstractResponse
 {
     public ?int $id = null;
 
-    public ProjectMainSettingRespDto $mainSettings;
+    public ProjectMainSettingResponse $mainSettings;
 
-    public ProjectNotificationsSettingRespDto $notificationSetting;
+    public ProjectNotificationsSettingResponse $notificationSetting;
 
     /**
      * @throws Exception
@@ -26,8 +26,8 @@ class ProjectSettingRespDto extends AbstractResponse
         }
 
         $response->id = $entity->getId();
-        $response->mainSettings = ProjectMainSettingRespDto::mapFromArray($entity->getBasic());
-        $response->notificationSetting = ProjectNotificationsSettingRespDto::mapFromArray($entity->getNotification());
+        $response->mainSettings = ProjectMainSettingResponse::mapFromArray($entity->getBasic());
+        $response->notificationSetting = ProjectNotificationsSettingResponse::mapFromArray($entity->getNotification());
 
         return $response;
     }

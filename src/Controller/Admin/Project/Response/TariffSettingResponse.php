@@ -7,7 +7,7 @@ use App\Entity\User\Tariff;
 use App\Service\Common\Project\Enum\TariffCodeEnum;
 use Exception;
 
-class TariffSettingRespDto extends AbstractResponse
+class TariffSettingResponse extends AbstractResponse
 {
     public int $id;
 
