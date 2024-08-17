@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin\Project\Setting;
 
+use App\Controller\Admin\Project\DTO\Response\Setting\ProjectSettingRespDto;
 use App\Controller\Admin\Project\Request\ProjectSettingRequest;
 use App\Controller\Admin\Project\Response\Setting\UpdateSettingResponse;
 use App\Controller\GeneralAbstractController;
@@ -49,9 +50,7 @@ class UpdateController extends GeneralAbstractController
         $projectSetting = $this->projectSettingService->updateSetting($project->getId(), $requestDto);
 
         return $this->json(
-            $this->serializer->normalize(
-                (new UpdateSettingResponse())->mapResponse($projectSetting),
-            )
+            ProjectSettingRespDto::mapFromEntity($projectSetting)
         );
     }
 }

@@ -2,48 +2,33 @@
 
 namespace App\Controller\Admin\Project\DTO\Response\Setting;
 
-class ProjectSettingRespDto
+use App\Controller\AbstractResponse;
+use App\Entity\User\ProjectSetting;
+use Exception;
+
+class ProjectSettingRespDto extends AbstractResponse
 {
-    private ?int $id = null;
+    public ?int $id = null;
 
-    private ProjectMainSettingRespDto $mainSettings;
+    public ProjectMainSettingRespDto $mainSettings;
 
-    private ProjectNotificationsSettingRespDto $notificationSetting;
+    public ProjectNotificationsSettingRespDto $notificationSetting;
 
-    public function getId(): ?int
+    /**
+     * @throws Exception
+     */
+    public static function mapFromEntity(object $entity): static
     {
-        return $this->id;
-    }
+        $response = new static();
 
-    public function setId(?int $id): self
-    {
-        $this->id = $id;
+        if (!$entity instanceof ProjectSetting) {
+            throw new Exception('Entity with undefined type.');
+        }
 
-        return $this;
-    }
+        $response->id = $entity->getId();
+        $response->mainSettings = ProjectMainSettingRespDto::mapFromArray($entity->getBasic());
+        $response->notificationSetting = ProjectNotificationsSettingRespDto::mapFromArray($entity->getNotification());
 
-    public function getMainSettings(): ProjectMainSettingRespDto
-    {
-        return $this->mainSettings;
-    }
-
-    public function setMainSettings(ProjectMainSettingRespDto $mainSettings): self
-    {
-        $this->mainSettings = $mainSettings;
-
-        return $this;
-    }
-
-    public function getNotificationSetting(): ProjectNotificationsSettingRespDto
-    {
-        return $this->notificationSetting;
-    }
-
-    public function setNotificationSetting(ProjectNotificationsSettingRespDto $notificationSetting): self
-    {
-        $this->notificationSetting = $notificationSetting;
-
-        return $this;
-
+        return $response;
     }
 }

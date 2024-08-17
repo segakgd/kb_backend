@@ -2,33 +2,25 @@
 
 namespace App\Controller\Admin\Project\DTO\Response\Setting;
 
-class ProjectNotificationsSettingRespDto
+use App\Controller\AbstractResponse;
+use Exception;
+
+class ProjectNotificationsSettingRespDto extends AbstractResponse
 {
-    private ProjectNotificationSettingRespDto $newLead;
+    public ProjectNotificationSettingRespDto $newLead;
 
-    private ProjectNotificationSettingRespDto $changesStatusLead;
+    public ProjectNotificationSettingRespDto $changesStatusLead;
 
-    public function getNewLead(): ProjectNotificationSettingRespDto
+    /**
+     * @throws Exception
+     */
+    public static function mapFromArray(array $data): static
     {
-        return $this->newLead;
-    }
+        $response = new static();
 
-    public function setNewLead(ProjectNotificationSettingRespDto $newLead): self
-    {
-        $this->newLead = $newLead;
+        $response->newLead = ProjectNotificationSettingRespDto::mapFromArray($response['newLead']);
+        $response->changesStatusLead = ProjectNotificationSettingRespDto::mapFromArray($response['changesStatusLead']);
 
-        return $this;
-    }
-
-    public function getChangesStatusLead(): ProjectNotificationSettingRespDto
-    {
-        return $this->changesStatusLead;
-    }
-
-    public function setChangesStatusLead(ProjectNotificationSettingRespDto $changesStatusLead): self
-    {
-        $this->changesStatusLead = $changesStatusLead;
-
-        return $this;
+        return $response;
     }
 }

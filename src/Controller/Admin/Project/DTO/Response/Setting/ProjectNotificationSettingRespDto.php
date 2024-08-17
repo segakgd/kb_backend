@@ -2,61 +2,31 @@
 
 namespace App\Controller\Admin\Project\DTO\Response\Setting;
 
-class ProjectNotificationSettingRespDto
+use App\Controller\AbstractResponse;
+use Exception;
+
+class ProjectNotificationSettingRespDto extends AbstractResponse
 {
-    private ?bool $system = true;
+    public ?bool $system = true;
 
-    private ?bool $mail;
+    public ?bool $mail;
 
-    private ?bool $telegram;
+    public ?bool $telegram;
 
-    private ?bool $sms;
+    public ?bool $sms;
 
-    public function getSystem(): ?bool
+    /**
+     * @throws Exception
+     */
+    public static function mapFromArray(array $data): static
     {
-        return $this->system;
-    }
+        $response = new static();
 
-    public function setSystem(?bool $system): self
-    {
-        $this->system = $system;
+        $response->system = $aboutNewLead['system'] ?? false;
+        $response->mail = $aboutNewLead['mail'] ?? false;
+        $response->sms = $aboutNewLead['sms'] ?? false;
+        $response->telegram = $aboutNewLead['telegram'] ?? false;
 
-        return $this;
-    }
-
-    public function getMail(): ?bool
-    {
-        return $this->mail;
-    }
-
-    public function setMail(?bool $mail): self
-    {
-        $this->mail = $mail;
-
-        return $this;
-    }
-
-    public function getTelegram(): ?bool
-    {
-        return $this->telegram;
-    }
-
-    public function setTelegram(?bool $telegram): self
-    {
-        $this->telegram = $telegram;
-
-        return $this;
-    }
-
-    public function getSms(): ?bool
-    {
-        return $this->sms;
-    }
-
-    public function setSms(?bool $sms): self
-    {
-        $this->sms = $sms;
-
-        return $this;
+        return $response;
     }
 }
