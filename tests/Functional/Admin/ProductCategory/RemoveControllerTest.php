@@ -34,7 +34,7 @@ class RemoveControllerTest extends ApiTestCase
 
         $client->request(
             method: 'DELETE',
-            uri: '/api/admin/project/' . $project->getId() . '/productCategory/' . 1 . '/',
+            uri: '/api/admin/project/' . $project->getId() . '/product-categories/' . 1 . '/',
         );
 
         $this->assertEquals(

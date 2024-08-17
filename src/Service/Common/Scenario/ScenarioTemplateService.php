@@ -2,7 +2,7 @@
 
 namespace App\Service\Common\Scenario;
 
-use App\Controller\Admin\Scenario\DTO\Request\ScenarioReqDto;
+use App\Controller\Admin\Scenario\Request\ScenarioRequest;
 use App\Entity\Scenario\ScenarioTemplate;
 use App\Repository\Scenario\ScenarioTemplateRepository;
 
@@ -21,7 +21,7 @@ readonly class ScenarioTemplateService
         );
     }
 
-    public function create(ScenarioReqDto $dto, int $projectId): ?ScenarioTemplate
+    public function create(ScenarioRequest $dto, int $projectId): ?ScenarioTemplate
     {
         $scenarioTemplate = (new ScenarioTemplate())
             ->setName($dto->getName())

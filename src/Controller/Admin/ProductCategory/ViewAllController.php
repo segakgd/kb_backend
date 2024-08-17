@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\ProductCategory;
 
-use App\Controller\Admin\ProductCategory\DTO\Response\ProductCategoryRespDto;
-use App\Controller\Admin\ProductCategory\Response\ProductCategoryViewAllResponse;
+use App\Controller\Admin\ProductCategory\Response\ProductCategoryResponse;
 use App\Entity\User\Project;
 use App\Service\Common\Ecommerce\ProductCategory\Manager\ProductCategoryManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -25,7 +24,7 @@ use Throwable;
         type: 'array',
         items: new OA\Items(
             ref: new Model(
-                type: ProductCategoryRespDto::class
+                type: ProductCategoryResponse::class
             )
         )
     ),
@@ -36,14 +35,14 @@ class ViewAllController extends AbstractController
         private readonly ProductCategoryManagerInterface $productCategoryManager,
     ) {}
 
-    /** Получение колекции категорий */
-    #[Route('/api/admin/project/{project}/productCategory/', name: 'admin_product_category_get_all', methods: ['GET'])]
+    /** Получение коллекции категорий */
+    #[Route('/api/admin/project/{project}/product-categories/', name: 'admin_product_category_get_all', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project): JsonResponse
     {
         try {
             return $this->json(
-                (new ProductCategoryViewAllResponse())->mapArrayToResponse(
+                ProductCategoryResponse::mapCollection(
                     $this->productCategoryManager->getAll($project)
                 )
             );

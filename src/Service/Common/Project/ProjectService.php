@@ -2,8 +2,8 @@
 
 namespace App\Service\Common\Project;
 
-use App\Controller\Admin\Project\DTO\Request\ProjectCreateReqDto;
-use App\Controller\Admin\Project\DTO\Request\ProjectUpdateReqDto;
+use App\Controller\Admin\Project\Request\ProjectCreateRequest;
+use App\Controller\Admin\Project\Request\ProjectUpdateRequest;
 use App\Entity\User\Enum\ProjectStatusEnum;
 use App\Entity\User\Project;
 use App\Entity\User\User;
@@ -29,7 +29,7 @@ readonly class ProjectService implements ProjectServiceInterface
         return $this->projectEntityRepository->findByUser($user);
     }
 
-    public function add(ProjectCreateReqDto $projectDto, User $user): Project
+    public function add(ProjectCreateRequest $projectDto, User $user): Project
     {
         $entity = (new Project());
 
@@ -43,7 +43,7 @@ readonly class ProjectService implements ProjectServiceInterface
         return $entity;
     }
 
-    public function update(ProjectUpdateReqDto $projectUpdateReqDto, Project $project): Project
+    public function update(ProjectUpdateRequest $projectUpdateReqDto, Project $project): Project
     {
         $project->setName($projectUpdateReqDto->getName());
         $project->setStatus(

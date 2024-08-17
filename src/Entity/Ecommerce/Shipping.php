@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Ecommerce;
 
-use App\Controller\Admin\Shipping\DTO\Request\ShippingFieldReqDto;
+use App\Controller\Admin\Shipping\Request\ShippingFieldRequest;
 use App\Doctrine\Types\Shipping\ShippingFieldReqDtoArrayType;
 use App\Doctrine\Types\Shipping\ShippingPriceType;
 use App\Dto\Ecommerce\Shipping\ShippingPriceDto;
@@ -45,7 +45,7 @@ class Shipping
     private ?ShippingPriceDto $price;
 
     #[ORM\Column(type: Types::BOOLEAN, nullable: false)]
-    private bool $isActive;
+    private bool $active;
 
     #[ORM\Column(nullable: true)]
     private ?int $applyFromAmount = null;
@@ -165,12 +165,12 @@ class Shipping
 
     public function isActive(): bool
     {
-        return $this->isActive;
+        return $this->active;
     }
 
-    public function setIsActive(bool $isActive): static
+    public function setActive(bool $active): static
     {
-        $this->isActive = $isActive;
+        $this->active = $active;
 
         return $this;
     }
@@ -248,7 +248,7 @@ class Shipping
         return $this;
     }
 
-    public function addField(ShippingFieldReqDto $field): static
+    public function addField(ShippingFieldRequest $field): static
     {
         $this->fields[] = $field;
 

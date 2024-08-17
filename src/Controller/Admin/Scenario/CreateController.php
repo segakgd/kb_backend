@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Scenario;
 
-use App\Controller\Admin\Scenario\DTO\Request\ScenarioReqDto;
+use App\Controller\Admin\Scenario\Request\ScenarioRequest;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\Project;
 use App\Service\Common\Scenario\ScenarioTemplateService;
@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[OA\Tag(name: 'Scenario')]
 #[OA\RequestBody(
     content: new Model(
-        type: ScenarioReqDto::class,
+        type: ScenarioRequest::class,
     )
 )]
 #[OA\Response(
@@ -47,7 +47,7 @@ class CreateController extends GeneralAbstractController
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project): JsonResponse
     {
-        $requestDto = $this->getValidDtoFromRequest($request, ScenarioReqDto::class);
+        $requestDto = $this->getValidDtoFromRequest($request, ScenarioRequest::class);
 
         $this->scenarioTemplateService->create($requestDto, $project->getId());
 

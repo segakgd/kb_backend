@@ -2,12 +2,11 @@
 
 namespace App\Controller\Admin\Project;
 
-use App\Controller\Admin\Project\DTO\Request\ProjectCreateReqDto;
+use App\Controller\Admin\Project\Request\ProjectCreateRequest;
 use App\Controller\Admin\Project\Response\ProjectResponse;
 use App\Controller\GeneralAbstractController;
 use App\Repository\User\UserRepository;
 use App\Service\Common\Project\ProjectServiceInterface;
-use App\Service\Common\Statistic\StatisticsServiceInterface;
 use Exception;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -21,7 +20,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[OA\Tag(name: 'Project')]
 #[OA\RequestBody(
     content: new Model(
-        type: ProjectCreateReqDto::class,
+        type: ProjectCreateRequest::class,
     )
 )]
 #[OA\Response(
@@ -35,7 +34,6 @@ class CreateController extends GeneralAbstractController
         private readonly SerializerInterface $serializer,
         private readonly ProjectServiceInterface $projectService,
         private readonly UserRepository $userRepository,
-        private readonly StatisticsServiceInterface $statisticsService,
     ) {
         parent::__construct(
             $this->serializer,
@@ -53,7 +51,7 @@ class CreateController extends GeneralAbstractController
             return $this->json([], Response::HTTP_FORBIDDEN);
         }
 
-        $requestDto = $this->getValidDtoFromRequest($request, ProjectCreateReqDto::class);
+        $requestDto = $this->getValidDtoFromRequest($request, ProjectCreateRequest::class);
 
         $user = $this->userRepository->find($this->getUser());
 
@@ -63,10 +61,8 @@ class CreateController extends GeneralAbstractController
 
         $project = $this->projectService->add($requestDto, $user);
 
-        $fakeStatisticsByProject = $this->statisticsService->getStatisticForProject();
-
         return $this->json($this->serializer->normalize(
-            (new ProjectResponse())->mapToResponse($project, $fakeStatisticsByProject)
+            ProjectResponse::mapFromEntity($project)
         ));
     }
 }

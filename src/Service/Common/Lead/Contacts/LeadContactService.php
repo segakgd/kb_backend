@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Common\Lead\Contacts;
 
-use App\Controller\Admin\Lead\DTO\Request\Field\LeadContactsReqDto;
+use App\Controller\Admin\Lead\Request\Field\LeadContactsReqDto;
 use App\Entity\Lead\DealContacts;
 use App\Repository\Lead\ContactsEntityRepository;
 

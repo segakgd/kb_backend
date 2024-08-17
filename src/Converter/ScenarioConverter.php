@@ -6,7 +6,7 @@ use App\Dto\Scenario\ScenarioCollection;
 use App\Dto\Scenario\ScenarioDto;
 use App\Entity\Scenario\Scenario;
 use App\Entity\User\Bot;
-use App\Service\Constructor\Visitor\Scenario\ScenarioService;
+use App\Service\Constructor\Scenario\ScenarioService;
 use Doctrine\ORM\EntityManagerInterface;
 use Throwable;
 

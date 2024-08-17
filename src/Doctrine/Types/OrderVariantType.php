@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Doctrine\Types;
 
-use App\Controller\Admin\Lead\DTO\Request\Order\Product\OrderVariantReqDto;
+use App\Controller\Admin\Lead\Request\Order\Product\OrderVariantReqDto;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 use InvalidArgumentException;

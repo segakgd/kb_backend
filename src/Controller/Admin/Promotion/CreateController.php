@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Promotion;
 
-use App\Controller\Admin\Promotion\DTO\Request\PromotionReqDto;
+use App\Controller\Admin\Promotion\Request\PromotionRequest;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\Project;
 use App\Service\Common\Ecommerce\Promotion\Manager\PromotionManagerInterface;
@@ -23,7 +23,7 @@ use Throwable;
 #[OA\Tag(name: 'Promotion')]
 #[OA\RequestBody(
     content: new Model(
-        type: PromotionReqDto::class,
+        type: PromotionRequest::class,
     )
 )]
 #[OA\Response(
@@ -49,7 +49,7 @@ class CreateController extends GeneralAbstractController
     public function execute(Request $request, Project $project): JsonResponse
     {
         try {
-            $requestDto = $this->getValidDtoFromRequest($request, PromotionReqDto::class);
+            $requestDto = $this->getValidDtoFromRequest($request, PromotionRequest::class);
 
             $this->promotionManager->create($requestDto, $project);
         } catch (Throwable $exception) {

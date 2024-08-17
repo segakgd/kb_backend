@@ -2,8 +2,8 @@
 
 namespace App\Service\Common\Bot;
 
-use App\Controller\Admin\Bot\DTO\Request\BotReqDto;
-use App\Controller\Admin\Bot\DTO\Request\UpdateBotReqDto;
+use App\Controller\Admin\Bot\Request\BotRequest;
+use App\Controller\Admin\Bot\Request\UpdateBotRequest;
 use App\Entity\User\Bot;
 
 interface BotServiceInterface
@@ -12,9 +12,9 @@ interface BotServiceInterface
 
     public function findOne(int $botId, int $projectId): ?Bot;
 
-    public function add(BotReqDto $botSettingDto, int $projectId): Bot;
+    public function add(BotRequest $botSettingDto, int $projectId): Bot;
 
-    public function update(UpdateBotReqDto $botSettingDto, int $botId, int $projectId): Bot;
+    public function update(UpdateBotRequest $botSettingDto, int $botId, int $projectId): Bot;
 
     public function updateStatus(int $botId, int $projectId, bool $status): Bot;
 

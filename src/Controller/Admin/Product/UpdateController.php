@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Product;
 
-use App\Controller\Admin\Product\DTO\Request\ProductReqDto;
 use App\Controller\Admin\Product\Exception\NotFoundProductForProjectException;
+use App\Controller\Admin\Product\Request\ProductRequest;
 use App\Controller\GeneralAbstractController;
 use App\Entity\Ecommerce\Product;
 use App\Entity\User\Project;
@@ -24,7 +24,7 @@ use Throwable;
 #[OA\Tag(name: 'Product')]
 #[OA\RequestBody(
     content: new Model(
-        type: ProductReqDto::class,
+        type: ProductRequest::class,
     )
 )]
 #[OA\Response(
@@ -54,7 +54,7 @@ class UpdateController extends GeneralAbstractController
                 throw new NotFoundProductForProjectException();
             }
 
-            $requestDto = $this->getValidDtoFromRequest($request, ProductReqDto::class);
+            $requestDto = $this->getValidDtoFromRequest($request, ProductRequest::class);
 
             $this->productManager->update($requestDto, $product, $project);
 

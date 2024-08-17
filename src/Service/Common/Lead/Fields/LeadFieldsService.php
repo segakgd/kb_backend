@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Common\Lead\Fields;
 
-use App\Controller\Admin\Lead\DTO\Request\Field\LeadFieldReqDto;
+use App\Controller\Admin\Lead\Request\Field\LeadFieldReqDto;
 use App\Entity\Lead\Deal;
 use App\Entity\Lead\DealField;
 use App\Repository\Lead\FieldEntityRepository;

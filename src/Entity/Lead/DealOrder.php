@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity\Lead;
 
-use App\Controller\Admin\Lead\DTO\Request\Order\Product\OrderVariantReqDto;
-use App\Controller\Admin\Lead\DTO\Request\Order\Promotion\OrderPromotionReqDto;
-use App\Controller\Admin\Lead\DTO\Request\Order\Shipping\OrderShippingReqDto;
+use App\Controller\Admin\Lead\Request\Order\Product\OrderVariantReqDto;
+use App\Controller\Admin\Lead\Request\Order\Promotion\OrderPromotionReqDto;
+use App\Controller\Admin\Lead\Request\Order\Shipping\OrderShippingReqDto;
 use App\Doctrine\Types\OrderVariantType;
 use App\Repository\Lead\OrderEntityRepository;
 use DateTimeImmutable;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Lead;
 
-use App\Controller\Admin\Lead\DTO\Response\LeadRespDto;
 use App\Controller\Admin\Lead\Exception\NotFoundLeadForProjectException;
+use App\Controller\Admin\Lead\Response\LeadResponse;
 use App\Entity\Lead\Deal;
 use App\Entity\User\Project;
 use App\Service\Common\Lead\LeadMapper;
@@ -23,7 +23,7 @@ use Throwable;
     response: Response::HTTP_OK,
     description: 'Возвращает заявку',
     content: new Model(
-        type: LeadRespDto::class
+        type: LeadResponse::class
     ),
 )]
 class ViewOneController extends AbstractController

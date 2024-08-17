@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Shipping;
 
-use App\Controller\Admin\Shipping\DTO\Request\ShippingReqDto;
 use App\Controller\Admin\Shipping\Exception\NotFoundShippingForProjectException;
+use App\Controller\Admin\Shipping\Request\ShippingRequest;
 use App\Controller\GeneralAbstractController;
 use App\Entity\Ecommerce\Shipping;
 use App\Entity\User\Project;
@@ -25,7 +25,7 @@ use Throwable;
 #[OA\Tag(name: 'Shipping')]
 #[OA\RequestBody(
     content: new Model(
-        type: ShippingReqDto::class,
+        type: ShippingRequest::class,
     )
 )]
 #[OA\Response(
@@ -56,7 +56,7 @@ class UpdateController extends GeneralAbstractController
                 throw new NotFoundShippingForProjectException();
             }
 
-            $shippingDto = $this->getValidDtoFromRequest($request, ShippingReqDto::class);
+            $shippingDto = $this->getValidDtoFromRequest($request, ShippingRequest::class);
 
             $this->shippingManager->update($shippingDto, $shipping, $project);
         } catch (Throwable $exception) {

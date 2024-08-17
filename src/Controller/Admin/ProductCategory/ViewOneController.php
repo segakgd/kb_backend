@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\ProductCategory;
 
-use App\Controller\Admin\ProductCategory\DTO\Response\ProductCategoryRespDto;
 use App\Controller\Admin\ProductCategory\Exception\NotFoundProductCategoryForProjectException;
-use App\Controller\Admin\ProductCategory\Response\ProductCategoryViewOneResponse;
+use App\Controller\Admin\ProductCategory\Response\ProductCategoryResponse;
 use App\Entity\Ecommerce\ProductCategory;
 use App\Entity\User\Project;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -23,13 +22,13 @@ use Throwable;
     response: Response::HTTP_NO_CONTENT,
     description: 'Возвращает запрашиваемую категорию по проекту',
     content: new Model(
-        type: ProductCategoryRespDto::class,
+        type: ProductCategoryResponse::class,
     ),
 )]
 class ViewOneController extends AbstractController
 {
     /** Получение категории продуктов */
-    #[Route('/api/admin/project/{project}/productCategory/{productCategory}/', name: 'admin_product_category_get_one', methods: ['GET'])]
+    #[Route('/api/admin/project/{project}/product-categories/{productCategory}/', name: 'admin_product_category_get_one', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project, ProductCategory $productCategory): JsonResponse
     {
@@ -39,7 +38,7 @@ class ViewOneController extends AbstractController
             }
 
             return $this->json(
-                (new ProductCategoryViewOneResponse())->makeResponse($productCategory)
+                ProductCategoryResponse::mapFromEntity($productCategory)
             );
         } catch (Throwable $exception) {
             return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);

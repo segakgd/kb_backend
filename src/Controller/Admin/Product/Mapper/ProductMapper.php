@@ -4,18 +4,23 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Product\Mapper;
 
-use App\Controller\Admin\Product\DTO\Response\ProductRespDto;
+use App\Controller\Admin\Product\DTO\Response\ProductResponse;
+use App\Controller\Admin\ProductCategory\Response\ProductCategoryResponse;
 use App\Entity\Ecommerce\Product;
+use Exception;
 
 class ProductMapper
 {
-    public static function mapToResponse(Product $product): ProductRespDto
+    /**
+     * @throws Exception
+     */
+    public static function mapToResponse(Product $product): ProductResponse
     {
-        $categoriesDto = ProductCategoryMapper::mapArrayToResponse($product->getCategories()->toArray());
+        $categoriesDto = ProductCategoryResponse::mapCollection($product->getCategories());
 
         $variantsDto = ProductVariantMapper::mapArrayToResponse($product->getVariants()->toArray());
 
-        return (new ProductRespDto())
+        return (new ProductResponse())
             ->setName($product->getName())
             ->setId($product->getId())
             ->setVisible($product->isVisible())

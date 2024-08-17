@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Promotion\Mapper;
 
-use App\Controller\Admin\Promotion\DTO\Request\PromotionReqDto;
-use App\Controller\Admin\Promotion\DTO\Response\PromotionRespDto;
+use App\Controller\Admin\Promotion\Request\PromotionRequest;
 use App\Entity\Ecommerce\Promotion;
 
 class PromotionMapper
 {
-    public static function mapRequestToEntity(PromotionReqDto $promotionReqDto): Promotion
+    public static function mapRequestToEntity(PromotionRequest $promotionReqDto): Promotion
     {
         return (new Promotion())
             ->setName($promotionReqDto->getName())
@@ -25,7 +24,7 @@ class PromotionMapper
             ->setActiveTo($promotionReqDto->getActiveTo());
     }
 
-    public static function mapRequestToExistingEntity(PromotionReqDto $promotionReqDto, Promotion $promotion): Promotion
+    public static function mapRequestToExistingEntity(PromotionRequest $promotionReqDto, Promotion $promotion): Promotion
     {
         return $promotion
             ->setName($promotionReqDto->getName())
@@ -38,26 +37,5 @@ class PromotionMapper
             ->setUsageWithAnyDiscount($promotionReqDto->isUsageWithAnyDiscount())
             ->setActiveFrom($promotionReqDto->getActiveFrom())
             ->setActiveTo($promotionReqDto->getActiveTo());
-    }
-
-    public static function mapToResponseDto(Promotion $promotion): PromotionRespDto
-    {
-        return (new PromotionRespDto())
-            ->setName($promotion->getName())
-            ->setType($promotion->getType())
-            ->setCode($promotion->getCode())
-            ->setDiscountType($promotion->getDiscountType())
-            ->setAmount($promotion->getAmount())
-            ->setIsActive($promotion->isActive())
-            ->setActiveFrom($promotion->getActiveFrom())
-            ->setActiveTo($promotion->getActiveTo())
-            ->setUsageWithAnyDiscount($promotion->isUsageWithAnyDiscount());
-    }
-
-    public static function mapArrayToResponseDto(array $promotionCollection): array
-    {
-        return array_map(function (Promotion $promotion) {
-            return self::mapToResponseDto($promotion);
-        }, $promotionCollection);
     }
 }

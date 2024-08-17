@@ -2,8 +2,8 @@
 
 namespace App\Service\Common\Project;
 
-use App\Controller\Admin\Project\DTO\Request\ProjectSettingReqDto;
-use App\Controller\Admin\Project\DTO\Request\Setting\Notification\ProjectNotificationSettingReqDto;
+use App\Controller\Admin\Project\Request\ProjectSettingRequest;
+use App\Controller\Admin\Project\Request\Setting\Notification\ProjectNotificationSettingRequest;
 use App\Entity\User\ProjectSetting;
 use App\Entity\User\Tariff;
 use App\Repository\User\ProjectSettingRepository;
@@ -39,7 +39,7 @@ readonly class ProjectSettingService implements ProjectSettingServiceInterface
     /**
      * @throws Exception
      */
-    public function updateSetting(int $projectId, ProjectSettingReqDto $projectSettingReq): ProjectSetting
+    public function updateSetting(int $projectId, ProjectSettingRequest $projectSettingReq): ProjectSetting
     {
         $notificationSettings = $projectSettingReq->getNotificationSettings();
         $mainSettings = $projectSettingReq->getMainSettings();
@@ -49,8 +49,8 @@ readonly class ProjectSettingService implements ProjectSettingServiceInterface
         $language = $mainSettings->getLanguage();
         $timeZone = $mainSettings->getTimeZone();
 
-        $newLead = $notificationSettings?->getNewLead() ?? new ProjectNotificationSettingReqDto();
-        $changesStatusLead = $notificationSettings?->getChangesStatusLead() ?? new ProjectNotificationSettingReqDto();
+        $newLead = $notificationSettings?->getNewLead() ?? new ProjectNotificationSettingRequest();
+        $changesStatusLead = $notificationSettings?->getChangesStatusLead() ?? new ProjectNotificationSettingRequest();
 
         $projectSetting = $this->getSettingForProject($projectId);
 

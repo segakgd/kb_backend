@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Shipping;
 
-use App\Controller\Admin\Shipping\DTO\Response\ShippingRespDto;
 use App\Controller\Admin\Shipping\Exception\NotFoundShippingForProjectException;
-use App\Controller\Admin\Shipping\Response\ShippingViewOneResponse;
+use App\Controller\Admin\Shipping\Response\ShippingResponse;
 use App\Entity\Ecommerce\Shipping;
 use App\Entity\User\Project;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -24,7 +23,7 @@ use Throwable;
     response: Response::HTTP_OK,
     description: 'Получение одной доставки',
     content: new Model(
-        type: ShippingRespDto::class
+        type: ShippingResponse::class
     ),
 )]
 class ViewOneController extends AbstractController
@@ -44,7 +43,7 @@ class ViewOneController extends AbstractController
             }
 
             return $this->json(
-                (new ShippingViewOneResponse())->makeResponse($shipping)
+                ShippingResponse::mapFromEntity($shipping)
             );
         } catch (Throwable $exception) {
             $this->logger->error($exception->getMessage());

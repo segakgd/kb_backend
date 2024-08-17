@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Project;
 
-use App\Controller\Admin\Project\DTO\Response\ProjectRespDto;
-use App\Controller\Admin\Project\Response\ProjectsResponse;
+use App\Controller\Admin\Project\Response\ProjectResponse;
 use App\Entity\User\User;
 use App\Service\Common\Project\ProjectServiceInterface;
-use App\Service\Common\Statistic\StatisticsServiceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,7 +23,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
         type: 'array',
         items: new OA\Items(
             ref: new Model(
-                type: ProjectRespDto::class
+                type: ProjectResponse::class
             )
         )
     ),
@@ -33,7 +31,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class ViewAllController extends AbstractController
 {
     public function __construct(
-        private readonly StatisticsServiceInterface $statisticsService,
         private readonly ProjectServiceInterface $projectService,
     ) {}
 
@@ -48,10 +45,9 @@ class ViewAllController extends AbstractController
         }
 
         $projects = $this->projectService->getAll($user);
-        $fakeStatisticsByProject = $this->statisticsService->getStatisticForProject();
 
         return $this->json(
-            (new ProjectsResponse())->mapToResponse($projects, $fakeStatisticsByProject)
+            ProjectResponse::mapCollection($projects)
         );
     }
 }

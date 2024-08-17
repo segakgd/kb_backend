@@ -2,20 +2,43 @@
 
 namespace App\Controller\Admin\Project\Response;
 
-use App\Controller\Admin\Project\DTO\Response\ProjectRespDto;
-use App\Controller\Admin\Project\DTO\Response\Statistic\ProjectStatisticsRespDto;
+use App\Controller\AbstractResponse;
+use App\Entity\User\Enum\ProjectStatusEnum;
 use App\Entity\User\Project;
+use DateTimeImmutable;
+use Exception;
+use Symfony\Component\Validator\Constraints as Assert;
 
-class ProjectResponse
+class ProjectResponse extends AbstractResponse
 {
-    public function mapToResponse(Project $project, ProjectStatisticsRespDto $fakeStatisticsByProject): ProjectRespDto
+    public int $id;
+
+    public string $name;
+
+    #[Assert\Choice([ProjectStatusEnum::Active->value, ProjectStatusEnum::Frozen->value, ProjectStatusEnum::Blocked->value])]
+    public string $status;
+
+    public ?DateTimeImmutable $activeTo;
+
+    public ?DateTimeImmutable $activeFrom;
+
+    /**
+     * @throws Exception
+     */
+    public static function mapFromEntity(object $entity): static
     {
-        return (new ProjectRespDto())
-            ->setId($project->getId())
-            ->setName($project->getName())
-            ->setStatus($project->getStatus())
-            ->setStatistic($fakeStatisticsByProject)
-            ->setActiveFrom($project->getActiveFrom())
-            ->setActiveTo($project->getActiveTo());
+        if (!$entity instanceof Project) {
+            throw new Exception('Entity with undefined type.');
+        }
+
+        $response = new static();
+
+        $response->id = $entity->getId();
+        $response->name = $entity->getName();
+        $response->status = $entity->getStatus();
+        $response->activeFrom = $entity->getActiveFrom()?->format('Y-m-d h:i:s');
+        $response->activeTo = $entity->getActiveTo()?->format('Y-m-d h:i:s');
+
+        return $response;
     }
 }

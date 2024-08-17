@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Shipping\Mapper;
 
-use App\Controller\Admin\Shipping\DTO\Request\ShippingReqDto;
+use App\Controller\Admin\Shipping\Request\ShippingRequest;
 use App\Entity\Ecommerce\Shipping;
 
 class ShippingMapper
 {
-    public static function mapRequestToEntity(ShippingReqDto $shippingReqDto): Shipping
+    public static function mapRequestToEntity(ShippingRequest $shippingReqDto): Shipping
     {
         return (new Shipping())
             ->setTitle($shippingReqDto->getTitle())
             ->setDescription($shippingReqDto->getDescription())
             ->setType($shippingReqDto->getType())
             ->setCalculationType($shippingReqDto->getCalculationType())
-            ->setIsActive($shippingReqDto->isActive())
+            ->setActive($shippingReqDto->isActive())
             ->setApplyFromAmount($shippingReqDto->getApplyFromAmount())
             ->setApplyToAmount($shippingReqDto->getApplyToAmount())
             ->setFreeFrom($shippingReqDto->getFreeFrom())
@@ -24,14 +24,14 @@ class ShippingMapper
             ->setPrice($shippingReqDto->getPrice());
     }
 
-    public static function mapRequestToExistingEntity(ShippingReqDto $shippingReqDto, Shipping $shipping): Shipping
+    public static function mapRequestToExistingEntity(ShippingRequest $shippingReqDto, Shipping $shipping): Shipping
     {
         return $shipping
             ->setTitle($shippingReqDto->getTitle())
             ->setDescription($shippingReqDto->getDescription())
             ->setType($shippingReqDto->getType())
             ->setCalculationType($shippingReqDto->getCalculationType())
-            ->setIsActive($shippingReqDto->isActive())
+            ->setActive($shippingReqDto->isActive())
             ->setApplyFromAmount($shippingReqDto->getApplyFromAmount())
             ->setApplyToAmount($shippingReqDto->getApplyToAmount())
             ->setFreeFrom($shippingReqDto->getFreeFrom())

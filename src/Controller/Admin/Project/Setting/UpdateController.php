@@ -2,8 +2,8 @@
 
 namespace App\Controller\Admin\Project\Setting;
 
-use App\Controller\Admin\Project\DTO\Request\ProjectSettingReqDto;
-use App\Controller\Admin\Project\Response\Setting\UpdateSettingResponse;
+use App\Controller\Admin\Project\Request\ProjectSettingRequest;
+use App\Controller\Admin\Project\Response\Setting\ProjectSettingResponse;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\Project;
 use App\Service\Common\Project\ProjectSettingServiceInterface;
@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[OA\RequestBody(
     description: 'Обновление настроек',
     content: new Model(
-        type: ProjectSettingReqDto::class,
+        type: ProjectSettingRequest::class,
     )
 )]
 class UpdateController extends GeneralAbstractController
@@ -44,14 +44,12 @@ class UpdateController extends GeneralAbstractController
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project): JsonResponse
     {
-        $requestDto = $this->getValidDtoFromRequest($request, ProjectSettingReqDto::class);
+        $requestDto = $this->getValidDtoFromRequest($request, ProjectSettingRequest::class);
 
         $projectSetting = $this->projectSettingService->updateSetting($project->getId(), $requestDto);
 
         return $this->json(
-            $this->serializer->normalize(
-                (new UpdateSettingResponse())->mapResponse($projectSetting),
-            )
+            ProjectSettingResponse::mapFromEntity($projectSetting)
         );
     }
 }

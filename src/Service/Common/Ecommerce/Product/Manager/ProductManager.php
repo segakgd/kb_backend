@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Common\Ecommerce\Product\Manager;
 
-use App\Controller\Admin\Product\DTO\Request\ProductReqDto;
+use App\Controller\Admin\Product\Request\ProductRequest;
 use App\Entity\Ecommerce\Product;
 use App\Entity\Ecommerce\ProductCategory;
 use App\Entity\Ecommerce\ProductVariant;
@@ -22,8 +22,8 @@ readonly class ProductManager implements ProductManagerInterface
     ) {}
 
     public function create(
-        ProductReqDto $productReqDto,
-        Project $project
+        ProductRequest $productReqDto,
+        Project        $project
     ): Product {
         $product = (new Product())
             ->setName($productReqDto->getName())
@@ -68,7 +68,7 @@ readonly class ProductManager implements ProductManagerInterface
         return $this->productService->getAllByProject($project);
     }
 
-    public function update(ProductReqDto $productReqDto, Product $product, Project $project): void // todo -> clean up
+    public function update(ProductRequest $productReqDto, Product $product, Project $project): void // todo -> clean up
     {
         $categoriesDto = $productReqDto->getCategories();
 

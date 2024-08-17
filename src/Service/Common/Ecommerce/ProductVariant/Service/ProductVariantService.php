@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Common\Ecommerce\ProductVariant\Service;
 
-use App\Controller\Admin\Product\DTO\Request\ProductVariantReqDto;
+use App\Controller\Admin\Product\Request\ProductVariantRequest;
 use App\Entity\Ecommerce\Product;
 use App\Entity\Ecommerce\ProductVariant;
 use App\Repository\Ecommerce\ProductVariantRepository;
@@ -25,7 +25,7 @@ readonly class ProductVariantService
             $existingVariants[$variant->getId()] = $variant;
         }
 
-        /** @var ProductVariantReqDto $variantDto */
+        /** @var ProductVariantRequest $variantDto */
         foreach ($variantsRequestDto as $variantDto) {
             if (null === $variantDto->getId()) {
                 $variantEntity = (new ProductVariant())

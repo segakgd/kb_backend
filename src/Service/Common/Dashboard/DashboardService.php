@@ -21,7 +21,7 @@ use App\Service\Common\Dashboard\Dto\SessionCacheDto;
 use App\Service\Common\Dashboard\Dto\SessionDto;
 use App\Service\Common\Dashboard\Dto\WebhookInfoDto;
 use App\Service\Common\Scenario\ScenarioTemplateService;
-use App\Service\Constructor\Visitor\Session\SessionService;
+use App\Service\Constructor\Session\SessionService;
 use App\Service\Integration\Telegram\TelegramService;
 use Symfony\Component\HttpKernel\KernelInterface;
 

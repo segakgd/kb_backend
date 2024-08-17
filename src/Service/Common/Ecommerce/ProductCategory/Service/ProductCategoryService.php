@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Common\Ecommerce\ProductCategory\Service;
 
-use App\Controller\Admin\Product\DTO\Request\ProductCategoryReqDto;
+use App\Controller\Admin\Product\Request\ProductCategoryRequest;
 use App\Entity\Ecommerce\ProductCategory;
 use App\Repository\Ecommerce\ProductCategoryEntityRepository;
 
@@ -16,7 +16,7 @@ readonly class ProductCategoryService implements ProductCategoryServiceInterface
 
     public function getByProjectIdAndReqDto(int $projectId, array $categories): array
     {
-        $categoriesId = array_map(function (ProductCategoryReqDto $productCategory) {
+        $categoriesId = array_map(function (ProductCategoryRequest $productCategory) {
             return $productCategory->getId();
         }, $categories);
 
@@ -32,13 +32,10 @@ readonly class ProductCategoryService implements ProductCategoryServiceInterface
         return $this->productCategoryEntityRepository->findBy(['projectId' => $projectId]);
     }
 
-    public function getAllByProjectIdAndIDs(int $projectId, array $ids): array
-    {
-        return $this->productCategoryEntityRepository->findBy(['projectId' => $projectId, 'id' => $ids]);
-    }
-
     public function save(ProductCategory $category): ProductCategory
     {
+        $category->markAsUpdated();
+
         $this->productCategoryEntityRepository->saveAndFlush($category);
 
         return $category;
@@ -68,22 +65,5 @@ readonly class ProductCategoryService implements ProductCategoryServiceInterface
     public function getCategoryById(int $categoryId): ?ProductCategory
     {
         return $this->productCategoryEntityRepository->find($categoryId);
-    }
-
-    public function getAvailableCategory(int $projectId): array
-    {
-        $productCategories = $this->productCategoryEntityRepository->findBy(
-            [
-                'projectId' => $projectId,
-            ]
-        );
-
-        $availableCategory = [];
-
-        foreach ($productCategories as $productCategory) {
-            $availableCategory[] = $productCategory->getName();
-        }
-
-        return $availableCategory;
     }
 }
