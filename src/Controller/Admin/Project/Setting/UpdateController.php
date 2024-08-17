@@ -3,7 +3,7 @@
 namespace App\Controller\Admin\Project\Setting;
 
 use App\Controller\Admin\Project\Request\ProjectSettingRequest;
-use App\Controller\Admin\Project\Response\Setting\ProjectSettingRespDto;
+use App\Controller\Admin\Project\Response\Setting\ProjectSettingResponse;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\Project;
 use App\Service\Common\Project\ProjectSettingServiceInterface;
@@ -49,7 +49,7 @@ class UpdateController extends GeneralAbstractController
         $projectSetting = $this->projectSettingService->updateSetting($project->getId(), $requestDto);
 
         return $this->json(
-            ProjectSettingRespDto::mapFromEntity($projectSetting)
+            ProjectSettingResponse::mapFromEntity($projectSetting)
         );
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Controller\Admin\Project;
 
 use App\Controller\Admin\Project\Request\ProjectUpdateRequest;
-use App\Controller\Admin\Project\Response\ProjectRespDto;
+use App\Controller\Admin\Project\Response\ProjectResponse;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\Project;
 use App\Service\Common\Project\ProjectServiceInterface;
@@ -55,7 +55,7 @@ class UpdateController extends GeneralAbstractController
         $project = $this->projectService->update($requestDto, $project);
 
         return $this->json($this->serializer->normalize(
-            ProjectRespDto::mapFromEntity($project)
+            ProjectResponse::mapFromEntity($project)
         ));
     }
 }

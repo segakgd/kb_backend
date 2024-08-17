@@ -3,7 +3,7 @@
 namespace App\Controller\Admin\Project;
 
 use App\Controller\Admin\Project\Request\ProjectCreateRequest;
-use App\Controller\Admin\Project\Response\ProjectRespDto;
+use App\Controller\Admin\Project\Response\ProjectResponse;
 use App\Controller\GeneralAbstractController;
 use App\Repository\User\UserRepository;
 use App\Service\Common\Project\ProjectServiceInterface;
@@ -62,7 +62,7 @@ class CreateController extends GeneralAbstractController
         $project = $this->projectService->add($requestDto, $user);
 
         return $this->json($this->serializer->normalize(
-            ProjectRespDto::mapFromEntity($project)
+            ProjectResponse::mapFromEntity($project)
         ));
     }
 }

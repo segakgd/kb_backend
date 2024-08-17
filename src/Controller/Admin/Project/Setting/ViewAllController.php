@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Project\Setting;
 
-use App\Controller\Admin\Project\Response\Setting\ProjectSettingRespDto;
+use App\Controller\Admin\Project\Response\Setting\ProjectSettingResponse;
 use App\Entity\User\Project;
 use App\Service\Common\Project\ProjectSettingServiceInterface;
 use Exception;
@@ -19,7 +19,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
     response: Response::HTTP_OK,
     description: 'Возвращает нестройки',
     content: new Model(
-        type: ProjectSettingRespDto::class,
+        type: ProjectSettingResponse::class,
     )
 )]
 class ViewAllController extends AbstractController
@@ -38,7 +38,7 @@ class ViewAllController extends AbstractController
         $projectSetting = $this->projectSettingService->getSettingForProject($project->getId());
 
         return $this->json(
-            ProjectSettingRespDto::mapFromEntity($projectSetting)
+            ProjectSettingResponse::mapFromEntity($projectSetting)
         );
     }
 }

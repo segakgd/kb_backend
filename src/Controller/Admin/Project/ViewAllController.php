@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Project;
 
-use App\Controller\Admin\Project\Response\ProjectRespDto;
+use App\Controller\Admin\Project\Response\ProjectResponse;
 use App\Entity\User\User;
 use App\Service\Common\Project\ProjectServiceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -23,7 +23,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
         type: 'array',
         items: new OA\Items(
             ref: new Model(
-                type: ProjectRespDto::class
+                type: ProjectResponse::class
             )
         )
     ),
@@ -47,7 +47,7 @@ class ViewAllController extends AbstractController
         $projects = $this->projectService->getAll($user);
 
         return $this->json(
-            ProjectRespDto::mapCollection($projects)
+            ProjectResponse::mapCollection($projects)
         );
     }
 }
