@@ -6,13 +6,13 @@ namespace App\Service\Common\Lead;
 
 use App\Controller\Admin\Lead\Request\Order\Product\OrderVariantReqDto;
 use App\Controller\Admin\Lead\Response\Fields\LeadContactsRespDto;
-use App\Controller\Admin\Lead\Response\Fields\LeadFieldRespDto;
 use App\Controller\Admin\Lead\Response\LeadRespDto;
 use App\Controller\Admin\Lead\Response\Order\OrderRespDto;
 use App\Controller\Admin\Lead\Response\Order\Product\ProductRespDto;
 use App\Controller\Admin\Lead\Response\Order\Product\ProductVariantRespDto;
 use App\Entity\Lead\Deal;
 use App\Repository\Ecommerce\ProductVariantRepository;
+use Exception;
 
 readonly class LeadMapper
 {
@@ -27,10 +27,13 @@ readonly class LeadMapper
         }, $deals);
     }
 
+    /**
+     * @throws Exception
+     */
     public function mapToResponse(Deal $deal): LeadRespDto
     {
-        $leadContactsRespDto = $this->mapContactsToResponse($deal);
-        $fieldsRespArray = $this->mapFieldsToResponse($deal);
+        $leadContactsRespDto = LeadContactsRespDto::mapFromEntity($deal);
+        $fieldsRespArray = [];
         $orderDto = $this->mapOrderToResponse($deal);
 
         return (new LeadRespDto())
@@ -38,61 +41,6 @@ readonly class LeadMapper
             ->setFields($fieldsRespArray)
             ->setNumber($deal->getId())
             ->setOrder($orderDto);
-    }
-
-    private function mapContactsToResponse(Deal $deal): LeadContactsRespDto
-    {
-        $leadContactsRespDto = new LeadContactsRespDto();
-        $contacts = $deal->getContacts();
-
-        if (null === $contacts) {
-            return $leadContactsRespDto;
-        }
-
-        if ($contacts->getEmail()) {
-            $emailField = (new LeadFieldRespDto())
-                ->setName('email')
-                ->setValue($contacts->getEmail());
-
-            $leadContactsRespDto->setMail($emailField);
-        }
-
-        if ($contacts->getPhone()) {
-            $phoneField = (new LeadFieldRespDto())
-                ->setName('phone')
-                ->setValue($contacts->getPhone());
-
-            $leadContactsRespDto->setPhone($phoneField);
-        }
-
-        if ($contacts->getLastName() || $contacts->getFirstName()) {
-            $fullName = ($contacts->getFirstName() ?? '') . ' ' . ($contacts->getLastName() ?? '');
-
-            $fullNameField = (new LeadFieldRespDto())
-                ->setName('fullName')
-                ->setValue($fullName);
-
-            $leadContactsRespDto->setFullName($fullNameField);
-        }
-
-        return $leadContactsRespDto;
-    }
-
-    private function mapFieldsToResponse(Deal $deal): array
-    {
-        $fields = $deal->getFields();
-
-        $fieldsArray = [];
-
-        foreach ($fields as $field) {
-            $fieldDto = (new LeadFieldRespDto())
-                ->setValue($field->getValue())
-                ->setName($field->getName());
-
-            $fieldsArray[] = $fieldDto;
-        }
-
-        return $fieldsArray;
     }
 
     private function mapOrderToResponse(Deal $deal): OrderRespDto

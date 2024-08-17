@@ -4,47 +4,33 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Lead\Response\Fields;
 
-class LeadContactsRespDto
+use App\Controller\AbstractResponse;
+use App\Entity\Lead\DealContacts;
+use Exception;
+
+class LeadContactsRespDto extends AbstractResponse
 {
-    private ?LeadFieldRespDto $fullName = null;
+    public ?string $fullName = null;
 
-    private ?LeadFieldRespDto $phone = null;
+    public ?string $phone = null;
 
-    private ?LeadFieldRespDto $mail = null;
+    public ?string $mail = null;
 
-    public function getFullName(): ?LeadFieldRespDto
+    /**
+     * @throws Exception
+     */
+    public static function mapFromEntity(object $entity): static
     {
-        return $this->fullName;
-    }
+        if (!$entity instanceof DealContacts) {
+            throw new Exception('Entity with undefined type.');
+        }
 
-    public function setFullName(LeadFieldRespDto $fullName): self
-    {
-        $this->fullName = $fullName;
+        $response = new static();
 
-        return $this;
-    }
+        $response->fullName = ($entity->getFirstName() ?? '') . ' ' . ($entity->getLastName() ?? '');
+        $response->phone = $entity->getPhone();
+        $response->mail = $entity->getEmail();
 
-    public function getPhone(): ?LeadFieldRespDto
-    {
-        return $this->phone;
-    }
-
-    public function setPhone(LeadFieldRespDto $phone): self
-    {
-        $this->phone = $phone;
-
-        return $this;
-    }
-
-    public function getMail(): ?LeadFieldRespDto
-    {
-        return $this->mail;
-    }
-
-    public function setMail(LeadFieldRespDto $mail): self
-    {
-        $this->mail = $mail;
-
-        return $this;
+        return $response;
     }
 }
