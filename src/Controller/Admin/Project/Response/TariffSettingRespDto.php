@@ -1,18 +1,27 @@
 <?php
 
-namespace App\Controller\Admin\Project\DTO\Response;
+namespace App\Controller\Admin\Project\Response;
 
 use App\Controller\AbstractResponse;
 use App\Entity\User\Tariff;
+use App\Service\Common\Project\Enum\TariffCodeEnum;
 use Exception;
 
-class ProjectTariffSettingRespDto extends AbstractResponse
+class TariffSettingRespDto extends AbstractResponse
 {
+    public int $id;
+
     public string $name;
+
+    public TariffCodeEnum $code;
 
     public int $price;
 
     public string $priceWF;
+
+    public string $description;
+
+    public bool $active;
 
     /**
      * @throws Exception
@@ -25,9 +34,13 @@ class ProjectTariffSettingRespDto extends AbstractResponse
 
         $response = new static();
 
+        $response->id = $entity->getId();
         $response->name = $entity->getName();
         $response->price = $entity->getPrice();
         $response->priceWF = $entity->getPriceWF();
+        $response->description = $entity->getDescription();
+        $response->code = $entity->getCode();
+        $response->active = $entity->isActive();
 
         return $response;
     }

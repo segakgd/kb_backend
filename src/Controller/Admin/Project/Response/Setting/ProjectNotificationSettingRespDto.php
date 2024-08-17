@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin\Project\DTO\Response\Setting;
+namespace App\Controller\Admin\Project\Response\Setting;
 
 use App\Controller\AbstractResponse;
 use Exception;

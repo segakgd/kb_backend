@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin\Project\DTO\Response;
+namespace App\Controller\Admin\Project\Response;
 
 use App\Controller\AbstractResponse;
 use App\Entity\User\Enum\ProjectStatusEnum;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Project;
 
-use App\Controller\Admin\Project\DTO\Response\ProjectRespDto;
+use App\Controller\Admin\Project\Response\ProjectRespDto;
 use App\Entity\User\Project;
 use Exception;
 use Nelmio\ApiDocBundle\Annotation\Model;
