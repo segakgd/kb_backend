@@ -4,7 +4,7 @@ namespace App\Controller\Admin\Lead\Response\Order\Shipping;
 
 use App\Controller\AbstractResponse;
 
-class ShippingRespDto extends AbstractResponse
+class ShippingResponse extends AbstractResponse
 {
     public const TYPE_COURIER = 'courier';
 

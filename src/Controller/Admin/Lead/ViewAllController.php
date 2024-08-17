@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Lead;
 
 use App\Controller\Admin\Lead\Request\FilterLeadsReqDto;
-use App\Controller\Admin\Lead\Response\AllLeadRespDto;
+use App\Controller\Admin\Lead\Response\AllLeadResponse;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\Project;
 use App\Service\Common\Lead\LeadManager;
@@ -34,7 +34,7 @@ use Throwable;
         type: 'array',
         items: new OA\Items(
             ref: new Model(
-                type: AllLeadRespDto::class
+                type: AllLeadResponse::class
             )
         )
     ),

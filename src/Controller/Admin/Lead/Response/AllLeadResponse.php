@@ -4,7 +4,7 @@ namespace App\Controller\Admin\Lead\Response;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class AllLeadRespDto
+class AllLeadResponse
 {
     private const AVAILABLE_STATUSES = [
         'new',
@@ -30,7 +30,7 @@ class AllLeadRespDto
 
     private string $totalAmountWF = '0';
 
-    private AllLeadContactsRespDto $contacts;
+    private AllLeadContactsResponse $contacts;
 
     #[Assert\Choice(self::AVAILABLE_TYPE)]
     private string $type;
@@ -97,12 +97,12 @@ class AllLeadRespDto
         return $this;
     }
 
-    public function getContacts(): AllLeadContactsRespDto
+    public function getContacts(): AllLeadContactsResponse
     {
         return $this->contacts;
     }
 
-    public function setContacts(AllLeadContactsRespDto $contacts): self
+    public function setContacts(AllLeadContactsResponse $contacts): self
     {
         $this->contacts = $contacts;
 

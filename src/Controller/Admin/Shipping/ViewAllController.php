@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Shipping;
 
-use App\Controller\Admin\Lead\Response\Order\Shipping\ShippingRespDto;
+use App\Controller\Admin\Lead\Response\Order\Shipping\ShippingResponse;
 use App\Controller\Admin\Shipping\Response\ShippingResponse;
 use App\Controller\Admin\Shipping\Response\ShippingViewAllResponse;
 use App\Entity\User\Project;
@@ -27,7 +27,7 @@ use Throwable;
         type: 'array',
         items: new OA\Items(
             ref: new Model(
-                type: ShippingRespDto::class
+                type: ShippingResponse::class
             )
         )
     ),

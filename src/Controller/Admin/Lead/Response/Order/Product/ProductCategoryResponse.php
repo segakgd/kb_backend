@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Lead\Response\Order\Product;
 
-class ProductCategoryRespDto
+class ProductCategoryResponse
 {
     private string $name;
 

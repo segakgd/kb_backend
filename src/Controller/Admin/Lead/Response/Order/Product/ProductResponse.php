@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Lead\Response\Order\Product;
 
-class ProductRespDto
+class ProductResponse
 {
     private string $name;
 
-    private ProductVariantRespDto $variant;
+    private ProductVariantResponse $variant;
 
     public function getName(): string
     {
@@ -22,12 +22,12 @@ class ProductRespDto
         return $this;
     }
 
-    public function getVariant(): ProductVariantRespDto
+    public function getVariant(): ProductVariantResponse
     {
         return $this->variant;
     }
 
-    public function setVariant(ProductVariantRespDto $variant): self
+    public function setVariant(ProductVariantResponse $variant): self
     {
         $this->variant = $variant;
 

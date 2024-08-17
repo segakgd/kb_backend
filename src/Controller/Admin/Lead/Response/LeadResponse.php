@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Lead\Response;
 
-use App\Controller\Admin\Lead\Response\Fields\LeadContactsRespDto;
+use App\Controller\Admin\Lead\Response\Fields\LeadContactsResponse;
 use App\Controller\Admin\Lead\Response\Fields\LeadFieldRespDto;
-use App\Controller\Admin\Lead\Response\Order\OrderRespDto;
+use App\Controller\Admin\Lead\Response\Order\OrderResponse;
 use DateTimeImmutable;
 
-class LeadRespDto
+class LeadResponse
 {
     private int $number;
 
-    private LeadContactsRespDto $contacts;
+    private LeadContactsResponse $contacts;
 
     private array $fields;
 
     private string $status = 'new';
 
-    private OrderRespDto $order;
+    private OrderResponse $order;
 
     private DateTimeImmutable $createdAt;
 
@@ -35,12 +35,12 @@ class LeadRespDto
         return $this;
     }
 
-    public function getContacts(): LeadContactsRespDto
+    public function getContacts(): LeadContactsResponse
     {
         return $this->contacts;
     }
 
-    public function setContacts(LeadContactsRespDto $contacts): self
+    public function setContacts(LeadContactsResponse $contacts): self
     {
         $this->contacts = $contacts;
 
@@ -78,12 +78,12 @@ class LeadRespDto
         return $this;
     }
 
-    public function getOrder(): OrderRespDto
+    public function getOrder(): OrderResponse
     {
         return $this->order;
     }
 
-    public function setOrder(OrderRespDto $order): self
+    public function setOrder(OrderResponse $order): self
     {
         $this->order = $order;
 

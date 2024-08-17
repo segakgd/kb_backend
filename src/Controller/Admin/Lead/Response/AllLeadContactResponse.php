@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Lead\Response;
 
-class AllLeadContactRespDto
+class AllLeadContactResponse
 {
     private string $type;
 

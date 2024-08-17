@@ -8,7 +8,7 @@ use App\Controller\AbstractResponse;
 use App\Entity\Lead\DealContacts;
 use Exception;
 
-class LeadContactsRespDto extends AbstractResponse
+class LeadContactsResponse extends AbstractResponse
 {
     public ?string $fullName = null;
 

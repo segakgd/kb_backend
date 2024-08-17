@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Lead\Response\Order\Product;
 
-class ProductVariantRespDto
+class ProductVariantResponse
 {
     private string $name;
 

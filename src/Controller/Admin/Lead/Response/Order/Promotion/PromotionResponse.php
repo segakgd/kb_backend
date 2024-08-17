@@ -4,7 +4,7 @@ namespace App\Controller\Admin\Lead\Response\Order\Promotion;
 
 use App\Controller\AbstractResponse;
 
-class PromotionRespDto extends AbstractResponse
+class PromotionResponse extends AbstractResponse
 {
     public const CALCULATION_TYPE_PERCENT = 'percent';
 

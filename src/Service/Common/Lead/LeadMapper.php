@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Service\Common\Lead;
 
 use App\Controller\Admin\Lead\Request\Order\Product\OrderVariantReqDto;
-use App\Controller\Admin\Lead\Response\Fields\LeadContactsRespDto;
-use App\Controller\Admin\Lead\Response\LeadRespDto;
-use App\Controller\Admin\Lead\Response\Order\OrderRespDto;
-use App\Controller\Admin\Lead\Response\Order\Product\ProductRespDto;
-use App\Controller\Admin\Lead\Response\Order\Product\ProductVariantRespDto;
+use App\Controller\Admin\Lead\Response\Fields\LeadContactsResponse;
+use App\Controller\Admin\Lead\Response\LeadResponse;
+use App\Controller\Admin\Lead\Response\Order\OrderResponse;
+use App\Controller\Admin\Lead\Response\Order\Product\ProductResponse;
+use App\Controller\Admin\Lead\Response\Order\Product\ProductVariantResponse;
 use App\Entity\Lead\Deal;
 use App\Repository\Ecommerce\ProductVariantRepository;
 use Exception;
@@ -30,23 +30,23 @@ readonly class LeadMapper
     /**
      * @throws Exception
      */
-    public function mapToResponse(Deal $deal): LeadRespDto
+    public function mapToResponse(Deal $deal): LeadResponse
     {
-        $leadContactsRespDto = LeadContactsRespDto::mapFromEntity($deal);
+        $leadContactsRespDto = LeadContactsResponse::mapFromEntity($deal);
         $fieldsRespArray = [];
         $orderDto = $this->mapOrderToResponse($deal);
 
-        return (new LeadRespDto())
+        return (new LeadResponse())
             ->setContacts($leadContactsRespDto)
             ->setFields($fieldsRespArray)
             ->setNumber($deal->getId())
             ->setOrder($orderDto);
     }
 
-    private function mapOrderToResponse(Deal $deal): OrderRespDto
+    private function mapOrderToResponse(Deal $deal): OrderResponse
     {
         $order = $deal->getOrder();
-        $orderResponseDto = (new OrderRespDto());
+        $orderResponseDto = (new OrderResponse());
 
         if ($order !== null) {
             $orderResponseDto->setCreatedAt($order->getCreatedAt());
@@ -60,9 +60,9 @@ readonly class LeadMapper
 
             $name = $productVariant?->getProduct()?->getName();
 
-            $productRespDto = new ProductRespDto();
+            $productRespDto = new ProductResponse();
 
-            $productVariantRespDto = (new ProductVariantRespDto())
+            $productVariantRespDto = (new ProductVariantResponse())
                 ->setPrice($variantDto->getPrice())
                 ->setCount($variantDto->getCount())
                 ->setName($productVariant->getName());

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Lead\Response\Order;
 
-use App\Controller\Admin\Lead\Response\Order\Product\ProductRespDto;
-use App\Controller\Admin\Lead\Response\Order\Promotion\PromotionRespDto;
-use App\Controller\Admin\Lead\Response\Order\Shipping\ShippingRespDto;
+use App\Controller\Admin\Lead\Response\Order\Product\ProductResponse;
+use App\Controller\Admin\Lead\Response\Order\Promotion\PromotionResponse;
+use App\Controller\Admin\Lead\Response\Order\Shipping\ShippingResponse;
 use DateTimeImmutable;
 
-class OrderRespDto
+class OrderResponse
 {
     private array $products = [];
 
@@ -31,7 +31,7 @@ class OrderRespDto
         return $this;
     }
 
-    public function addProduct(ProductRespDto $product): self
+    public function addProduct(ProductResponse $product): self
     {
         $this->products[] = $product;
 
@@ -39,7 +39,7 @@ class OrderRespDto
     }
 
     /**
-     * @return ShippingRespDto[]
+     * @return ShippingResponse[]
      */
     public function getShipping(): array
     {
@@ -53,7 +53,7 @@ class OrderRespDto
         return $this;
     }
 
-    public function addShipping(ShippingRespDto $respDto): self
+    public function addShipping(ShippingResponse $respDto): self
     {
         $this->shipping[] = $respDto;
 
@@ -65,7 +65,7 @@ class OrderRespDto
         return $this->promotions;
     }
 
-    public function addPromotion(PromotionRespDto $promotion): self
+    public function addPromotion(PromotionResponse $promotion): self
     {
         $this->promotions[] = $promotion;
 
