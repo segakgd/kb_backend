@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Product;
 
-use App\Controller\Admin\Product\DTO\Request\ProductRequest;
 use App\Controller\Admin\Product\Exception\NotFoundProductForProjectException;
+use App\Controller\Admin\Product\Request\ProductRequest;
 use App\Controller\GeneralAbstractController;
 use App\Entity\Ecommerce\Product;
 use App\Entity\User\Project;

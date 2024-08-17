@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Common\Ecommerce\Product\Manager;
 
-use App\Controller\Admin\Product\DTO\Request\ProductRequest;
+use App\Controller\Admin\Product\Request\ProductRequest;
 use App\Entity\Ecommerce\Product;
 use App\Entity\Ecommerce\ProductCategory;
 use App\Entity\Ecommerce\ProductVariant;
