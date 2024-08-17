@@ -2,16 +2,18 @@
 
 namespace App\Controller;
 
+use PHPUnit\Util\Exception;
+
 abstract class AbstractResponse
 {
     public static function mapFromEntity(object $entity): static
     {
-        return new static();
+        throw new Exception('Method not realized!');
     }
 
     public static function mapFromArray(array $data): static
     {
-        return new static();
+        throw new Exception('Method not realized!');
     }
 
     public static function mapCollection(iterable $collection): array

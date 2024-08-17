@@ -6,7 +6,6 @@ namespace App\Controller\Admin\Product;
 
 use App\Controller\Admin\Product\DTO\Response\ProductResponse;
 use App\Controller\Admin\Product\Exception\NotFoundProductForProjectException;
-use App\Controller\Admin\Product\Response\ProductViewOneResponse;
 use App\Entity\Ecommerce\Product;
 use App\Entity\User\Project;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -39,7 +38,7 @@ class ViewOneController extends AbstractController
             }
 
             return $this->json(
-                (new ProductViewOneResponse())->makeResponse($product)
+                ProductResponse::mapFromEntity($product)
             );
         } catch (Throwable $exception) {
             return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);

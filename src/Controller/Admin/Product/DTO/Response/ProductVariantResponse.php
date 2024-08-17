@@ -4,75 +4,39 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Product\DTO\Response;
 
-class ProductVariantResponse
+use App\Controller\AbstractResponse;
+use App\Entity\Ecommerce\ProductVariant;
+use Exception;
+
+class ProductVariantResponse extends AbstractResponse
 {
-    private ?string $article;
+    public ?string $article;
 
-    private string $name;
+    public string $name;
 
-    private ?int $count;
+    public ?int $count;
 
-    private array $price;
+    public array $price;
 
-    private array $images;
+    public array $images;
 
-    public function getName(): string
+    /**
+     * @throws Exception
+     */
+    public static function mapFromEntity(object $entity): static
     {
-        return $this->name;
-    }
+        if (!$entity instanceof ProductVariant) {
+            throw new Exception('Entity with undefined type.');
+        }
 
-    public function setName(string $name): self
-    {
-        $this->name = $name;
+        $response = new static();
 
-        return $this;
-    }
+        $response->article = $entity->getArticle();
+        $response->name = $entity->getName();
+        $response->count = $entity->getCount();
+        $response->price = $entity->getPrice();
+        $response->images = $entity->getImage();
 
-    public function getCount(): ?int
-    {
-        return $this->count;
-    }
-
-    public function setCount(?int $count): self
-    {
-        $this->count = $count;
-
-        return $this;
-    }
-
-    public function getPrice(): array
-    {
-        return $this->price;
-    }
-
-    public function setPrice(array $price): self
-    {
-        $this->price = $price;
-
-        return $this;
-    }
-
-    public function getImages(): array
-    {
-        return $this->images;
-    }
-
-    public function setImages(array $images): self
-    {
-        $this->images = $images;
-
-        return $this;
-    }
-
-    public function getArticle(): ?string
-    {
-        return $this->article;
-    }
-
-    public function setArticle(?string $article): self
-    {
-        $this->article = $article;
-
-        return $this;
+        return $response;
     }
 }

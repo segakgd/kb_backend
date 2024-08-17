@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Product;
 
 use App\Controller\Admin\Product\DTO\Response\ProductResponse;
-use App\Controller\Admin\Product\Response\ProductViewAllResponse;
 use App\Entity\User\Project;
 use App\Service\Common\Ecommerce\Product\Manager\ProductManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -43,7 +42,7 @@ class ViewAllController extends AbstractController
     {
         try {
             return $this->json(
-                (new ProductViewAllResponse())->mapArrayToResponse($this->productManager->getAll($project))
+                ProductResponse::mapCollection($this->productManager->getAll($project))
             );
         } catch (Throwable $exception) {
             return $this->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
