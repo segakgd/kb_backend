@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin\Product\DTO\Request;
+namespace App\Controller\Admin\Product\Request;
 
 use App\Dto\Ecommerce\Product\Variants\ImageDto;
 use App\Dto\Ecommerce\Product\Variants\VariantPriceDto;
