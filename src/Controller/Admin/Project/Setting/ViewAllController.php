@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Project\Setting;
 
-use App\Controller\Admin\Project\DTO\Response\Setting\ProjectSettingRespDto;
+use App\Controller\Admin\Project\Response\Setting\ProjectSettingRespDto;
 use App\Entity\User\Project;
 use App\Service\Common\Project\ProjectSettingServiceInterface;
 use Exception;

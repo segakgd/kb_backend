@@ -2,9 +2,8 @@
 
 namespace App\Controller\Admin\Project\Setting;
 
-use App\Controller\Admin\Project\DTO\Response\Setting\ProjectSettingRespDto;
 use App\Controller\Admin\Project\Request\ProjectSettingRequest;
-use App\Controller\Admin\Project\Response\Setting\UpdateSettingResponse;
+use App\Controller\Admin\Project\Response\Setting\ProjectSettingRespDto;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\Project;
 use App\Service\Common\Project\ProjectSettingServiceInterface;

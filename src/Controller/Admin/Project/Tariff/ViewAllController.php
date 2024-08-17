@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Project\Tariff;
 
-use App\Controller\Admin\Project\DTO\Response\TariffSettingRespDto;
+use App\Controller\Admin\Project\Response\TariffSettingRespDto;
 use App\Service\Common\Project\TariffServiceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
