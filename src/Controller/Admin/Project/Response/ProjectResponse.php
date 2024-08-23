@@ -14,7 +14,12 @@ class ProjectResponse extends AbstractResponse
 
     public string $name;
 
-    #[Assert\Choice([ProjectStatusEnum::Active->value, ProjectStatusEnum::Frozen->value, ProjectStatusEnum::Blocked->value])]
+    #[Assert\Choice([
+        ProjectStatusEnum::Active->value,
+        ProjectStatusEnum::Frozen->value,
+        ProjectStatusEnum::Blocked->value,
+        ProjectStatusEnum::Trial->value,
+    ])]
     public string $status;
 
     public ?string $activeTo;
