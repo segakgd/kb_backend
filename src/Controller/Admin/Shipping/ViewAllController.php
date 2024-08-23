@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Shipping;
 
-use App\Controller\Admin\Lead\Response\Order\Shipping\ShippingResponse;
 use App\Controller\Admin\Shipping\Response\ShippingResponse;
-use App\Controller\Admin\Shipping\Response\ShippingViewAllResponse;
 use App\Entity\User\Project;
 use App\Service\Common\Ecommerce\Shipping\Manager\ShippingManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -39,7 +37,7 @@ class ViewAllController extends AbstractController
         private readonly LoggerInterface $logger,
     ) {}
 
-    /** Получение колекции доставок */
+    /** Получение коллекции доставок */
     #[Route('/api/admin/project/{project}/shipping/', name: 'admin_shipping_get_all', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project): JsonResponse
