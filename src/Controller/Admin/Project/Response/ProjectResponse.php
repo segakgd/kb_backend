@@ -18,9 +18,9 @@ class ProjectResponse extends AbstractResponse
     #[Assert\Choice([ProjectStatusEnum::Active->value, ProjectStatusEnum::Frozen->value, ProjectStatusEnum::Blocked->value])]
     public string $status;
 
-    public ?DateTimeImmutable $activeTo;
+    public ?string $activeTo;
 
-    public ?DateTimeImmutable $activeFrom;
+    public ?string $activeFrom;
 
     /**
      * @throws Exception
@@ -35,7 +35,7 @@ class ProjectResponse extends AbstractResponse
 
         $response->id = $entity->getId();
         $response->name = $entity->getName();
-        $response->status = $entity->getStatus();
+        $response->status = $entity->getStatus()->value;
         $response->activeFrom = $entity->getActiveFrom()?->format('Y-m-d h:i:s');
         $response->activeTo = $entity->getActiveTo()?->format('Y-m-d h:i:s');
 

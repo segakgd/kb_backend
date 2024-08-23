@@ -8,12 +8,12 @@ abstract class AbstractResponse
 {
     public static function mapFromEntity(object $entity): static
     {
-        throw new Exception('Method not realized!');
+        throw new Exception('Method mapFromEntity not realized! For Response: ' . static::class);
     }
 
     public static function mapFromArray(array $data): static
     {
-        throw new Exception('Method not realized!');
+        throw new Exception('Method mapFromArray not realized! For Response: ' . static::class);
     }
 
     public static function mapCollection(iterable $collection): array
@@ -25,7 +25,7 @@ abstract class AbstractResponse
                 continue;
             }
 
-            $mapResult = self::mapFromEntity($item);
+            $mapResult[] = static::mapFromEntity($item);
         }
 
         return $mapResult;
@@ -40,7 +40,7 @@ abstract class AbstractResponse
                 continue;
             }
 
-            $mapResult = self::mapFromArray($item);
+            $mapResult = static::mapFromArray($item);
         }
 
         return $mapResult;
