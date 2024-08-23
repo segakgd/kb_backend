@@ -44,7 +44,6 @@ class ProjectFixtures extends Fixture implements OrderedFixtureInterface
             ->setName('Сгенерированный проект')
             ->setStatus(ProjectStatusEnum::Active)
             ->addUser($user)
-            ->setActiveFrom(new DateTimeImmutable())
             ->setActiveTo(new DateTimeImmutable('12.12.2025'));
 
         $manager->persist($project);

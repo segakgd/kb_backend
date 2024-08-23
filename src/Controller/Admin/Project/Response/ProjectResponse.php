@@ -5,7 +5,6 @@ namespace App\Controller\Admin\Project\Response;
 use App\Controller\AbstractResponse;
 use App\Entity\User\Enum\ProjectStatusEnum;
 use App\Entity\User\Project;
-use DateTimeImmutable;
 use Exception;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -20,7 +19,9 @@ class ProjectResponse extends AbstractResponse
 
     public ?string $activeTo;
 
-    public ?string $activeFrom;
+    public int $orderCount;
+
+    public int $botCount;
 
     /**
      * @throws Exception
@@ -36,8 +37,9 @@ class ProjectResponse extends AbstractResponse
         $response->id = $entity->getId();
         $response->name = $entity->getName();
         $response->status = $entity->getStatus()->value;
-        $response->activeFrom = $entity->getActiveFrom()?->format('Y-m-d h:i:s');
         $response->activeTo = $entity->getActiveTo()?->format('Y-m-d h:i:s');
+        $response->orderCount = 999; // todo добавить реальные данные
+        $response->botCount = 4; // todo добавить реальные данные
 
         return $response;
     }

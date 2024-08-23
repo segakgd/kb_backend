@@ -35,7 +35,6 @@ trait ProjectTrait
     {
         $project = (new Project())
             ->setName('Проект тестовый')
-            ->setActiveFrom(new DateTimeImmutable())
             ->setActiveTo(new DateTimeImmutable())
             ->addUser($user);
 

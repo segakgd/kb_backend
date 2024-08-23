@@ -30,9 +30,6 @@ class Project
     private ?string $status = ProjectStatusEnum::Active->value;
 
     #[ORM\Column(nullable: true)]
-    private ?DateTimeImmutable $activeFrom = null;
-
-    #[ORM\Column(nullable: true)]
     private ?DateTimeImmutable $activeTo = null;
 
     public function __construct()
@@ -92,18 +89,6 @@ class Project
     public function setStatus(ProjectStatusEnum $status): static
     {
         $this->status = $status->value;
-
-        return $this;
-    }
-
-    public function getActiveFrom(): ?DateTimeImmutable
-    {
-        return $this->activeFrom;
-    }
-
-    public function setActiveFrom(?DateTimeImmutable $activeFrom): static
-    {
-        $this->activeFrom = $activeFrom;
 
         return $this;
     }
