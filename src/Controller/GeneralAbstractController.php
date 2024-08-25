@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Repository\Dto\PaginateDto;
-use App\Repository\Dto\PaginationCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
@@ -49,12 +48,14 @@ class GeneralAbstractController extends AbstractController
     public static function makePaginateResponse(array $items, PaginateDto $paginate): array
     {
         return [
-            'items'       => $items,
-            'currentPage' => $paginate->getCurrentPage(),
-            'lastPage'    => $paginate->getLastPage(),
-            'nextPage'    => $paginate->getNextPage(),
-            'totalItems'  => $paginate->getTotalItems(),
-            'totalPages'  => $paginate->getTotalPages(),
+            'items'    => $items,
+            'paginate' => [
+                'currentPage' => $paginate->getCurrentPage(),
+                'lastPage'    => $paginate->getLastPage(),
+                'nextPage'    => $paginate->getNextPage(),
+                'totalItems'  => $paginate->getTotalItems(),
+                'totalPages'  => $paginate->getTotalPages(),
+            ],
         ];
     }
 }
