@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\Dto\PaginateDto;
 use App\Repository\Dto\PaginationCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
@@ -45,7 +46,7 @@ class GeneralAbstractController extends AbstractController
         return $requestDto;
     }
 
-    public static function makePaginateResponse(array $items, PaginationCollection $paginate): array
+    public static function makePaginateResponse(array $items, PaginateDto $paginate): array
     {
         return [
             'items'       => $items,

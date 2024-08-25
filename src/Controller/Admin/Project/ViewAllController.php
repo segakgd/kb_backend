@@ -67,7 +67,7 @@ class ViewAllController extends GeneralAbstractController
                 (new ProjectResponse())->mapCollection(
                     $paginateCollection->getItems()
                 ),
-                $paginateCollection
+                $paginateCollection->getPaginate()
             )
         );
     }
