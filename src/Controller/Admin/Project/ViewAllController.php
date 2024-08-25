@@ -13,6 +13,7 @@ use App\Service\Common\Project\ProjectServiceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -43,7 +44,7 @@ class ViewAllController extends GeneralAbstractController
     }
 
     #[Route('/api/admin/project/', name: 'admin_project_get_all', methods: ['GET'])]
-    public function execute(): JsonResponse
+    public function execute(Request $request): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();
