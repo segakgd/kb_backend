@@ -6,8 +6,8 @@ class PaginateCollection
 {
     private array $items;
     private int $currentPage;
-    private int $lastPage;
-    private int $nextPage;
+    private ?int $lastPage;
+    private ?int $nextPage;
     private int $totalPages;
     private int $totalItems;
 
@@ -35,24 +35,24 @@ class PaginateCollection
         return $this;
     }
 
-    public function getLastPage(): int
+    public function getLastPage(): ?int
     {
         return $this->lastPage;
     }
 
-    public function setLastPage(int $lastPage): static
+    public function setLastPage(?int $lastPage): static
     {
         $this->lastPage = $lastPage;
 
         return $this;
     }
 
-    public function getNextPage(): int
+    public function getNextPage(): ?int
     {
         return $this->nextPage;
     }
 
-    public function setNextPage(int $nextPage): static
+    public function setNextPage(?int $nextPage): static
     {
         $this->nextPage = $nextPage;
 
