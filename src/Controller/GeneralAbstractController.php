@@ -45,7 +45,7 @@ class GeneralAbstractController extends AbstractController
         return $requestDto;
     }
 
-    public static function makePaginate(PaginateCollection $items): array
+    public static function makePaginateResponse(PaginateCollection $items): array
     {
         return [
             'items'       => $items,

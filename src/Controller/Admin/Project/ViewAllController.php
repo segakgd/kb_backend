@@ -51,7 +51,7 @@ class ViewAllController extends GeneralAbstractController
         }
 
         return $this->json(
-            static::makePaginate($this->projectService->search($user))
+            static::makePaginateResponse($this->projectService->search($user))
         );
     }
 }
