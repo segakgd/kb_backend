@@ -4,6 +4,7 @@ namespace App\Repository\User;
 
 use App\Entity\User\Project;
 use App\Entity\User\User;
+use App\Repository\Dto\PaginateCollection;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -24,7 +25,7 @@ class ProjectRepository extends ServiceEntityRepository
         parent::__construct($registry, Project::class);
     }
 
-    public function findByUser(User $user): array
+    public function findByUser(User $user, $page = 1, $limit = 9): PaginateCollection
     {
         $userId = [$user->getId()];
 
@@ -34,7 +35,23 @@ class ProjectRepository extends ServiceEntityRepository
 
         $query = $qb->getQuery();
 
-        return $query->execute();
+        $items = $query->execute();
+
+        $collection = new PaginateCollection();
+
+        $totalItems = count($items);
+        $totalPages = ceil($totalItems / $limit);
+        $lastPage = $page === 1 ? null : $page - 1;
+        $nextPage = $totalPages < $page + 1 ? null : $page + 1;
+
+        $collection->setItems($items);
+        $collection->setCurrentPage($page);
+        $collection->setLastPage($lastPage);
+        $collection->setNextPage($nextPage);
+        $collection->setTotalItems($totalItems);
+        $collection->setTotalPages($totalPages);
+
+        return $collection;
     }
 
     /**
