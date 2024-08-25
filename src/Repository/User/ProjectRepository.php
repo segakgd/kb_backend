@@ -68,7 +68,7 @@ class ProjectRepository extends ServiceEntityRepository
 
         $query = $qb->getQuery();
 
-        return (int)$query->getSingleScalarResult();
+        return (int) $query->getSingleScalarResult();
     }
 
     public function saveAndFlush(Project $entity): void
