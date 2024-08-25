@@ -5,6 +5,7 @@ namespace App\Repository\User;
 use App\Entity\User\Project;
 use App\Entity\User\User;
 use App\Repository\Dto\PaginateCollection;
+use App\Service\Common\Project\Dto\SearchProjectDto;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -25,15 +26,18 @@ class ProjectRepository extends ServiceEntityRepository
         parent::__construct($registry, Project::class);
     }
 
-    public function search(User $user, $page = 1, $limit = 9): PaginateCollection
+    public function search(User $user, SearchProjectDto $searchProjectDto, int $limit = 9): PaginateCollection
     {
+        $page = $searchProjectDto->getPage() ?? 1;
+
         $userId = [$user->getId()];
 
-        $qb = $this->createQueryBuilder('p')
-            ->leftJoin('p.users', 'bc')
-            ->where('bc.id IN (:userId)')->setParameter('userId', $userId);
+        $builder = $this->createQueryBuilder('project')
+            ->leftJoin('project.users', 'projectUsers')
+            ->where('projectUsers.id IN (:userId)')
+            ->setParameter('userId', $userId);
 
-        $query = $qb->getQuery();
+        $query = $builder->getQuery();
 
         $items = $query->execute();
 
@@ -68,7 +72,7 @@ class ProjectRepository extends ServiceEntityRepository
 
         $query = $qb->getQuery();
 
-        return (int) $query->getSingleScalarResult();
+        return (int)$query->getSingleScalarResult();
     }
 
     public function saveAndFlush(Project $entity): void

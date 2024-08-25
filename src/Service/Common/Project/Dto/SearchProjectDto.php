@@ -5,18 +5,19 @@ namespace App\Service\Common\Project\Dto;
 class SearchProjectDto
 {
     public function __construct(
-        private string $status,
+        private ?string $status,
         private int $page,
     ) {}
 
-    public function getStatus(): string
+    public function getStatus(): ?string
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): static
+    public function setStatus(?string $status): static
     {
         $this->status = $status;
+
         return $this;
     }
 
@@ -28,6 +29,7 @@ class SearchProjectDto
     public function setPage(int $page): static
     {
         $this->page = $page;
+
         return $this;
     }
 }

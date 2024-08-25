@@ -9,6 +9,7 @@ use App\Entity\User\Project;
 use App\Entity\User\User;
 use App\Repository\Dto\PaginateCollection;
 use App\Repository\User\ProjectRepository;
+use App\Service\Common\Project\Dto\SearchProjectDto;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
@@ -20,9 +21,9 @@ readonly class ProjectService implements ProjectServiceInterface
         private LoggerInterface $logger,
     ) {}
 
-    public function search(User $user): PaginateCollection
+    public function search(User $user, SearchProjectDto $searchProjectDto): PaginateCollection
     {
-        return $this->projectEntityRepository->search($user);
+        return $this->projectEntityRepository->search($user, $searchProjectDto);
     }
 
     public function findOneById(int $projectId): Project
