@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Project;
 
+use App\Controller\Admin\Project\Request\ProjectSearchRequest;
 use App\Controller\Admin\Project\Response\ProjectResponse;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\User;
-use App\Repository\Dto\PaginationCollection;
 use App\Service\Common\Project\Dto\SearchProjectDto;
 use App\Service\Common\Project\ProjectServiceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -53,14 +53,11 @@ class ViewAllController extends GeneralAbstractController
             throw new AccessDeniedException('Access Denied.');
         }
 
-        $searchProjectDto = new SearchProjectDto(
-            null,
-            1,
-        );
+        $requestDto = $this->getValidDtoFromRequest($request, ProjectSearchRequest::class);
 
         $paginateCollection = $this->projectService->search(
             $user,
-            $searchProjectDto,
+            $requestDto,
         );
 
         return $this->json(

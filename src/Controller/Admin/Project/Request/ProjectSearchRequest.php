@@ -4,16 +4,31 @@ namespace App\Controller\Admin\Project\Request;
 
 class ProjectSearchRequest
 {
-    private string $name;
+    public function __construct(
+        private int $page,
+        private ?string $status = null,
+    ) {}
 
-    public function getName(): string
+    public function getPage(): int
     {
-        return $this->name;
+        return $this->page;
     }
 
-    public function setName(string $name): static
+    public function setPage(int $page): static
     {
-        $this->name = $name;
+        $this->page = $page;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?string $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }
