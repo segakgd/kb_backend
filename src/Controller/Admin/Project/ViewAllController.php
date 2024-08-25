@@ -50,10 +50,8 @@ class ViewAllController extends GeneralAbstractController
             throw new AccessDeniedException('Access Denied.');
         }
 
-        $projects = $this->projectService->getAll($user);
-
         return $this->json(
-            ProjectResponse::mapCollection($projects)
+            static::makePaginate($this->projectService->search($user))
         );
     }
 }

@@ -6,10 +6,11 @@ use App\Controller\Admin\Project\Request\ProjectCreateRequest;
 use App\Controller\Admin\Project\Request\ProjectUpdateRequest;
 use App\Entity\User\Project;
 use App\Entity\User\User;
+use App\Repository\Dto\PaginateCollection;
 
 interface ProjectServiceInterface
 {
-    public function search(User $user): array;
+    public function search(User $user): PaginateCollection;
 
     public function findOneById(int $projectId): Project;
 

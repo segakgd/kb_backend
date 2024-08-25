@@ -7,6 +7,7 @@ use App\Controller\Admin\Project\Request\ProjectUpdateRequest;
 use App\Entity\User\Enum\ProjectStatusEnum;
 use App\Entity\User\Project;
 use App\Entity\User\User;
+use App\Repository\Dto\PaginateCollection;
 use App\Repository\User\ProjectRepository;
 use Psr\Log\LoggerInterface;
 use Throwable;
@@ -19,7 +20,7 @@ readonly class ProjectService implements ProjectServiceInterface
         private LoggerInterface $logger,
     ) {}
 
-    public function search(User $user): array
+    public function search(User $user): PaginateCollection
     {
         return $this->projectEntityRepository->findByUser($user);
     }

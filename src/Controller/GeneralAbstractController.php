@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\Dto\PaginateCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,5 +43,17 @@ class GeneralAbstractController extends AbstractController
         }
 
         return $requestDto;
+    }
+
+    public static function makePaginate(PaginateCollection $items): array
+    {
+        return [
+            'items'       => $items,
+            'currentPage' => $items->getCurrentPage(),
+            'lastPage'    => $items->getLastPage(),
+            'nextPage'    => $items->getNextPage(),
+            'totalItems'  => $items->getTotalItems(),
+            'totalPages'  => $items->getTotalPages(),
+        ];
     }
 }
