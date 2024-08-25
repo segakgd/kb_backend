@@ -22,7 +22,7 @@ readonly class ProjectService implements ProjectServiceInterface
 
     public function search(User $user): PaginateCollection
     {
-        return $this->projectEntityRepository->findByUser($user);
+        return $this->projectEntityRepository->search($user);
     }
 
     public function findOneById(int $projectId): Project

@@ -25,7 +25,7 @@ class ProjectRepository extends ServiceEntityRepository
         parent::__construct($registry, Project::class);
     }
 
-    public function findByUser(User $user, $page = 1, $limit = 9): PaginateCollection
+    public function search(User $user, $page = 1, $limit = 9): PaginateCollection
     {
         $userId = [$user->getId()];
 
