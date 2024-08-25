@@ -20,6 +20,31 @@ class GeneralAbstractController extends AbstractController
         private readonly ValidatorInterface $validator,
     ) {}
 
+
+    /**
+     * @throws BadRequestException
+     */
+    public function getValidDtoFromFormDataRequest(Request $request, string $className): object
+    {
+        $content = $request->query->all();
+
+        $requestDto = $this->serializer->denormalize(
+            data: $content,
+            type: $className,
+        );
+
+        $errors = $this->validator->validate($requestDto);
+
+        if (count($errors) > 0) {
+            throw new BadRequestException(
+                message: $errors->get(0)->getMessage(),
+                code: Response::HTTP_BAD_REQUEST
+            );
+        }
+
+        return $requestDto;
+    }
+
     /**
      * @throws BadRequestException
      */

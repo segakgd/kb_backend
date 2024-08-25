@@ -52,7 +52,7 @@ class ViewAllController extends GeneralAbstractController
             throw new AccessDeniedException('Access Denied.');
         }
 
-        $requestDto = $this->getValidDtoFromRequest($request, ProjectSearchRequest::class);
+        $requestDto = $this->getValidDtoFromFormDataRequest($request, ProjectSearchRequest::class);
 
         $paginateCollection = $this->projectService->search(
             $user,

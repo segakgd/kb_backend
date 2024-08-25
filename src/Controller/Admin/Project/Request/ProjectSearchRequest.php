@@ -14,8 +14,12 @@ class ProjectSearchRequest
         return $this->page;
     }
 
-    public function setPage(?int $page): static
+    public function setPage(null|int|string $page): static
     {
+        if (is_string($page)) {
+            $page = (int) $page;
+        }
+
         $this->page = $page;
 
         return $this;
