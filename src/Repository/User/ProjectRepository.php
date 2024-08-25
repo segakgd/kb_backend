@@ -4,8 +4,8 @@ namespace App\Repository\User;
 
 use App\Entity\User\Project;
 use App\Entity\User\User;
-use App\Repository\Dto\PaginateDto;
 use App\Repository\Dto\PaginationCollection;
+use App\Repository\PaginationTrait;
 use App\Service\Common\Project\Dto\SearchProjectDto;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
@@ -22,6 +22,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ProjectRepository extends ServiceEntityRepository
 {
+    use PaginationTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Project::class);
@@ -43,24 +45,7 @@ class ProjectRepository extends ServiceEntityRepository
 
         $items = $query->execute();
 
-        $collection = new PaginationCollection();
-
-        $totalItems = count($items);
-        $totalPages = ceil($totalItems / $limit);
-        $lastPage = $page === 1 ? null : $page - 1;
-        $nextPage = $totalPages < $page + 1 ? null : $page + 1;
-
-        $paginate = (new PaginateDto())
-            ->setCurrentPage($page)
-            ->setLastPage($lastPage)
-            ->setNextPage($nextPage)
-            ->setTotalItems($totalItems)
-            ->setTotalPages($totalPages);
-
-        $collection->setItems($items);
-        $collection->setPaginate($paginate);
-
-        return $collection;
+        return static::makePaginate($items, $page, $limit);
     }
 
     /**
@@ -77,7 +62,7 @@ class ProjectRepository extends ServiceEntityRepository
 
         $query = $qb->getQuery();
 
-        return (int)$query->getSingleScalarResult();
+        return (int) $query->getSingleScalarResult();
     }
 
     public function saveAndFlush(Project $entity): void
