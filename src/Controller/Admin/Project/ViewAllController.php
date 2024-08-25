@@ -7,6 +7,7 @@ namespace App\Controller\Admin\Project;
 use App\Controller\Admin\Project\Response\ProjectResponse;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\User;
+use App\Service\Common\Project\Dto\SearchProjectDto;
 use App\Service\Common\Project\ProjectServiceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -50,8 +51,18 @@ class ViewAllController extends GeneralAbstractController
             throw new AccessDeniedException('Access Denied.');
         }
 
+        $searchProjectDto = new SearchProjectDto(
+            null,
+            1,
+        );
+
         return $this->json(
-            static::makePaginateResponse($this->projectService->search($user))
+            static::makePaginateResponse(
+                $this->projectService->search(
+                    $user,
+                    $searchProjectDto,
+                )
+            )
         );
     }
 }
