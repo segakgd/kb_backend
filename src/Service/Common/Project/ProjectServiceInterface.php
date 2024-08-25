@@ -9,9 +9,9 @@ use App\Entity\User\User;
 
 interface ProjectServiceInterface
 {
-    public function findOneById(int $projectId): Project;
+    public function search(User $user): array;
 
-    public function getAll(User $user): array;
+    public function findOneById(int $projectId): Project;
 
     public function add(ProjectCreateRequest $projectDto, User $user): Project;
 

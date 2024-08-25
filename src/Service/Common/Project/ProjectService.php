@@ -19,14 +19,14 @@ readonly class ProjectService implements ProjectServiceInterface
         private LoggerInterface $logger,
     ) {}
 
+    public function search(User $user): array
+    {
+        return $this->projectEntityRepository->findByUser($user);
+    }
+
     public function findOneById(int $projectId): Project
     {
         return $this->projectEntityRepository->find($projectId);
-    }
-
-    public function getAll(User $user): array
-    {
-        return $this->projectEntityRepository->findByUser($user);
     }
 
     public function add(ProjectCreateRequest $projectDto, User $user): Project
