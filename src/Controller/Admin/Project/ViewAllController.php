@@ -8,7 +8,6 @@ use App\Controller\Admin\Project\Request\ProjectSearchRequest;
 use App\Controller\Admin\Project\Response\ProjectResponse;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\User;
-use App\Service\Common\Project\Dto\SearchProjectDto;
 use App\Service\Common\Project\ProjectServiceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
