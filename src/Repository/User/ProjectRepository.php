@@ -7,7 +7,6 @@ use App\Entity\User\Project;
 use App\Entity\User\User;
 use App\Repository\Dto\PaginationCollection;
 use App\Repository\PaginationTrait;
-use App\Service\Common\Project\Dto\SearchProjectDto;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -56,6 +55,19 @@ class ProjectRepository extends ServiceEntityRepository
 
         $items = $builder->getQuery()->execute();
 
+        $totalItems = $this->projectsCountByUser($user, $status);
+
+        return static::makePaginate($items, $page, $limit, $totalItems);
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
+    public function projectsCountByUser(User $user, ?string $status = null): int
+    {
+        $userId = [$user->getId()];
+
         $countBuilder = $this->createQueryBuilder('project')
             ->select('COUNT(project.id)')
             ->leftJoin('project.users', 'projectUsers')
@@ -67,26 +79,7 @@ class ProjectRepository extends ServiceEntityRepository
                 ->setParameter('status', $status);
         }
 
-        $totalItems = (int) $countBuilder->getQuery()->getSingleScalarResult();
-
-        return static::makePaginate($items, $page, $limit, $totalItems);
-    }
-
-    /**
-     * @throws NonUniqueResultException
-     * @throws NoResultException
-     */
-    public function projectsCountByUser(User $user): int
-    {
-        $qb = $this->createQueryBuilder('p')
-            ->select('COUNT(p.id)')
-            ->leftJoin('p.users', 'u')
-            ->where('u.id = :userId')
-            ->setParameter('userId', $user->getId());
-
-        $query = $qb->getQuery();
-
-        return (int) $query->getSingleScalarResult();
+        return (int) $countBuilder->getQuery()->getSingleScalarResult();
     }
 
     public function saveAndFlush(Project $entity): void
