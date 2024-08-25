@@ -7,7 +7,7 @@ namespace App\Controller\Admin\Project;
 use App\Controller\Admin\Project\Response\ProjectResponse;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\User;
-use App\Repository\Dto\PaginateCollection;
+use App\Repository\Dto\PaginationCollection;
 use App\Service\Common\Project\Dto\SearchProjectDto;
 use App\Service\Common\Project\ProjectServiceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;

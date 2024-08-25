@@ -4,7 +4,8 @@ namespace App\Repository\User;
 
 use App\Entity\User\Project;
 use App\Entity\User\User;
-use App\Repository\Dto\PaginateCollection;
+use App\Repository\Dto\PaginateDto;
+use App\Repository\Dto\PaginationCollection;
 use App\Service\Common\Project\Dto\SearchProjectDto;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
@@ -26,7 +27,7 @@ class ProjectRepository extends ServiceEntityRepository
         parent::__construct($registry, Project::class);
     }
 
-    public function search(User $user, SearchProjectDto $searchProjectDto, int $limit = 9): PaginateCollection
+    public function search(User $user, SearchProjectDto $searchProjectDto, int $limit = 9): PaginationCollection
     {
         $page = $searchProjectDto->getPage() ?? 1;
 
@@ -34,26 +35,29 @@ class ProjectRepository extends ServiceEntityRepository
 
         $builder = $this->createQueryBuilder('project')
             ->leftJoin('project.users', 'projectUsers')
-            ->where('projectUsers.id IN (:userId)')
+            ->where('projectUsers.id = (:userId)')
             ->setParameter('userId', $userId);
 
         $query = $builder->getQuery();
 
         $items = $query->execute();
 
-        $collection = new PaginateCollection();
+        $collection = new PaginationCollection();
 
         $totalItems = count($items);
         $totalPages = ceil($totalItems / $limit);
         $lastPage = $page === 1 ? null : $page - 1;
         $nextPage = $totalPages < $page + 1 ? null : $page + 1;
 
+        $paginate = (new PaginateDto())
+            ->setCurrentPage($page)
+            ->setLastPage($lastPage)
+            ->setNextPage($nextPage)
+            ->setTotalItems($totalItems)
+            ->setTotalPages($totalPages);
+
         $collection->setItems($items);
-        $collection->setCurrentPage($page);
-        $collection->setLastPage($lastPage);
-        $collection->setNextPage($nextPage);
-        $collection->setTotalItems($totalItems);
-        $collection->setTotalPages($totalPages);
+        $collection->setPaginate($paginate);
 
         return $collection;
     }

@@ -2,26 +2,13 @@
 
 namespace App\Repository\Dto;
 
-class PaginateCollection
+class PaginateDto
 {
-    private array $items;
     private int $currentPage;
     private ?int $lastPage;
     private ?int $nextPage;
     private int $totalPages;
     private int $totalItems;
-
-    public function getItems(): array
-    {
-        return $this->items;
-    }
-
-    public function setItems(array $items): static
-    {
-        $this->items = $items;
-
-        return $this;
-    }
 
     public function getCurrentPage(): int
     {
