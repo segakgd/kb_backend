@@ -3,15 +3,15 @@
 namespace App\Service\Common\Project;
 
 use App\Controller\Admin\Project\Request\ProjectCreateRequest;
+use App\Controller\Admin\Project\Request\ProjectSearchRequest;
 use App\Controller\Admin\Project\Request\ProjectUpdateRequest;
 use App\Entity\User\Project;
 use App\Entity\User\User;
 use App\Repository\Dto\PaginationCollection;
-use App\Service\Common\Project\Dto\SearchProjectDto;
 
 interface ProjectServiceInterface
 {
-    public function search(User $user, SearchProjectDto $searchProjectDto): PaginationCollection;
+    public function search(User $user, ProjectSearchRequest $projectSearchRequest): PaginationCollection;
 
     public function findOneById(int $projectId): Project;
 

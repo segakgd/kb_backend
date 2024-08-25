@@ -29,7 +29,7 @@ class GeneralAbstractController extends AbstractController
         $content = $request->getContent();
 
         $requestDto = $this->serializer->deserialize(
-            data: $content,
+            data: empty($content) ? '{}' : $content,
             type: $className,
             format: 'json',
         );

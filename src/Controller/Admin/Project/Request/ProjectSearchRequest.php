@@ -5,16 +5,16 @@ namespace App\Controller\Admin\Project\Request;
 class ProjectSearchRequest
 {
     public function __construct(
-        private int $page,
+        private ?int $page = null,
         private ?string $status = null,
     ) {}
 
-    public function getPage(): int
+    public function getPage(): ?int
     {
         return $this->page;
     }
 
-    public function setPage(int $page): static
+    public function setPage(?int $page): static
     {
         $this->page = $page;
 

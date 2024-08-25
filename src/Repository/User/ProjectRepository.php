@@ -2,6 +2,7 @@
 
 namespace App\Repository\User;
 
+use App\Controller\Admin\Project\Request\ProjectSearchRequest;
 use App\Entity\User\Project;
 use App\Entity\User\User;
 use App\Repository\Dto\PaginationCollection;
@@ -29,10 +30,10 @@ class ProjectRepository extends ServiceEntityRepository
         parent::__construct($registry, Project::class);
     }
 
-    public function search(User $user, SearchProjectDto $searchProjectDto, int $limit = 9): PaginationCollection
+    public function search(User $user, ProjectSearchRequest $projectSearchRequest, int $limit = 9): PaginationCollection
     {
-        $page = $searchProjectDto->getPage() ?? 1;
-        $status = $searchProjectDto->getStatus();
+        $page = $projectSearchRequest->getPage() ?? 1;
+        $status = $projectSearchRequest->getStatus();
 
         $userId = [$user->getId()];
 

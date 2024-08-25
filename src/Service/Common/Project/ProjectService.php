@@ -3,6 +3,7 @@
 namespace App\Service\Common\Project;
 
 use App\Controller\Admin\Project\Request\ProjectCreateRequest;
+use App\Controller\Admin\Project\Request\ProjectSearchRequest;
 use App\Controller\Admin\Project\Request\ProjectUpdateRequest;
 use App\Entity\User\Enum\ProjectStatusEnum;
 use App\Entity\User\Project;
@@ -21,9 +22,9 @@ readonly class ProjectService implements ProjectServiceInterface
         private LoggerInterface $logger,
     ) {}
 
-    public function search(User $user, SearchProjectDto $searchProjectDto): PaginationCollection
+    public function search(User $user, ProjectSearchRequest $projectSearchRequest): PaginationCollection
     {
-        return $this->projectEntityRepository->search($user, $searchProjectDto);
+        return $this->projectEntityRepository->search($user, $projectSearchRequest);
     }
 
     public function findOneById(int $projectId): Project
