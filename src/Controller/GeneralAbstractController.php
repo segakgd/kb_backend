@@ -45,15 +45,15 @@ class GeneralAbstractController extends AbstractController
         return $requestDto;
     }
 
-    public static function makePaginateResponse(PaginateCollection $items): array
+    public static function makePaginateResponse(array $items, PaginateCollection $paginate): array
     {
         return [
             'items'       => $items,
-            'currentPage' => $items->getCurrentPage(),
-            'lastPage'    => $items->getLastPage(),
-            'nextPage'    => $items->getNextPage(),
-            'totalItems'  => $items->getTotalItems(),
-            'totalPages'  => $items->getTotalPages(),
+            'currentPage' => $paginate->getCurrentPage(),
+            'lastPage'    => $paginate->getLastPage(),
+            'nextPage'    => $paginate->getNextPage(),
+            'totalItems'  => $paginate->getTotalItems(),
+            'totalPages'  => $paginate->getTotalPages(),
         ];
     }
 }
