@@ -30,6 +30,10 @@ class ProjectRepository extends ServiceEntityRepository
         parent::__construct($registry, Project::class);
     }
 
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
     public function search(User $user, ProjectSearchRequest $projectSearchRequest, int $limit = 9): PaginationCollection
     {
         $page = $projectSearchRequest->getPage() ?? 1;
@@ -48,11 +52,24 @@ class ProjectRepository extends ServiceEntityRepository
                 ->setParameter('status', $status);
         }
 
-        $query = $builder->getQuery();
+        $builder->setMaxResults($limit);
 
-        $items = $query->execute();
+        $items = $builder->getQuery()->execute();
 
-        return static::makePaginate($items, $page, $limit);
+        $countBuilder = $this->createQueryBuilder('project')
+            ->select('COUNT(project.id)')
+            ->leftJoin('project.users', 'projectUsers')
+            ->where('projectUsers.id = (:userId)')
+            ->setParameter('userId', $userId);
+
+        if (!is_null($status)) {
+            $countBuilder->andWhere('project.status = :status')
+                ->setParameter('status', $status);
+        }
+
+        $totalItems = (int) $countBuilder->getQuery()->getSingleScalarResult();
+
+        return static::makePaginate($items, $page, $limit, $totalItems);
     }
 
     /**

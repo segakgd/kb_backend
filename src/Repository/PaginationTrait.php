@@ -7,11 +7,11 @@ use App\Repository\Dto\PaginationCollection;
 
 trait PaginationTrait
 {
-    public static function makePaginate(array $items, int $page, int $limit): PaginationCollection
+    public static function makePaginate(array $items, int $page, int $limit, ?int $totalItems): PaginationCollection
     {
         $collection = new PaginationCollection();
 
-        $totalItems = count($items);
+        $totalItems = $totalItems ?? count($items);
         $totalPages = ceil($totalItems / $limit);
         $lastPage = $page === 1 ? null : $page - 1;
         $nextPage = $totalPages < $page + 1 ? null : $page + 1;
