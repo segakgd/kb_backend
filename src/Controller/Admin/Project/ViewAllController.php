@@ -5,15 +5,17 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Project;
 
 use App\Controller\Admin\Project\Response\ProjectResponse;
+use App\Controller\GeneralAbstractController;
 use App\Entity\User\User;
 use App\Service\Common\Project\ProjectServiceInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[OA\Tag(name: 'Project')]
 #[OA\Response(
@@ -28,11 +30,15 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
         )
     ),
 )]
-class ViewAllController extends AbstractController
+class ViewAllController extends GeneralAbstractController
 {
     public function __construct(
         private readonly ProjectServiceInterface $projectService,
-    ) {}
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+    ) {
+        parent::__construct($serializer, $validator);
+    }
 
     #[Route('/api/admin/project/', name: 'admin_project_get_all', methods: ['GET'])]
     public function execute(): JsonResponse
