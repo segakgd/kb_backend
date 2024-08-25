@@ -9,7 +9,7 @@ class ProjectUpdateRequest
 {
     private string $name;
 
-    #[Assert\Choice([ProjectStatusEnum::Active->value, ProjectStatusEnum::Frozen->value])]
+    #[Assert\Choice([ProjectStatusEnum::Active->value, ProjectStatusEnum::Enabled->value])]
     private string $status;
 
     public function getName(): string

@@ -16,7 +16,7 @@ class ProjectResponse extends AbstractResponse
 
     #[Assert\Choice([
         ProjectStatusEnum::Active->value,
-        ProjectStatusEnum::Frozen->value,
+        ProjectStatusEnum::Enabled->value,
         ProjectStatusEnum::Blocked->value,
         ProjectStatusEnum::Trial->value,
     ])]
