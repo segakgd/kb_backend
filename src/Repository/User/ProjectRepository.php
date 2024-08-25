@@ -36,7 +36,8 @@ class ProjectRepository extends ServiceEntityRepository
         $builder = $this->createQueryBuilder('project')
             ->leftJoin('project.users', 'projectUsers')
             ->where('projectUsers.id = (:userId)')
-            ->setParameter('userId', $userId);
+            ->setParameter('userId', $userId)
+            ->setMaxResults($limit);
 
         $query = $builder->getQuery();
 
