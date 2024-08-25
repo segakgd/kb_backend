@@ -53,6 +53,9 @@ class ProjectRepository extends ServiceEntityRepository
 
         $builder->setMaxResults($limit);
 
+        $offset = ($page - 1) * $limit;
+        $builder->setFirstResult($offset);
+
         $items = $builder->getQuery()->execute();
 
         $totalItems = $this->projectsCountByUser($user, $status);
