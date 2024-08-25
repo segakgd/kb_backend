@@ -32,6 +32,7 @@ class ProjectRepository extends ServiceEntityRepository
     public function search(User $user, SearchProjectDto $searchProjectDto, int $limit = 9): PaginationCollection
     {
         $page = $searchProjectDto->getPage() ?? 1;
+        $status = $searchProjectDto->getStatus();
 
         $userId = [$user->getId()];
 
@@ -40,6 +41,11 @@ class ProjectRepository extends ServiceEntityRepository
             ->where('projectUsers.id = (:userId)')
             ->setParameter('userId', $userId)
             ->setMaxResults($limit);
+
+        if (!is_null($status)) {
+            $builder->andWhere('project.status = :status')
+                ->setParameter('status', $status);
+        }
 
         $query = $builder->getQuery();
 
@@ -62,7 +68,7 @@ class ProjectRepository extends ServiceEntityRepository
 
         $query = $qb->getQuery();
 
-        return (int) $query->getSingleScalarResult();
+        return (int)$query->getSingleScalarResult();
     }
 
     public function saveAndFlush(Project $entity): void
