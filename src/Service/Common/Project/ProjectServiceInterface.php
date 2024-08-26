@@ -8,9 +8,15 @@ use App\Controller\Admin\Project\Request\ProjectUpdateRequest;
 use App\Entity\User\Project;
 use App\Entity\User\User;
 use App\Repository\Dto\PaginationCollection;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 
 interface ProjectServiceInterface
 {
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
     public function search(User $user, ProjectSearchRequest $projectSearchRequest): PaginationCollection;
 
     public function findOneById(int $projectId): Project;

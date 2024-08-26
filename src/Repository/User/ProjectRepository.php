@@ -78,7 +78,8 @@ class ProjectRepository extends ServiceEntityRepository
             ->setParameter('userId', $userId);
 
         if (!is_null($status)) {
-            $countBuilder->andWhere('project.status = :status')
+            $countBuilder
+                ->andWhere('project.status = :status')
                 ->setParameter('status', $status);
         }
 

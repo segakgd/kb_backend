@@ -10,7 +10,9 @@ use App\Entity\User\Project;
 use App\Entity\User\User;
 use App\Repository\Dto\PaginationCollection;
 use App\Repository\User\ProjectRepository;
-use App\Service\Common\Project\Dto\SearchProjectDto;
+use DateTimeImmutable;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
@@ -22,6 +24,10 @@ readonly class ProjectService implements ProjectServiceInterface
         private LoggerInterface $logger,
     ) {}
 
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
     public function search(User $user, ProjectSearchRequest $projectSearchRequest): PaginationCollection
     {
         return $this->projectEntityRepository->search($user, $projectSearchRequest);
@@ -36,8 +42,11 @@ readonly class ProjectService implements ProjectServiceInterface
     {
         $entity = (new Project());
 
+        $activeTo = (new DateTimeImmutable())->modify('+2 weeks');
+
         $entity->addUser($user);
         $entity->setName($projectDto->getName());
+        $entity->setActiveTo($activeTo);
 
         $this->projectEntityRepository->saveAndFlush($entity);
 

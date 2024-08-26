@@ -9,6 +9,8 @@ use App\Controller\Admin\Project\Response\ProjectResponse;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\User;
 use App\Service\Common\Project\ProjectServiceInterface;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -42,6 +44,10 @@ class ViewAllController extends GeneralAbstractController
         parent::__construct($serializer, $validator);
     }
 
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
     #[Route('/api/admin/project/', name: 'admin_project_get_all', methods: ['GET'])]
     public function execute(Request $request): JsonResponse
     {
