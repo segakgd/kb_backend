@@ -54,6 +54,8 @@ class ProjectRepository extends ServiceEntityRepository
         $builder->setMaxResults($limit);
 
         $offset = ($page - 1) * $limit;
+
+        $builder->orderBy('project.id', 'DESC');
         $builder->setFirstResult($offset);
 
         $items = $builder->getQuery()->execute();
