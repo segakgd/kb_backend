@@ -19,7 +19,7 @@ interface ProjectServiceInterface
      */
     public function search(User $user, ProjectSearchRequest $projectSearchRequest): PaginationCollection;
 
-    public function findOneById(int $projectId): Project;
+    public function findOneById(int $projectId): Project; // todo не нужен?
 
     public function add(ProjectCreateRequest $projectDto, User $user): Project;
 

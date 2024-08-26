@@ -7,7 +7,7 @@ use App\Repository\Dto\PaginationCollection;
 
 trait PaginationTrait
 {
-    public static function makePaginate(array $items, int $page, int $limit, ?int $totalItems): PaginationCollection
+    protected static function makePaginate(array $items, int $page, int $limit, ?int $totalItems): PaginationCollection
     {
         $collection = new PaginationCollection();
 

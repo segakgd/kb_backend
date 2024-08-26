@@ -65,11 +65,13 @@ class ViewAllController extends GeneralAbstractController
             $requestDto,
         );
 
+        $projectsResponse = (new ProjectResponse())->mapCollection(
+            $paginateCollection->getItems()
+        );
+
         return $this->json(
             static::makePaginateResponse(
-                (new ProjectResponse())->mapCollection(
-                    $paginateCollection->getItems()
-                ),
+                $projectsResponse,
                 $paginateCollection->getPaginate()
             )
         );

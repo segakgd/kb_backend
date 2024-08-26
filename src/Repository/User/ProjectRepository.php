@@ -37,8 +37,9 @@ class ProjectRepository extends ServiceEntityRepository
     {
         $page = $projectSearchRequest->getPage() ?? 1;
         $status = $projectSearchRequest->getStatus();
+        $offset = ($page - 1) * $limit;
 
-        $userId = [$user->getId()];
+        $userId = $user->getId();
 
         $builder = $this->createQueryBuilder('project')
             ->leftJoin('project.users', 'projectUsers')
@@ -47,22 +48,22 @@ class ProjectRepository extends ServiceEntityRepository
             ->setMaxResults($limit);
 
         if (!is_null($status)) {
-            $builder->andWhere('project.status = :status')
+            $builder
+                ->andWhere('project.status = :status')
                 ->setParameter('status', $status);
         }
 
         $builder->setMaxResults($limit);
 
-        $offset = ($page - 1) * $limit;
-
         $builder->orderBy('project.id', 'DESC');
         $builder->setFirstResult($offset);
 
-        $items = $builder->getQuery()->execute();
-
-        $totalItems = $this->projectsCountByUser($user, $status);
-
-        return static::makePaginate($items, $page, $limit, $totalItems);
+        return static::makePaginate(
+            items: $builder->getQuery()->execute(),
+            page: $page,
+            limit: $limit,
+            totalItems: $this->projectsCountByUser($user, $status),
+        );
     }
 
     /**
