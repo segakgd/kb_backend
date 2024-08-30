@@ -6,8 +6,8 @@ use Exception;
 
 class UserExistException extends Exception
 {
-    public function __construct()
+    public function __construct(string $message = 'User already exist')
     {
-        parent::__construct('User already exist');
+        parent::__construct($message);
     }
 }

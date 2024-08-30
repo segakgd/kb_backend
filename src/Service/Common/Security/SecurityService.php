@@ -104,7 +104,7 @@ readonly class SecurityService
         $user = $this->userRepository->findOneBy(['email' => $userName]);
 
         if (null === $user) {
-            throw new UserNotFoundException();
+            throw new UserNotFoundException('User not found');
         }
 
         if (!$this->userPasswordHasher->isPasswordValid($user, $authDto->getPassword())) {

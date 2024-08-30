@@ -2,10 +2,16 @@
 
 namespace App\Controller\Security\DTO;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 class AuthDto
 {
+    #[Assert\NotBlank(message: 'Username should not be blank.')]
+    #[Assert\Email(message: 'The username must be a vaid email address.')]
     private string $username;
 
+    #[Assert\NotBlank(message: 'Password should not be blank.')]
+    #[Assert\Length(min: 6, minMessage: 'Password should be at least {{ limit }} characters long.')]
     private string $password;
 
     public function getPassword(): string
