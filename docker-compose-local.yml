@@ -10,7 +10,7 @@ services:
       - APP_SECRET=${APP_SECRET}
       - DATABASE_URL=${DATABASE_URL}
     volumes:
-      - ./../kraiber-backend/:/var/www/KBackend
+      - ./../kb_backend/:/var/www/KBackend
 
   nginx-local:
     container_name: nginx-local
@@ -18,7 +18,7 @@ services:
       context: .
       dockerfile: _conf_local/nginx/Dockerfile
     volumes:
-      - ./../kraiber-backend/:/var/www/KBackend
+      - ./../kb_backend/:/var/www/KBackend
       - ./_conf_local/nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./_conf_local/nginx/sites/:/etc/nginx/sites-available
       - ./_conf_local/nginx/conf.d/:/etc/nginx/conf.d
