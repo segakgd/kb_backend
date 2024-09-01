@@ -4,7 +4,7 @@ namespace App\Controller\Admin\ScenarioTemplate;
 
 use App\Controller\Admin\ScenarioTemplate\Response\ScenarioTemplateResponse;
 use App\Entity\User\Project;
-use App\Service\Constructor\Scenario\ScenarioService;
+use App\Service\Constructor\Scenario\ScenarioTemplateService;
 use Exception;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -35,10 +35,12 @@ class ViewAllController extends AbstractController
      */
     #[Route('/api/admin/project/{project}/scenario-template/', name: 'admin_scenario_template_get_all', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Request $request, Project $project, ScenarioService $scenarioService): JsonResponse
-    {
-        $scenarios = $scenarioService->all($project);
-
+    public function execute(
+        Request $request,
+        Project $project,
+        ScenarioTemplateService $scenarioTemplateService,
+    ): JsonResponse {
+        $scenarios = $scenarioTemplateService->all($project);
 
         dd($scenarios);
 
