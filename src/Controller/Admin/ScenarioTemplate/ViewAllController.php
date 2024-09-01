@@ -6,7 +6,7 @@ use App\Controller\Admin\ScenarioTemplate\Request\ScenarioTemplateSearchRequest;
 use App\Controller\Admin\ScenarioTemplate\Response\ScenarioTemplateResponse;
 use App\Controller\GeneralAbstractController;
 use App\Entity\User\Project;
-use App\Service\Constructor\Scenario\ScenarioTemplateService;
+use App\Service\Common\Scenario\ScenarioTemplateService;
 use Exception;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
