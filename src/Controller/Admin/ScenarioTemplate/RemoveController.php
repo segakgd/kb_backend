@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin\Scenario;
+namespace App\Controller\Admin\ScenarioTemplate;
 
 use App\Entity\Scenario\Scenario;
 use App\Entity\User\Project;
@@ -18,7 +18,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 )]
 class RemoveController extends AbstractController
 {
-    #[Route('/api/admin/project/{project}/scenario/{scenario}/', name: 'admin_scenario_remove', methods: ['DELETE'])]
+    #[Route('/api/admin/project/{project}/scenario-template/{scenario}/', name: 'admin_scenario_template_remove', methods: ['DELETE'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project, Scenario $scenario): JsonResponse
     {

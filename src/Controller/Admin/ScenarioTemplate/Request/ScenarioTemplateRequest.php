@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controller\Admin\Scenario\Request;
+namespace App\Controller\Admin\ScenarioTemplate\Request;
 
-readonly class ScenarioRequest
+readonly class ScenarioTemplateRequest
 {
     private string $name;
 

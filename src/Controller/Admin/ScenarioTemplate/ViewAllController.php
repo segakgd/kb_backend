@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Controller\Admin\Scenario;
+namespace App\Controller\Admin\ScenarioTemplate;
 
-use App\Controller\Admin\Scenario\Response\ScenarioResponse;
+use App\Controller\Admin\ScenarioTemplate\Response\ScenarioTemplateResponse;
 use App\Entity\User\Project;
+use App\Service\Constructor\Scenario\ScenarioService;
+use Exception;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,22 +23,30 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
         type: 'array',
         items: new OA\Items(
             ref: new Model(
-                type: ScenarioResponse::class
+                type: ScenarioTemplateResponse::class
             )
         )
     ),
 )]
 class ViewAllController extends AbstractController
 {
-    #[Route('/api/admin/project/{project}/scenario/', name: 'admin_scenario_get_all', methods: ['GET'])]
+    /**
+     * @throws Exception
+     */
+    #[Route('/api/admin/project/{project}/scenario-template/', name: 'admin_scenario_template_get_all', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Request $request, Project $project): JsonResponse
+    public function execute(Request $request, Project $project, ScenarioService $scenarioService): JsonResponse
     {
+        $scenarios = $scenarioService->all($project);
+
+
+        dd($scenarios);
+
         return $this->json(
-            ScenarioResponse::mapCollection(
+            ScenarioTemplateResponse::mapCollection(
                 [
-                    new ScenarioResponse(),
-                    new ScenarioResponse(),
+                    new ScenarioTemplateResponse(),
+                    new ScenarioTemplateResponse(),
                 ]
             )
         );

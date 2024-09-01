@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controller\Admin\Scenario;
+namespace App\Controller\Admin\ScenarioTemplate;
 
-use App\Controller\Admin\Scenario\Response\ScenarioResponse;
+use App\Controller\Admin\ScenarioTemplate\Response\ScenarioTemplateResponse;
 use App\Entity\Scenario\Scenario;
 use App\Entity\User\Project;
 use Exception;
@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\SerializerInterface;
     response: Response::HTTP_OK,
     description: 'Получение одного сценария',
     content: new Model(
-        type: ScenarioResponse::class
+        type: ScenarioTemplateResponse::class
     ),
 )]
 class ViewOneController extends AbstractController
@@ -32,12 +32,12 @@ class ViewOneController extends AbstractController
     /**
      * @throws Exception
      */
-    #[Route('/api/admin/project/{project}/scenario/{scenario}/', name: 'admin_scenario_get_one', methods: ['GET'])]
+    #[Route('/api/admin/project/{project}/scenario-template/{scenario}/', name: 'admin_scenario_template_get_one', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Project $project, Scenario $scenario): JsonResponse
     {
         return $this->json(
-            $this->serializer->normalize(ScenarioResponse::mapFromEntity($scenario))
+            $this->serializer->normalize(ScenarioTemplateResponse::mapFromEntity($scenario))
         );
     }
 }

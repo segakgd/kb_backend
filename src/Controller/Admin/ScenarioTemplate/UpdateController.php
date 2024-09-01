@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controller\Admin\Scenario;
+namespace App\Controller\Admin\ScenarioTemplate;
 
-use App\Controller\Admin\Scenario\Request\ScenarioUpdateRequest;
+use App\Controller\Admin\ScenarioTemplate\Request\ScenarioTemplateUpdateRequest;
 use App\Controller\GeneralAbstractController;
 use App\Entity\Scenario\Scenario;
 use App\Entity\User\Project;
@@ -17,7 +17,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[OA\Tag(name: 'Scenario')]
 #[OA\RequestBody(
     content: new Model(
-        type: ScenarioUpdateRequest::class,
+        type: ScenarioTemplateUpdateRequest::class,
     )
 )]
 #[OA\Response(
@@ -26,7 +26,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 )]
 class UpdateController extends GeneralAbstractController
 {
-    #[Route('/api/admin/project/{project}/scenario/{scenario}/', name: 'admin_scenario_update', methods: ['PATCH'])]
+    #[Route('/api/admin/project/{project}/scenario-template/{scenario}/', name: 'admin_scenario_template_update', methods: ['PATCH'])]
     #[IsGranted('existUser', 'project')]
     public function execute(Request $request, Project $project, Scenario $scenario): JsonResponse
     {

@@ -6,6 +6,7 @@ use App\Dto\Scenario\ScenarioContractDto;
 use App\Dto\Scenario\ScenarioKeyboardDto;
 use App\Entity\Scenario\Scenario;
 use App\Entity\User\Bot;
+use App\Entity\User\Project;
 use App\Enum\NavigateEnum;
 use App\Enum\TargetAliasEnum;
 use App\Repository\Scenario\ScenarioRepository;
@@ -16,6 +17,19 @@ readonly class ScenarioService
     public function __construct(
         private ScenarioRepository $scenarioRepository,
     ) {}
+
+    /**
+     * @throws Exception
+     */
+    public function all(Project $project): ?Scenario
+    {
+        return $this->scenarioRepository->findOneBy(
+            [
+                'projectId' => $project,
+                'deletedAt' => null,
+            ]
+        );
+    }
 
     /**
      * @throws Exception
