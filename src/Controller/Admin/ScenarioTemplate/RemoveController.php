@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\ScenarioTemplate;
 
-use App\Entity\Scenario\Scenario;
+use App\Entity\Scenario\ScenarioTemplate;
 use App\Entity\User\Project;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,9 +18,9 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 )]
 class RemoveController extends AbstractController
 {
-    #[Route('/api/admin/project/{project}/scenario-template/{scenario}/', name: 'admin_scenario_template_remove', methods: ['DELETE'])]
+    #[Route('/api/admin/project/{project}/scenario-template/{scenarioTemplate}/', name: 'admin_scenario_template_remove', methods: ['DELETE'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Project $project, Scenario $scenario): JsonResponse
+    public function execute(Project $project, ScenarioTemplate $scenarioTemplate): JsonResponse
     {
         return $this->json('', Response::HTTP_NO_CONTENT);
     }

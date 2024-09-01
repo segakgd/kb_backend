@@ -4,7 +4,7 @@ namespace App\Controller\Admin\ScenarioTemplate;
 
 use App\Controller\Admin\ScenarioTemplate\Request\ScenarioTemplateUpdateRequest;
 use App\Controller\GeneralAbstractController;
-use App\Entity\Scenario\Scenario;
+use App\Entity\Scenario\ScenarioTemplate;
 use App\Entity\User\Project;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -26,9 +26,9 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 )]
 class UpdateController extends GeneralAbstractController
 {
-    #[Route('/api/admin/project/{project}/scenario-template/{scenario}/', name: 'admin_scenario_template_update', methods: ['PATCH'])]
+    #[Route('/api/admin/project/{project}/scenario-template/{scenarioTemplate}/', name: 'admin_scenario_template_update', methods: ['PATCH'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Request $request, Project $project, Scenario $scenario): JsonResponse
+    public function execute(Request $request, Project $project, ScenarioTemplate $scenarioTemplate): JsonResponse
     {
         return $this->json();
     }
