@@ -42,15 +42,8 @@ class ViewAllController extends AbstractController
     ): JsonResponse {
         $scenarios = $scenarioTemplateService->all($project);
 
-        dd($scenarios);
-
         return $this->json(
-            ScenarioTemplateResponse::mapCollection(
-                [
-                    new ScenarioTemplateResponse(),
-                    new ScenarioTemplateResponse(),
-                ]
-            )
+            ScenarioTemplateResponse::mapCollection($scenarios)
         );
     }
 }

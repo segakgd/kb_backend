@@ -2,7 +2,6 @@
 
 namespace App\Service\Constructor\Scenario;
 
-use App\Entity\Scenario\ScenarioTemplate;
 use App\Entity\User\Project;
 use App\Repository\Scenario\ScenarioTemplateRepository;
 use Exception;
@@ -16,9 +15,9 @@ readonly class ScenarioTemplateService
     /**
      * @throws Exception
      */
-    public function all(Project $project): ?ScenarioTemplate
+    public function all(Project $project): array
     {
-        return $this->scenarioTemplateRepository->findOneBy(
+        return $this->scenarioTemplateRepository->findBy(
             [
                 'projectId' => $project,
             ]
