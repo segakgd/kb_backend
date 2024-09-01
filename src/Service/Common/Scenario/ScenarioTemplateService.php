@@ -8,7 +8,8 @@ use App\Entity\Scenario\ScenarioTemplate;
 use App\Entity\User\Project;
 use App\Repository\Dto\PaginationCollection;
 use App\Repository\Scenario\ScenarioTemplateRepository;
-use Exception;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 
 readonly class ScenarioTemplateService
 {
@@ -17,15 +18,12 @@ readonly class ScenarioTemplateService
     ) {}
 
     /**
-     * @throws Exception
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function search(Project $project, ScenarioTemplateSearchRequest $requestDto): PaginationCollection
     {
-        return $this->scenarioTemplateRepository->findBy(
-            [
-                'projectId' => $project,
-            ]
-        );
+        return $this->scenarioTemplateRepository->search($project, $requestDto);
     }
 
     public function getAllByProjectId(int $projectId): array
