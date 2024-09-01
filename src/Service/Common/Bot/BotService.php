@@ -23,7 +23,7 @@ readonly class BotService implements BotServiceInterface
 
     public function search(Project $project, BotSearchRequest $requestDto): PaginationCollection
     {
-
+        return $this->botRepository->search($project, $requestDto);
     }
 
     /**
