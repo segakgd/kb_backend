@@ -2,13 +2,14 @@
 
 namespace App\Controller\Admin\ScenarioTemplate;
 
+use App\Controller\Admin\ScenarioTemplate\Request\ScenarioTemplateSearchRequest;
 use App\Controller\Admin\ScenarioTemplate\Response\ScenarioTemplateResponse;
+use App\Controller\GeneralAbstractController;
 use App\Entity\User\Project;
 use App\Service\Constructor\Scenario\ScenarioTemplateService;
 use Exception;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,7 +29,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
         )
     ),
 )]
-class ViewAllController extends AbstractController
+class ViewAllController extends GeneralAbstractController
 {
     /**
      * @throws Exception
@@ -40,10 +41,22 @@ class ViewAllController extends AbstractController
         Project $project,
         ScenarioTemplateService $scenarioTemplateService,
     ): JsonResponse {
-        $scenarios = $scenarioTemplateService->all($project);
+        $requestDto = $this->getValidDtoFromFormDataRequest($request, ScenarioTemplateSearchRequest::class);
+
+        $scenarioCollection = $scenarioTemplateService->search(
+            project: $project,
+            requestDto: $requestDto,
+        );
+
+        $scenarioTemplateResponse = ScenarioTemplateResponse::mapCollection(
+            $scenarioCollection->getItems()
+        );
 
         return $this->json(
-            ScenarioTemplateResponse::mapCollection($scenarios)
+            static::makePaginateResponse(
+                $scenarioTemplateResponse,
+                $scenarioCollection->getPaginate(),
+            )
         );
     }
 }
