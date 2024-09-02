@@ -11,6 +11,8 @@ use App\Entity\User\Project;
 use App\Event\InitWebhookBotEvent;
 use App\Repository\Dto\PaginationCollection;
 use App\Repository\User\BotRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Exception;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
@@ -21,6 +23,10 @@ readonly class BotService implements BotServiceInterface
         private EventDispatcherInterface $eventDispatcher,
     ) {}
 
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
     public function search(Project $project, BotSearchRequest $requestDto): PaginationCollection
     {
         return $this->botRepository->search($project, $requestDto);

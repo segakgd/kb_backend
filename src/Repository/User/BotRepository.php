@@ -29,10 +29,14 @@ class BotRepository extends ServiceEntityRepository
         parent::__construct($registry, Bot::class);
     }
 
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
     public function search(Project $project, BotSearchRequest $requestDto, int $limit = 9): PaginationCollection
     {
         $page = $requestDto->getPage() ?? 1;
-        $status = $requestDto->getStatus();
+        $active = $requestDto->getActive();
         $offset = ($page - 1) * $limit;
 
         $builder = $this->createQueryBuilder('bot')
@@ -40,10 +44,10 @@ class BotRepository extends ServiceEntityRepository
             ->setParameter('projectId', $project->getId())
             ->setMaxResults($limit);
 
-        if (!is_null($status)) {
+        if (!is_null($active)) {
             $builder
-                ->andWhere('bot.status = :status')
-                ->setParameter('status', $status);
+                ->andWhere('bot.active = :active')
+                ->setParameter('active', $active);
         }
 
         $builder->setMaxResults($limit);
@@ -55,7 +59,7 @@ class BotRepository extends ServiceEntityRepository
             items: $builder->getQuery()->execute(),
             page: $page,
             limit: $limit,
-            totalItems: $this->countByProject($project, $status),
+            totalItems: $this->countByProject($project, $active),
         );
     }
 
@@ -63,17 +67,17 @@ class BotRepository extends ServiceEntityRepository
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
-    public function countByProject(Project $project, ?string $status = null): int
+    public function countByProject(Project $project, ?bool $active = null): int
     {
         $countBuilder = $this->createQueryBuilder('bot')
             ->select('COUNT(bot.id)')
             ->where('bot.projectId = (:projectId)')
             ->setParameter('projectId', $project->getId());
 
-        if (!is_null($status)) {
+        if (!is_null($active)) {
             $countBuilder
-                ->andWhere('bot.status = :status')
-                ->setParameter('status', $status);
+                ->andWhere('bot.active = :active')
+                ->setParameter('active', $active);
         }
 
         return (int) $countBuilder->getQuery()->getSingleScalarResult();

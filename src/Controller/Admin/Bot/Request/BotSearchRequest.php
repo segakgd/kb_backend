@@ -6,7 +6,7 @@ class BotSearchRequest
 {
     public function __construct(
         private ?int $page = null,
-        private ?string $status = null,
+        private ?string $active = null,
     ) {}
 
     public function getPage(): ?int
@@ -25,14 +25,14 @@ class BotSearchRequest
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getActive(): ?string
     {
-        return $this->status;
+        return $this->active;
     }
 
-    public function setStatus(?string $status): static
+    public function setActive(?string $active): static
     {
-        $this->status = $status;
+        $this->active = $active;
 
         return $this;
     }
