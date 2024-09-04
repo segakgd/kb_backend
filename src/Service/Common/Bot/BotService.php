@@ -3,11 +3,16 @@
 namespace App\Service\Common\Bot;
 
 use App\Controller\Admin\Bot\Request\BotRequest;
+use App\Controller\Admin\Bot\Request\BotSearchRequest;
 use App\Controller\Admin\Bot\Request\InitBotRequest;
 use App\Controller\Admin\Bot\Request\UpdateBotRequest;
 use App\Entity\User\Bot;
+use App\Entity\User\Project;
 use App\Event\InitWebhookBotEvent;
+use App\Repository\Dto\PaginationCollection;
 use App\Repository\User\BotRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Exception;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
@@ -17,6 +22,15 @@ readonly class BotService implements BotServiceInterface
         private BotRepository $botRepository,
         private EventDispatcherInterface $eventDispatcher,
     ) {}
+
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
+    public function search(Project $project, BotSearchRequest $requestDto): PaginationCollection
+    {
+        return $this->botRepository->search($project, $requestDto);
+    }
 
     /**
      * @throws Exception

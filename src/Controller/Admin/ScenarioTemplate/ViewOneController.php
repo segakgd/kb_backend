@@ -3,7 +3,7 @@
 namespace App\Controller\Admin\ScenarioTemplate;
 
 use App\Controller\Admin\ScenarioTemplate\Response\ScenarioTemplateResponse;
-use App\Entity\Scenario\Scenario;
+use App\Entity\Scenario\ScenarioTemplate;
 use App\Entity\User\Project;
 use Exception;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -32,12 +32,12 @@ class ViewOneController extends AbstractController
     /**
      * @throws Exception
      */
-    #[Route('/api/admin/project/{project}/scenario-template/{scenario}/', name: 'admin_scenario_template_get_one', methods: ['GET'])]
+    #[Route('/api/admin/project/{project}/scenario-template/{scenarioTemplate}/', name: 'admin_scenario_template_get_one', methods: ['GET'])]
     #[IsGranted('existUser', 'project')]
-    public function execute(Project $project, Scenario $scenario): JsonResponse
+    public function execute(Project $project, ScenarioTemplate $scenarioTemplate): JsonResponse
     {
         return $this->json(
-            $this->serializer->normalize(ScenarioTemplateResponse::mapFromEntity($scenario))
+            $this->serializer->normalize(ScenarioTemplateResponse::mapFromEntity($scenarioTemplate))
         );
     }
 }

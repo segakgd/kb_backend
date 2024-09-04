@@ -61,8 +61,8 @@ class ViewAllController extends GeneralAbstractController
         $requestDto = $this->getValidDtoFromFormDataRequest($request, ProjectSearchRequest::class);
 
         $paginateCollection = $this->projectService->search(
-            $user,
-            $requestDto,
+            user: $user,
+            projectSearchRequest: $requestDto,
         );
 
         $projectsResponse = (new ProjectResponse())->mapCollection(

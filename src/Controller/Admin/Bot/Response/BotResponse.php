@@ -12,7 +12,13 @@ class BotResponse extends AbstractResponse
 
     public string $name;
 
+    public bool $active;
+
     public string $type;
+
+    public array $scenario;
+
+    public string $createdAt;
 
     /**
      * @throws Exception
@@ -27,7 +33,12 @@ class BotResponse extends AbstractResponse
 
         $response->id = $entity->getId();
         $response->name = $entity->getName();
+        $response->active = true;
         $response->type = $entity->getType()->value;
+        $response->scenario = [
+            'name' => 'Самый топовый сценарий',
+        ];
+        $response->createdAt = '2024-10-23';
 
         return $response;
     }
